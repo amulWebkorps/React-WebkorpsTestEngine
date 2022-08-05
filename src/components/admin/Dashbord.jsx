@@ -1,11 +1,11 @@
 import React from 'react'
-import { Button } from "@mui/material";
+import { Button,Container, Box, Grid, Icon } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { Container, Box, Grid } from "@mui/material";
+
 const containerStyle = {
     height: "550px",
     background: "linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)",
@@ -73,13 +73,11 @@ const Dashbord = () => {
           <Card sx={card}>
             <CardActionArea>
              <CardMedia>
-             <Button variant="contained" size="large">
-                        Large
-                      </Button>
+            <Button contained>+</Button>
              </CardMedia>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  Lizard
+                <Icon fontSize="small">add_circle</Icon>
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Lizards are a widespread group of squamate reptiles, with over
