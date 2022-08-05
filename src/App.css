@@ -13,10 +13,10 @@
 }
 
 .CodeCompilerText1 {
-  font-Size: 30px ;
-  font-weight: 600;
-  line-height: 35px ;
-  text-align: left ;
+  font-Size: 30px !important;
+  font-weight: 600 !important;
+  line-height: 35px !important ;
+  text-align: left !important ;
 };
 
 @media screen and (max-width: 1000px) {

@@ -115,13 +115,13 @@ const inputField = {
 };
 
 
-// const CodeCompilerText = {
-//   fontSize: "30px",
-//   fontWeight: "600",
-//   lineHeight: "35px",
-//   letterSpacing: "0em",
-//   textAlign: "left",
-// };
+const CodeCompilerText1 = {
+  fontSize: "30px",
+  fontWeight: "600",
+  lineHeight: "35px",
+  letterSpacing: "0em",
+  textAlign: "left",
+};
 
 const flexDrop = {
   display: "flex",
@@ -230,8 +230,9 @@ const Compiler = () => {
               <Container sx={rightdiv}>
                 <Grid container>
                   <Grid item sm={6}>
-                    <Typography mt={1.5} className="CodeCompilerText1">
-                      Code Compiler
+                    <Typography mt={1.5}>
+                        <div >Code Compiler</div>
+                      
                     </Typography>
                   </Grid>
                   <Grid item sm={6} sx={flexDrop}>
