@@ -1,9 +1,7 @@
 import React from 'react'
 import Grid from "@mui/material/Grid";
-
 import Box from "@mui/material/Box";
 import { logo } from '../assests/images';
-
 
 
 const  Headers= { 
@@ -12,8 +10,7 @@ background: "#FDFEFF",
 width:"100%",
 display:"flex",
 flexDirection:"Row"
-
-  };
+};
   
 const logoText={ 
 height:" 56px",

@@ -18,19 +18,12 @@ const blue1 = {
   height: "70vh",
   marginLeft: "-24px",
   background: "#0057FF",
-
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px 0px 0px 18px",
 };
 
-const containerStyle = {
-  height: "550px",
-  background: `linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)`,
-  display: "flex",
-  flexDirection: "row",
-  marginBottom: "10px",
-};
-const rightdiv = {
+
+const rightDiv = {
   height: "68.81px",
   background: "white",
   borderRadius: "17px 17px 0px 0px",
@@ -42,17 +35,8 @@ const editor = {
   background: "black",
 };
 
-const app = {
-  height: "100%",
-  background: `linear-gradient(
-    180deg,
-    rgba(24, 135, 201, 0) 0%,
-    rgba(24, 135, 201, 0.224167) 40.42%,
-    rgba(24, 135, 201, 0.4) 100%
-  )`,
 
-};
-const testcase = {
+const testCase = {
   height: "30vh",
   background: "#F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -94,10 +78,7 @@ const inputLabel = {
   margin: "10px",
 
 };
-
-
- const testCaseResult={
-    
+ const testCaseResult={  
     height: "48px",
     background: "#F9FAFC",
     boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -114,7 +95,6 @@ const inputField = {
   marginBottom:"10px"
 };
 
-
 const CodeCompilerText1 = {
   fontSize: "30px",
   fontWeight: "600",
@@ -128,11 +108,6 @@ const flexDrop = {
   flexDirection: "row",
   textAlign: "left",
 };
-
-const button_test = {
-  justifyContent: "right",
-};
-
 
 
 
@@ -155,7 +130,7 @@ const buttonTest = {
 const Compiler = () => {
   return (
     <>
-      <div style={app}>
+      <div className="background1">
         <Grid container>
           <Grid item sm={6}>
             <Box mx={3}>
@@ -227,11 +202,11 @@ const Compiler = () => {
                   <box> 1233@gmail.com</box>
                 </Grid>
               </Grid>
-              <Container sx={rightdiv}>
+              <Container sx={rightDiv}>
                 <Grid container>
                   <Grid item sm={6}>
                     <Typography mt={1.5}>
-                        <div >Code Compiler</div>
+                        <div  style={CodeCompilerText1}>Code Compiler</div>
                       
                     </Typography>
                   </Grid>
@@ -255,7 +230,7 @@ const Compiler = () => {
               </Grid>
             </Box>
             <Grid>
-              <Grid containner sx={testcase} m={3}>
+              <Grid containner sx={testCase} m={3}>
                 <Grid item sm={12} sx={testCaseResult}>
                     <Typography  m={3} mt={2}sx={testCaseText1}>
                         Test Case
