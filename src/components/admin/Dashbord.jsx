@@ -10,9 +10,9 @@ import { CardActionArea } from "@mui/material";
 import { contestImg, logo } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { color } from "@mui/system";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ExpandCircleDownRoundedIcon from '@mui/icons-material/ExpandCircleDownRounded';
 
 const containerStyle = {
   overflowY: "auto",
@@ -92,142 +92,152 @@ const delBtn = {
   color: "black",
 };
 
-const forwardIcon={
-  position:"absolute",
+const forwardIcon = {
+  transform:' rotate(-90deg)',
+  position: "absolute",
   top: `calc(50% - -78px)`,
-  color:"white"
-
-}
-const backIcon={
-  position:"absolute",
+  color: "white",
+//  background:"black"
+};
+const backIcon = {
+  transform:' rotate(90deg)',
+  position: "absolute",
   top: `calc(50% - -78px)`,
-  justifyContent:"end",
-  color:"white"
-}
-
+  justifyContent: "end",
+  color: "white",
+};
 
 const array = [1, 1, 1, 1, 1];
 
 const Dashbord = () => {
-  const[showAvailq, setAvailQ]=useState(true);
+  const [showAvailq, setAvailQ] = useState(true);
   return (
     <div style={app}>
       <Header />
-      {showAvailq?
-      <>
-        <Container sx={createContext}>
-        <Typography sx={text}>Contest Created</Typography>
-      </Container>
-      <Container sx={containerStyle}>
-  
-        <ArrowForwardIosIcon sx={forwardIcon} fontSize="large" onClick={()=>setAvailQ(false)}></ArrowForwardIosIcon>
-       
-     
-        <Grid container ml={4} mt={2}>
-        
-          {array.map((val) => {
-            return (
-              <Grid item md={3} mt={5}>
-                <Card sx={card}>
+      {showAvailq ? (
+        <>
+          <Container sx={createContext}>
+            <Typography sx={text}>Contest Created</Typography>
+          </Container>
+          <Container sx={containerStyle}>
+            <ExpandCircleDownRoundedIcon
+              sx={forwardIcon}
+              fontSize="large"
+              onClick={() => setAvailQ(false)}
+            ></ExpandCircleDownRoundedIcon>
+
+            <Grid container ml={4} mt={2}>
+              {array.map((val) => {
+                return (
+                  <Grid item md={3} mt={5}>
+                    <Card sx={card}>
+                      <CardActionArea>
+                        <CardMedia
+                          style={cardImg}
+                          component="img"
+                          height="140"
+                          image={contestImg}
+                          alt="green iguana"
+                        />
+                        <IconButton
+                          color="primary"
+                          aria-label="add"
+                          sx={delBtn}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                        <CardContent sx={cardBody}>
+                          <h4>Freshers</h4>
+                          <p>00 months to 06 months</p>
+                          <p>Last Changes 02/09/2012</p>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                );
+              })}
+              <Grid>
+                <Card sx={createContest}>
                   <CardActionArea>
-                    <CardMedia
-                      style={cardImg}
-                      component="img"
-                      height="140"
-                      image={contestImg}
-                      alt="green iguana"
-                    />
-                    <IconButton color="primary" aria-label="add" sx={delBtn}>
-                      <CancelIcon />
-                    </IconButton>
+                    <CardMedia sx={{ paddingBottom: "16px" }}>
+                      <Fab color="primary" aria-label="add" sx={addButton}>
+                        <AddIcon fontSize="large" />
+                      </Fab>
+                    </CardMedia>
                     <CardContent sx={cardBody}>
-                      <h4>Freshers</h4>
-                      <p>00 months to 06 months</p>
+                      <h4>create contest</h4>
+                      <p>add Description</p>
                       <p>Last Changes 02/09/2012</p>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
-            );
-          })}
-          <Grid>
-            <Card sx={createContest}>
-              <CardActionArea>
-                <CardMedia sx={{ paddingBottom: "16px" }}>
-                  <Fab color="primary" aria-label="add" sx={addButton}>
-                    <AddIcon fontSize="large" />
-                  </Fab>
-                </CardMedia>
-                <CardContent sx={cardBody}>
-                  <h4>create contest</h4>
-                  <p>add Description</p>
-                  <p>Last Changes 02/09/2012</p>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-     
-
-      </>:
-      <>
-        <Container sx={createContext}>
-        <Typography sx={text}>available Quest</Typography>
-      </Container>
-      <Container sx={containerStyle}>
-        <Grid container ml={4} mt={2}>
-       <Grid container sx={{justifyContent:"end"}}>
-
-        <ArrowBackIosIcon fontSize="large" sx={backIcon} onClick={()=>setAvailQ(true)}></ArrowBackIosIcon>
-       </Grid>
-          {array.map((val) => {
-            return (
-              <Grid item md={3} mt={5}>
-                <Card sx={card}>
+            </Grid>
+          </Container>
+        </>
+      ) : (
+        <>
+          <Container sx={createContext}>
+            <Typography sx={text}>available Quest</Typography>
+          </Container>
+          <Container sx={containerStyle}>
+            <Grid container ml={4} mt={2}>
+              <Grid container sx={{ justifyContent: "end" }}>
+                <ExpandCircleDownRoundedIcon
+                  fontSize="large"
+                  sx={backIcon}
+                  onClick={() => setAvailQ(true)}
+                ></ExpandCircleDownRoundedIcon>
+              </Grid>
+              {array.map((val) => {
+                return (
+                  <Grid item md={3} mt={5}>
+                    <Card sx={card}>
+                      <CardActionArea>
+                        <CardMedia
+                          style={cardImg}
+                          component="img"
+                          height="140"
+                          image="https://cdna.artstation.com/p/assets/images/images/010/256/440/large/marat-sagadinov-raptile.jpg?1523445766&dl=1"
+                          alt="green iguana"
+                        />
+                        <IconButton
+                          color="primary"
+                          aria-label="add"
+                          sx={delBtn}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                        <CardContent sx={cardBody}>
+                          <h4>Freshers</h4>
+                          <p>00 months to 06 months</p>
+                          <p>Last Changes 02/09/2012</p>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                );
+              })}
+              <Grid>
+                <Card sx={createContest}>
                   <CardActionArea>
-                    <CardMedia
-                      style={cardImg}
-                      component="img"
-                      height="140"
-                      image='https://cdna.artstation.com/p/assets/images/images/010/256/440/large/marat-sagadinov-raptile.jpg?1523445766&dl=1'
-                      alt="green iguana"
-                    />
-                    <IconButton color="primary" aria-label="add" sx={delBtn}>
-                      <CancelIcon />
-                    </IconButton>
+                    <CardMedia sx={{ paddingBottom: "16px" }}>
+                      <Fab color="primary" aria-label="add" sx={addButton}>
+                        <AddIcon fontSize="large" />
+                      </Fab>
+                    </CardMedia>
                     <CardContent sx={cardBody}>
-                      <h4>Freshers</h4>
-                      <p>00 months to 06 months</p>
+                      <h4>create contest</h4>
+                      <p>add Description</p>
                       <p>Last Changes 02/09/2012</p>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
-            );
-          })}
-          <Grid>
-            <Card sx={createContest}>
-              <CardActionArea>
-                <CardMedia sx={{ paddingBottom: "16px" }}>
-                  <Fab color="primary" aria-label="add" sx={addButton}>
-                    <AddIcon fontSize="large" />
-                  </Fab>
-                </CardMedia>
-                <CardContent sx={cardBody}>
-                  <h4>create contest</h4>
-                  <p>add Description</p>
-                  <p>Last Changes 02/09/2012</p>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      
-      </>
-      }
-     
+            </Grid>
+          </Container>
+        </>
+      )}
     </div>
   );
 };
