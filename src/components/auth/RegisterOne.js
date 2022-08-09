@@ -115,7 +115,7 @@ const second = {
 
 const lining = {
   color: "#747475",
-  marginTop: "-7px",
+  marginTop: "-8px",
 };
 
 const Head = {

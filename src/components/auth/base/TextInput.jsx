@@ -11,7 +11,9 @@ const FormLables = {
 const InputField = {
   width: 320,
   marginBottom: "24px",
-  borderRadius: "6px",
+  borderRadius: "7px",
+  opacity: 0.6,
+  borderColor: '#0057FF',
   ".css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
     height: "10px",
     padding: "15px",
