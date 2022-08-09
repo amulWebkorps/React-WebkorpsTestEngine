@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -28,10 +28,10 @@ const MenuProps = {
 };
 const names = ["Level 1", "Level 2", "Level 3"];
 
-function getStyles(name, personName, theme) {
+function getStyles(name,  level, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+       level.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -41,10 +41,17 @@ const modalBody = {
   background: "#F9FAFC",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   borderRadius: "18px",
-  height:"510px"
+  height: "510px",
 };
 const title = {
   marginTop: "15px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "700",
+  fontSize: "30px",
+  lineHeight: "35px",
+
+  color: " #000000",
 };
 const delBtn = {
   position: "absolute",
@@ -57,7 +64,7 @@ const delBtn = {
   borderRadius: "50%",
 };
 const label = {
-  marginBottom:"8px",
+  marginBottom: "8px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "400",
@@ -67,7 +74,7 @@ const label = {
 };
 const nameInput = {
   marginTop: "5px",
-  marginBottom:"15px",
+  marginBottom: "15px",
   width: "521px !important",
   height: "38px !important",
   background: "#FFFFFF ",
@@ -96,45 +103,55 @@ const level = {
   borderRadius: "8px",
 };
 
-const crebtn={
-    background: `#0057FF`,
-    marginLeft:'-7px',
-    borderRadius: '6px',
-    fontFamily: 'Raleway',
-fontStyle: 'normal',
-fontWeight: '500',
-fontSize: '18px',
-lineHeight: '21px',
+const crebtn = {
+  background: `#0057FF`,
+  marginLeft: "-7px",
+  borderRadius: "6px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "500",
+  fontSize: "18px",
+  lineHeight: "21px",
 
-color: '#FFFFFF'
-}
-const notbtn={
-    marginLeft:"25px",
-    background: '#F9FAFC',
-boxShadow: '4px 9px 19px rgba(230, 230, 230, 0.37)',
-// border:"2px",
-borderRadius: '10px',
-fontFamily: 'Raleway',
-fontStyle: 'normal',
-fontWeight: '500',
-fontSize: '18px',
-lineHeight: '21px',
-color: '#0057FF',
-}
-const Modal = ({handleClickOpen,open,setOpen}) => {
+  color: "#FFFFFF",
+};
+const notbtn = {
+  marginLeft: "25px",
+  background: "#F9FAFC",
+  boxShadow: "4px 9px 19px rgba(230, 230, 230, 0.37)",
+  // border:"2px",
+  borderRadius: "10px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "500",
+  fontSize: "18px",
+  lineHeight: "21px",
+  color: "#0057FF",
+};
+const Modal = ({ handleClickOpen, open, setOpen }) => {
+  const [contestDetails, setContestDetails] = useState({
+    name: "",
+    description: "",
+    level: "",
+  });
   const handleClose = () => {
     setOpen(false);
   };
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+  
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e?.target;
+    setContestDetails({
+      ...contestDetails,
+      [name]: value,
+    });
   };
 
+  const createContest = () => {
+    handleClose();
+    console.log("------0", contestDetails);
+  };
   return (
     <div>
       <Dialog
@@ -172,10 +189,16 @@ const Modal = ({handleClickOpen,open,setOpen}) => {
                   }}
                   fullWidth
                   id="fullWidth"
+                  onChange={handleOnChange}
+                  name="name"
+                  value={contestDetails?.name}
                 />
                 <label style={label}>Add Description</label>
                 <TextField
                   id="outlined-multiline-static"
+                  name="description"
+                  onChange={handleOnChange}
+                  value={contestDetails?.description}
                   multiline
                   rows={2}
                   fullWidth
@@ -189,15 +212,15 @@ const Modal = ({handleClickOpen,open,setOpen}) => {
                   <label style={label}>Level</label>
                   <Select
                     displayEmpty
-                    value={personName}
-                    onChange={handleChange}
+                    name="level"
+                    value={contestDetails?.level}
+                    onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
                       if (selected.length === 0) {
                         return <em style={secLevel}>Select Level</em>;
                       }
-
-                      return selected.join(", ");
+                      return selected;
                     }}
                     MenuProps={MenuProps}
                     sx={level}
@@ -208,7 +231,7 @@ const Modal = ({handleClickOpen,open,setOpen}) => {
                       <MenuItem
                         key={name}
                         value={name}
-                        style={getStyles(name, personName, theme)}
+                        style={getStyles(name,  contestDetails?.level, theme)}
                       >
                         {name}
                       </MenuItem>
@@ -219,11 +242,23 @@ const Modal = ({handleClickOpen,open,setOpen}) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-          <Container>
-          <Grid container sx={{ justifyContent: "start" }}>
-            <Button variant="contained" sx={crebtn} >Create</Button>
-            <Button variant="outlined"  sx={notbtn} onClick={()=>handleClose()}>Not now</Button>
-            </Grid>
+            <Container>
+              <Grid container sx={{ justifyContent: "start" }}>
+                <Button
+                  variant="contained"
+                  sx={crebtn}
+                  onClick={() => createContest()}
+                >
+                  Create
+                </Button>
+                <Button
+                  variant="outlined"
+                  sx={notbtn}
+                  onClick={() => handleClose()}
+                >
+                  Not now
+                </Button>
+              </Grid>
             </Container>
           </DialogActions>
         </Container>
