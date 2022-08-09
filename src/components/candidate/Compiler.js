@@ -2,6 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import { Container } from "@mui/system";
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 
 
@@ -185,8 +186,8 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Grid container sx={{ justifyContent: "space-between" }}>
-                <button style={buttonTest}>Prev</button>
-                <button style={buttonTest}>Next</button>
+                <Button variant="contained" sx={buttonTest}>Prev</Button>
+                <Button variant="contained" sx={buttonTest}>Next</Button>
               </Grid>
             </Box>
           </Grid>
@@ -225,8 +226,8 @@ const Compiler = () => {
               </Container>
               <Box sx={editor}></Box>
               <Grid container sx={{ justifyContent: "end" }}>
-                <button style={buttonTest}>Run</button>
-                <button style={buttonTest}>Submit</button>
+                <Button variant="contained" sx={buttonTest}>Run</Button>
+                <Button variant="contained" sx={buttonTest}>Submit</Button>
               </Grid>
             </Box>
             <Grid>
