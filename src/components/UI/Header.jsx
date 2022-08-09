@@ -24,7 +24,7 @@ const logoText = {
 
 const Header = () => {
   return (
-    <div>
+    <div >
       <Grid container>
         <Grid item sx={Headers}>
           <Box ml={2} my={2}>

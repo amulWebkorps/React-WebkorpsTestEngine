@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Header from "../UI/Header";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
@@ -53,28 +51,11 @@ const footerOne = {
   marginLeft: "65px",
 };
 
-const footerTwo = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "105px",
-};
-
-const RegisterButton = {
+const LoginButton = {
   fontSize: 14,
   fontWeight: 600,
   color: "#0057FF",
   textTransform: "none",
-};
-
-const checkboxname = {
-  ".css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
-    marginTop: "-13px",
-  },
-  ".css-ahj2mt-MuiTypography-root": {
-    fontSize: "13px",
-    fontWeight: "100",
-    marginTop: "-10px",
-  },
 };
 
 const copyright = {
@@ -87,29 +68,22 @@ const copyright = {
   transform: `translate(-50%, -50%)`,
   left: "50%",
 };
-const Login = () => {
+const RegisterTwo = () => {
   return (
     <>
       <Header />
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
-            <Heading lable="Login" />
+            <Heading lable="Register" />
             <Stack>
-              <TextInput label="Email Address" name="email" />
-
-              <TextInput label="Password" name="password" />
-              <FormControlLabel
-                control={<Checkbox size="10px" />}
-                label="Remember me"
-                sx={checkboxname}
-              />
-              <MainButton name="Log in" />
+              <TextInput label="Password" />
+              <TextInput label="Confirm Password" />
+              <MainButton name="Continue" />
               <Typography sx={footerOne}>
-                Don't have account?
-                <Button sx={RegisterButton}>Register</Button>
+                Have an account?
+                <Button sx={LoginButton}>Log in</Button>
               </Typography>
-              <Typography sx={footerTwo}>Forgot Password?</Typography>
             </Stack>
           </Box>
         </Box>
@@ -119,4 +93,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RegisterTwo;
