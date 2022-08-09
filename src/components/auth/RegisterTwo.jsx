@@ -7,8 +7,8 @@ import Header from "../UI/Header";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
-import MainButton from "./base/MainButton";
 import { Button } from "@mui/material";
+import RegisterButton from "./base/RegisterButton";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -68,6 +68,50 @@ const copyright = {
   transform: `translate(-50%, -50%)`,
   left: "50%",
 };
+
+const Required = {
+  fontSize: "13px",
+  fontWeight: "bold",
+  marginLeft: "5px",
+  font: "Raleway",
+  marginBottom: "25px",
+  marginTop: "30px",
+};
+
+const pages = {
+  display: "flex",
+  marginTop: "-25px",
+};
+const first = {
+  height: "25px",
+  width: "25px",
+  fontSize: "14px",
+  fontWeight: "bold",
+  borderRadius: "50%",
+  backgroundColor: "#014EE1",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "white",
+};
+
+const second = {
+  height: "25px",
+  width: "25px",
+  fontSize: "14px",
+  fontWeight: "bold",
+  borderRadius: "50%",
+  backgroundColor: "#014EE1",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "white",
+};
+
+const lining = {
+  color: "#747475",
+  marginTop: "-7px",
+};
 const RegisterTwo = () => {
   return (
     <>
@@ -76,10 +120,16 @@ const RegisterTwo = () => {
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Register" />
+            <Box sx={pages}>
+              <Typography sx={first}>1</Typography>
+              <Typography sx={lining}>___</Typography>
+              <Typography sx={second}>2</Typography>
+            </Box>
             <Stack>
+              <Typography sx={Required}>Required Field</Typography>
               <TextInput label="Password" />
               <TextInput label="Confirm Password" />
-              <MainButton name="Continue" />
+              <RegisterButton name="Register" />
               <Typography sx={footerOne}>
                 Have an account?
                 <Button sx={LoginButton}>Log in</Button>

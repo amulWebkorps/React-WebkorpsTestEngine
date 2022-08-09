@@ -3,8 +3,9 @@ import React from "react";
 
 const FormLables = {
   color: "black",
-  fontSize: 13,
+  fontSize: 14,
   marginBottom: "6px",
+  font: 'Raleway',
 };
 
 const InputField = {

@@ -9,7 +9,7 @@ import Header from "../UI/Header";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
-import MainButton from "./base/MainButton";
+import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
 
 const ContainerStyle = {
@@ -104,7 +104,7 @@ const Login = () => {
                 label="Remember me"
                 sx={checkboxname}
               />
-              <MainButton name="Log in" />
+              <LoginButton name="Log in" />
               <Typography sx={footerOne}>
                 Don't have account?
                 <Button sx={RegisterButton}>Register</Button>

@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Header from "../UI/Header";
 import { background } from "../assests/images";
+import { Ellips } from "../assests/images";
 import TextInput from "./base/TextInput";
-import Heading from "./base/Heading";
-import MainButton from "./base/MainButton";
+import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
 
 const ContainerStyle = {
@@ -34,8 +34,8 @@ const MainBox = {
 };
 
 const Boxstyle = {
-  width: "430px",
-  height: "480px",
+  width: "450px",
+  height: "520px",
   backgroundColor: "white",
   display: "flex",
   flexDirection: "column",
@@ -43,6 +43,7 @@ const Boxstyle = {
   alignItems: "center",
   borderRadius: 3,
   position: "absolute",
+  marginTop: "-11px",
 };
 
 const footerOne = {
@@ -51,14 +52,12 @@ const footerOne = {
   marginLeft: "65px",
 };
 
-
 const LoginButton = {
   fontSize: 14,
   fontWeight: 600,
   color: "#0057FF",
   textTransform: "none",
 };
-
 
 const copyright = {
   color: "white",
@@ -71,6 +70,61 @@ const copyright = {
   left: "50%",
 };
 
+const Required = {
+  fontSize: "14px",
+  fontWeight: "bold",
+  marginLeft: "5px",
+  font: "Raleway",
+  marginBottom: "10px",
+  marginTop: "30px",
+};
+
+const pages = {
+  display: "flex",
+};
+const first = {
+  height: "25px",
+  width: "25px",
+  fontSize: "14px",
+  fontWeight: "bold",
+  borderRadius: "50%",
+  backgroundColor: "#014EE1",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "white",
+};
+
+const second = {
+  marginLeft: "10px",
+  fontSize: "14px",
+  fontWeight: "bold",
+  borderRadius: "50%",
+  backgroundColor: "white",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "#747475",
+  position: "relative",
+  ".image": {
+    position: "absolute",
+    height: "25px",
+    width: "25px",
+  },
+};
+
+const lining = {
+  color: "#747475",
+  marginTop: "-7px",
+};
+
+const Head = {
+  fontSize: "32px",
+  marginTop: "15px",
+  marginBottom: "5px",
+  fontWeight: 600,
+};
+
 const RegisterOne = () => {
   return (
     <>
@@ -78,14 +132,22 @@ const RegisterOne = () => {
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
-            <Heading lable="Register" />
+            <Typography sx={Head}>Register</Typography>
+            <Box sx={pages}>
+              <Typography sx={first}>1</Typography>
+              <Typography sx={lining}>___</Typography>
+              <Typography sx={second}>
+                <img src={Ellips} className="image" />2
+              </Typography>
+            </Box>
             <Stack>
+              <Typography sx={Required}>Required Field</Typography>
               <TextInput label="Full Name" />
               <TextInput label="Email Address" />
               <TextInput label="Phone Number" />
-              <MainButton name="Continue" />
+              <ContinueButton name="Continue" />
               <Typography sx={footerOne}>
-             Have an account?
+                Have an account?
                 <Button sx={LoginButton}>Log in</Button>
               </Typography>
             </Stack>
