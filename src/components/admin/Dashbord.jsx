@@ -64,7 +64,14 @@ const cardImg = {
   padding: "10px",
 };
 
-const cardBody = {
+const cardBody = { height: "100vh",
+background: `linear-gradient(
+    180deg,
+    rgba(24, 135, 201, 0) 0%,
+    rgba(24, 135, 201, 0.224167) 40.42%,
+    rgba(24, 135, 201, 0.4) 100%
+  )`,
+overflow: "auto",
   backgroundColor: "#F8F7F7",
 };
 
