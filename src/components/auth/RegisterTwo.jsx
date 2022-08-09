@@ -76,6 +76,9 @@ const Required = {
   font: "Raleway",
   marginBottom: "25px",
   marginTop: "30px",
+  ".star": {
+    color: "#0057FF",
+  },
 };
 
 const pages = {
@@ -126,9 +129,11 @@ const RegisterTwo = () => {
               <Typography sx={second}>2</Typography>
             </Box>
             <Stack>
-              <Typography sx={Required}>Required Field</Typography>
-              <TextInput label="Password" />
-              <TextInput label="Confirm Password" />
+              <Typography sx={Required}>
+                <span className="star">*</span>Required Field
+              </Typography>
+              <TextInput label="Password" star={"*"} />
+              <TextInput label="Confirm Password" star={"*"} />
               <RegisterButton name="Register" />
               <Typography sx={footerOne}>
                 Have an account?

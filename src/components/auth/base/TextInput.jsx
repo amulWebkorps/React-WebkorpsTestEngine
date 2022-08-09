@@ -6,6 +6,9 @@ const FormLables = {
   fontSize: 14,
   marginBottom: "6px",
   font: 'Raleway',
+  ".star": {
+    color: "#0057FF",
+  }
 };
 
 const InputField = {
@@ -21,10 +24,11 @@ const InputField = {
   },
 };
 
-const TextInput = ({ onChange, label, value, name }) => {
+const TextInput = ({ onChange, label, value, name , star}) => {
+
   return (
     <>
-      <FormLabel sx={FormLables}>{label}</FormLabel>
+      <FormLabel sx={FormLables}>{label}<span className="star">{star}</span></FormLabel>
       <TextField
         onChange={onChange}
         value={value}

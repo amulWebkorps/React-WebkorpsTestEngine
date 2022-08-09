@@ -77,6 +77,9 @@ const Required = {
   font: "Raleway",
   marginBottom: "10px",
   marginTop: "30px",
+  ".star": {
+    color: "#0057FF",
+  },
 };
 
 const pages = {
@@ -125,6 +128,7 @@ const Head = {
   fontWeight: 600,
 };
 
+
 const RegisterOne = () => {
   return (
     <>
@@ -141,10 +145,12 @@ const RegisterOne = () => {
               </Typography>
             </Box>
             <Stack>
-              <Typography sx={Required}>Required Field</Typography>
-              <TextInput label="Full Name" />
-              <TextInput label="Email Address" />
-              <TextInput label="Phone Number" />
+              <Typography sx={Required}>
+                <span className="star">*</span>Required Field
+              </Typography>
+              <TextInput label="Full Name" star={'*'}/>
+              <TextInput label="Email Address" star={'*'}/>
+              <TextInput label="Phone Number" star={'*'}/>
               <ContinueButton name="Continue" />
               <Typography sx={footerOne}>
                 Have an account?

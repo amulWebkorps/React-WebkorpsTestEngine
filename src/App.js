@@ -1,5 +1,6 @@
 
 import "./App.css";
+import AnswerSheet from "./components/admin/AnswerSheet";
 // import Dashbord from "./components/admin/Dashbord";
 import Login from "./components/auth/Login";
 import RegisterOne from "./components/auth/RegisterOne";
@@ -9,9 +10,10 @@ function App() {
   return (
     <>
      {/* <Dashbord/> */}
-     <Login/>
+     {/* <Login/>
      <RegisterOne/>
-     <RegisterTwo/>
+     <RegisterTwo/> */}
+     <AnswerSheet/>
     </>
   );
 }
