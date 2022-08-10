@@ -109,9 +109,9 @@ const addButton = {
   backgroundColor: "#2196F3",
 };
 
-const delBtn = {
+const delBtn1 = {
   position: "absolute",
-  top: "-2%",
+  top: "-0.5%",
   right: "-2%",
   color: "black",
 };
@@ -194,7 +194,7 @@ const Dashbord = () => {
                         <IconButton
                           color="primary"
                           aria-label="add"
-                          sx={delBtn}
+                          sx={delBtn1}
                         >
                           <CancelIcon
                             onClick={() => alert("contest deleted succesfully")}

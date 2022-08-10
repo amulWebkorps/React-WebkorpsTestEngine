@@ -52,12 +52,22 @@ function renderRow(props) {
                 <FormControl
                   sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
                 >
-                  <OutlinedInput placeholder="Input" sx={{ height: "30px" }} />
+                  <OutlinedInput
+                    placeholder="Input"
+                    sx={{ height: "30px" }}
+                    multiline
+                    rows={1}
+                    maxRows={10}
+                  />
                 </FormControl>
                 <FormControl
                   sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
                 >
-                  <OutlinedInput placeholder="Output" sx={{ height: "30px" }} />
+                  <OutlinedInput placeholder="Output" sx={{ height: "30px" }} 
+                                        multiline
+                    rows={1}
+                    maxRows={10}
+                  />
                 </FormControl>
                 <div>
                   <IconButton aria-label="add" sx={delBtn}>
@@ -193,9 +203,252 @@ const QuestionList = () => {
   return (
     <div style={questionList}>
       <Header />
-     
-  
-      
+      <Container sx={topButton}>
+        <Paper sx={tpBtn}>
+          <Grid container>
+            <Grid item>
+              <Button sx={qBtn} size="large" variant="contained">
+                Questions
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button sx={pBtn} size="large" variant="text">
+                Participator
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Container>
+      <Container sx={mainContainer}>
+        <Grid>
+          <Card sx={cardBody}>
+            <CardContent>
+              <Grid container direction="row" spacing={0}>
+                <Grid item xs={0.3}>
+                  <div className={classes.container} style={sideColumn}></div>
+                </Grid>
+                <Grid item xs={7} sx={addQues}>
+                  <div className={classes.container}>
+                    <Grid
+                      xs={11}
+                      sx={{
+                        marginLeft: 3,
+                        marginTop: 5,
+                      }}
+                    >
+                      <Typography sx={label} display="inline">
+                        Write Problem statement
+                      </Typography>
+                      {/* <label style={label}>Write Problem statement</label> */}
+                      <TextField
+                        multiline
+                        rows={3}
+                        maxRows={10}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="start">
+                              <BorderColorIcon sx={{ color: "#0057FF" }} />
+                            </InputAdornment>
+                          ),
+                        }}
+                        onChange={handleOnchange}
+                        fullWidth
+                        id="fullWidth"
+                        placeholder="Write Problem statement here"
+                        mt={5}
+                        sx={input}
+                        x
+                      />
+                      <br />
+                      <br />
+                      <Typography sx={label} display="inline">
+                        Constraints
+                      </Typography>
+                      {/* <label style={label}>Constraints</label> */}
+                      <TextField
+                        multiline
+                        rows={3}
+                        maxRows={10}
+                        sx={input}
+                        fullWidth
+                        id="fullWidth"
+                        placeholder="Write Constraints here"
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="start">
+                              <BorderColorIcon sx={{ color: "#0057FF" }} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <br />
+                      <br />
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent={"space-between"}
+                      >
+                        <Grid item xs={5}>
+                          <Typography sx={label} display="inline">
+                            Sample Input
+                          </Typography>
+                          <TextField
+                            id="fullWidth"
+                            placeholder="Input here"
+                            multiline
+                            rows={3}
+                            maxRows={10}
+                            sx={input}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="start">
+                                  <BorderColorIcon sx={{ color: "#0057FF" }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <Typography sx={label} display="inline">
+                            Sample Output
+                          </Typography>
+                          <TextField
+                            multiline
+                            rows={3}
+                            maxRows={10}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="start">
+                                  <BorderColorIcon sx={{ color: "#0057FF" }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                            id="fullWidth"
+                            placeholder="Output here"
+                            sx={input}
+                          />
+                        </Grid>
+                      </Grid>
+                      <hr style={{ marginTop: "20px" }} />
+
+                      <Stack
+                        spacing={2}
+                        direction="row"
+                        justifyContent={"flex-end"}
+                        mt={2}
+                      >
+                        <Button variant="contained" sx={btn}>
+                          Add Question
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          startIcon={<NoteAddIcon />}
+                        >
+                          Upload File
+                          <input hidden accept="image/*" multiple type="file" />
+                        </Button>
+                      </Stack>
+                    </Grid>
+                  </div>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  direction="column"
+                  xs
+                  spacing={0}
+                  sx={testCol}
+                >
+                  <Grid item xs>
+                    <div className={classes.container}>
+                      <Container>
+                        <Grid
+                          mt={5}
+                          container
+                          direction="row"
+                          justifyContent={"space-between"}
+                        >
+                          <Grid item xs={5}>
+                            <Typography sx={label} display="flex">
+                              Input
+                            </Typography>
+                            <TextField
+                              sx={input}
+                              id="fullWidth"
+                              placeholder="Input here"
+                            />
+                          </Grid>
+                          <Grid item xs={5}>
+                            <Typography sx={label} display="flex">
+                              Output
+                            </Typography>
+                            <TextField
+                              sx={input}
+                              id="fullWidth"
+                              placeholder="Output here"
+                            />
+                          </Grid>
+                        </Grid>
+                      </Container>
+                    </div>
+                  </Grid>
+                  <Grid item xs mt={-10}>
+                    <div
+                      className={clsx(classes.container, classes.containerTall)}
+                    >
+                      <Container>
+                        <Typography sx={label} display="flex">
+                          Test case List
+                        </Typography>
+                        <Grid
+                          sx={{
+                            width: "100%",
+                            height: 180,
+                            bgcolor: "white",
+                          }}
+                        >
+                          <FixedSizeList
+                            height={180}
+                            itemSize={80}
+                            itemCount={4}
+                            overscanCount={5}
+                          >
+                            {renderRow}
+                          </FixedSizeList>
+                        </Grid>
+                        <Stack
+                          spacing={2}
+                          direction="row"
+                          justifyContent={"flex-end"}
+                          mt={2}
+                        >
+                          <Button variant="contained" sx={btn}>
+                            Add
+                          </Button>
+                          <Button variant="contained" sx={btn}>
+                            Close
+                          </Button>
+                        </Stack>
+                      </Container>
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardActions></CardActions>
+          </Card>
+        </Grid>
+        {/* <Stack spacing={2} direction="row" justifyContent={"flex-end"} mt={2}>
+          <Button variant="contained" sx={btn}>
+            Save Contest
+          </Button>
+          <Button variant="contained" sx={btn}>
+            Delete
+          </Button>
+        </Stack> */}
+        <AddedQues />
+      </Container>
     </div>
   );
 };
