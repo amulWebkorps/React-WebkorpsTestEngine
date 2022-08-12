@@ -3,12 +3,15 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Header from "../UI/Header";
+// import Header from "../UI/Header";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
 import { Button } from "@mui/material";
 import RegisterButton from "./base/RegisterButton";
+import Grid from "@mui/material/Grid";
+import { logo } from "../assests/images";
+import { NavLink } from "react-router-dom";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -49,6 +52,10 @@ const footerOne = {
   color: "#616166",
   fontSize: 14,
   marginLeft: "65px",
+  "a:-webkit-any-link": {
+    cursor: "pointer",
+    textDecoration: "none",
+  },
 };
 
 const LoginButton = {
@@ -115,10 +122,38 @@ const lining = {
   color: "#747475",
   marginTop: "-7px",
 };
+
+const Headers = {
+  height: "14vh",
+  background: "#121419",
+  width: "100%",
+  display: "flex",
+  flexDirection: "Row",
+};
+
+const logoText = {
+  height: " 56px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "600",
+  fontSize: "45px",
+  lineHeight: "52.35px",
+  color: "#1887C9",
+};
+
 const RegisterTwo = () => {
   return (
     <>
-      <Header />
+      <Grid container>
+        <Grid item sx={Headers}>
+          <Box ml={2} my={2}>
+            <img src={logo} alt="logo" />
+          </Box>
+          <Box sx={logoText} my={3}>
+            WEBKORPS
+          </Box>
+        </Grid>
+      </Grid>
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
@@ -134,10 +169,14 @@ const RegisterTwo = () => {
               </Typography>
               <TextInput label="Password" star={"*"} />
               <TextInput label="Confirm Password" star={"*"} />
-              <RegisterButton name="Register" />
+              <NavLink to="/dashboard">
+                <RegisterButton name="Register" />
+              </NavLink>
               <Typography sx={footerOne}>
                 Have an account?
-                <Button sx={LoginButton}>Log in</Button>
+                <NavLink to="/">
+                  <Button sx={LoginButton}>Log in</Button>
+                </NavLink>
               </Typography>
             </Stack>
           </Box>

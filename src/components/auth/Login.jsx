@@ -5,13 +5,15 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Header from "../UI/Header";
+//import Header from "../UI/Header";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
 import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
-
+import Grid from "@mui/material/Grid";
+import { logo } from "../assests/images";
+import { NavLink, Link } from "react-router-dom";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -51,6 +53,10 @@ const footerOne = {
   color: "#616166",
   fontSize: 14,
   marginLeft: "65px",
+  "a:-webkit-any-link": {
+    cursor: "pointer",
+    textDecoration: "none",
+  },
 };
 
 const footerTwo = {
@@ -87,10 +93,42 @@ const copyright = {
   transform: `translate(-50%, -50%)`,
   left: "50%",
 };
+
+const Headers = {
+  height: "14vh",
+  background: "#121419",
+  width: "100%",
+  display: "flex",
+  flexDirection: "Row",
+};
+
+const logoText = {
+  height: " 56px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "600",
+  fontSize: "45px",
+  lineHeight: "52.35px",
+  color: "#1887C9",
+};
+
+const loginbutt = {
+    
+}
+
 const Login = () => {
   return (
     <>
-      <Header />
+      <Grid container>
+        <Grid item sx={Headers}>
+          <Box ml={2} my={2}>
+            <img src={logo} alt="logo" />
+          </Box>
+          <Box sx={logoText} my={3}>
+            WEBKORPS
+          </Box>
+        </Grid>
+      </Grid>
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
@@ -104,10 +142,14 @@ const Login = () => {
                 label="Remember me"
                 sx={checkboxname}
               />
-              <LoginButton name="Log in" />
+              <NavLink to="/dashboard" sx={loginbutt}>
+                <LoginButton name="Log in" />
+              </NavLink>
               <Typography sx={footerOne}>
                 Don't have account?
-                <Button sx={RegisterButton}>Register</Button>
+                <NavLink to="/register">
+                  <Button sx={RegisterButton}>Register</Button>
+                </NavLink>
               </Typography>
               <Typography sx={footerTwo}>Forgot Password?</Typography>
             </Stack>

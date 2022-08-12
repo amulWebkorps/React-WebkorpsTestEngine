@@ -6,8 +6,6 @@ import { logo } from "../assests/images";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import Fab from "@mui/material/Fab";
-import ClearIcon from "@mui/icons-material/Clear";
 
 const BigContainer = {
   background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
@@ -166,8 +164,8 @@ const deleteIcon = {
   justifyContent: "center",
   alignItems: "center",
   textAlign: "center",
-  marginLeft : '20px',
-  fontSize: '18px',
+  marginLeft: "20px",
+  fontSize: "18px",
 };
 const array = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12];
 const AnswerSheet = () => {
@@ -207,9 +205,7 @@ const AnswerSheet = () => {
                   </Box>
                   <Box sx={innerdata}>
                     <Typography sx={ViewDetail}>View Details</Typography>
-                    <Typography sx={deleteIcon}>
-                    x
-                    </Typography>
+                    <Typography sx={deleteIcon}>x</Typography>
                   </Box>
                 </Grid>
               );
