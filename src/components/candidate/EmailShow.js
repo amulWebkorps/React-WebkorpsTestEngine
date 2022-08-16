@@ -32,21 +32,6 @@ const whiteContainer = {
   
 };
 
-// const buttonTest = {
-//   width: "120px",
-//   height: "40px",
-//   background: "#0057ff",
-//   borderRadius: "8px",
-//   color: "white",
-//   fontweight: "bold",
-//   margin: "10px",
-//   border: "1px solid #0057ff",
-//   fontFamily: "Raleway",
-//   fontStyle: "normal",
-//   fontWeight: "700",
-//   fontSize: "16px",
-//   lineHeight: "19px",
-// };
 
 const divSelect = {
   width: "1000h",
@@ -72,11 +57,11 @@ const divText = {
 };
 
 const scrollDiv = {
-  overflowY: "scroll",
+  overflowY: "auto",
 };
 
 const emailContainer = {
-  overflowY: "scroll",
+  overflowY: "auto",
   height: "550px",
 };
 
@@ -95,7 +80,7 @@ const buttonEmail={
     <>
       <Modal2 open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} />
       <div style={background1}>
-        <Container maxWidth="lg" sx={whiteContainer}>
+        <Container fixed sx={whiteContainer}>
           <Grid container sx={{ justifyContent: "space-between" }}>
             <Grid item>
             <Button variant="contained" sx={buttonEmail} onClick={handleClickOpen}>Sent Email</Button>

@@ -6,6 +6,9 @@ import EmailShow from "./components/candidate/EmailShow";
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import All from "./components/admin/All";
+import Level1 from "./components/admin/Level1";
+import Level2 from "./components/admin/Level2";
+
 
 
 const theme = createTheme({
@@ -23,9 +26,11 @@ function App() {
       <div className="App">
         <Header />
         {/* <Dashbord/> */}
-        {/* <Compiler/>
-        <EmailShow /> */}
+        <Compiler/>
+        <EmailShow />
         <All />
+        <Level1/>
+        <Level2/>
       </div>
     </ThemeProvider>
   );

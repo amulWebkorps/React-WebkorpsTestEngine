@@ -4,6 +4,12 @@ import { Container } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
+import { render } from "react-dom";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/ext-language_tools";
 
 
 const div1 = {
@@ -91,7 +97,7 @@ const inputField = {
   marginTop: "10px",
   height: "14vh",
   background: "#FFFFFF",
-  overflowY: "scroll",
+  overflowY: "auto",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom:"10px"
 };
@@ -127,6 +133,11 @@ const buttonTest = {
   fontSize: "16px",
   lineHeight: "19px",
 };
+
+
+function onChange(newValue) {
+  console.log("change", newValue);
+}
 
 const Compiler = () => {
   return (
@@ -194,13 +205,13 @@ const Compiler = () => {
           <Grid item sm={6}>
             <Box mx={3}>
               <Grid container>
-                <Grid item sm={6}>
-                  <label>Name:-</label>
-                  <box>   Raj kushwah</box>
+                <Grid item sm={6} sx={{display: 'inline-flex'}}>
+                <label style={inputLabel}>Name  :-</label>
+                 <Box style={inputLabel}>Ramesh manhotra </Box>
                 </Grid>
-                <Grid item sm={6}>
-                  <label>Email:-</label>
-                  <box> 1233@gmail.com</box>
+                <Grid item sm={6} sx={{display: 'inline-flex'}}>
+                <label style={inputLabel}>Email  :-</label>
+                 <Box style={inputLabel}>Ramesh@gmail.com</Box>
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
@@ -231,13 +242,18 @@ const Compiler = () => {
               </Grid>
             </Box>
             <Grid>
+            <AceEditor
+    mode="java"
+    theme="github"
+    onChange={onChange}
+    name="UNIQUE_ID_OF_DIV"
+    editorProps={{ $blockScrolling: true }}
+  />
               <Grid containner sx={testCase} m={3}>
                 <Grid item sm={12} sx={testCaseResult}>
                     <Typography  m={3} mt={2}sx={testCaseText1}>
                         Test Case
                     </Typography>
-                   
-
                 </Grid>
                 <Grid>
                 <Typography  m={3} mt={2}sx={testCaseText2}>

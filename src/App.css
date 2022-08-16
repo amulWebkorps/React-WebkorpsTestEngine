@@ -11,7 +11,7 @@
   width: 100px !important;
   height: 40px !important;
 }
-
+/* 
 .CodeCompilerText1 {
   font-Size: 30px !important;
   font-weight: 600 !important;
@@ -25,14 +25,14 @@
     font-weight: 400; 
     text-align: left ;
   }; 
-}
+} */
 
-*{
+/* *{
   -ms-overflow-style: none;
 }
 ::-webkit-scrollbar {
   display: none;
-}
+} */
 
  .background1{
   height: "100%" !important;
