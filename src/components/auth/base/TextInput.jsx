@@ -24,7 +24,7 @@ const InputField = {
   },
 };
 
-const TextInput = ({ onChange, label, value, name , star}) => {
+const TextInput = ({ onChange, label, value, name , star, type}) => {
 
   return (
     <>
@@ -34,6 +34,7 @@ const TextInput = ({ onChange, label, value, name , star}) => {
         value={value}
         name={name}
         sx={InputField}
+        type={type}
       />
     </>
   );

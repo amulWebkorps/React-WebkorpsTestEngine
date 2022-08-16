@@ -202,7 +202,7 @@ const Dashbord = () => {
                             onClick={() => alert("contest deleted succesfully")}
                           />
                         </IconButton>
-                        <CardContent sx={cardBody} >
+                        <CardContent sx={cardBody}>
                           <h4 style={contestText}>Fresherss</h4>
                           <p style={months}>00 months to 06 months</p>
                           <p style={contestDate}>Last Changes {date}</p>
@@ -269,7 +269,6 @@ const Dashbord = () => {
                           image={contestImg}
                           alt="green iguana"
                         />
-                  
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
