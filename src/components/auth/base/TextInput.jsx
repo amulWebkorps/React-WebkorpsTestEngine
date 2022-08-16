@@ -34,6 +34,7 @@ const TextInput = ({ onChange, label, value, name , star}) => {
         value={value}
         name={name}
         sx={InputField}
+        autoComplete="off"
       />
     </>
   );
