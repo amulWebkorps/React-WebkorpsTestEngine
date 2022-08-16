@@ -3,14 +3,12 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Header from "../UI/Header";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
-import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
+import RegisterButton from "./base/RegisterButton";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -53,28 +51,11 @@ const footerOne = {
   marginLeft: "65px",
 };
 
-const footerTwo = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "105px",
-};
-
-const RegisterButton = {
+const LoginButton = {
   fontSize: 14,
   fontWeight: 600,
   color: "#0057FF",
   textTransform: "none",
-};
-
-const checkboxname = {
-  ".css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
-    marginTop: "-13px",
-  },
-  ".css-ahj2mt-MuiTypography-root": {
-    fontSize: "13px",
-    fontWeight: "100",
-    marginTop: "-10px",
-  },
 };
 
 const copyright = {
@@ -87,29 +68,77 @@ const copyright = {
   transform: `translate(-50%, -50%)`,
   left: "50%",
 };
-const Login = () => {
+
+const Required = {
+  fontSize: "13px",
+  fontWeight: "bold",
+  marginLeft: "5px",
+  font: "Raleway",
+  marginBottom: "25px",
+  marginTop: "30px",
+  ".star": {
+    color: "#0057FF",
+  },
+};
+
+const pages = {
+  display: "flex",
+  marginTop: "-25px",
+};
+const first = {
+  height: "25px",
+  width: "25px",
+  fontSize: "14px",
+  fontWeight: "bold",
+  borderRadius: "50%",
+  backgroundColor: "#014EE1",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "white",
+};
+
+const second = {
+  height: "25px",
+  width: "25px",
+  fontSize: "14px",
+  fontWeight: "bold",
+  borderRadius: "50%",
+  backgroundColor: "#014EE1",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "white",
+};
+
+const lining = {
+  color: "#747475",
+  marginTop: "-7px",
+};
+const RegisterTwo = () => {
   return (
     <>
       <Header />
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
-            <Heading lable="Login" />
+            <Heading lable="Register" />
+            <Box sx={pages}>
+              <Typography sx={first}>1</Typography>
+              <Typography sx={lining}>___</Typography>
+              <Typography sx={second}>2</Typography>
+            </Box>
             <Stack>
-              <TextInput label="Email Address" name="email" />
-
-              <TextInput label="Password" name="password" />
-              <FormControlLabel
-                control={<Checkbox size="10px" />}
-                label="Remember me"
-                sx={checkboxname}
-              />
-              <LoginButton name="Log in" />
-              <Typography sx={footerOne}>
-                Don't have account?
-                <Button sx={RegisterButton}>Register</Button>
+              <Typography sx={Required}>
+                <span className="star">*</span>Required Field
               </Typography>
-              <Typography sx={footerTwo}>Forgot Password?</Typography>
+              <TextInput label="Password" star={"*"} />
+              <TextInput label="Confirm Password" star={"*"} />
+              <RegisterButton name="Register" />
+              <Typography sx={footerOne}>
+                Have an account?
+                <Button sx={LoginButton}>Log in</Button>
+              </Typography>
             </Stack>
           </Box>
         </Box>
@@ -119,4 +148,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RegisterTwo;
