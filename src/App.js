@@ -31,33 +31,41 @@
 import "./App.css";
 import AnswerSheet from "./components/admin/AnswerSheet";
 import Dashbord from "./components/admin/Dashbord";
-import Login from "./components/auth/Login";
-import RegisterOne from "./components/auth/RegisterOne";
-import RegisterTwo from "./components/auth/RegisterTwo";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import QuestionList from "./components/admin/QuestionList";
+import Header from "./components/UI/Header";
+import Compiler from "./components/candidate/Compiler";
+import EmailShow from "./components/candidate/EmailShow";
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import All from "./components/admin/All";
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#0057ff",
+    },
+  },
+});
+
+
 function App() {
   return (
-    <>
-      {/* <Dashbord/> */}
-      {/* <Login/>
-     <RegisterOne/>
-     <RegisterTwo/>
-      <AnswerSheet /> */}
-{/* <QuestionList/> */}
-
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />}></Route>
-          <Route path="/register" element={<RegisterOne />}></Route>
-          <Route path="/password" element={<RegisterTwo/>}></Route>
-          <Route path="/dashboard" element={<Dashbord/>}></Route>
-          <Route path="/addQuestion" element={<QuestionList/>}></Route>
-          <Route path="/participator" element={<AnswerSheet/>}></Route>
-        </Routes>
-      </BrowserRouter>
-    </>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Header />
+        {/* <Dashbord/> */}
+        {/* <Compiler/>
+        <EmailShow /> */}
+        <All />
+      </div>
+    </ThemeProvider>
   );
 }
 
 export default App;
+
+
+
+
+
+
