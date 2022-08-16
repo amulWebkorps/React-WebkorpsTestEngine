@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Grid, Fab } from "@mui/material";
+import { Container, Grid, Fab, Button, Box } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -10,9 +10,9 @@ import { CardActionArea } from "@mui/material";
 import { contestImg, logo } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ExpandCircleDownRoundedIcon from '@mui/icons-material/ExpandCircleDownRounded';
+import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
+import CardActions from "@mui/material/CardActions";
+import Modal from "../UI/Modal";
 
 const containerStyle = {
   overflowY: "auto",
@@ -35,7 +35,7 @@ const createContext = {
 };
 
 const text = {
-  margin: "-16px",
+  margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "700",
@@ -64,11 +64,35 @@ const cardImg = {
   padding: "10px",
 };
 
-const cardBody = {
+const cardBody = { height: "100vh",
+background: `linear-gradient(
+    180deg,
+    rgba(24, 135, 201, 0) 0%,
+    rgba(24, 135, 201, 0.224167) 40.42%,
+    rgba(24, 135, 201, 0.4) 100%
+  )`,
+overflow: "auto",
   backgroundColor: "#F8F7F7",
 };
 
+const contestText = {
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: 600,
+  fontSize: "18px",
+  lineHeight: "21px",
+  color: "#3D3D3D",
+};
+const contestDate = {
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: 200,
+  fontSize: "10px",
+  lineHeight: "12px",
+};
+
 const createContest = {
+  // margin:"10px",
   marginTop: "40px",
   width: "220px",
   maxHeight: "27vh",
@@ -85,37 +109,65 @@ const addButton = {
   backgroundColor: "#2196F3",
 };
 
-const delBtn = {
+const delBtn1 = {
   position: "absolute",
-  top: "-2%",
+  top: "-0.5%",
   right: "-2%",
   color: "black",
 };
 
 const forwardIcon = {
-  transform:' rotate(-90deg)',
+  transform: " rotate(-90deg)",
   position: "absolute",
   top: `calc(50% - -78px)`,
   color: "white",
-//  background:"black"
+  //  background:"black"
 };
 const backIcon = {
-  transform:' rotate(90deg)',
-  position: "absolute",
-  top: `calc(50% - -78px)`,
+  transform: " rotate(90deg)",
+  position: "relative",
+  top: `calc(50% - -7px)`,
   justifyContent: "end",
   color: "white",
 };
+const months = {
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "400",
+  fontSize: "12px",
+  lineHeight: "14px",
+};
 
-const array = [1, 1, 1, 1, 1];
+const array = [1, 1, 1];
+const levels = ["Level 1", "Level 2", "Level 3", "ALL"];
+const today = new Date();
+const date =
+  (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()) +
+  "/" +
+  (today.getMonth() + 1 < 10
+    ? "0" + (today.getMonth() + 1)
+    : today.getMonth() + 1) +
+  "/" +
+  today.getFullYear();
 
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <div style={app}>
       <Header />
       {showAvailq ? (
         <>
+          <Modal
+            open={open}
+            setOpen={setOpen}
+            handleClickOpen={handleClickOpen}
+          />
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
@@ -127,7 +179,7 @@ const Dashbord = () => {
             ></ExpandCircleDownRoundedIcon>
 
             <Grid container ml={4} mt={2}>
-              {array.map((val) => {
+              {array.map((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
@@ -142,14 +194,16 @@ const Dashbord = () => {
                         <IconButton
                           color="primary"
                           aria-label="add"
-                          sx={delBtn}
+                          sx={delBtn1}
                         >
-                          <CancelIcon />
+                          <CancelIcon
+                            onClick={() => alert("contest deleted succesfully")}
+                          />
                         </IconButton>
                         <CardContent sx={cardBody}>
-                          <h4>Freshers</h4>
-                          <p>00 months to 06 months</p>
-                          <p>Last Changes 02/09/2012</p>
+                          <h4 style={contestText}>Fresherss</h4>
+                          <p style={months}>00 months to 06 months</p>
+                          <p style={contestDate}>Last Changes {date}</p>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -160,14 +214,21 @@ const Dashbord = () => {
                 <Card sx={createContest}>
                   <CardActionArea>
                     <CardMedia sx={{ paddingBottom: "16px" }}>
-                      <Fab color="primary" aria-label="add" sx={addButton}>
+                      <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={addButton}
+                        onClick={() => handleClickOpen()}
+                      >
                         <AddIcon fontSize="large" />
                       </Fab>
                     </CardMedia>
                     <CardContent sx={cardBody}>
-                      <h4>create contest</h4>
-                      <p>add Description</p>
-                      <p>Last Changes 02/09/2012</p>
+                    <br/>
+                      <h4 style={contestText}>create contest</h4>
+                      
+                      <p style= {months}>add Description</p>
+                     
                     </CardContent>
                   </CardActionArea>
                 </Card>
@@ -178,18 +239,12 @@ const Dashbord = () => {
       ) : (
         <>
           <Container sx={createContext}>
-            <Typography sx={text}>available Quest</Typography>
+            <Typography sx={text}>available question</Typography>
           </Container>
+
           <Container sx={containerStyle}>
             <Grid container ml={4} mt={2}>
-              <Grid container sx={{ justifyContent: "end" }}>
-                <ExpandCircleDownRoundedIcon
-                  fontSize="large"
-                  sx={backIcon}
-                  onClick={() => setAvailQ(true)}
-                ></ExpandCircleDownRoundedIcon>
-              </Grid>
-              {array.map((val) => {
+              {levels.map((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
@@ -198,20 +253,22 @@ const Dashbord = () => {
                           style={cardImg}
                           component="img"
                           height="140"
-                          image="https://cdna.artstation.com/p/assets/images/images/010/256/440/large/marat-sagadinov-raptile.jpg?1523445766&dl=1"
+                          image={contestImg}
                           alt="green iguana"
                         />
-                        <IconButton
+                        {/* <IconButton
                           color="primary"
                           aria-label="add"
                           sx={delBtn}
                         >
-                          <CancelIcon />
-                        </IconButton>
+                          <CancelIcon
+                            onClick={() => alert("contest deleted succesfully")}
+                          />
+                        </IconButton> */}
                         <CardContent sx={cardBody}>
-                          <h4>Freshers</h4>
-                          <p>00 months to 06 months</p>
-                          <p>Last Changes 02/09/2012</p>
+                          <h4 style={contestText}>{levels[index]}</h4>
+                          <p style={months}>00 months to 06 months</p>
+                          <p style={contestDate}>Last Changes {date}</p>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -227,13 +284,21 @@ const Dashbord = () => {
                       </Fab>
                     </CardMedia>
                     <CardContent sx={cardBody}>
-                      <h4>create contest</h4>
-                      <p>add Description</p>
-                      <p>Last Changes 02/09/2012</p>
+                      <h4 style={contestText}>
+                        <h4>Upload A New Participatior</h4>
+                      </h4>
+                      <p></p>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
+            </Grid>
+            <Grid>
+              <ExpandCircleDownRoundedIcon
+                sx={backIcon}
+                fontSize="large"
+                onClick={() => setAvailQ(true)}
+              ></ExpandCircleDownRoundedIcon>
             </Grid>
           </Container>
         </>
