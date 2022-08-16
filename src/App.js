@@ -8,8 +8,8 @@ import Modal from "./components/UI/Modal";
 function App() {
   return (
     <div className="App">
-    <QuestionList/>
-     {/* <Dashbord/> */}
+    {/* <QuestionList/> */}
+     <Dashbord/>
      {/* <Modal/> */}
     </div>
   );
