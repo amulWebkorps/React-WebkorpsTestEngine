@@ -112,10 +112,6 @@ const logoText = {
   color: "#1887C9",
 };
 
-const loginbutt = {
-    
-}
-
 const Login = () => {
   return (
     <>
@@ -142,12 +138,13 @@ const Login = () => {
                 label="Remember me"
                 sx={checkboxname}
               />
-              <NavLink to="/dashboard" sx={loginbutt}>
-                <LoginButton name="Log in" />
+
+              <NavLink to="/dashboard" style={{textDecoration: 'none'}}>
+                <LoginButton name="Log in"/>
               </NavLink>
               <Typography sx={footerOne}>
                 Don't have account?
-                <NavLink to="/register">
+                <NavLink to="/register" >
                   <Button sx={RegisterButton}>Register</Button>
                 </NavLink>
               </Typography>
