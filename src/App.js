@@ -35,14 +35,16 @@ import Login from "./components/auth/Login";
 import RegisterOne from "./components/auth/RegisterOne";
 import RegisterTwo from "./components/auth/RegisterTwo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import QuestionList from "./components/admin/QuestionList";
 function App() {
   return (
     <>
-      {/* <Dashbord/>
-      <Login/>
+      {/* <Dashbord/> */}
+      {/* <Login/>
      <RegisterOne/>
      <RegisterTwo/>
       <AnswerSheet /> */}
+{/* <QuestionList/> */}
 
       <BrowserRouter>
         <Routes>
@@ -50,7 +52,8 @@ function App() {
           <Route path="/register" element={<RegisterOne />}></Route>
           <Route path="/password" element={<RegisterTwo/>}></Route>
           <Route path="/dashboard" element={<Dashbord/>}></Route>
-          <Route path="/answersheet" element={<AnswerSheet/>}></Route>
+          <Route path="/addQuestion" element={<QuestionList/>}></Route>
+          <Route path="/participator" element={<AnswerSheet/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

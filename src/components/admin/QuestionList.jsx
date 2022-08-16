@@ -26,6 +26,7 @@ import React from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
+import { useNavigate } from "react-router-dom";
 function renderRow(props) {
   const { index, style } = props;
   const testCase = {
@@ -196,6 +197,7 @@ const btn1 = {
   borderRadius: "8px",
 };
 const QuestionList = () => {
+  const navigate=useNavigate();
   const classes = useStyles();
   const handleOnchange = (e) => {
     console.log(e.target.value);
@@ -212,7 +214,7 @@ const QuestionList = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button sx={pBtn} size="large" variant="text">
+              <Button sx={pBtn} size="large" variant="text" onClick={()=>navigate('/participator')}>
                 Participator
               </Button>
             </Grid>
@@ -346,7 +348,7 @@ const QuestionList = () => {
                           startIcon={<NoteAddIcon />}
                         >
                           Upload File
-                          <input hidden accept="image/*" multiple type="file" />
+                          <input hidden accept="file/*" multiple type="file" />
                         </Button>
                       </Stack>
                     </Grid>
@@ -364,7 +366,7 @@ const QuestionList = () => {
                     <div className={classes.container}>
                       <Container>
                         <Grid
-                          mt={5}
+                          mt={7}
                           container
                           direction="row"
                           justifyContent={"space-between"}

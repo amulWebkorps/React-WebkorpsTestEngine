@@ -3,6 +3,7 @@ import {
   Typography,
   Grid,
   CardContent,
+  Button,
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,7 +13,8 @@ import React from "react";
 const heading = {
   height: "89px",
   background: "#F9FAFC",
-
+  display:"flex",
+justifyContent:"space-between",
   overFlow: "auto",
 };
 const headText = {
@@ -76,11 +78,17 @@ const AddedQues = () => {
   return (
     <>
       <Paper sx={heading}>
-        <Typography sx={headText}>
+      <div>
+      <Typography sx={headText}>
           Contest Contain Following
           <br />
           Questions:
+        
         </Typography>
+      </div>
+        
+        <div>  <Button variant="contained">available Question</Button></div>
+      
       </Paper>
       <CardContent sx={card}>
         <Grid container direction="row" flexDirection={"column"}>

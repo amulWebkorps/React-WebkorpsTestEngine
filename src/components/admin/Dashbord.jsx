@@ -13,6 +13,7 @@ import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import CardActions from "@mui/material/CardActions";
 import Modal from "../UI/Modal";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const containerStyle = {
   overflowY: "auto",
@@ -153,10 +154,18 @@ const date =
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
   const [open, setOpen] = useState(false);
+  const navigate=useNavigate()
+  const handleContest=()=>{
+    navigate('/addQuestion')
 
+    console.log('-----')
+  }
   const handleClickOpen = () => {
     setOpen(true);
+
+  
   };
+
 
   return (
     <div style={app}>
@@ -185,6 +194,7 @@ const Dashbord = () => {
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
+                         onClick={()=>handleContest()}
                           style={cardImg}
                           component="img"
                           height="140"
