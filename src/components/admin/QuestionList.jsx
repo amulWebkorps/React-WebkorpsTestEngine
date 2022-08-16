@@ -65,8 +65,10 @@ function renderRow(props) {
                 <FormControl
                   sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
                 >
-                  <OutlinedInput placeholder="Output" sx={{ height: "30px" }} 
-                                        multiline
+                  <OutlinedInput
+                    placeholder="Output"
+                    sx={{ height: "30px" }}
+                    multiline
                     rows={1}
                     maxRows={10}
                   />
@@ -126,6 +128,42 @@ const topButton = {
   display: "flex",
   justifyContent: "center",
 };
+const MainBox = {
+  height: "15vh",
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+};
+const QuestionBox = {
+  cursor:"pointer",
+  width: "250px",
+  height: "55px",
+  background: "#FDFEFF;",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: `18px 0px 0px 18px`,
+  fontWeight: 700,
+  fontSize: "20px",
+};
+
+const AnswerBox = {
+  cursor:"pointer",
+  width: "250px",
+  height: "55px",
+  background: "#0057FF",
+  color: "white",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: `0px 18px 18px 0px`,
+  fontWeight: 700,
+  fontSize: "20px",
+};
 
 const delBtn = {
   position: "absolute",
@@ -136,24 +174,7 @@ const delBtn = {
   color: "black",
   borderRadius: "50%",
 };
-const tpBtn = {
-  marginTop: "20px",
-  width: "660px",
-  borderRadius: "17px",
-};
-const qBtn = {
-  borderRadius: "18px 0px 0px 18px",
-  width: "330px",
-  height: "61px",
-  background: "#0057FF",
-};
-const pBtn = {
-  width: "330px",
-  height: "61px",
-  background: "white",
-  color: "black",
-  borderRadius: "0px 18px 18px 0px",
-};
+
 const mainContainer = {
   marginTop: "20px",
   background: "white",
@@ -198,8 +219,7 @@ const btn1 = {
   borderRadius: "8px",
 };
 const QuestionList = () => {
-  const [showq, setShowQ]=useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const classes = useStyles();
   const handleOnchange = (e) => {
     console.log(e.target.value);
@@ -208,20 +228,15 @@ const QuestionList = () => {
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-        <Paper sx={tpBtn}>
-          <Grid container>
-            <Grid item>
-              <Button sx={qBtn} size="large" variant="contained">
+        
+            <Box sx={MainBox}>
+              <Box sx={QuestionBox} onClick={() => navigate("/addQuestion")}>
                 Questions
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button sx={pBtn} size="large" variant="text" onClick={()=>navigate('/participator')}>
-                Participator
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
+              </Box>
+              <Box sx={AnswerBox} onClick={()=>navigate('/participator')}>Participators</Box>
+            </Box>
+
+         
       </Container>
       <Container sx={mainContainer}>
         <Grid>
@@ -452,8 +467,6 @@ const QuestionList = () => {
           </Button>
         </Stack> */}
         <AddedQues />
-        {showq &&
-        <All/>}
       </Container>
     </div>
   );

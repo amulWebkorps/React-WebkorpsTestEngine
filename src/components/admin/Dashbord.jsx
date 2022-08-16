@@ -235,7 +235,7 @@ const Dashbord = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid ml={-5}>
+            <Grid ml={-5} mt={5}>
               <ExpandCircleDownRoundedIcon
                 sx={forwardIcon}
                 fontSize="large"
@@ -247,7 +247,7 @@ const Dashbord = () => {
       ) : (
         <>
           <Container sx={createContext}>
-            <Typography sx={text}>available question</Typography>
+            <Typography sx={text}>Available Question</Typography>
           </Container>
 
           <Container sx={containerStyle}>
@@ -269,15 +269,7 @@ const Dashbord = () => {
                           image={contestImg}
                           alt="green iguana"
                         />
-                        {/* <IconButton
-                          color="primary"
-                          aria-label="add"
-                          sx={delBtn}
-                        >
-                          <CancelIcon
-                            onClick={() => alert("contest deleted succesfully")}
-                          />
-                        </IconButton> */}
+                  
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
