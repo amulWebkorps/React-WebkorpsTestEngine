@@ -3,12 +3,15 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Header from "../UI/Header";
+//import Header from "../UI/Header";
 import { background } from "../assests/images";
 import { Ellips } from "../assests/images";
 import TextInput from "./base/TextInput";
 import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { logo } from "../assests/images";
+import { NavLink } from "react-router-dom";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -50,6 +53,10 @@ const footerOne = {
   color: "#616166",
   fontSize: 14,
   marginLeft: "65px",
+  "a:-webkit-any-link": {
+    cursor: "pointer",
+    textDecoration: "none",
+  },
 };
 
 const LoginButton = {
@@ -96,6 +103,7 @@ const first = {
   justifyContent: "center",
   alignItems: "center",
   color: "white",
+  cursor: "pointer",
 };
 
 const second = {
@@ -109,6 +117,7 @@ const second = {
   alignItems: "center",
   color: "#747475",
   position: "relative",
+  cursor: "pointer",
   ".image": {
     position: "absolute",
     height: "25px",
@@ -128,11 +137,37 @@ const Head = {
   fontWeight: 600,
 };
 
+const Headers = {
+  height: "14vh",
+  background: "#121419",
+  width: "100%",
+  display: "flex",
+  flexDirection: "Row",
+};
+
+const logoText = {
+  height: " 56px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "600",
+  fontSize: "45px",
+  lineHeight: "52.35px",
+  color: "#1887C9",
+};
 
 const RegisterOne = () => {
   return (
     <>
-      <Header />
+      <Grid container>
+        <Grid item sx={Headers}>
+          <Box ml={2} my={2}>
+            <img src={logo} alt="logo" />
+          </Box>
+          <Box sx={logoText} my={3}>
+            WEBKORPS
+          </Box>
+        </Grid>
+      </Grid>
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
@@ -148,13 +183,19 @@ const RegisterOne = () => {
               <Typography sx={Required}>
                 <span className="star">*</span>Required Field
               </Typography>
-              <TextInput label="Full Name" star={'*'}/>
-              <TextInput label="Email Address" star={'*'}/>
-              <TextInput label="Phone Number" star={'*'}/>
-              <ContinueButton name="Continue" />
+              <TextInput label="Full Name" star={"*"} />
+              <TextInput label="Email Address" star={"*"} />
+              <TextInput label="Phone Number" star={"*"} />
+              <NavLink to="/password">
+                <ContinueButton name="Continue" />
+              </NavLink>
+
               <Typography sx={footerOne}>
                 Have an account?
-                <Button sx={LoginButton}>Log in</Button>
+                <NavLink to="/">
+                  {" "}
+                  <Button sx={LoginButton}>Log in</Button>
+                </NavLink>
               </Typography>
             </Stack>
           </Box>

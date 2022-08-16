@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 const button = {
   width: "160px",
   background: "#0057FF",
+
   height: "45px",
   fontSize: 18,
   fontWeight: 600,
@@ -14,6 +15,7 @@ const button = {
   textTransform: "none",
   borderRadius: "6px",
 };
+
 const MainButton = ({ name }) => {
   return (
     <>

@@ -3,4 +3,6 @@ import contestImg from '../images/cardImage.svg'
 
 import background from '../images/bgrectangle.png'
 import Ellips from '../images/Ellipse.svg';
-export {logo , background , Ellips, contestImg}
+// import contestImg from '../images/cardImage.svg'
+export { background , Ellips}
+export {logo, contestImg}

@@ -6,7 +6,9 @@ import { logo } from "../assests/images";
 const Headers = {
 
   height: "14vh",
-  background: "#121419",
+  //background: "#121419",
+ // height: "12.5vh",
+  background: "#FDFEFF",
   width: "100%",
   display: "flex",
   flexDirection: "Row",
@@ -18,15 +20,14 @@ const logoText = {
   fontStyle: "normal",
   fontWeight: "600",
   fontSize: "45px",
-
-  lineHeight: "52px",
+  // lineHeight: "52px",
+  lineHeight: "52.35px",
   color: "#1887C9",
 };
 
 const Header = () => {
   return (
-    <div >
-
+    <div>
       <Grid container>
         <Grid item sx={Headers}>
           <Box ml={2} my={2}>
