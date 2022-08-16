@@ -4,6 +4,7 @@ import { Container } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
+import Header from "../UI/Header";
 
 
 const div1 = {
@@ -131,6 +132,7 @@ const buttonTest = {
 const Compiler = () => {
   return (
     <>
+    <Header/>
       <div className="background1">
         <Grid container>
           <Grid item sm={6}>

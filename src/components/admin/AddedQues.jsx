@@ -7,8 +7,8 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-
-import React from "react";
+import All from "./All";
+import React,{useState} from "react";
 
 const heading = {
   height: "89px",
@@ -75,6 +75,8 @@ const card = {
   overflowY: "auto",
 };
 const AddedQues = () => {
+  const [showq, setShowQ]=useState(false);
+
   return (
     <>
       <Paper sx={heading}>
@@ -87,7 +89,7 @@ const AddedQues = () => {
         </Typography>
       </div>
         
-        <div>  <Button variant="contained">available Question</Button></div>
+        <div>  <Button variant="contained" onClick={()=>setShowQ(true)}>available Question</Button></div>
       
       </Paper>
       <CardContent sx={card}>
@@ -156,6 +158,8 @@ const AddedQues = () => {
           </Grid>
         </Grid>
       </CardContent>
+      {showq &&
+        <All/>}
     </>
   );
 };

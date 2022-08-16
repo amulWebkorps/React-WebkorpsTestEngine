@@ -65,14 +65,15 @@ const cardImg = {
   padding: "10px",
 };
 
-const cardBody = { height: "100vh",
-background: `linear-gradient(
+const cardBody = {
+  height: "100vh",
+  background: `linear-gradient(
     180deg,
     rgba(24, 135, 201, 0) 0%,
     rgba(24, 135, 201, 0.224167) 40.42%,
     rgba(24, 135, 201, 0.4) 100%
   )`,
-overflow: "auto",
+  overflow: "auto",
   backgroundColor: "#F8F7F7",
 };
 
@@ -154,18 +155,15 @@ const date =
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
   const [open, setOpen] = useState(false);
-  const navigate=useNavigate()
-  const handleContest=()=>{
-    navigate('/addQuestion')
+  const navigate = useNavigate();
+  const handleContest = () => {
+    navigate("/addQuestion");
 
-    console.log('-----')
-  }
+    console.log("-----");
+  };
   const handleClickOpen = () => {
     setOpen(true);
-
-  
   };
-
 
   return (
     <div style={app}>
@@ -181,20 +179,14 @@ const Dashbord = () => {
             <Typography sx={text}>Contest Created</Typography>
           </Container>
           <Container sx={containerStyle}>
-            <ExpandCircleDownRoundedIcon
-              sx={forwardIcon}
-              fontSize="large"
-              onClick={() => setAvailQ(false)}
-            ></ExpandCircleDownRoundedIcon>
-
-            <Grid container ml={4} mt={2}>
+            <Grid container ml={3} mt={2}>
               {array.map((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
-                         onClick={()=>handleContest()}
+                          onClick={() => handleContest()}
                           style={cardImg}
                           component="img"
                           height="140"
@@ -210,7 +202,7 @@ const Dashbord = () => {
                             onClick={() => alert("contest deleted succesfully")}
                           />
                         </IconButton>
-                        <CardContent sx={cardBody}>
+                        <CardContent sx={cardBody} >
                           <h4 style={contestText}>Fresherss</h4>
                           <p style={months}>00 months to 06 months</p>
                           <p style={contestDate}>Last Changes {date}</p>
@@ -234,15 +226,21 @@ const Dashbord = () => {
                       </Fab>
                     </CardMedia>
                     <CardContent sx={cardBody}>
-                    <br/>
+                      <br />
                       <h4 style={contestText}>create contest</h4>
-                      
-                      <p style= {months}>add Description</p>
-                     
+
+                      <p style={months}>add Description</p>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
+            </Grid>
+            <Grid ml={-5}>
+              <ExpandCircleDownRoundedIcon
+                sx={forwardIcon}
+                fontSize="large"
+                onClick={() => setAvailQ(false)}
+              ></ExpandCircleDownRoundedIcon>
             </Grid>
           </Container>
         </>
@@ -253,6 +251,11 @@ const Dashbord = () => {
           </Container>
 
           <Container sx={containerStyle}>
+            <ExpandCircleDownRoundedIcon
+              sx={backIcon}
+              fontSize="large"
+              onClick={() => setAvailQ(true)}
+            ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
               {levels.map((val, index) => {
                 return (
@@ -289,7 +292,12 @@ const Dashbord = () => {
                 <Card sx={createContest}>
                   <CardActionArea>
                     <CardMedia sx={{ paddingBottom: "16px" }}>
-                      <Fab color="primary" aria-label="add" sx={addButton}>
+                      <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={addButton}
+                        onClick={() => navigate("/email")}
+                      >
                         <AddIcon fontSize="large" />
                       </Fab>
                     </CardMedia>
@@ -303,13 +311,7 @@ const Dashbord = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid>
-              <ExpandCircleDownRoundedIcon
-                sx={backIcon}
-                fontSize="large"
-                onClick={() => setAvailQ(true)}
-              ></ExpandCircleDownRoundedIcon>
-            </Grid>
+            <Grid></Grid>
           </Container>
         </>
       )}

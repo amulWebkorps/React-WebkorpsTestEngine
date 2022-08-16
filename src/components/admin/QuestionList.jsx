@@ -22,11 +22,12 @@ import { FixedSizeList } from "react-window";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
 import { Box, Container, display, fontSize } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useNavigate } from "react-router-dom";
+import All from "./All";
 function renderRow(props) {
   const { index, style } = props;
   const testCase = {
@@ -197,6 +198,7 @@ const btn1 = {
   borderRadius: "8px",
 };
 const QuestionList = () => {
+  const [showq, setShowQ]=useState(false);
   const navigate=useNavigate();
   const classes = useStyles();
   const handleOnchange = (e) => {
@@ -450,6 +452,8 @@ const QuestionList = () => {
           </Button>
         </Stack> */}
         <AddedQues />
+        {showq &&
+        <All/>}
       </Container>
     </div>
   );

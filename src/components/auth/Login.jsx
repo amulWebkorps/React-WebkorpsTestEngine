@@ -112,11 +112,9 @@ const logoText = {
   color: "#1887C9",
 };
 
-const loginbutt = {
-    
-}
+const loginbutt = {};
 
-const Login = () => {
+const Login = ({ admin }) => {
   return (
     <>
       <Grid container>
@@ -137,21 +135,27 @@ const Login = () => {
               <TextInput label="Email Address" name="email" />
 
               <TextInput label="Password" name="password" />
-              <FormControlLabel
-                control={<Checkbox size="10px" />}
-                label="Remember me"
-                sx={checkboxname}
-              />
-              <NavLink to="/dashboard" style={{textDecoration: 'none'}}>
-                <LoginButton name="Log in"  />
+              {admin && (
+                <FormControlLabel
+                  control={<Checkbox size="10px" />}
+                  label="Remember me"
+                  sx={checkboxname}
+                />
+              )}
+              <NavLink to="/dashboard" style={{ textDecoration: "none" }}>
+                <LoginButton name="Log in" />
               </NavLink>
-              <Typography sx={footerOne}>
-                Don't have account?
-                <NavLink to="/register">
-                  <Button sx={RegisterButton}>Register</Button>
-                </NavLink>
-              </Typography>
-              <Typography sx={footerTwo}>Forgot Password?</Typography>
+              {admin && (
+                <>
+                  <Typography sx={footerOne}>
+                    Don't have account?
+                    <NavLink to="/register">
+                      <Button sx={RegisterButton}>Register</Button>
+                    </NavLink>
+                  </Typography>
+                  <Typography sx={footerTwo}>Forgot Password?</Typography>
+                </>
+              )}
             </Stack>
           </Box>
         </Box>
