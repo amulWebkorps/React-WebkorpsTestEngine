@@ -186,7 +186,7 @@ const RegisterOne = () => {
               <TextInput label="Full Name" star={"*"} />
               <TextInput label="Email Address" star={"*"} />
               <TextInput label="Phone Number" star={"*"} />
-              <NavLink to="/password">
+              <NavLink to="/password" style={{textDecoration: 'none'}}>
                 <ContinueButton name="Continue" />
               </NavLink>
 

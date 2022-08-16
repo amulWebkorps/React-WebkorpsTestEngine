@@ -169,7 +169,7 @@ const RegisterTwo = () => {
               </Typography>
               <TextInput label="Password" star={"*"} />
               <TextInput label="Confirm Password" star={"*"} />
-              <NavLink to="/dashboard">
+              <NavLink to="/dashboard" style={{textDecoration: 'none'}}>
                 <RegisterButton name="Register" />
               </NavLink>
               <Typography sx={footerOne}>

@@ -142,8 +142,8 @@ const Login = () => {
                 label="Remember me"
                 sx={checkboxname}
               />
-              <NavLink to="/dashboard" sx={loginbutt}>
-                <LoginButton name="Log in" />
+              <NavLink to="/dashboard" style={{textDecoration: 'none'}}>
+                <LoginButton name="Log in"  />
               </NavLink>
               <Typography sx={footerOne}>
                 Don't have account?
