@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Grid, Fab, Button, Box } from "@mui/material";
+import { Container, Grid, Fab,} from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,13 +7,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { contestImg, logo } from "../assests/images";
+import { contestImg,} from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
-import CardActions from "@mui/material/CardActions";
+
 import Modal from "../UI/Modal";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+
+
+
 
 const containerStyle = {
   overflowY: "auto",
@@ -94,7 +97,6 @@ const contestDate = {
 };
 
 const createContest = {
-  // margin:"10px",
   marginTop: "40px",
   width: "220px",
   maxHeight: "27vh",
@@ -123,7 +125,6 @@ const forwardIcon = {
   position: "absolute",
   top: `calc(50% - -78px)`,
   color: "white",
-  //  background:"black"
 };
 const backIcon = {
   transform: " rotate(90deg)",
@@ -141,7 +142,7 @@ const months = {
 };
 
 const array = [1, 1, 1];
-const levels = ["Level 1", "Level 2", "Level 3", "ALL"];
+const levels = ["Level 1", "Level 2", "ALL"];
 const today = new Date();
 const date =
   (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()) +
@@ -165,6 +166,22 @@ const Dashbord = () => {
     setOpen(true);
   };
 
+  const handleCheck=(index)=>{
+    
+    if (index===0){
+      navigate("/level1");
+
+    }
+    else if (index===1){
+      navigate("/level2");
+
+    }
+    else if (index===2){
+      navigate("/allavailable");
+    }
+    
+    
+  }
   return (
     <div style={app}>
       <Header />
@@ -258,27 +275,25 @@ const Dashbord = () => {
             ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
               {levels.map((val, index) => {
+                  
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
-                      <CardActionArea>
+                      <CardActionArea
+                       onClick={() => handleCheck(index)}>
                         <CardMedia
+                         
                           style={cardImg}
                           component="img"
                           height="140"
                           image={contestImg}
                           alt="green iguana"
+                         
                         />
-                        {/* <IconButton
-                          color="primary"
-                          aria-label="add"
-                          sx={delBtn}
+                       
+                        <CardContent sx={cardBody}
                         >
-                          <CancelIcon
-                            onClick={() => alert("contest deleted succesfully")}
-                          />
-                        </IconButton> */}
-                        <CardContent sx={cardBody}>
+                      
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
                           <p style={contestDate}>Last Changes {date}</p>

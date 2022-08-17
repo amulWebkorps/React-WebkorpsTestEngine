@@ -3,7 +3,6 @@ import {
   Paper,
   Button,
   Card,
-  CardActions,
   CardContent,
   Typography,
   TextField,
@@ -19,15 +18,13 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { FixedSizeList } from "react-window";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
+
 import { makeStyles } from "@mui/styles";
-import { Box, Container,} from "@mui/system";
-import React, { useState } from "react";
+import { Box, Container } from "@mui/system";
+import React from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
-import AddedQues from "./AddedQues";
-import { useNavigate } from "react-router-dom";
-import All from "./All";
+import { crossbtn } from "../assests/images";
 function renderRow(props) {
   const { index, style } = props;
   const testCase = {
@@ -65,8 +62,10 @@ function renderRow(props) {
                 <FormControl
                   sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
                 >
-                  <OutlinedInput placeholder="Output" sx={{ height: "30px" }} 
-                                        multiline
+                  <OutlinedInput
+                    placeholder="Output"
+                    sx={{ height: "30px" }}
+                    multiline
                     rows={1}
                     maxRows={10}
                   />
@@ -100,25 +99,18 @@ const useStyles = makeStyles({
 
 const sideColumn = {
   background: "#0057FF",
-  /* vv */
-
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: " 18px 0px 0px 18px",
 };
 const questionList = {
   height: "100vh",
   background: `linear-gradient(
-        180deg,
-        rgba(24, 135, 201, 0) 0%,
-        rgba(24, 135, 201, 0.224167) 40.42%,
-        rgba(24, 135, 201, 0.4) 100%
-      )`,
+          180deg,
+          rgba(24, 135, 201, 0) 0%,
+          rgba(24, 135, 201, 0.224167) 40.42%,
+          rgba(24, 135, 201, 0.4) 100%
+        )`,
   overflow: "auto",
-};
-
-const topButton = {
-  display: "flex",
-  justifyContent: "center",
 };
 
 const delBtn = {
@@ -129,35 +121,6 @@ const delBtn = {
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
-};
-
-
-const QuestionBox = {
-  width: "250px",
-  height: "55px",
-  background: "#FDFEFF;",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  borderRadius: `18px 0px 0px 18px`,
-  fontWeight: 700,
-  fontSize: "20px",
-};
-
-
-const AnswerBox = {
-  width: "250px",
-  height: "55px",
-  background: "#0057FF",
-  color: "white",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  borderRadius: `0px 18px 18px 0px`,
-  fontWeight: 700,
-  fontSize: "20px",
 };
 
 const mainContainer = {
@@ -171,6 +134,7 @@ const cardBody = {
 };
 const addQues = {
   background: "#F9FAFC",
+  /* vv */
 };
 
 const input = {
@@ -192,28 +156,93 @@ const label = {
   fontSize: "18px",
   lineHeight: "21px",
 };
-
-
 const btn = {
   fontSize: "8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
-  width: "160px",
 };
 
+const buttonLevel = {
+  width: "260px",
+  height: "51px",
+  background: "#0057ff",
+  borderRadius: "18px 18px 18px 18px",
+  fontWeight: "700",
+  fontSize: "25px",
+  lineHeight: "19px",
+  textTransform: "none",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  paddingTop: "12px",
+  paddingLeft: "25px",
+  marginTop: "25px",
+  color: "#FFFFFF",
+};
 
-const Addbtn={
-  fontSize: "8",
+const levelText = {
+  fontFamily: "Raleway",
+  fontSize: "34px",
   fontWeight: "600",
-  color: "white",
-  borderRadius: "6px",
-    
-}
+  lineHeight: "40px",
+  letterSpacing: "0em",
+  textAlign: "left",
+};
 
-const QuestionList = () => {
-  const [showq, setShowQ]=useState(false);
-  const navigate=useNavigate();
+const levelSubHeading = {
+  width: "100%",
+  height: "89px",
+  background: "#F9FAFC",
+  borderRadius: "17px 17px 0px 0px",
+};
+
+const divText = {
+  width: "515px",
+  height: "28px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "300",
+  fontSize: "24px",
+  lineHeight: "28px",
+  color: "#000000",
+  marginLeft: "20px",
+};
+
+const scrollDiv = {
+  overflowY: "auto",
+};
+
+const divSelect = {
+  width: "1120px",
+  height: "76px",
+  background: "#FFFFFF",
+  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
+  borderRadius: "14px",
+  marginTop: "10px",
+};
+
+const containerUpper = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+};
+
+const editQuestion = {
+  width: "147px",
+  height: "28px",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "300",
+  fontSize: "20px",
+  lineHeight: "28px",
+  textDecorationLine: "underline",
+  paddingTop: "15px",
+  color: "#0057ff",
+};
+
+const array = [1, 2, 3, 4, 5, 6, 4, 4, 45, 5, 5, 1, 22, 5, 5, 4, 5, 6];
+
+const Level2 = () => {
   const classes = useStyles();
   const handleOnchange = (e) => {
     console.log(e.target.value);
@@ -221,15 +250,14 @@ const QuestionList = () => {
   return (
     <div style={questionList}>
       <Header />
-      <Container sx={topButton}>
-       
-          <Grid container sx={{justifyContent:"center"}} mt={3}>   
-          <Box sx={QuestionBox} >Questions</Box>
-          <Box sx={AnswerBox}  onClick={()=>navigate('/participator')}>Participators</Box>
-       
-          </Grid>
-      
-      </Container>
+      <Grid container sx={{ justifyContent: "center" }}>
+        <Grid item>
+          <Box variant="contained" sx={buttonLevel}>
+            Level2 Questions
+          </Box>
+        </Grid>
+      </Grid>
+
       <Container sx={mainContainer}>
         <Grid>
           <Card sx={cardBody}>
@@ -351,14 +379,6 @@ const QuestionList = () => {
                         <Button variant="contained" sx={btn}>
                           Add Question
                         </Button>
-                        <Button
-                          variant="outlined"
-                          component="label"
-                          startIcon={<NoteAddIcon />}
-                         >
-                          Upload File
-                          <input hidden accept="file/*" multiple type="file" />
-                        </Button>
                       </Stack>
                     </Grid>
                   </div>
@@ -434,10 +454,10 @@ const QuestionList = () => {
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={Addbtn}>
+                          <Button variant="contained" sx={btn}>
                             Add
                           </Button>
-                          <Button variant="contained" sx={Addbtn}>
+                          <Button variant="contained" sx={btn}>
                             Close
                           </Button>
                         </Stack>
@@ -447,15 +467,37 @@ const QuestionList = () => {
                 </Grid>
               </Grid>
             </CardContent>
-            <CardActions></CardActions>
           </Card>
         </Grid>
-        <AddedQues />
-        {showq &&
-        <All/>}
+        <Grid sx={containerUpper} mt={3}>
+          <Grid item sx={levelSubHeading}>
+            <Typography sx={levelText} m={2}>
+              Available Questions
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container sx={{ height: "400px", overflow: "auto" }} p={5}>
+          {array.map((val) => {
+            return (
+              <Grid container sx={divSelect}>
+                <Grid item sm={9} sx={scrollDiv}>
+                  <Typography sx={divText}>
+                    write a progrom to make a star
+                  </Typography>
+                </Grid>
+                <Grid item sm={2} mt={1}>
+                  <Typography sx={editQuestion}>Edit Questions</Typography>
+                </Grid>
+                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                  <img src={crossbtn} alt="cross" />
+                </Grid>
+              </Grid>
+            );
+          })}
+        </Grid>
       </Container>
     </div>
   );
 };
 
-export default QuestionList;
+export default Level2;

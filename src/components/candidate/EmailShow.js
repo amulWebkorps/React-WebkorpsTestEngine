@@ -12,9 +12,10 @@ import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
+import Header from "../UI/Header";
 
 const background1 = {
-  height: "100%",
+  height: "100vh",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
@@ -29,24 +30,9 @@ const whiteContainer = {
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
-  
+  paddingBottom:"100px",
 };
 
-// const buttonTest = {
-//   width: "120px",
-//   height: "40px",
-//   background: "#0057ff",
-//   borderRadius: "8px",
-//   color: "white",
-//   fontweight: "bold",
-//   margin: "10px",
-//   border: "1px solid #0057ff",
-//   fontFamily: "Raleway",
-//   fontStyle: "normal",
-//   fontWeight: "700",
-//   fontSize: "16px",
-//   lineHeight: "19px",
-// };
 
 const divSelect = {
   width: "1000h",
@@ -72,11 +58,11 @@ const divText = {
 };
 
 const scrollDiv = {
-  overflowY: "scroll",
+  overflowY: "auto",
 };
 
 const emailContainer = {
-  overflowY: "scroll",
+  overflowY: "auto",
   height: "550px",
 };
 
@@ -95,6 +81,7 @@ const buttonEmail={
     <>
       <Modal2 open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} />
       <div style={background1}>
+        <Header/>
         <Container maxWidth="lg" sx={whiteContainer}>
           <Grid container sx={{ justifyContent: "space-between" }}>
             <Grid item>

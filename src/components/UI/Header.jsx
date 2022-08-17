@@ -4,10 +4,7 @@ import Box from "@mui/material/Box";
 import { logo } from "../assests/images";
 
 const Headers = {
-
   height: "14vh",
-  //background: "#121419",
- // height: "12.5vh",
   background: "#FDFEFF",
   width: "100%",
   display: "flex",
