@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -156,6 +156,16 @@ const logoText = {
 };
 
 const RegisterOne = () => {
+  const [credential, setcredential] = useState({
+    hName: "",
+    email: "",
+    hNumber: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setcredential({ ...credential, [name]: value });
+  };
   return (
     <>
       <Grid container>
@@ -176,18 +186,39 @@ const RegisterOne = () => {
               <Typography sx={first}>1</Typography>
               <Typography sx={lining}>___</Typography>
               <Typography sx={second}>
-                <img src={Ellips} className="image" />2
+                <img src={Ellips} className="image" alt="error" />2
               </Typography>
             </Box>
             <Stack>
               <Typography sx={Required}>
                 <span className="star">*</span>Required Field
               </Typography>
-              <TextInput label="Full Name" star={"*"} />
-              <TextInput label="Email Address" star={"*"} />
-              <TextInput label="Phone Number" star={"*"} />
-              <NavLink to="/password" style={{textDecoration: 'none'}}>
-                <ContinueButton name="Continue" />
+              <TextInput
+                label="Full Name"
+                star={"*"}
+                onChange={handleChange}
+                value={credential.hName}
+                name="hName"
+                type="text"
+              />
+              <TextInput
+                label="Email Address"
+                star={"*"}
+                onChange={handleChange}
+                value={credential.email}
+                name="email"
+                type="email"
+              />
+              <TextInput
+                label="Phone Number"
+                star={"*"}
+                onChange={handleChange}
+                value={credential.hNumber}
+                name="hNumber"
+                type="number"
+              />
+              <NavLink to="/password" style={{ textDecoration: "none" }}>
+                <ContinueButton name="Continue"/>
               </NavLink>
 
               <Typography sx={footerOne}>
