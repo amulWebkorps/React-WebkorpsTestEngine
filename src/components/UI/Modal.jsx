@@ -28,12 +28,12 @@ const MenuProps = {
 };
 const names = ["Level 1", "Level 2", "Level 3"];
 
-function getStyles(name,  level, theme) {
+function getStyles(name, level, theme) {
   return {
-    fontWeight:
-       level.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+    // fontWeight:
+    //    level.indexOf(name) === -1
+    //     ? theme.typography.fontWeightRegular
+    //     : theme.typography.fontWeightMedium,
   };
 }
 
@@ -128,8 +128,14 @@ const notbtn = {
   lineHeight: "21px",
   color: "#0057FF",
 };
-const Modal = ({ handleClickOpen, open, setOpen }) => {
-  const [contestDetails, setContestDetails] = useState({
+const Modal = ({
+  handleClickOpen,
+  open,
+  setOpen,
+  setContestDetails,
+  contestDetails,
+}) => {
+  const [inputData, setInputData] = useState({
     name: "",
     description: "",
     level: "",
@@ -138,20 +144,22 @@ const Modal = ({ handleClickOpen, open, setOpen }) => {
     setOpen(false);
   };
   const theme = useTheme();
-  
+
   const handleOnChange = (e) => {
     e.preventDefault();
     const { name, value } = e?.target;
-    setContestDetails({
-      ...contestDetails,
+    setInputData({
+      ...inputData,
       [name]: value,
     });
   };
 
   const createContest = () => {
     handleClose();
-    console.log("------0", contestDetails);
+    setContestDetails([...contestDetails, inputData]);
+    console.log("0000", contestDetails);
   };
+  console.log("---conste---");
   return (
     <div>
       <Dialog
@@ -217,7 +225,7 @@ const Modal = ({ handleClickOpen, open, setOpen }) => {
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
-                      if (selected.length === 0) {
+                      if (selected?.length === 0) {
                         return <em style={secLevel}>Select Level</em>;
                       }
                       return selected;
@@ -231,7 +239,7 @@ const Modal = ({ handleClickOpen, open, setOpen }) => {
                       <MenuItem
                         key={name}
                         value={name}
-                        style={getStyles(name,  contestDetails?.level, theme)}
+                        style={getStyles(name, theme)}
                       >
                         {name}
                       </MenuItem>

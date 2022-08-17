@@ -66,7 +66,7 @@ const cardImg = {
 };
 
 const cardBody = {
-  height: "100vh",
+  height: "120vh",
   background: `linear-gradient(
     180deg,
     rgba(24, 135, 201, 0) 0%,
@@ -81,7 +81,7 @@ const contestText = {
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
-  fontSize: "18px",
+  fontSize: "14px",
   lineHeight: "21px",
   color: "#3D3D3D",
 };
@@ -140,8 +140,7 @@ const months = {
   lineHeight: "14px",
 };
 
-const array = [1, 1, 1];
-const levels = ["Level 1", "Level 2", "Level 3", "ALL"];
+const levels = ["Level 1", "Level 2", "ALL"];
 const today = new Date();
 const date =
   (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()) +
@@ -154,13 +153,22 @@ const date =
 
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
+  const [contestDetails, setContestDetails] = useState([]);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const handleContest = () => {
     navigate("/addQuestion");
-
-    console.log("-----");
   };
+
+  const deleteContest = (id) => {
+    setContestDetails((val) => {
+      return val.filter((val, index) => {
+        return index !== id;
+      });
+    });
+  };
+  console.log("--dashbord----", contestDetails);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -174,13 +182,15 @@ const Dashbord = () => {
             open={open}
             setOpen={setOpen}
             handleClickOpen={handleClickOpen}
+            setContestDetails={setContestDetails}
+            contestDetails={contestDetails}
           />
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
           <Container sx={containerStyle}>
             <Grid container ml={3} mt={2}>
-              {array.map((val, index) => {
+              {contestDetails?.map?.((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
@@ -198,13 +208,15 @@ const Dashbord = () => {
                           aria-label="add"
                           sx={delBtn1}
                         >
-                          <CancelIcon
-                            onClick={() => alert("contest deleted succesfully")}
-                          />
+                          <CancelIcon onClick={() => deleteContest(index)} />
                         </IconButton>
                         <CardContent sx={cardBody}>
-                          <h4 style={contestText}>Fresherss</h4>
-                          <p style={months}>00 months to 06 months</p>
+                          <h6 style={contestText}>
+                            {contestDetails?.[index]?.name}&nbsp;~&nbsp;{contestDetails?.[index]?.level}
+                          </h6>
+                          <p style={months}>
+                            {contestDetails?.[index]?.description}
+                          </p>
                           <p style={contestDate}>Last Changes {date}</p>
                         </CardContent>
                       </CardActionArea>
@@ -257,7 +269,7 @@ const Dashbord = () => {
               onClick={() => setAvailQ(true)}
             ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
-              {levels.map((val, index) => {
+              {levels?.map((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
