@@ -137,7 +137,7 @@ const MainBox = {
   textAlign: "center",
 };
 const QuestionBox = {
-  cursor:"pointer",
+  cursor: "pointer",
   width: "250px",
   height: "55px",
   background: "#FDFEFF;",
@@ -151,7 +151,7 @@ const QuestionBox = {
 };
 
 const AnswerBox = {
-  cursor:"pointer",
+  cursor: "pointer",
   width: "250px",
   height: "55px",
   background: "#0057FF",
@@ -228,15 +228,14 @@ const QuestionList = () => {
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-        
-            <Box sx={MainBox}>
-              <Box sx={QuestionBox} onClick={() => navigate("/addQuestion")}>
-                Questions
-              </Box>
-              <Box sx={AnswerBox} onClick={()=>navigate('/participator')}>Participators</Box>
-            </Box>
-
-         
+        <Box sx={MainBox}>
+          <Box sx={QuestionBox} onClick={() => navigate("/addQuestion")}>
+            Questions
+          </Box>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+            Participators
+          </Box>
+        </Box>
       </Container>
       <Container sx={mainContainer}>
         <Grid>
