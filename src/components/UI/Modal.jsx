@@ -15,6 +15,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { addContest } from "../services/adminServices";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -148,7 +149,8 @@ const Modal = ({ handleClickOpen, open, setOpen }) => {
     });
   };
 
-  const createContest = () => {
+  const createContest = async() => {
+    const response=await addContest().then((res)=>console.log)
     handleClose();
     console.log("------0", contestDetails);
   };
