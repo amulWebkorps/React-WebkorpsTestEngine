@@ -15,10 +15,10 @@ const button = {
   borderRadius: "6px",
 };
 
-const ContinueButton = ({name}) => {
+const ContinueButton = ({name , onclick}) => {
   return (
     <>
-      <Button variant="contained" sx={button}>
+      <Button variant="contained" sx={button} onclick={onclick}>
         {name}
       </Button>
     </>

@@ -39,11 +39,10 @@ import RegisterOne from "./components/auth/RegisterOne";
 import RegisterTwo from "./components/auth/RegisterTwo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
-
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Errorpage from "./components/auth/Errorpage";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import All from "./components/admin/All";
 import { useState } from "react";
-
 
 const theme = createTheme({
   palette: {
@@ -53,9 +52,8 @@ const theme = createTheme({
   },
 });
 
-
 function App() {
-  const [admin , setAdmin]=useState(true);
+  const [admin, setAdmin] = useState(true);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
@@ -64,35 +62,30 @@ function App() {
         <Compiler/>
         <EmailShow />
         <All /> */}
-         {/* <Dashbord/> */}
-      {/* <Login/>
+        {/* <Dashbord/> */}
+        {/* <Login/>
      <RegisterOne/>
      <RegisterTwo/>
       <AnswerSheet /> */}
-{/* <QuestionList/> */}
+        {/* <QuestionList/> */}
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login  admin={admin} />}></Route>
-          <Route path="/candidate" element={<Login/>}></Route>
-          <Route path="/user" element={  <Compiler/>}></Route>
-          <Route path="/email" element={ <EmailShow />}></Route>
-          <Route path="/register" element={<RegisterOne />}></Route>
-          <Route path="/password" element={<RegisterTwo/>}></Route>
-          <Route path="/dashboard" element={<Dashbord/>}></Route>
-          <Route path="/addQuestion" element={<QuestionList/>}></Route>
-          <Route path="/participator" element={<AnswerSheet/>}></Route>
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login admin={admin} />}></Route>
+            <Route path="/candidate" element={<Login />}></Route>
+            <Route path="/user" element={<Compiler />}></Route>
+            <Route path="/email" element={<EmailShow />}></Route>
+            <Route path="/register" element={<RegisterOne />}></Route>
+            <Route path="/password" element={<RegisterTwo />}></Route>
+            <Route path="/dashboard" element={<Dashbord />}></Route>
+            <Route path="/addQuestion" element={<QuestionList />}></Route>
+            <Route path="/participator" element={<AnswerSheet />}></Route>
+            <Route path="*" element={<Errorpage />}></Route>
+          </Routes>
+        </BrowserRouter>
       </div>
     </ThemeProvider>
   );
 }
 
 export default App;
-
-
-
-
-
-

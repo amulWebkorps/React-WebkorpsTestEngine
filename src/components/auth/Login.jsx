@@ -13,7 +13,7 @@ import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -79,7 +79,7 @@ const checkboxname = {
   ".css-ahj2mt-MuiTypography-root": {
     fontSize: "13px",
     fontWeight: "100",
-    marginTop: "-10px",
+    marginTop: "3px",
   },
 };
 
@@ -111,8 +111,6 @@ const logoText = {
   lineHeight: "52.35px",
   color: "#1887C9",
 };
-
-const loginbutt = {};
 
 const Login = ({ admin }) => {
   return (
