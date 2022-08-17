@@ -156,7 +156,7 @@ const Modal = ({
   };
 
   const createContest = async() => {
-    const response=await addContest().then((res)=>console.log)
+
     handleClose();
     setContestDetails([...contestDetails, inputData]);
     console.log("0000", contestDetails);
