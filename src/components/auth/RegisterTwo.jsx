@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -142,6 +142,20 @@ const logoText = {
 };
 
 const RegisterTwo = () => {
+  const [confirmPassword, setConfirmpassword] = useState("");
+  const [credential, setcredential] = useState({
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (confirmPassword === e.target.value) {
+      setcredential({ ...credential, [name]: value });
+    } else {
+      alert("Password not match");
+    }
+  };
+
   return (
     <>
       <Grid container>
@@ -167,9 +181,22 @@ const RegisterTwo = () => {
               <Typography sx={Required}>
                 <span className="star">*</span>Required Field
               </Typography>
-              <TextInput label="Password" star={"*"} />
-              <TextInput label="Confirm Password" star={"*"} />
-              <NavLink to="/dashboard" style={{textDecoration: 'none'}}>
+              <TextInput
+                label="Password"
+                star={"*"}
+                type="password"
+                onChange={handleChange}
+                value={credential.password}
+                name="password"
+              />
+              <TextInput
+                label="Confirm Password"
+                star={"*"}
+                type="password"
+                onChange={(e) => setConfirmpassword(e.target.value)}
+                value={confirmPassword}
+              />
+              <NavLink to="/dashboard" style={{ textDecoration: "none" }}>
                 <RegisterButton name="Register" />
               </NavLink>
               <Typography sx={footerOne}>

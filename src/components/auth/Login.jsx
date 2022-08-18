@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -13,7 +13,8 @@ import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
+import { loginAdmin } from "../services/adminServices";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -79,7 +80,7 @@ const checkboxname = {
   ".css-ahj2mt-MuiTypography-root": {
     fontSize: "13px",
     fontWeight: "100",
-    marginTop: "-10px",
+    marginTop: "3px",
   },
 };
 
@@ -112,9 +113,36 @@ const logoText = {
   color: "#1887C9",
 };
 
-const loginbutt = {};
-
 const Login = ({ admin }) => {
+  const[credential,setCredential]=useState({
+    email:"",
+    password:""
+  })
+  const navigate=useNavigate();
+
+  const path=window?.location?.pathname
+
+  const handleLogin=()=>{
+    if(path==="/candidate"){
+      
+      navigate('/instruction')
+      console.log('-----',credential)
+    }
+    else{
+      const response=loginAdmin().then();
+    
+      navigate("/dashboard")
+      console.log('-----',credential)
+    }
+   
+  }
+  const handleChange=(e)=>{
+   setCredential(
+   { ...credential,
+    [e.target.name]:e.target.value}
+   )
+
+  }
   return (
     <>
       <Grid container>
@@ -132,9 +160,9 @@ const Login = ({ admin }) => {
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
             <Stack>
-              <TextInput label="Email Address" name="email" />
+              <TextInput label="Email Address" name="email" onChange={(e)=>handleChange(e)} value={credential?.email} />
 
-              <TextInput label="Password" name="password" />
+              <TextInput label="Password" name="password" type={"password"} onChange={(e)=>handleChange(e)}  value={credential?.password} />
               {admin && (
                 <FormControlLabel
                   control={<Checkbox size="10px" />}
@@ -142,9 +170,10 @@ const Login = ({ admin }) => {
                   sx={checkboxname}
                 />
               )}
-              <NavLink to="/dashboard" style={{ textDecoration: "none" }}>
-                <LoginButton name="Log in" />
-              </NavLink>
+              {/* <NavLink to={path==="/candidate"?"/user":"/dashboard"} style={{ textDecoration: "none" }}>
+               
+              </NavLink> */}
+              <LoginButton name="Log in" onClick={handleLogin} />
               {admin && (
                 <>
                   <Typography sx={footerOne}>

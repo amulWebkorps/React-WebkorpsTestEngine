@@ -52,6 +52,7 @@ const MainBox = {
   textAlign: "center",
 };
 const QuestionBox = {
+  cursor:"pointer",
   width: "250px",
   height: "55px",
   background: "#FDFEFF;",
@@ -65,6 +66,7 @@ const QuestionBox = {
 };
 
 const AnswerBox = {
+  cursor:"pointer",
   width: "250px",
   height: "55px",
   background: "#0057FF",

@@ -59,7 +59,7 @@ function renderRow(props) {
                   />
                 </FormControl>
                 <FormControl
-                  sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
+                  sx={{ width: "12vh", height: "5px", marginTop: "5px" }}
                 >
                   <OutlinedInput
                     placeholder="Output"
@@ -212,7 +212,7 @@ const divText = {
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  marginLeft: "20px",
+  margin: "20px",
 };
 
 const scrollDiv = {

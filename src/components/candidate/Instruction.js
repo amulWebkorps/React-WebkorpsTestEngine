@@ -60,7 +60,7 @@ const containerUpper = {
 };
 
 const divSelect = {
-  height: "76px",
+  height: "60px",
   marginLeft: "30px",
 };
 
@@ -77,7 +77,7 @@ const instructionSubHead = {
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "600",
-  fontSize: "33px",
+  fontSize: "25px",
   lineHeight: "39px",
   color: "#000000",
 };
@@ -117,19 +117,19 @@ const Instruction = () => {
   const [language1, setLanguage1] = useState();
   const [age, setAge] = React.useState("");
 
-  useEffect(() => {
-    axios
-      .get(CANDIDATE_LANGUAGE_URL)
-      .then(function (response) {
-        // handle success
-        setLanguage1(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-  }, []);
-  console.log("data", language1);
+  // useEffect(() => {
+  //   axios
+  //     .get(CANDIDATE_LANGUAGE_URL)
+  //     .then(function (response) {
+  //       // handle success
+  //       setLanguage1(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       // handle error
+  //       console.log(error);
+  //     });
+  // }, []);
+  // console.log("data", language1);
 
   const handleChange = (event) => {
     setAge(event.target.value);  
@@ -137,10 +137,9 @@ const Instruction = () => {
   console.log(age)
 
   const handleClick2=()=>{
-    navigate('/user',{age:{id:1,name:'sabaoon'}});
+    navigate('/user',{state:{age}});
   }
 
-  
 
   return (
     <div style={background1}>
@@ -155,7 +154,7 @@ const Instruction = () => {
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item mb={5}>
+          <Grid item mb={1}>
             <Typography sx={instructionSubHead}>
               Please follow the instructions while giving the test.
             </Typography>
@@ -192,8 +191,7 @@ const Instruction = () => {
            </div>    
          
             );
-          }))
-         
+          }))         
           }
            </select>
           */}
@@ -206,12 +204,12 @@ const Instruction = () => {
           inputProps={{ 'aria-label': 'Without label' }}
         >
          
-          <MenuItem value="">
+          <MenuItem value="C">
              C
           </MenuItem>
-          <MenuItem value={"c++"}>C++</MenuItem>
-          <MenuItem value={"java"}>Java</MenuItem>
-          <MenuItem value={"python"}>Python</MenuItem>
+          <MenuItem value={"C++"}>C++</MenuItem>
+          <MenuItem value={"Java"}>Java</MenuItem>
+          <MenuItem value={"Python"}>Python</MenuItem>
         </Select>     
       </FormControl>
             </Box>

@@ -64,9 +64,6 @@ const buttonEmail = {
   marginLeft: "20px",
 };
 
-
-
-
 const levelSubHeading = {
   width: "100%",
   height: "89px",
@@ -83,7 +80,7 @@ const divText = {
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  marginLeft: "20px",
+  margin: "20px",
 };
 
 const scrollDiv = {

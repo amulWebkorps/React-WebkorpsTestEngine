@@ -65,8 +65,10 @@ function renderRow(props) {
                 <FormControl
                   sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
                 >
-                  <OutlinedInput placeholder="Output" sx={{ height: "30px" }} 
-                                        multiline
+                  <OutlinedInput
+                    placeholder="Output"
+                    sx={{ height: "30px" }}
+                    multiline
                     rows={1}
                     maxRows={10}
                   />
@@ -120,19 +122,16 @@ const topButton = {
   display: "flex",
   justifyContent: "center",
 };
-
-const delBtn = {
-  position: "absolute",
-  marginTop: "8px",
-  right: "8%",
-
-  backgroundColor: "#E5E5E5",
-  color: "black",
-  borderRadius: "50%",
+const MainBox = {
+  height: "15vh",
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
 };
-
-
 const QuestionBox = {
+  cursor: "pointer",
   width: "250px",
   height: "55px",
   background: "#FDFEFF;",
@@ -145,8 +144,8 @@ const QuestionBox = {
   fontSize: "20px",
 };
 
-
 const AnswerBox = {
+  cursor: "pointer",
   width: "250px",
   height: "55px",
   background: "#0057FF",
@@ -158,6 +157,16 @@ const AnswerBox = {
   borderRadius: `0px 18px 18px 0px`,
   fontWeight: 700,
   fontSize: "20px",
+};
+
+const delBtn = {
+  position: "absolute",
+  marginTop: "8px",
+  right: "8%",
+
+  backgroundColor: "#E5E5E5",
+  color: "black",
+  borderRadius: "50%",
 };
 
 const mainContainer = {
@@ -212,8 +221,7 @@ const Addbtn={
 }
 
 const QuestionList = () => {
-  const [showq, setShowQ]=useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const classes = useStyles();
   const handleOnchange = (e) => {
     console.log(e.target.value);
@@ -451,8 +459,6 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues />
-        {showq &&
-        <All/>}
       </Container>
     </div>
   );

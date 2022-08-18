@@ -69,7 +69,7 @@ const cardImg = {
 };
 
 const cardBody = {
-  height: "100vh",
+  height: "120vh",
   background: `linear-gradient(
     180deg,
     rgba(24, 135, 201, 0) 0%,
@@ -84,7 +84,7 @@ const contestText = {
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
-  fontSize: "18px",
+  fontSize: "14px",
   lineHeight: "21px",
   color: "#3D3D3D",
 };
@@ -155,13 +155,31 @@ const date =
 
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
+  const [contestDetails, setContestDetails] = useState([{
+    name:"fresher",
+    description:"experience from 0 to 6 month",
+    level:"level1"
+  },
+  {
+    name:"Experience",
+    description:"experience from 1 to 2 Year",
+    level:"level 2"
+  }]);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const handleContest = () => {
     navigate("/addQuestion");
-
-    console.log("-----");
   };
+
+  const deleteContest = (id) => {
+    setContestDetails((val) => {
+      return val.filter((val, index) => {
+        return index !== id;
+      });
+    });
+  };
+  console.log("--dashbord----", contestDetails);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -191,13 +209,15 @@ const Dashbord = () => {
             open={open}
             setOpen={setOpen}
             handleClickOpen={handleClickOpen}
+            setContestDetails={setContestDetails}
+            contestDetails={contestDetails}
           />
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
           <Container sx={containerStyle}>
-            <Grid container ml={3} mt={2}>
-              {array.map((val, index) => {
+            <Grid container ml={0} mt={2}>
+              {contestDetails?.map?.((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
@@ -215,13 +235,15 @@ const Dashbord = () => {
                           aria-label="add"
                           sx={delBtn1}
                         >
-                          <CancelIcon
-                            onClick={() => alert("contest deleted succesfully")}
-                          />
+                          <CancelIcon onClick={() => deleteContest(index)} />
                         </IconButton>
-                        <CardContent sx={cardBody} >
-                          <h4 style={contestText}>Fresherss</h4>
-                          <p style={months}>00 months to 06 months</p>
+                        <CardContent sx={cardBody}>
+                          <h6 style={contestText}>
+                            {contestDetails?.[index]?.name}&nbsp;~&nbsp;{contestDetails?.[index]?.level}
+                          </h6>
+                          <p style={months}>
+                            {contestDetails?.[index]?.description}
+                          </p>
                           <p style={contestDate}>Last Changes {date}</p>
                         </CardContent>
                       </CardActionArea>
@@ -252,7 +274,7 @@ const Dashbord = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid ml={-5}>
+            <Grid ml={-5} mt={5}>
               <ExpandCircleDownRoundedIcon
                 sx={forwardIcon}
                 fontSize="large"
@@ -264,7 +286,7 @@ const Dashbord = () => {
       ) : (
         <>
           <Container sx={createContext}>
-            <Typography sx={text}>available question</Typography>
+            <Typography sx={text}>Available Question</Typography>
           </Container>
 
           <Container sx={containerStyle}>
