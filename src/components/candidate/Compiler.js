@@ -225,7 +225,8 @@ const Compiler = () => {
                  
                 </Grid>
               </Container>
-              <Box> <AceEditor
+              <Box> 
+    <AceEditor
     mode="java"
     theme="monokai"
     onChange={onChange}
@@ -233,6 +234,10 @@ const Compiler = () => {
     editorProps={{ $blockScrolling: true }}
     height="60vh"
     width="47vw"
+    defaultValue="
+         import sys\nn = len(sys.argv)\nm = sys.argv[0] // taking parameter from command line\n \n \t//write your code here"
+    fontSize="20px"
+  
   
   />,</Box>
               <Grid container sx={{ justifyContent: "end" }}>

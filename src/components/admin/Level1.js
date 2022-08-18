@@ -485,8 +485,8 @@ const Level1 = () => {
           {array.map((val) => {
             return (
               <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText}>
+                <Grid item sm={9} sx={scrollDiv} >
+                  <Typography sx={divText} >
                     write a progrom to make a star
                   </Typography>
                 </Grid>

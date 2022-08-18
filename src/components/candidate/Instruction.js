@@ -4,9 +4,13 @@ import { Container } from "@mui/system";
 import { Button } from "@mui/material";
 import "../../App.css";
 import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
-
-
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import Header from "../UI/Header";
+import {useNavigate} from 'react-router-dom';
 
 const background1 = {
   height: "100%",
@@ -78,28 +82,25 @@ const instructionSubHead = {
   color: "#000000",
 };
 const startContest = {
-  width: "295px",
-  height: "69px",
+  width: "280px",
+  height: "65px",
   bordeRadius: "15.0909px",
-  fontweight: "700",
-  fontSize: "28px",
+  fontweight: "500",
+  fontSize: "23px",
   lineHeight: "33px",
   color: "#FFFFFF",
   margin: "20px",
 };
 
 const cancelBtn = {
-  width: "200px",
+  width: "180px",
   height: "69px",
-  fontWeight: "700",
-  fontSize: "28px",
+  fontWeight: "500",
+  fontSize: "25px",
   lineHeight: "33px",
   color: "#0057FF",
   margin: "20px",
 };
-
-
-
 
 const array1 = [
   "Lörem ipsum tredidade vulkanresa megar sedil",
@@ -110,40 +111,36 @@ const array1 = [
 ];
 
 const Instruction = () => {
-    const axios = require('axios').default;
+  const axios = require("axios").default;
+  const navigate = useNavigate();
 
-    const [language1, setLanguage1 ] = useState();
+  const [language1, setLanguage1] = useState();
+  const [age, setAge] = React.useState("");
+
+  useEffect(() => {
+    axios
+      .get(CANDIDATE_LANGUAGE_URL)
+      .then(function (response) {
+        // handle success
+        setLanguage1(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+  console.log("data", language1);
+
+  const handleChange = (event) => {
+    setAge(event.target.value);  
+  };
+  console.log(age)
+
+  const handleClick2=()=>{
+    navigate('/user',{age:{id:1,name:'sabaoon'}});
+  }
+
   
-    useEffect(() => {
-    axios.get(CANDIDATE_LANGUAGE_URL)
-    .then(function (response) {
-      // handle success
-     setLanguage1(response.data);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-   
-  },[]);
-  // const handleClick1=(index)=>{
-    
-  //   if (index===0){
-  //     console.log("c")
-
-  //   }
-  //   else if (index===1){
-   
-  //     console.log("c++")
-
-  //   }
-  //   else if (index===2){
-     
-  //   }
-    
-    
-  // }
-  console.log("data",language1)
 
   return (
     <div style={background1}>
@@ -181,39 +178,46 @@ const Instruction = () => {
           </Grid>
           <Grid container>
             <Typography sx={selectTechnology}>Select Technology:</Typography>
-            <select className="option1"  >
-            { language1 === undefined ? (
+
+            {/* <select className="option1"  >  {   
+             language1 === undefined ? (
             <div></div>
           ) : (
-            language1.map((val1,index) => {
+            language1.map((val1) => {
             return (
-           <div >
-              
+           <div>
+ 
               <option value={val1.id}>{val1.language}</option>
-              
-           </div>
-           
+             
+           </div>    
+         
             );
           }))
+         
           }
            </select>
-
-       {/* <select onChange={handleClick1} name="fruits" id="fruit-select">
-        {language1.map((option, index) => (
-          <option key={index} value={option.id}>
-            
-          </option>
-        ))}
-      </select> */}
-            {/* <select className="option1">
-              <option value="1">C</option>
-              <option value="2">C++</option>
-              <option value="3">Java</option>
-              <option value="4">Python</option>
-            </select> */}
+          */}
+            <Box sx={{ minWidth: 120 }}>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <Select
+          value={age}
+          onChange={handleChange}
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+         
+          <MenuItem value="">
+             C
+          </MenuItem>
+          <MenuItem value={"c++"}>C++</MenuItem>
+          <MenuItem value={"java"}>Java</MenuItem>
+          <MenuItem value={"python"}>Python</MenuItem>
+        </Select>     
+      </FormControl>
+            </Box>
           </Grid>
           <Grid container>
-            <Button variant="contained" sx={startContest}>
+            <Button variant="contained" onClick={handleClick2} sx={startContest}>
               Start Contest
             </Button>
             <Button variant="outlined" sx={cancelBtn}>
