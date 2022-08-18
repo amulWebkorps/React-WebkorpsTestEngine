@@ -16,10 +16,10 @@ const button = {
 };
 
 
-const RegisterButton = ({name}) => {
+const RegisterButton = ({name, onClick}) => {
   return (
     <>
-      <Button variant="contained" sx={button}>
+      <Button variant="contained" sx={button} onClick={onClick}>
         {name}
       </Button>
     </>

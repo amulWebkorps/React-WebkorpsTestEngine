@@ -15,6 +15,7 @@ import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink,useNavigate } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
+import axios from "axios";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -122,19 +123,23 @@ const Login = ({ admin }) => {
 
   const path=window?.location?.pathname
 
-  const handleLogin=()=>{
+  const handleLogin=async()=>{
     if(path==="/candidate"){
-      
       navigate('/user')
       console.log('-----',credential)
     }
     else{
-      const response=loginAdmin().then();
-    
-      navigate("/dashboard")
-      console.log('-----',credential)
+      try {
+        const response= await loginAdmin(credential).then();
+        if(response){
+          navigate("/dashboard")
+        }
+      } catch (error) {
+        alert(error.response.data)
+        console.log('err',error.response.data)
+
+      }
     }
-   
   }
   const handleChange=(e)=>{
    setCredential(

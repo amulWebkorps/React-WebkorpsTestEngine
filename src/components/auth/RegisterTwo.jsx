@@ -11,7 +11,9 @@ import { Button } from "@mui/material";
 import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink } from "react-router-dom";
+import { NavLink,useLocation } from "react-router-dom";
+
+import { registerAdmin } from "../services/adminServices";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -143,19 +145,30 @@ const logoText = {
 
 const RegisterTwo = () => {
   const [confirmPassword, setConfirmpassword] = useState("");
+  const location=useLocation();
   const [credential, setcredential] = useState({
+    name:location.state.credential.name,
+    email:location.state.credential.email,
+    phone:location.state.credential.phone,
     password: "",
   });
+  
+  console.log(location.state.credential)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (confirmPassword === e.target.value) {
-      setcredential({ ...credential, [name]: value });
-    } else {
-      alert("Password not match");
-    }
+    setcredential({ ...credential, [name]: value });
+    // if (confirmPassword === e.target.value) {
+      
+      
+    // } else {
+    //   alert("Password not match");
+    // }
   };
-
+  const register=async()=>{
+  
+    const response =await registerAdmin(credential).then((res)=>console.log(res.data))
+  }
   return (
     <>
       <Grid container>
@@ -196,9 +209,10 @@ const RegisterTwo = () => {
                 onChange={(e) => setConfirmpassword(e.target.value)}
                 value={confirmPassword}
               />
-              <NavLink to="/dashboard" style={{ textDecoration: "none" }}>
-                <RegisterButton name="Register" />
-              </NavLink>
+              {/* <NavLink  style={{ textDecoration: "none" }}>
+                
+              </NavLink> */}
+              <RegisterButton name="Register"  onClick={register}/>
               <Typography sx={footerOne}>
                 Have an account?
                 <NavLink to="/">

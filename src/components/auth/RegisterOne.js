@@ -11,7 +11,7 @@ import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -217,9 +217,14 @@ const RegisterOne = () => {
                 name="hNumber"
                 type="number"
               />
-              <NavLink to="/password" style={{ textDecoration: "none" }}>
-                <ContinueButton name="Continue"/>
-              </NavLink>
+              {/* <NavLink to="/password" style={{ textDecoration: "none" }}> */}
+              <Link
+                to={"/password"}
+                state={{ credential: credential }}
+                style={{ textDecoration: "none" }}
+              >
+                <ContinueButton name="Continue" />
+              </Link>
 
               <Typography sx={footerOne}>
                 Have an account?
