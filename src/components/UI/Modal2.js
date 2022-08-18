@@ -47,10 +47,11 @@ export default function Model2({ handleClickOpen, open, setOpen }) {
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
+                  defaultValue={10}
                 >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value={10}>rammanhotragmail.com</MenuItem>
+                  <MenuItem value={20}>rammanhotragmail.com</MenuItem>
+                  <MenuItem value={30}>rammanhotragmail.com</MenuItem>
                 </Select>
               </FormControl>
             </Box>

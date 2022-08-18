@@ -29,12 +29,12 @@
 body{
   font-family: 'Raleway';}
 
-*{
+/* *{
   -ms-overflow-style: none;
 }
 ::-webkit-scrollbar {
   display: none;
-}
+} */
 
  .background1{
   height: "100%" !important;

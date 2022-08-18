@@ -29,6 +29,7 @@
 
 // export default App;
 import "./App.css";
+import { useState } from "react";
 import AnswerSheet from "./components/admin/AnswerSheet";
 import Dashbord from "./components/admin/Dashbord";
 import Header from "./components/UI/Header";
@@ -42,7 +43,10 @@ import QuestionList from "./components/admin/QuestionList";
 import Errorpage from "./components/auth/Errorpage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import All from "./components/admin/All";
-import { useState } from "react";
+import Level1 from "./components/admin/Level1";
+import Level2 from "./components/admin/Level2";
+import Allavailable from "./components/admin/Allavailable";
+import Instruction from "./components/candidate/Instruction";
 
 const theme = createTheme({
   palette: {
@@ -80,6 +84,11 @@ function App() {
             <Route path="/dashboard" element={<Dashbord />}></Route>
             <Route path="/addQuestion" element={<QuestionList />}></Route>
             <Route path="/participator" element={<AnswerSheet />}></Route>
+            <Route path="/level1" element={<Level1/>}></Route>
+          <Route path="/level2" element={<Level2/>}></Route>
+          <Route path="/all" element={<All/>}></Route>
+          <Route path="/allavailable" element={<Allavailable/>}></Route>
+          <Route path="/instruction" element={<Instruction/>}></Route>
             <Route path="*" element={<Errorpage />}></Route>
           </Routes>
         </BrowserRouter>

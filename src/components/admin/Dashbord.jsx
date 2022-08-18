@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Grid, Fab, Button, Box } from "@mui/material";
+import { Container, Grid, Fab,} from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,13 +7,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { contestImg, logo } from "../assests/images";
+import { contestImg,} from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
-import CardActions from "@mui/material/CardActions";
+
 import Modal from "../UI/Modal";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+
+
+
 
 const containerStyle = {
   overflowY: "auto",
@@ -94,7 +97,6 @@ const contestDate = {
 };
 
 const createContest = {
-  // margin:"10px",
   marginTop: "40px",
   width: "220px",
   maxHeight: "27vh",
@@ -123,7 +125,6 @@ const forwardIcon = {
   position: "absolute",
   top: `calc(50% - -78px)`,
   color: "white",
-  //  background:"black"
 };
 const backIcon = {
   transform: " rotate(90deg)",
@@ -140,6 +141,7 @@ const months = {
   lineHeight: "14px",
 };
 
+const array = [1, 1, 1];
 const levels = ["Level 1", "Level 2", "ALL"];
 const today = new Date();
 const date =
@@ -153,7 +155,16 @@ const date =
 
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  const [contestDetails, setContestDetails] = useState([]);
+  const [contestDetails, setContestDetails] = useState([{
+    name:"fresher",
+    description:"experience from 0 to 6 month",
+    level:"level1"
+  },
+  {
+    name:"Experience",
+    description:"experience from 1 to 2 Year",
+    level:"level 2"
+  }]);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const handleContest = () => {
@@ -173,6 +184,22 @@ const Dashbord = () => {
     setOpen(true);
   };
 
+  const handleCheck=(index)=>{
+    
+    if (index===0){
+      navigate("/level1");
+
+    }
+    else if (index===1){
+      navigate("/level2");
+
+    }
+    else if (index===2){
+      navigate("/allavailable");
+    }
+    
+    
+  }
   return (
     <div style={app}>
       <Header />
@@ -189,7 +216,7 @@ const Dashbord = () => {
             <Typography sx={text}>Contest Created</Typography>
           </Container>
           <Container sx={containerStyle}>
-            <Grid container ml={3} mt={2}>
+            <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
                 return (
                   <Grid item md={3} mt={5}>
@@ -269,19 +296,26 @@ const Dashbord = () => {
               onClick={() => setAvailQ(true)}
             ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
-              {levels?.map((val, index) => {
+              {levels.map((val, index) => {
+                  
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
-                      <CardActionArea>
+                      <CardActionArea
+                       onClick={() => handleCheck(index)}>
                         <CardMedia
+                         
                           style={cardImg}
                           component="img"
                           height="140"
                           image={contestImg}
                           alt="green iguana"
+                         
                         />
-                        <CardContent sx={cardBody}>
+                       
+                        <CardContent sx={cardBody}
+                        >
+                      
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
                           <p style={contestDate}>Last Changes {date}</p>

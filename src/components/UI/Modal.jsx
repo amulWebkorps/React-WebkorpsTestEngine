@@ -27,7 +27,7 @@ const MenuProps = {
     },
   },
 };
-const names = ["Level 1", "Level 2", "Level 3"];
+const names = ["Level 1", "Level 2"];
 
 function getStyles(name, level, theme) {
   return {

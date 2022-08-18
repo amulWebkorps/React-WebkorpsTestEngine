@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { Container } from "@mui/system";
+import { Container, display } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import Header from "../UI/Header";
+import { render } from "react-dom";
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/ext-language_tools";
+
+function onChange(newValue) {
+  console.log("change", newValue);
+}
 
 const div1 = {
   height: "70vh",
@@ -216,36 +225,46 @@ const Compiler = () => {
           <Grid item sm={6}>
             <Box mx={3}>
               <Grid container>
-                <Grid item sm={6}>
-                  <label>Name:-</label>
-                  <box> Raj kushwah</box>
+                <Grid item sm={6} sx={{ display: "flex" }}>
+                  <label>
+                    <h3>Name:- </h3>
+                  </label>
+                  <box>
+                    {" "}
+                    <h3>Ram manhotra </h3>
+                  </box>
                 </Grid>
-                <Grid item sm={6}>
-                  <label>Email:-</label>
-                  <box> 1233@gmail.com</box>
+                <Grid item sm={6} sx={{ display: "flex" }}>
+                  <label>
+                    <h3>Email:- </h3>
+                  </label>
+                  <box>
+                    <h3> ram@gmail.com</h3>
+                  </box>
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
                 <Grid container>
-                  <Grid item sm={6}>
+                  <Grid item sm={12}>
                     <Typography mt={1.5}>
                       <div style={CodeCompilerText1}>Code Compiler</div>
                     </Typography>
                   </Grid>
-                  <Grid item sm={6} sx={flexDrop}>
-                    <Typography mt={2} mx={5}>
-                      Select Technology:
-                    </Typography>
-                    <select className="option1">
-                      <option value="1">C</option>
-                      <option value="2">C++</option>
-                      <option value="3">Java</option>
-                      <option value="4">Python</option>
-                    </select>
-                  </Grid>
                 </Grid>
               </Container>
-              <Box sx={editor}></Box>
+              <Box>
+                {" "}
+                <AceEditor
+                  mode="java"
+                  theme="monokai"
+                  onChange={onChange}
+                  name="UNIQUE_ID_OF_DIV"
+                  editorProps={{ $blockScrolling: true }}
+                  height="60vh"
+                  width="47vw"
+                />
+                ,
+              </Box>
               <Grid container sx={{ justifyContent: "end" }}>
                 <Button variant="contained" sx={buttonTest}>
                   Run

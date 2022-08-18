@@ -10,7 +10,8 @@ import { crossbtn } from "../assests/images";
 import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
+import { Box } from "@mui/system";
+import Header from "../UI/Header";
 
 const background1 = {
   height: "100%",
@@ -24,7 +25,7 @@ const background1 = {
 
 const whiteContainer = {
   marginTop: "50px",
- 
+  height: "1000px",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -63,9 +64,6 @@ const buttonEmail = {
   width: "160px",
   marginLeft: "20px",
 };
-
-
-
 
 const levelSubHeading = {
   width: "100%",
@@ -107,12 +105,16 @@ const containerUpper = {
 
 const array = [1, 2, 3, 4, 5,6,4,4,45,5,5,1,22,5,5,4,5,6,];
 
-const All= () => {
+const Allavailable = () => {
   return (
-    <div >
-     
+    <div style={background1}>
+      <Header/>
       <Grid container sx={{ justifyContent: "center" }}>
-      
+        <Grid item mt={5}>
+          <Box variant="contained" sx={buttonLevel}>
+            All questions
+          </Box>
+        </Grid>
       </Grid>
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
@@ -140,7 +142,7 @@ const All= () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container sx={{height: '400px' , overflow: 'auto'}}>
+        <Grid container sx={{height: '800px' , overflow: 'auto'}}>
           {array.map((val) => {
             return (
               <Grid container sx={divSelect}>
@@ -168,4 +170,4 @@ const All= () => {
   );
 };
 
-export default All;
+export default Allavailable;

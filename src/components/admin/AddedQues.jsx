@@ -74,6 +74,15 @@ const card = {
   height: "466px",
   overflowY: "auto",
 };
+
+const btn = {
+  fontSize: "8",
+  fontWeight: "600",
+  color: "white",
+  borderRadius: "6px",
+  width: "200px",
+};
+
 const AddedQues = () => {
   const [showq, setShowQ]=useState(false);
 
@@ -85,12 +94,9 @@ const AddedQues = () => {
           Contest Contain Following
           <br />
           Questions:
-        
         </Typography>
-      </div>
-        
-        <div>  <Button variant="contained" onClick={()=>setShowQ(true)}>available Question</Button></div>
-      
+      </div>        
+        <div>  <Button variant="contained" sx={btn}  onClick={()=>setShowQ(true)}>available Question</Button></div>  
       </Paper>
       <CardContent sx={card}>
         <Grid container direction="row" flexDirection={"column"}>
