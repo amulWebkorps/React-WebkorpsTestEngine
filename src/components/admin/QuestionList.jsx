@@ -21,7 +21,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { FixedSizeList } from "react-window";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
-import { Box, Container,} from "@mui/system";
+import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
@@ -202,7 +202,6 @@ const label = {
   lineHeight: "21px",
 };
 
-
 const btn = {
   fontSize: "8",
   fontWeight: "600",
@@ -211,32 +210,74 @@ const btn = {
   width: "160px",
 };
 
-
-const Addbtn={
+const Addbtn = {
   fontSize: "8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
-    
-}
+};
+const quesIntialField = {
+  problem: "",
+  constraints: "",
+  sampleInput: "",
+  sampleOutput: "",
+  input: "",
+  output: "",
+  testCase: {},
+};
 
 const QuestionList = () => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const [question, setQuestion] = useState(quesIntialField);
+  const [quesId,setQuesId]=useState(null);
+  const [contestQuestion, setContestQuestion] = useState([
+    {
+      problem:
+        "Given a String S, reverse the string without reversing its individual words. Words are separated by dots.",
+      constraints: "1 <= |S| <= 2000",
+      sampleInput: "S = i.like.this.program.very.much",
+      sampleOutput: "much.very.program.this.like.i",
+      input: "",
+      output: "",
+      testCase: {},
+    },
+  ]);
+  const [editQuestion, setEditQuestion] = useState(false);
   const handleOnchange = (e) => {
-    console.log(e.target.value);
+    const { name, value } = e.target;
+    setQuestion({
+      ...question,
+      [name]: value,
+    });
   };
+  const addQuestion = (e) => {
+    if(editQuestion){
+      setEditQuestion(false)
+      setQuestion(quesIntialField)
+     return contestQuestion[quesId]=question
+    }else{
+      if(quesIntialField.problem===''){
+        alert('fill all field')
+      }else{
+        setContestQuestion([...contestQuestion, question]);
+        setQuestion(quesIntialField)
+      }
+     
+    }
+    
+  };
+console.log('-----',quesId)
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-       
-          <Grid container sx={{justifyContent:"center"}} mt={3}>   
-          <Box sx={QuestionBox} >Questions</Box>
-          <Box sx={AnswerBox}  onClick={()=>navigate('/participator')}>Participators</Box>
-       
-          </Grid>
-      
+        <Grid container sx={{ justifyContent: "center" }} mt={3}>
+          <Box sx={QuestionBox}>Questions</Box>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+            Participators
+          </Box>
+        </Grid>
       </Container>
       <Container sx={mainContainer}>
         <Grid>
@@ -263,6 +304,9 @@ const QuestionList = () => {
                         multiline
                         rows={3}
                         maxRows={10}
+                        onChange={handleOnchange}
+                        name="problem"
+                        value={question?.problem}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
@@ -270,13 +314,11 @@ const QuestionList = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={handleOnchange}
                         fullWidth
                         id="fullWidth"
                         placeholder="Write Problem statement here"
                         mt={5}
                         sx={input}
-                        x
                       />
                       <br />
                       <br />
@@ -290,6 +332,9 @@ const QuestionList = () => {
                         maxRows={10}
                         sx={input}
                         fullWidth
+                        onChange={handleOnchange}
+                        name="constraints"
+                        value={question?.constraints}
                         id="fullWidth"
                         placeholder="Write Constraints here"
                         InputProps={{
@@ -314,6 +359,9 @@ const QuestionList = () => {
                           <TextField
                             id="fullWidth"
                             placeholder="Input here"
+                            onChange={handleOnchange}
+                            name="sampleInput"
+                            value={question?.sampleInput}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -335,6 +383,9 @@ const QuestionList = () => {
                             multiline
                             rows={3}
                             maxRows={10}
+                            onChange={handleOnchange}
+                            name="sampleOutput"
+                            value={question?.sampleOutput}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
@@ -356,14 +407,18 @@ const QuestionList = () => {
                         justifyContent={"flex-end"}
                         mt={2}
                       >
-                        <Button variant="contained" sx={btn}>
-                          Add Question
+                        <Button
+                          variant="contained"
+                          sx={btn}
+                          onClick={addQuestion}
+                        >
+                          {editQuestion ? `Edit Question` : `Add Question`}
                         </Button>
                         <Button
                           variant="outlined"
                           component="label"
                           startIcon={<NoteAddIcon />}
-                         >
+                        >
                           Upload File
                           <input hidden accept="file/*" multiple type="file" />
                         </Button>
@@ -396,6 +451,9 @@ const QuestionList = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Input here"
+                              onChange={handleOnchange}
+                              name="input"
+                              value={question?.input}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -406,6 +464,9 @@ const QuestionList = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Output here"
+                              onChange={handleOnchange}
+                              name="output"
+                              value={question?.output}
                             />
                           </Grid>
                         </Grid>
@@ -458,7 +519,14 @@ const QuestionList = () => {
             <CardActions></CardActions>
           </Card>
         </Grid>
-        <AddedQues />
+        <AddedQues
+          question={question}
+          setQuestion={setQuestion}
+          setContestQuestion={setContestQuestion}
+          contestQuestion={contestQuestion}
+          setEditQuestion={setEditQuestion}
+          setQuesId={setQuesId}
+        />
       </Container>
     </div>
   );
