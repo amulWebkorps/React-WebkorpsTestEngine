@@ -160,7 +160,7 @@ const EmailShow = () => {
               <Grid container sx={divSelect}>
                 <Grid item sm={9} sx={scrollDiv}>
                   <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
+                    ram manhtrahhg@gmail.com
                   </Typography>
                 </Grid>
                 <Grid item sm={2} mt={1}>

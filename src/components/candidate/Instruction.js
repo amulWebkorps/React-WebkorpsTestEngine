@@ -176,25 +176,8 @@ const Instruction = () => {
             })}
           </Grid>
           <Grid container>
-            <Typography sx={selectTechnology}>Select Technology:</Typography>
+            <Typography mt={2} sx={selectTechnology}>Select Technology:</Typography>
 
-            {/* <select className="option1"  >  {   
-             language1 === undefined ? (
-            <div></div>
-          ) : (
-            language1.map((val1) => {
-            return (
-           <div>
- 
-              <option value={val1.id}>{val1.language}</option>
-             
-           </div>    
-         
-            );
-          }))         
-          }
-           </select>
-          */}
             <Box sx={{ minWidth: 120 }}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
         <Select
