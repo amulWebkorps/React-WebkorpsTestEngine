@@ -10,6 +10,9 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
+import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
+import { useLocation } from "react-router-dom";
+import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
 
 function onChange(newValue) {
   console.log("change", newValue);
@@ -131,8 +134,69 @@ const buttonTest = {
 };
 
 const Compiler = () => {
+  const axios = require("axios").default;
+  const [language2, setLanguage2] = useState();
+  const [code1, setCode1] = useState("");
+  const [Lan, setLan] = useState("");
+  const location = useLocation();
+
+  console.log("location122", location?.state?.age);
+  useEffect(() => {
+    axios
+      .get(CANDIDATE_LANGUAGE_URL)
+      .then(function (response) {
+        // handle success
+        setLanguage2(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+
+  console.log("data11", language2);
+
+  // language2.map((value)=>{
+  //   <div>
+  //     <h1>{value.language}</h1>
+  //   </div>
+  // })
+
+  // const Landata =JSON.stringify(location[0]?.state?.age)
+  // useEffect(()=>{
+  //   setLan(Landata)
+  // },[])
+
+  const dataLan = language2?.filter(
+    (lan2) => lan2.language == location?.state?.age
+  );
+  console.log("getdata", dataLan);
+
+  useEffect(() => {
+    dataLan === undefined ? (
+      <div></div>
+    ) : (
+      setCode1(() => {
+        console.log(dataLan[0].codeBase, "----------");
+        return dataLan[0].codeBase;
+      })
+    );
+  }, [language2]);
+
+  console.log("rfgh", code1);
+  let data = code1.toString;
   return (
     <>
+      {language2 === undefined ? (
+        <div></div>
+      ) : (
+        //   language2.filter(language2 => language2.language ==="java").map(filteredLanguage =>  (
+        //   <li>
+        //    {filteredLanguage.codeBase}
+        //   </li>
+        // )))
+        <div></div>
+      )}
       <Header />
       <div className="background1">
         <Grid container>
@@ -154,7 +218,7 @@ const Compiler = () => {
                     <Grid item sm={12}>
                       <Box>
                         <label style={inputLabel}>Problem statement</label>
-                        <Box style={inputField}>
+                        <Box style={inputField} p={2}>
                           <p>
                             A Maze is given as n*n matrix of blocks where source
                             block is the upper left most block i.e.,
@@ -181,7 +245,7 @@ const Compiler = () => {
                     <Grid item sm={12}>
                       <Box>
                         <label style={inputLabel}>Constraints</label>
-                        <Box style={inputField}>
+                        <Box style={inputField} p={2}>
                           <p>
                             {`  1 <= n <= 50
 1 <= matrix[i][j] <= 20`}
@@ -193,7 +257,7 @@ const Compiler = () => {
                       <Grid item sm={6} px={2}>
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
-                          <Box style={inputField}>
+                          <Box style={inputField} p={2}>
                             <p>{` {{2,1,0,0},{3,0,0,1},{0,1,0,1},
 {0,0,0,1}}`}</p>
                           </Box>
@@ -202,7 +266,7 @@ const Compiler = () => {
                       <Grid sm={6} px={2}>
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
-                          <Box style={inputField}>
+                          <Box style={inputField} p={2}>
                             <p>{`{{1,0,0,0},{1,0,0,1},{0,0,0,1},
 {0,0,0,1}}`}</p>
                           </Box>
@@ -230,7 +294,6 @@ const Compiler = () => {
                     <h3>Name:- </h3>
                   </label>
                   <box>
-                    {" "}
                     <h3>Ram manhotra </h3>
                   </box>
                 </Grid>
@@ -252,18 +315,19 @@ const Compiler = () => {
                   </Grid>
                 </Grid>
               </Container>
+
               <Box>
-                {" "}
                 <AceEditor
-                  mode="java"
+                  mode=""
                   theme="monokai"
                   onChange={onChange}
                   name="UNIQUE_ID_OF_DIV"
                   editorProps={{ $blockScrolling: true }}
                   height="60vh"
                   width="47vw"
+                  value={code1}
+                  fontSize="20px"
                 />
-                ,
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
                 <Button variant="contained" sx={buttonTest}>

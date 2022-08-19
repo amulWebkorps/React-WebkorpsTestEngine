@@ -13,9 +13,10 @@ import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink, useNavigate } from "react-router-dom";
-import { loginAdmin } from "../services/adminServices";
+
 import Alert from "./base/Alert";
+import { NavLink,useNavigate } from "react-router-dom";
+import { loginAdmin } from "../services/adminServices";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -127,7 +128,7 @@ const Login = ({ admin }) => {
 
   const handleLogin = async () => {
     if (path === "/candidate") {
-      navigate("/user");
+      navigate('/instruction')
       console.log("-----", credential);
     } else {
       try {
