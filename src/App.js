@@ -77,6 +77,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login admin={admin} />}></Route>
             <Route path="/candidate" element={<Login />}></Route>
+            <Route path="/loginCandidate/:Id" element={<Login />}></Route>
             <Route path="/user" element={<Compiler />}></Route>
             <Route path="/email" element={<EmailShow />}></Route>
             <Route path="/register" element={<RegisterOne />}></Route>
@@ -89,7 +90,7 @@ function App() {
           <Route path="/all" element={<All/>}></Route>
           <Route path="/allavailable" element={<Allavailable/>}></Route>
           <Route path="/instruction" element={<Instruction/>}></Route>
-            <Route path="*" element={<Errorpage />}></Route>
+            <Route path="*" element={<Login />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

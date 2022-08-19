@@ -13,7 +13,7 @@ import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
 import Alert from "./base/Alert";
 const ContainerStyle = {
@@ -123,7 +123,8 @@ const Login = ({ admin }) => {
   const [showAlert, setAlert] = useState(false);
   const [response, setResponse]=useState(null);
   const path = window?.location?.pathname;
-
+  const{Id}=useParams();
+  console.log('params-----',Id)
 
   const handleLogin = async () => {
     if (path === "/candidate") {
