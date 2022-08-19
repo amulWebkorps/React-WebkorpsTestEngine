@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -137,9 +137,9 @@ const Modal = ({
   contestDetails,
 }) => {
   const [inputData, setInputData] = useState({
-    name: "",
-    description: "",
-    level: "",
+    contestName: "",
+    contestDescription: "",
+    contestLevel: "",
   });
   const handleClose = () => {
     setOpen(false);
@@ -155,13 +155,18 @@ const Modal = ({
     });
   };
 
-  const createContest = async() => {
-
-    handleClose();
+  const createContest = async () => {
     setContestDetails([...contestDetails, inputData]);
-    console.log("0000", contestDetails);
+    try {
+      const response = addContest(inputData).then();
+      if(response){
+        handleClose()
+      }
+    } catch (error) {
+      alert(error.response.data)
+    }
   };
-  console.log("---conste---");
+
   return (
     <div>
       <Dialog
@@ -200,15 +205,15 @@ const Modal = ({
                   fullWidth
                   id="fullWidth"
                   onChange={handleOnChange}
-                  name="name"
-                  value={contestDetails?.name}
+                  name="contestName"
+                  value={contestDetails?.contestName}
                 />
                 <label style={label}>Add Description</label>
                 <TextField
                   id="outlined-multiline-static"
-                  name="description"
+                  name="contestDescription"
                   onChange={handleOnChange}
-                  value={contestDetails?.description}
+                  value={contestDetails?.contestDescription}
                   multiline
                   rows={2}
                   fullWidth
@@ -222,8 +227,8 @@ const Modal = ({
                   <label style={label}>Level</label>
                   <Select
                     displayEmpty
-                    name="level"
-                    value={contestDetails?.level}
+                    name="contestLevel"
+                    value={contestDetails?.contestLevel}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {

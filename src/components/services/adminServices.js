@@ -1,6 +1,7 @@
 import axios from "axios";
 const ADMIN_LOGIN_URL = `http://localhost:8085/doSignInForAdmin`;
 const ADMIN_REGISTRATION_URL = `http://localhost:8085/adminRegistration`;
+const CREATE_CONTEST = `http://localhost:8085/createContest`;
 const SEND_MAIL = `http:8080/sendMail`;
 const ADD_CONTEST = `http:8080/addContest`;
 const loginAdmin = (credential) => {
@@ -20,15 +21,21 @@ const registerAdmin = (credential) => {
     password: credential?.password,
   });
 };
-const sendMail = (mailAddress) => {
-  return axios.post(SEND_MAIL);
-};
 
 const addContest = (contestDetails) => {
-  return axios.post(ADD_CONTEST, contestDetails, {
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true,
+  // axios.post(`http://localhost:8085/createContest`, {
+  //       "contestName": "fresher",
+  //       "contestDescription":"for 1 to 2 year experience",
+  //      "contestLevel": "Level 2"
+  //   })
+  return axios.post(CREATE_CONTEST, {
+    contestName: contestDetails?.contestName,
+    contestDescription: contestDetails?.contestDescription,
+    contestLevel: contestDetails?.contestLevel,
   });
+};
+const sendMail = (mailAddress) => {
+  return axios.post(SEND_MAIL);
 };
 
 export { loginAdmin, registerAdmin, sendMail, addContest };

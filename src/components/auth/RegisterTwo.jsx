@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import {Alert} from "@mui/material";
 import Stack from "@mui/material/Stack";
 // import Header from "../UI/Header";
+import CheckIcon from '@mui/icons-material/Check';
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
@@ -146,6 +148,7 @@ const logoText = {
 const RegisterTwo = () => {
   const [confirmPassword, setConfirmpassword] = useState("");
   const location=useLocation();
+  const [showAlert, setAlert]=useState(false);
   const [credential, setcredential] = useState({
     name:location.state.credential.name,
     email:location.state.credential.email,
@@ -166,12 +169,20 @@ const RegisterTwo = () => {
     // }
   };
   const register=async()=>{
-  
+  try {
     const response =await registerAdmin(credential).then((res)=>console.log(res.data))
+    if(response){
+     setAlert(true)
+    }
+  } catch (error) {
+    console.log('erro',error)
+  }
+   
   }
   return (
     <>
       <Grid container>
+   
         <Grid item sx={Headers}>
           <Box ml={2} my={2}>
             <img src={logo} alt="logo" />
@@ -181,6 +192,12 @@ const RegisterTwo = () => {
           </Box>
         </Grid>
       </Grid>
+      {showAlert&& <Stack sx={{ width: '100%' }} spacing={2}>
+      <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+        This is a success alert — check it out!
+      </Alert>
+    </Stack>}
+     
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>

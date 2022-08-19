@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Container, Grid, Fab,} from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -13,7 +13,7 @@ import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 
 import Modal from "../UI/Modal";
-import {  useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -152,19 +152,29 @@ const date =
     : today.getMonth() + 1) +
   "/" +
   today.getFullYear();
-
+const contestInitialValues={
+  contestName:"",
+  contestDescription:"",
+  contestLevel:""
+}
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  const [contestDetails, setContestDetails] = useState([{
-    name:"fresher",
-    description:"experience from 0 to 6 month",
-    level:"level1"
-  },
-  {
-    name:"Experience",
-    description:"experience from 1 to 2 Year",
-    level:"level 2"
-  }]);
+  const location =useLocation();
+  const [presentContestData, setPresentContes]=useState(location?.state?.data?.presentContest)
+  // const [contestDetails, setContestDetails] = useState([{
+  //   contestName:presentContestData?.[0]?.contestName,
+  // contestDescription:presentContestData?.[0]?.contestDescription,
+  // contestLevel:presentContestData?.[0]?.contestLevel}
+  // ]);
+  const [contestDetails, setContestDetails] = useState(
+    presentContestData
+  );
+
+  
+useEffect(() => {
+ setPresentContes(location?.state?.data?.presentContest)
+}, [location])
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const handleContest = () => {
@@ -178,7 +188,7 @@ const Dashbord = () => {
       });
     });
   };
-  console.log("--dashbord----", contestDetails);
+  console.log("--dashbord----",location);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -239,10 +249,10 @@ const Dashbord = () => {
                         </IconButton>
                         <CardContent sx={cardBody}>
                           <h6 style={contestText}>
-                            {contestDetails?.[index]?.name}&nbsp;~&nbsp;{contestDetails?.[index]?.level}
+                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;{contestDetails?.[index]?.contestLevel}
                           </h6>
                           <p style={months}>
-                            {contestDetails?.[index]?.description}
+                            {contestDetails?.[index]?.contestDescription}
                           </p>
                           <p style={contestDate}>Last Changes {date}</p>
                         </CardContent>
