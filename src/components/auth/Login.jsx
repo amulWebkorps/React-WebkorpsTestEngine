@@ -131,14 +131,15 @@ const Login = ({ admin }) => {
       console.log("-----", credential);
     } else {
       try {
-        const result = await loginAdmin(credential).then((res)=>setResponse(res));
-        if (response) {
-          navigate("/dashboard", { state: { data: response.data } });
+        const result = await loginAdmin(credential).then();
+        if (result) {
+          setResponse(result.data)
+          navigate("/dashboard", { state: { data: result.data } });
         }
       } catch (error) {
         setAlert(true)
         setResponse(error?.response?.data)
-        // alert(error.response.data);
+        navigate('/')
         console.log("err", error.response.data);
       }
     }
