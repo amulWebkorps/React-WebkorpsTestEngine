@@ -223,8 +223,7 @@ const RegisterOne = () => {
 
               <Typography sx={footerOne}>
                 Have an account?
-                <NavLink to="/">
-                  {" "}
+                <NavLink to="/">  
                   <Button sx={LoginButton}>Log in</Button>
                 </NavLink>
               </Typography>

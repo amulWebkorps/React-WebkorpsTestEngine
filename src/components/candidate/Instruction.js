@@ -117,19 +117,19 @@ const Instruction = () => {
   const [language1, setLanguage1] = useState();
   const [age, setAge] = React.useState("");
 
-  // useEffect(() => {
-  //   axios
-  //     .get(CANDIDATE_LANGUAGE_URL)
-  //     .then(function (response) {
-  //       // handle success
-  //       setLanguage1(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       // handle error
-  //       console.log(error);
-  //     });
-  // }, []);
-  // console.log("data", language1);
+  useEffect(() => {
+    axios
+      .get(CANDIDATE_LANGUAGE_URL)
+      .then(function (response) {
+        // handle success
+        setLanguage1(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+  console.log("data", language1);
 
   const handleChange = (event) => {
     setAge(event.target.value);  

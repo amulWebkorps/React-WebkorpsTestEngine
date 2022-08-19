@@ -77,9 +77,10 @@ const buttonEmail={
 const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
-    gilad: true,
+    gilad: false,
     jason: false,
     antoine: false,
+    raj:false,
   });
   const handleClickOpen = () => {
     setOpen(true);
@@ -92,6 +93,8 @@ const EmailShow = () => {
       [event.target.name]: event.target.checked,
     });
   };
+
+  console.log("fgh",state)
 
   const { gilad, jason, antoine } = state;
 
@@ -180,7 +183,7 @@ const EmailShow = () => {
                 </Grid>
                 <Grid item sm={2} mt={1}>
                   <Checkbox
-                  checked={gilad} onChange={handleChange} name="gilad"
+                  checked={antoine} onChange={handleChange} name="antoine"
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="primary" />}
                     sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
@@ -190,76 +193,7 @@ const EmailShow = () => {
                   <img src={crossbtn} alt="cross" />
                 </Grid>
               </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    checked={gilad} onChange={handleChange} name="gilad"
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="primary" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv} >
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                   checked={antoine} onChange={handleChange} name="antoine"
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv} pt={2}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
+                                  
               <Grid item sx={divSelect}></Grid>
               <Grid item sx={divSelect}></Grid>
             </Grid>

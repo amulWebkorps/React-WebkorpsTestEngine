@@ -142,7 +142,7 @@ const Compiler = () => {
 
   console.log("location122",location.state.age)
   useEffect(() => {
-    axios
+     axios
       .get(CANDIDATE_LANGUAGE_URL)
       .then(function (response) {
         // handle success
@@ -153,6 +153,9 @@ const Compiler = () => {
         console.log(error);
       });
   }, []);
+
+ 
+
 
   console.log("data11", language2)
 
@@ -173,19 +176,26 @@ const Compiler = () => {
  
  
 
-
 const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.age)
-  console.log("getdata",dataLan)
+console.log("getdata",dataLan)
 
-//  setCode1(dataLan[0].codeBase)
+
 useEffect(()=>{
-  setCode1(dataLan[0]?.codeBase)
+   dataLan === undefined ? (
+    <div></div>
+  ) : ( 
+    setCode1(()=>{
+      console.log(dataLan[0].codeBase,"----------")
+      return dataLan[0].codeBase;
+    })
 
-},[dataLan])
+  )
+  
+ 
+},[language2])
 
 console.log("rfgh",code1)
-
-
+let data = code1.toString;
   return (
     <>
      { language2 === undefined ? (
@@ -220,7 +230,7 @@ console.log("rfgh",code1)
                     <Grid item sm={12}>
                       <Box>
                         <label style={inputLabel}>Problem statement</label>
-                        <Box style={inputField}>
+                        <Box style={inputField} p={2}>
                           <p>
                             A Maze is given as n*n matrix of blocks where source
                             block is the upper left most block i.e.,
@@ -247,7 +257,7 @@ console.log("rfgh",code1)
                     <Grid item sm={12}>
                       <Box>
                         <label style={inputLabel}>Constraints</label>
-                        <Box style={inputField}>
+                        <Box style={inputField} p={2}>
                           <p>
                             {`  1 <= n <= 50
 1 <= matrix[i][j] <= 20`}
@@ -259,7 +269,7 @@ console.log("rfgh",code1)
                       <Grid item sm={6} px={2}>
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
-                          <Box style={inputField}>
+                          <Box style={inputField} p={2}>
                             <p>{` {{2,1,0,0},{3,0,0,1},{0,1,0,1},
 {0,0,0,1}}`}</p>
                           </Box>
@@ -268,7 +278,7 @@ console.log("rfgh",code1)
                       <Grid sm={6} px={2}>
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
-                          <Box style={inputField}>
+                          <Box style={inputField} p={2}>
                             <p>{`{{1,0,0,0},{1,0,0,1},{0,0,0,1},
 {0,0,0,1}}`}</p>
                           </Box>
@@ -327,12 +337,11 @@ console.log("rfgh",code1)
     editorProps={{ $blockScrolling: true }}
     height="60vh"
     width="47vw"
-    defaultValue="
-         import sys\nn = len(sys.argv)\nm = sys.argv[0] // taking parameter from command line\n \n \t//write your code here"
+    value={code1}
     fontSize="20px"
   />
-  ,</Box>             
-              <Grid container sx={{ justifyContent: "end" }}>
+  </Box>   
+    <Grid container sx={{ justifyContent: "end" }}>
                 <Button variant="contained" sx={buttonTest}>
                   Run
                 </Button>

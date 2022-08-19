@@ -47,6 +47,8 @@ import Level1 from "./components/admin/Level1";
 import Level2 from "./components/admin/Level2";
 import Allavailable from "./components/admin/Allavailable";
 import Instruction from "./components/candidate/Instruction";
+import Data1 from "./components/candidate/Data";
+
 
 const theme = createTheme({
   palette: {
@@ -89,6 +91,7 @@ function App() {
           <Route path="/all" element={<All/>}></Route>
           <Route path="/allavailable" element={<Allavailable/>}></Route>
           <Route path="/instruction" element={<Instruction/>}></Route>
+          <Route path="/data" element={<Data1/>}></Route>
             <Route path="*" element={<Errorpage />}></Route>
           </Routes>
         </BrowserRouter>
