@@ -12,6 +12,7 @@ import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -149,11 +150,21 @@ const RegisterTwo = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (confirmPassword === e.target.value) {
-      setcredential({ ...credential, [name]: value });
-    } else {
-      alert("Password not match");
-    }
+    setcredential({ ...credential, [name]: value });
+    // if (confirmPassword === e.target.value) {
+    //   setcredential({ ...credential, [name]: value });
+    // } else {
+    //   alert("Password not match");
+    // }
+  };
+
+  const handleClick = async () => {
+    await axios
+      .post("http://192.168.1.74:8085/adminRegistration", credential, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
+      .then((res) => console.log("----", res));
   };
 
   return (
@@ -197,7 +208,7 @@ const RegisterTwo = () => {
                 value={confirmPassword}
               />
               <NavLink to="/dashboard" style={{ textDecoration: "none" }}>
-                <RegisterButton name="Register" />
+                <RegisterButton name="Register" onClick={handleClick} />
               </NavLink>
               <Typography sx={footerOne}>
                 Have an account?

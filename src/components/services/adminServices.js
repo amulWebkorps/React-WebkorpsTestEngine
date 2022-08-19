@@ -5,10 +5,10 @@ const SEND_MAIL = `http:8080/sendMail`;
 
 
   const loginAdmin = (credential) => {
-    return axios.post(ADMIN_LOGIN_URL);
+    return axios.post("http://192.168.1.74:8085/doSignInForAdmin",credential);
   };
   const registerAdmin = (credential) => {
-    return axios.post(ADMIN_REGISTRATION_URL);
+    return axios.post("http://192.168.1.74:8085/adminRegistration",credential);
   };
   const sendMail = (mailAddress) => {
     return axios.post(SEND_MAIL);

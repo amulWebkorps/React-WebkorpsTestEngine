@@ -12,7 +12,8 @@ import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink } from "react-router-dom";
-
+import { registerAdmin } from "../services/adminServices";
+import axios from "axios";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -166,6 +167,19 @@ const RegisterOne = () => {
     const { name, value } = e.target;
     setcredential({ ...credential, [name]: value });
   };
+
+  const handleClick = async () => {
+    const response = await axios.post(
+      "http://192.168.1.74:8085/adminRegistration",
+      credential,
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    console.log("response :-", response);
+  };
+
   return (
     <>
       <Grid container>
@@ -218,7 +232,7 @@ const RegisterOne = () => {
                 type="number"
               />
               <NavLink to="/password" style={{ textDecoration: "none" }}>
-                <ContinueButton name="Continue"/>
+                <ContinueButton name="Continue" onClick={handleClick} />
               </NavLink>
 
               <Typography sx={footerOne}>

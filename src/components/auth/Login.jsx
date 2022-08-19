@@ -13,7 +13,7 @@ import LoginButton from "./base/LoginButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink,useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -114,35 +114,28 @@ const logoText = {
 };
 
 const Login = ({ admin }) => {
-  const[credential,setCredential]=useState({
-    email:"",
-    password:""
-  })
-  const navigate=useNavigate();
+  const [credential, setCredential] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
-  const path=window?.location?.pathname
+  const path = window?.location?.pathname;
 
-  const handleLogin=()=>{
-    if(path==="/candidate"){
-      
-      navigate('/user')
-      console.log('-----',credential)
+  const handleLogin = () => {
+    if (path === "/candidate") {
+      navigate("/user");
+      console.log("-----", credential);
+    } else {
+      //const response=loginAdmin().then();
+
+      navigate("/dashboard");
+      console.log("-----", credential);
     }
-    else{
-      const response=loginAdmin().then();
-    
-      navigate("/dashboard")
-      console.log('-----',credential)
-    }
-   
-  }
-  const handleChange=(e)=>{
-   setCredential(
-   { ...credential,
-    [e.target.name]:e.target.value}
-   )
-
-  }
+  };
+  const handleChange = (e) => {
+    setCredential({ ...credential, [e.target.name]: e.target.value });
+  };
   return (
     <>
       <Grid container>
@@ -160,9 +153,20 @@ const Login = ({ admin }) => {
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
             <Stack>
-              <TextInput label="Email Address" name="email" onChange={(e)=>handleChange(e)} value={credential?.email} />
+              <TextInput
+                label="Email Address"
+                name="email"
+                onChange={(e) => handleChange(e)}
+                value={credential?.email}
+              />
 
-              <TextInput label="Password" name="password" type={"password"} onChange={(e)=>handleChange(e)}  value={credential?.password} />
+              <TextInput
+                label="Password"
+                name="password"
+                type={"password"}
+                onChange={(e) => handleChange(e)}
+                value={credential?.password}
+              />
               {admin && (
                 <FormControlLabel
                   control={<Checkbox size="10px" />}
