@@ -1,11 +1,15 @@
 import axios from 'axios'
-const CANDIDATE_LOGIN_URL='http:8080/doSignInForParticipator'
+const PARTICIPATOR_LOGIN_URL='http://localhost:8085/doSignInForParticipator'
 const CANDIDATE_REGISTRATION_URL=` http:8080/candidateRegistration`
 
-const candidateLogin=()=>{
-    return axios.post(CANDIDATE_LOGIN_URL)
+const participatorLogin=(contestId,credential)=>{
+    return axios.get(PARTICIPATOR_LOGIN_URL, {
+        params: {
+          contestId:contestId,
+          email: credential?.email,
+          password: credential?.password,
+        },
+      });
 }
-const candidateRegistration=()=>{
-    return axios.post(candidateRegistration)
-}
-export {candidateLogin,candidateRegistration}
+
+export {participatorLogin}

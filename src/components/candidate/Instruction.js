@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Header from "../UI/Header";
-import {useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 
 const background1 = {
   height: "100%",
@@ -116,30 +116,31 @@ const Instruction = () => {
 
   const [language1, setLanguage1] = useState();
   const [age, setAge] = React.useState("");
-
-  useEffect(() => {
-    axios
-      .get(CANDIDATE_LANGUAGE_URL)
-      .then(function (response) {
-        // handle success
-        setLanguage1(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-  }, []);
+  const location = useLocation();
+  const [participatorData, setParticipator]=useState(location)
+  
+  // useEffect(() => {
+  //   axios
+  //     .get(CANDIDATE_LANGUAGE_URL)
+  //     .then(function (response) {
+  //       // handle success
+  //       setLanguage1(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       // handle error
+  //       console.log(error);
+  //     });
+  // }, []);
   console.log("data", language1);
 
   const handleChange = (event) => {
-    setAge(event.target.value);  
+    setAge(event.target.value);
   };
-  console.log(age)
+  console.log(age);
 
-  const handleClick2=()=>{
-    navigate('/user',{state:{age}});
-  }
-
+  const handleClick2 = () => {
+    navigate("/user", { state: { age,participatorData } });
+  };
 
   return (
     <div style={background1}>
@@ -176,29 +177,32 @@ const Instruction = () => {
             })}
           </Grid>
           <Grid container>
-            <Typography mt={2} sx={selectTechnology}>Select Technology:</Typography>
+            <Typography mt={2} sx={selectTechnology}>
+              Select Technology:
+            </Typography>
 
             <Box sx={{ minWidth: 120 }}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <Select
-          value={age}
-          onChange={handleChange}
-          displayEmpty
-          inputProps={{ 'aria-label': 'Without label' }}
-        >
-         
-          <MenuItem value="C">
-             C
-          </MenuItem>
-          <MenuItem value={"C++"}>C++</MenuItem>
-          <MenuItem value={"Java"}>Java</MenuItem>
-          <MenuItem value={"Python"}>Python</MenuItem>
-        </Select>     
-      </FormControl>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={age}
+                  onChange={handleChange}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  <MenuItem value="C">C</MenuItem>
+                  <MenuItem value={"C++"}>C++</MenuItem>
+                  <MenuItem value={"Java"}>Java</MenuItem>
+                  <MenuItem value={"Python"}>Python</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
           </Grid>
           <Grid container>
-            <Button variant="contained" onClick={handleClick2} sx={startContest}>
+            <Button
+              variant="contained"
+              onClick={handleClick2}
+              sx={startContest}
+            >
               Start Contest
             </Button>
             <Button variant="outlined" sx={cancelBtn}>

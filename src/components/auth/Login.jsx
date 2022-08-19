@@ -16,6 +16,7 @@ import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
 import Alert from "./base/Alert";
+import { participatorLogin } from "../services/candidate";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -121,33 +122,37 @@ const Login = ({ admin }) => {
   });
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
-  const [response, setResponse]=useState(null);
+  const [response, setResponse] = useState(null);
   const path = window?.location?.pathname;
-  const{Id}=useParams();
-  console.log('params-----',Id)
+  const { Id } = useParams();
+  console.log("params-----", Id);
 
   const handleLogin = async () => {
-    if (path === "/candidate") {
-      navigate("/instruction");
-      console.log("-----", credential);
-    } else {
+    if (path === "/") {
       try {
         const result = await loginAdmin(credential).then();
         if (result) {
-          setResponse(result.data)
+          setResponse(result.data);
           navigate("/dashboard", { state: { data: result.data } });
         }
       } catch (error) {
-        setAlert(true)
-        setResponse(error?.response?.data)
-        navigate('/')
+        setAlert(true);
+        setResponse(error?.response?.data);
+        navigate("/");
         console.log("err", error.response.data);
       }
+    } else {
+      console.log("-worked-------");
+      const result = await participatorLogin(Id, credential).then();
+      console.log('--------------',result.data);
+      navigate("/instruction",{ state: { data: result.data } });
     }
   };
-  useEffect(()=>{
-    setAlert(false)
-  },[credential])
+
+  console.log("-----", credential);
+  useEffect(() => {
+    setAlert(false);
+  }, [credential]);
   const handleChange = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
   };
@@ -162,12 +167,7 @@ const Login = ({ admin }) => {
             WEBKORPS
           </Box>
         </Grid>
-        {showAlert && (
-         <Alert
-          severity={"error"}
-          errMsg={response}
-         />
-        )}
+        {showAlert && <Alert severity={"error"} errMsg={response} />}
       </Grid>
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

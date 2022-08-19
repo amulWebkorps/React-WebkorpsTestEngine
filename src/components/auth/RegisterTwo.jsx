@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import {Alert} from "@mui/material";
+import Alert from "./base/Alert";
 import Stack from "@mui/material/Stack";
 // import Header from "../UI/Header";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
@@ -13,7 +13,7 @@ import { Button } from "@mui/material";
 import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink,useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { registerAdmin } from "../services/adminServices";
 
@@ -147,42 +147,50 @@ const logoText = {
 
 const RegisterTwo = () => {
   const [confirmPassword, setConfirmpassword] = useState("");
-  const location=useLocation();
-  const [showAlert, setAlert]=useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [showAlert, setAlert] = useState(false);
   const [credential, setcredential] = useState({
-    name:location.state.credential.name,
-    email:location.state.credential.email,
-    phone:location.state.credential.phone,
+    name: location.state.credential.name,
+    email: location.state.credential.email,
+    phone: location.state.credential.phone,
     password: "",
   });
-  
-  console.log(location.state.credential)
+
+  console.log(location.state.credential);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setcredential({ ...credential, [name]: value });
     // if (confirmPassword === e.target.value) {
-      
-      
+
     // } else {
     //   alert("Password not match");
     // }
   };
-  const register=async()=>{
-  try {
-    const response =await registerAdmin(credential).then((res)=>console.log(res.data))
-    if(response){
-     setAlert(true)
+  const register = async () => {
+    try {
+      const response = await registerAdmin(credential).then((res) =>
+
+        setAlert(true)
+      );
+
+      setTimeout(() => {
+        navigate("/");
+       
+      }, 2000);
+
+      console.log("------awit-");
+      if (response) {
+        console.log("------if-");
+      }
+    } catch (error) {
+      console.log("erro", error);
     }
-  } catch (error) {
-    console.log('erro',error)
-  }
-   
-  }
+  };
   return (
     <>
       <Grid container>
-   
         <Grid item sx={Headers}>
           <Box ml={2} my={2}>
             <img src={logo} alt="logo" />
@@ -192,16 +200,14 @@ const RegisterTwo = () => {
           </Box>
         </Grid>
       </Grid>
-      {showAlert&& <Stack sx={{ width: '100%' }} spacing={2}>
-      <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-        This is a success alert — check it out!
-      </Alert>
-    </Stack>}
+      {showAlert&& <Alert severity={"success"} errMsg={'Admin register succesfully'} />}
      
+      
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Register" />
+            
             <Box sx={pages}>
               <Typography sx={first}>1</Typography>
               <Typography sx={lining}>___</Typography>
@@ -229,7 +235,7 @@ const RegisterTwo = () => {
               {/* <NavLink  style={{ textDecoration: "none" }}>
                 
               </NavLink> */}
-              <RegisterButton name="Register"  onClick={register}/>
+              <RegisterButton name="Register" onClick={register} />
               <Typography sx={footerOne}>
                 Have an account?
                 <NavLink to="/">

@@ -139,8 +139,7 @@ const Compiler = () => {
   const [code1, setCode1] = useState("");
   const [Lan, setLan] = useState("");
   const location = useLocation()
-
-  console.log("location122",location.state.age)
+  const [profile, setProfile]=useState(location?.state)
   useEffect(() => {
      axios
       .get(`http://localhost:8085/showAllLanguage`)
@@ -154,10 +153,7 @@ const Compiler = () => {
       });
   }, []);
 
- 
-
-
-  console.log("data11", language2)
+  console.log('--profile--',profile?.participatorData?.state?.data)
 
   // language2.map((value)=>{
   //   <div>    
@@ -185,7 +181,7 @@ useEffect(()=>{
     <div></div>
   ) : ( 
     setCode1(()=>{
-      console.log(dataLan[0].codeBase,"----------")
+
       return dataLan[0].codeBase;
     })
 
@@ -306,7 +302,7 @@ let data = code1.toString;
                     <h3>Name:- </h3>
                   </label>
                   <box>
-                    <h3>Ram manhotra </h3>
+                    <h3>{profile?.participatorData?.state?.data?.name}</h3>
                   </box>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
@@ -314,7 +310,7 @@ let data = code1.toString;
                     <h3>Email:- </h3>
                   </label>
                   <box>
-                    <h3> ram@gmail.com</h3>
+                    <h3>{profile?.participatorData?.state?.data?.email}</h3>
                   </box>
                 </Grid>
               </Grid>
