@@ -128,7 +128,7 @@ const Login = ({ admin }) => {
 
   const handleLogin = async () => {
     if (path === "/candidate") {
-      navigate("/user");
+      navigate("/instruction");
       console.log("-----", credential);
     } else {
       try {
