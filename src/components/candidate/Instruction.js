@@ -115,7 +115,7 @@ const Instruction = () => {
   const navigate = useNavigate();
 
   const [language1, setLanguage1] = useState();
-  const [age, setAge] = React.useState("");
+  const [language, setLanguage] = React.useState("");
   const location = useLocation();
   const [participatorData, setParticipator]=useState(location)
   
@@ -131,15 +131,14 @@ const Instruction = () => {
   //       console.log(error);
   //     });
   // }, []);
-  console.log("data", language1);
+
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setLanguage(event.target.value);
   };
-  console.log(age);
 
   const handleClick2 = () => {
-    navigate("/user", { state: { age,participatorData } });
+    navigate("/user", { state: { language,participatorData } });
   };
 
   return (
@@ -184,7 +183,7 @@ const Instruction = () => {
             <Box sx={{ minWidth: 120 }}>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
-                  value={age}
+                  value={language}
                   onChange={handleChange}
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}

@@ -3,6 +3,7 @@ import {
   Paper,
   Button,
   Card,
+  CardActions,
   CardContent,
   Typography,
   TextField,
@@ -18,12 +19,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { FixedSizeList } from "react-window";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
-import { crossbtn } from "../assests/images";
+import AddedQues from "./AddedQues";
+import { useNavigate } from "react-router-dom";
+import All from "./All";
 function renderRow(props) {
   const { index, style } = props;
   const testCase = {
@@ -45,7 +49,7 @@ function renderRow(props) {
               autoComplete="off"
             >
               <Container
-                sx={{ display: "flex", justifyContent: "space-between"}}
+                sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <FormControl
                   sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
@@ -98,6 +102,8 @@ const useStyles = makeStyles({
 
 const sideColumn = {
   background: "#0057FF",
+  /* vv */
+
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: " 18px 0px 0px 18px",
 };
@@ -112,10 +118,52 @@ const questionList = {
   overflow: "auto",
 };
 
+const topButton = {
+  display: "flex",
+  justifyContent: "center",
+};
+const MainBox = {
+  height: "15vh",
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+};
+const QuestionBox = {
+  cursor: "pointer",
+  width: "250px",
+  height: "55px",
+  background: "#FDFEFF;",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: `18px 0px 0px 18px`,
+  fontWeight: 700,
+  fontSize: "20px",
+};
+
+const AnswerBox = {
+  cursor: "pointer",
+  width: "250px",
+  height: "55px",
+  background: "#0057FF",
+  color: "white",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: `0px 18px 18px 0px`,
+  fontWeight: 700,
+  fontSize: "20px",
+};
+
 const delBtn = {
   position: "absolute",
   marginTop: "8px",
   right: "8%",
+
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -124,17 +172,16 @@ const delBtn = {
 const mainContainer = {
   marginTop: "20px",
   background: "white",
-  paddingBottom: "20px",
 };
 
 const cardBody = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
-
 const addQues = {
   background: "#F9FAFC",
 };
+
 const input = {
   borderColor: "none",
   background: "#FFFFFF",
@@ -155,6 +202,29 @@ const label = {
   lineHeight: "21px",
 };
 
+const btn = {
+  fontSize: "8",
+  fontWeight: "600",
+  color: "white",
+  borderRadius: "6px",
+  width: "160px",
+};
+
+const Addbtn = {
+  fontSize: "8",
+  fontWeight: "600",
+  color: "white",
+  borderRadius: "6px",
+};
+const quesIntialField = {
+  problem: "",
+  constraints: "",
+  sampleInput: "",
+  sampleOutput: "",
+  input: "",
+  output: "",
+  testCase: {},
+};
 const buttonLevel = {
   width: "260px",
   height: "51px",
@@ -172,90 +242,46 @@ const buttonLevel = {
   color: "#FFFFFF",
 };
 
-const levelText = {
-  fontFamily: "Raleway",
-  fontSize: "34px",
-  fontWeight: "600",
-  lineHeight: "40px",
-  letterSpacing: "0em",
-  textAlign: "left",
-};
-
-const btn = {
-  fontSize: "8",
-  fontWeight: "600",
-  color: "white",
-  borderRadius: "6px",
-  
-};
-const btnAdd = {
-  fontSize: "8",
-  fontWeight: "600",
-  color: "white",
-  borderRadius: "6px",
-  width: "150px",
-};
-
-const levelSubHeading = {
-  width: "100%",
-  height: "89px",
-  background: "#F9FAFC",
-  borderRadius: "17px 17px 0px 0px",
-};
-
-const divText = {
-  width: "515px",
-  height: "28px",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "300",
-  fontSize: "24px",
-  lineHeight: "28px",
-  color: "#000000",
-  marginLeft: "20px",
-};
-
-const scrollDiv = {
-  overflowY: "auto",
-};
-
-const divSelect = {
-  width: "1120px",
-  height: "76px",
-  background: "#FFFFFF",
-  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
-  borderRadius: "14px",
-  marginTop: "10px",
-};
-
-const containerUpper = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-};
-
-const editQuestion = {
-  width: "147px",
-  height: "28px",
-
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "300",
-  fontSize: "20px",
-  lineHeight: "28px",
-  textDecorationLine: "underline",
-  paddingTop: "15px",
-  color: "#0057ff",
-};
-
-const array = [1, 2, 3, 4, 5, 6, 4, 4, 45, 5, 5, 1, 22, 5, 5, 4, 5, 6];
-
 const Level1 = () => {
-  const [showq, setShowQ] = useState(false);
+  const navigate = useNavigate();
   const classes = useStyles();
+  const [question, setQuestion] = useState(quesIntialField);
+  const [quesId, setQuesId] = useState(null);
+  const [contestQuestion, setContestQuestion] = useState([
+    {
+      problem:
+        "Given a String S, reverse the string without reversing its individual words. Words are separated by dots.",
+      constraints: "1 <= |S| <= 2000",
+      sampleInput: "S = i.like.this.program.very.much",
+      sampleOutput: "much.very.program.this.like.i",
+      input: "",
+      output: "",
+      testCase: {},
+    },
+  ]);
+  const [editQuestion, setEditQuestion] = useState(false);
   const handleOnchange = (e) => {
-    console.log(e.target.value);
+    const { name, value } = e.target;
+    setQuestion({
+      ...question,
+      [name]: value,
+    });
   };
+  const addQuestion = (e) => {
+    if (editQuestion) {
+      setEditQuestion(false);
+      setQuestion(quesIntialField);
+      return (contestQuestion[quesId] = question);
+    } else {
+      if (quesIntialField.problem === "") {
+        alert("fill all field");
+      } else {
+        setContestQuestion([...contestQuestion, question]);
+        setQuestion(quesIntialField);
+      }
+    }
+  };
+
   return (
     <div style={questionList}>
       <Header />
@@ -266,7 +292,14 @@ const Level1 = () => {
           </Box>
         </Grid>
       </Grid>
-
+      {/* <Container sx={topButton}>
+        <Grid container sx={{ justifyContent: "center" }} mt={3}>
+          <Box sx={QuestionBox}>Questions</Box>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+            Participators
+          </Box>
+        </Grid>
+      </Container> */}
       <Container sx={mainContainer}>
         <Grid>
           <Card sx={cardBody}>
@@ -292,6 +325,9 @@ const Level1 = () => {
                         multiline
                         rows={3}
                         maxRows={10}
+                        onChange={handleOnchange}
+                        name="problem"
+                        value={question?.problem}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
@@ -299,13 +335,11 @@ const Level1 = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={handleOnchange}
                         fullWidth
                         id="fullWidth"
                         placeholder="Write Problem statement here"
                         mt={5}
                         sx={input}
-                        x
                       />
                       <br />
                       <br />
@@ -319,6 +353,9 @@ const Level1 = () => {
                         maxRows={10}
                         sx={input}
                         fullWidth
+                        onChange={handleOnchange}
+                        name="constraints"
+                        value={question?.constraints}
                         id="fullWidth"
                         placeholder="Write Constraints here"
                         InputProps={{
@@ -343,6 +380,9 @@ const Level1 = () => {
                           <TextField
                             id="fullWidth"
                             placeholder="Input here"
+                            onChange={handleOnchange}
+                            name="sampleInput"
+                            value={question?.sampleInput}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -364,6 +404,9 @@ const Level1 = () => {
                             multiline
                             rows={3}
                             maxRows={10}
+                            onChange={handleOnchange}
+                            name="sampleOutput"
+                            value={question?.sampleOutput}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
@@ -385,8 +428,20 @@ const Level1 = () => {
                         justifyContent={"flex-end"}
                         mt={2}
                       >
-                        <Button variant="contained" sx={btnAdd}>
-                          Add Question
+                        <Button
+                          variant="contained"
+                          sx={btn}
+                          onClick={addQuestion}
+                        >
+                          {editQuestion ? `Edit Question` : `Add Question`}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          startIcon={<NoteAddIcon />}
+                        >
+                          Upload File
+                          <input hidden accept="file/*" multiple type="file" />
                         </Button>
                       </Stack>
                     </Grid>
@@ -417,6 +472,9 @@ const Level1 = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Input here"
+                              onChange={handleOnchange}
+                              name="input"
+                              value={question?.input}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -427,6 +485,9 @@ const Level1 = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Output here"
+                              onChange={handleOnchange}
+                              name="output"
+                              value={question?.output}
                             />
                           </Grid>
                         </Grid>
@@ -463,8 +524,12 @@ const Level1 = () => {
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={btn}>Add</Button>
-                          <Button variant="contained" sx={btn}>Close</Button>
+                          <Button variant="contained" sx={Addbtn}>
+                            Add
+                          </Button>
+                          <Button variant="contained" sx={Addbtn}>
+                            Close
+                          </Button>
                         </Stack>
                       </Container>
                     </div>
@@ -472,34 +537,17 @@ const Level1 = () => {
                 </Grid>
               </Grid>
             </CardContent>
+            <CardActions></CardActions>
           </Card>
         </Grid>
-        <Grid sx={containerUpper} mt={3}>
-          <Grid item sx={levelSubHeading}>
-            <Typography sx={levelText} m={2}>
-              Available Questions
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container sx={{ height: "400px", overflow: "auto" }} p={5}>
-          {array.map((val) => {
-            return (
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText}>
-                    write a progrom to make a star
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Typography sx={editQuestion}>Edit Questions</Typography>
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-            );
-          })}
-        </Grid>
+        <AddedQues
+          question={question}
+          setQuestion={setQuestion}
+          setContestQuestion={setContestQuestion}
+          contestQuestion={contestQuestion}
+          setEditQuestion={setEditQuestion}
+          setQuesId={setQuesId}
+        />
       </Container>
     </div>
   );
