@@ -142,7 +142,7 @@ const Compiler = () => {
   const [profile, setProfile]=useState(location?.state)
   useEffect(() => {
      axios
-      .get(`http://localhost:8085/showAllLanguage`)
+      .get(`http://192.168.1.74:8085/showAllLanguage`)
       .then(function (response) {
         // handle success
         setLanguage2(response.data);

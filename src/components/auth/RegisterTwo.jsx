@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -14,8 +14,10 @@ import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
 import { registerAdmin } from "../services/adminServices";
+import { registerState, credentialData } from "../store/RegisterSlice";
+import Validation from "./base/Validation";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -145,47 +147,48 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterTwo = () => {
+const RegisterTwo = ({ registercredential, setregistercredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
-  const location = useLocation();
+  let dispatch = useDispatch();
+  const registerData = useSelector(registerState);
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
+  const [showalertpassword, setalertpassword] = useState(false);
   const [credential, setcredential] = useState({
-    name: location.state.credential.name,
-    email: location.state.credential.email,
-    phone: location.state.credential.phone,
     password: "",
   });
-
-  console.log(location.state.credential);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setcredential({ ...credential, [name]: value });
-    // if (confirmPassword === e.target.value) {
-
-    // } else {
-    //   alert("Password not match");
-    // }
+    setregistercredential({ ...registercredential, [name]: value });
   };
+
+  console.log("password", credential.password);
+  console.log("confirmpassword", confirmPassword);
   const register = async () => {
-    try {
-      const response = await registerAdmin(credential).then((res) =>
-
-        setAlert(true)
-      );
-
-      setTimeout(() => {
-        navigate("/");
-       
-      }, 2000);
-
-      console.log("------awit-");
-      if (response) {
-        console.log("------if-");
+    if (credential.password === "" || confirmPassword === "") {
+      setalertpassword(true);
+      setAlert(false);
+    } else if (credential.password === confirmPassword) {
+      try {
+        const response = await registerAdmin(registercredential).then(
+          (res) => setAlert(true),
+          setalertpassword(false)
+        );
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+        console.log("------awit-");
+        if (response) {
+          console.log("------if-");
+        }
+      } catch (error) {
+        console.log("erro", error);
       }
-    } catch (error) {
-      console.log("erro", error);
+    } else {
+      setalertpassword(true);
+      setAlert(false);
     }
   };
   return (
@@ -200,14 +203,18 @@ const RegisterTwo = () => {
           </Box>
         </Grid>
       </Grid>
-      {showAlert&& <Alert severity={"success"} errMsg={'Admin register succesfully'} />}
-     
-      
+
+      {showAlert && (
+        <Alert severity={"success"} errMsg={"Admin register succesfully"} />
+      )}
+      {showalertpassword && (
+        <Validation severity={"error"} empty={"please fill correct password"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Register" />
-            
+
             <Box sx={pages}>
               <Typography sx={first}>1</Typography>
               <Typography sx={lining}>___</Typography>

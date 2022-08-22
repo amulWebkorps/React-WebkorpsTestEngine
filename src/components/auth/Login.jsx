@@ -125,13 +125,15 @@ const Login = ({ admin }) => {
   const [response, setResponse] = useState(null);
   const path = window?.location?.pathname;
   const { Id } = useParams();
-  console.log("params-----", Id);
+  //console.log("params-----", Id);
 
   const handleLogin = async () => {
     if (path === "/") {
       try {
         const result = await loginAdmin(credential).then();
-        if (result) {
+        if (credential.email === "" || credential.password === "") {
+          setAlert(true);
+        } else if (result) {
           setResponse(result.data);
           navigate("/dashboard", { state: { data: result.data } });
         }
@@ -139,17 +141,17 @@ const Login = ({ admin }) => {
         setAlert(true);
         setResponse(error?.response?.data);
         navigate("/");
-        console.log("err", error.response.data);
+        //console.log("err", error.response.data);
       }
     } else {
-      console.log("-worked-------");
+      //console.log("-worked-------");
       const result = await participatorLogin(Id, credential).then();
-      console.log('--------------',result.data);
-      navigate("/instruction",{ state: { data: result.data } });
+      // console.log("--------------", result.data);
+      navigate("/instruction", { state: { data: result.data } });
     }
   };
 
-  console.log("-----", credential);
+  //console.log("-----", credential);
   useEffect(() => {
     setAlert(false);
   }, [credential]);
@@ -167,7 +169,13 @@ const Login = ({ admin }) => {
             WEBKORPS
           </Box>
         </Grid>
-        {showAlert && <Alert severity={"error"} errMsg={response} />}
+        {showAlert && (
+          <Alert
+            severity={"error"}
+            errMsg={response}
+            empty={"please fill details"}
+          />
+        )}
       </Grid>
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
