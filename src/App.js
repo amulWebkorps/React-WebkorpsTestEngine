@@ -9,7 +9,6 @@
 //   return (
 //     <>
 //       {/* <Dashbord/>
-//       <Login/>
 //      <RegisterOne/>
 //      <RegisterTwo/>
 //       <AnswerSheet /> */}
