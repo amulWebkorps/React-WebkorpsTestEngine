@@ -14,6 +14,8 @@ import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRou
 
 import Modal from "../UI/Modal";
 import {  useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { getContestDetail } from "../services/adminServices";
 
 
 
@@ -177,8 +179,12 @@ useEffect(() => {
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const handleContest = () => {
-    navigate("/addQuestion");
+  const handleContest = async(id) => {
+    console.log('id',contestDetails)
+   const result=await getContestDetail(id).then();
+   console.log(result.data)
+   
+    // navigate("/addQuestion");
   };
 
   const deleteContest = (id) => {
@@ -233,7 +239,7 @@ useEffect(() => {
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
-                          onClick={() => handleContest()}
+                          onClick={() => handleContest(contestDetails?.[index]?.contestId)}
                           style={cardImg}
                           component="img"
                           height="140"
