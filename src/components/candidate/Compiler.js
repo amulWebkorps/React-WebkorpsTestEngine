@@ -217,7 +217,7 @@ let data = code1.toString;
                         <label style={inputLabel}>Problem statement</label>
                         <Box style={inputField} p={2}>
                           <p>                 
-                            {data1?.QuestionList?.question}
+                            {data1?.QuestionList[0]?.question}
                           </p>
                         </Box>
                       </Box>
@@ -227,7 +227,7 @@ let data = code1.toString;
                         <label style={inputLabel}>Constraints</label>
                         <Box style={inputField} p={2}>
                           <p>
-                          {data1?.QuestionList?.sampleTestCase[0]?.constraints}
+                          {data1?.QuestionList[0]?.sampleTestCase[0]?.constraints}
                           </p>
                         </Box>
                       </Box>
@@ -237,7 +237,7 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList?.sampleTestCase[0]?.input}</p>
+                            <p>{data1?.QuestionList[0]?.sampleTestCase[0]?.input}</p>
                           </Box>
                         </Box>
                       </Grid>
@@ -245,7 +245,7 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList?.sampleTestCase[0]?.output}</p>
+                            <p>{data1?.QuestionList[0]?.sampleTestCase[0]?.output}</p>
                           </Box>
                         </Box>
                       </Grid>
