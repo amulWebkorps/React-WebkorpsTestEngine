@@ -287,7 +287,6 @@ const Level1 = () => {
                       <Typography sx={label} display="inline">
                         Write Problem statement
                       </Typography>
-                      {/* <label style={label}>Write Problem statement</label> */}
                       <TextField
                         multiline
                         rows={3}

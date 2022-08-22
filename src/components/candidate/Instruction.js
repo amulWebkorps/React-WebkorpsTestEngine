@@ -119,18 +119,6 @@ const Instruction = () => {
   const location = useLocation();
   const [participatorData, setParticipator]=useState(location)
   
-  // useEffect(() => {
-  //   axios
-  //     .get(CANDIDATE_LANGUAGE_URL)
-  //     .then(function (response) {
-  //       // handle success
-  //       setLanguage1(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       // handle error
-  //       console.log(error);
-  //     });
-  // }, []);
   console.log("data", language1);
 
   const handleChange = (event) => {

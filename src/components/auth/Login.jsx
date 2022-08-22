@@ -144,7 +144,7 @@ const Login = ({ admin }) => {
     } else {
       console.log("-worked-------");
       const result = await participatorLogin(Id, credential).then();
-      console.log('--------------',result.data);
+      console.log('--------------gjbngjbnbng',result.data);
       navigate("/instruction",{ state: { data: result.data } });
     }
   };
