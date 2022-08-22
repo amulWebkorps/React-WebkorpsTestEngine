@@ -148,7 +148,6 @@ const Login = ({ admin }) => {
       navigate("/instruction",{ state: { data: result.data } });
     }
   };
-
   console.log("-----", credential);
   useEffect(() => {
     setAlert(false);
