@@ -125,7 +125,7 @@ const Login = ({ admin }) => {
   const [response, setResponse] = useState(null);
   const path = window?.location?.pathname;
   const { Id } = useParams();
-  console.log("params-----", Id);
+
 
   const handleLogin = async () => {
     if (path === "/") {
@@ -142,14 +142,14 @@ const Login = ({ admin }) => {
         console.log("err", error.response.data);
       }
     } else {
-      console.log("-worked-------");
+  
       const result = await participatorLogin(Id, credential).then();
       console.log('--------------',result.data);
       navigate("/instruction",{ state: { data: result.data } });
     }
   };
 
-  console.log("-----", credential);
+ 
   useEffect(() => {
     setAlert(false);
   }, [credential]);

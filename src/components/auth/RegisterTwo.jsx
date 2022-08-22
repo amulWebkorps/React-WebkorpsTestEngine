@@ -157,7 +157,7 @@ const RegisterTwo = () => {
     password: "",
   });
 
-  console.log(location.state.credential);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;

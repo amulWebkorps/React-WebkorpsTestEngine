@@ -131,12 +131,12 @@ const Instruction = () => {
   //       console.log(error);
   //     });
   // }, []);
-  console.log("data", language1);
+
 
   const handleChange = (event) => {
     setAge(event.target.value);
   };
-  console.log(age);
+
 
   const handleClick2 = () => {
     navigate("/user", { state: { age,participatorData } });

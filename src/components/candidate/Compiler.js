@@ -153,7 +153,7 @@ const Compiler = () => {
       });
   }, []);
 
-  console.log('--profile--',profile?.participatorData?.state?.data)
+
 
   // language2.map((value)=>{
   //   <div>    
@@ -190,7 +190,7 @@ useEffect(()=>{
  
 },[language2])
 
-console.log("rfgh",code1)
+
 let data = code1.toString;
   return (
     <>
