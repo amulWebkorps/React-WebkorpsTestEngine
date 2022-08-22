@@ -1,9 +1,9 @@
 import axios from "axios";
-const ADMIN_LOGIN_URL = `http://localhost:8085/doSignInForAdmin`;
-const ADMIN_REGISTRATION_URL = `http://localhost:8085/adminRegistration`;
-const CREATE_CONTEST = `http://localhost:8085/createContest`;
-const SEND_MAIL = `http:8080/sendMail`;
-const ADD_CONTEST = `http:8080/addContest`;
+const ADMIN_LOGIN_URL = `http://192.168.1.74:8085/doSignInForAdmin`;
+const ADMIN_REGISTRATION_URL = `http://192.168.1.74:8085/adminRegistration`;
+const CREATE_CONTEST = `http://192.168.1.74:8085/createContest`;
+const SEND_MAIL = `http://192.168.1.74:8085/sendMail`;
+const ADD_CONTEST = `http://192.168.1.74:8085/addContest`;
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {

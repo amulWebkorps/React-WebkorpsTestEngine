@@ -136,13 +136,14 @@ const buttonTest = {
 const Compiler = () => {
   const axios = require("axios").default;
   const [language2, setLanguage2] = useState();
+  const [data1, setdata1] = useState();
   const [code1, setCode1] = useState("");
   const [Lan, setLan] = useState("");
   const location = useLocation()
   const [profile, setProfile]=useState(location?.state)
   useEffect(() => {
      axios
-      .get(`http://localhost:8085/showAllLanguage`)
+      .get(`http://192.168.1.93:8085/showAllLanguage`)
       .then(function (response) {
         // handle success
         setLanguage2(response.data);
@@ -162,17 +163,24 @@ const Compiler = () => {
   // })
 
 
+  useEffect(() => {
+    axios
+     .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=2910e8d7-ef82-43f8-8b2b-f5e211ba98e2`)
+     .then(function (response) {
+       // handle success
+       setdata1(response.data);
+     })
+     .catch(function (error) {
+       // handle error
+       console.log(error);
+     });
+ }, []);
 
-// const Landata =JSON.stringify(location[0]?.state?.age)
-// useEffect(()=>{
-//   setLan(Landata)
-// },[])
+  console.log("datastartcontest",data1)
+  console.log('--profile--',profile?.participatorData?.state?.data)
 
 
- 
- 
-
-const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.age)
+const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.language)
 console.log("getdata",dataLan)
 
 
@@ -194,17 +202,6 @@ useEffect(()=>{
 let data = code1.toString;
   return (
     <>
-     { language2 === undefined ? (
-    <div></div>
-  ) : ( 
-  //   language2.filter(language2 => language2.language ==="java").map(filteredLanguage =>  ( 
-  //   <li>
-  //    {filteredLanguage.codeBase}
-  //   </li>
-  // )))
- <div>
- </div> ) 
-}
       <Header />
       <div className="background1">
         <Grid container>
@@ -227,25 +224,8 @@ let data = code1.toString;
                       <Box>
                         <label style={inputLabel}>Problem statement</label>
                         <Box style={inputField} p={2}>
-                          <p>
-                            A Maze is given as n*n matrix of blocks where source
-                            block is the upper left most block i.e.,
-                            matrix[0][0] and destination block is lower
-                            rightmost block i.e., matrix[n-1][n-1]. A rat starts
-                            from source and has to reach the destination. The
-                            rat can move in only two directions: first forward
-                            if possible or down. If multiple solutions exist,
-                            the shortest earliest hop will be accepted. For the
-                            same hop distance at any point, forward will be
-                            preferred over downward. In the maze matrix, 0 means
-                            the block is the dead end and non-zero number means
-                            the block can be used in the path from source to
-                            destination. The non-zero value of mat[i][j]
-                            indicates number of maximum jumps rat can make from
-                            cell mat[i][j]. In this variation, Rat is allowed to
-                            jump multiple steps at a time instead of 1. Find a
-                            matrix which describes the position the rat to reach
-                            at the destination.
+                          <p>                 
+                            {data1?.QuestionList[0]?.question}
                           </p>
                         </Box>
                       </Box>
@@ -255,8 +235,7 @@ let data = code1.toString;
                         <label style={inputLabel}>Constraints</label>
                         <Box style={inputField} p={2}>
                           <p>
-                            {`  1 <= n <= 50
-1 <= matrix[i][j] <= 20`}
+                          {data1?.QuestionList[0]?.sampleTestCase[0]?.constraints}
                           </p>
                         </Box>
                       </Box>
@@ -266,8 +245,7 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
                           <Box style={inputField} p={2}>
-                            <p>{` {{2,1,0,0},{3,0,0,1},{0,1,0,1},
-{0,0,0,1}}`}</p>
+                            <p>{data1?.QuestionList[0]?.sampleTestCase[0]?.input}</p>
                           </Box>
                         </Box>
                       </Grid>
@@ -275,8 +253,7 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
                           <Box style={inputField} p={2}>
-                            <p>{`{{1,0,0,0},{1,0,0,1},{0,0,0,1},
-{0,0,0,1}}`}</p>
+                            <p>{data1?.QuestionList[0]?.sampleTestCase[0]?.output}</p>
                           </Box>
                         </Box>
                       </Grid>
