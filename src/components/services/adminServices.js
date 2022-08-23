@@ -5,9 +5,6 @@ const CREATE_CONTEST = `http://localhost:8085/createContest`;
 const SEND_MAIL = `http://localhost:8085/sendMail`;
 const CONTEST_URL=`http://localhost:8085/getContestDetail`
 const ADD_CONTEST = `http://localhost:8085/addContest`;
-const DELETE_CONTEST = `http://localhost:8085/deletecontest`;
-
-
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {
@@ -41,14 +38,10 @@ const addContest = (contestDetails) => {
     contestLevel: contestDetails?.contestLevel,
   });
 };
-
-const sendMail = (mailAddress) => {
-  return axios.post(SEND_MAIL);
-};
-
-
-const removeContest = (removeContest) => {
-  return axios.delete(DELETE_CONTEST, {
+const sendMail = (contestId,mailAddress) => {
+  return axios.post(SEND_MAIL,{
+    
   });
 };
-export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail ,removeContest};
+
+export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail };

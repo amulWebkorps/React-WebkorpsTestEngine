@@ -11,7 +11,6 @@ import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
-
 import Modal from "../UI/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -172,8 +171,7 @@ const Dashbord = () => {
     console.log("id", contestDetails);
     const result = await getContestDetail(id).then();
     console.log(result.data);
-
-    // navigate("/addQuestion");
+    navigate("/addQuestion");
   };
 
   const deleteContest = (id) => {

@@ -119,6 +119,7 @@ const Instruction = () => {
   const location = useLocation();
   const [participatorData, setParticipator]=useState(location)
   
+  console.log("data", language1);
   // useEffect(() => {
   //   axios
   //     .get(CANDIDATE_LANGUAGE_URL)

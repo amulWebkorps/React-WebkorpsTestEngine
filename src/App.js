@@ -70,13 +70,14 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
+          <Route path="/login/:Id" element={<Login />}></Route>
             {/* <Route path="/" element={<Login admin={admin} />}></Route> */}
             <Route
               path="/"
               element={<Protected Component={Login} admin={admin} />}
             ></Route>
-            <Route path="/candidate" element={<Login />}></Route>
-            <Route path="/loginCandidate/:Id" element={<Login />}></Route>
+            {/* <Route path="/candidate" element={<Login />}></Route> */}
+           
             <Route
               path="/user"
               element={<Protected Component={Compiler} />}
@@ -132,10 +133,10 @@ function App() {
               path="/instruction"
               element={<Protected Component={Instruction} />}
             ></Route>
-            <Route
+            {/* <Route
               path="*"
               element={<Protected Component={Login} admin={admin} />}
-            ></Route>
+            ></Route> */}
           </Routes>
         </BrowserRouter>
       </div>

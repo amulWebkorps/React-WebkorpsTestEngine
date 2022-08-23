@@ -12,7 +12,9 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
 import { useLocation } from "react-router-dom";
-import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
+import { StartContestPage } from "../services/candidate";
+import { showAllLanguage } from "../services/candidate";
+
 
 function onChange(newValue) {
   console.log("change", newValue);
@@ -141,11 +143,14 @@ const Compiler = () => {
   const [Lan, setLan] = useState("");
   const location = useLocation()
   const [profile, setProfile]=useState(location?.state)
+  const [count, setCount] = useState(0);
+  const [count1, setCount1] = useState(1);
+
   useEffect(() => {
-     axios
-      .get(`http://192.168.1.93:8085/showAllLanguage`)
+     showAllLanguage()
       .then(function (response) {
         // handle success
+        console.log(response.data,"showall")
         setLanguage2(response.data);
       })
       .catch(function (error) {
@@ -156,49 +161,85 @@ const Compiler = () => {
 
 
 
-  // language2.map((value)=>{
-  //   <div>    
-  //     <h1>{value.language}</h1>
-  //   </div>
-  // })
 
+//   useEffect(() => {
+//     axios
+//      .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=2910e8d7-ef82-43f8-8b2b-f5e211ba98e2`)
+//      .then(function (response) {
+//        // handle success
+//        setdata1(response.data);
+//      })
+//      .catch(function (error) {
+//        // handle error
+//        console.log(error);
+//      });
+//  }, []);
 
-  useEffect(() => {
-    axios
-     .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=2910e8d7-ef82-43f8-8b2b-f5e211ba98e2`)
-     .then(function (response) {
-       // handle success
-       setdata1(response.data);
-     })
-     .catch(function (error) {
-       // handle error
-       console.log(error);
-     });
- }, []);
+ useEffect(() => {
+  axios
+   .post(`http://192.168.1.74:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
+   .then(function (response) {
+     // handle success
+     setdata1(response.data);
+   })
+   .catch(function (error) {
+     // handle error
+
+     console.log(error);
+
+   });
+}, []);
+
+// useEffect(() => {
+//   StartContestPage()
+//    .then(function (response) {
+//      // handle success
+//      setdata1(response.data);
+//    })
+//    .catch(function (error) {
+//      // handle error
+
+//      console.log(error);
+     
+//    });
+// }, []);
 
   console.log("datastartcontest",data1)
   console.log('--profile--',profile?.participatorData?.state?.data)
-
-
 const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.language)
 console.log("getdata",dataLan)
-
-
 useEffect(()=>{
    dataLan === undefined ? (
     <div></div>
   ) : ( 
     setCode1(()=>{
-
       return dataLan[0].codeBase;
     })
 
   )
-  
- 
 },[language2])
-
-
+console.log("rfgh",code1)
+ function increment() {
+    setCount(function (prevCount) {
+      console.log(prevCount,'===========')
+      if (prevCount <= 2) {
+        return (prevCount += 1);
+      }
+      else {
+        return (prevCount= 2);
+      }
+    });
+  }
+ console.log(count1,"rtyg")
+function decrement() {
+  setCount(function (prevCount) {
+    if (prevCount > 0 ) {
+      return (prevCount -= 1); 
+    } else {
+      return (prevCount = 0);
+    }
+  });
+}
 let data = code1.toString;
   return (
     <>
@@ -216,8 +257,8 @@ let data = code1.toString;
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Test Case 1
-                        </Typography>
+                          Test Case 
+                         </Typography>
                       </Box>
                     </Grid>
                     <Grid item sm={12}>
@@ -225,7 +266,7 @@ let data = code1.toString;
                         <label style={inputLabel}>Problem statement</label>
                         <Box style={inputField} p={2}>
                           <p>                 
-                            {data1?.QuestionList[0]?.question}
+                            {data1?.QuestionList[count]?.question}
                           </p>
                         </Box>
                       </Box>
@@ -235,7 +276,7 @@ let data = code1.toString;
                         <label style={inputLabel}>Constraints</label>
                         <Box style={inputField} p={2}>
                           <p>
-                          {data1?.QuestionList[0]?.sampleTestCase[0]?.constraints}
+                          {data1?.QuestionList[count]?.sampleTestCase[0]?.constraints}
                           </p>
                         </Box>
                       </Box>
@@ -245,7 +286,7 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList[0]?.sampleTestCase[0]?.input}</p>
+                            <p>{data1?.QuestionList[count]?.sampleTestCase[0]?.input}</p>
                           </Box>
                         </Box>
                       </Grid>
@@ -253,7 +294,7 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList[0]?.sampleTestCase[0]?.output}</p>
+                            <p>{data1?.QuestionList[count]?.sampleTestCase[0]?.output}</p>
                           </Box>
                         </Box>
                       </Grid>
@@ -262,10 +303,10 @@ let data = code1.toString;
                 </Grid>
               </Container>
               <Grid container sx={{ justifyContent: "space-between" }}>
-                <Button variant="contained" sx={buttonTest}>
+                <Button variant="contained" sx={buttonTest} onClick={()=>decrement() }>
                   Prev
                 </Button>
-                <Button variant="contained" sx={buttonTest}>
+                <Button variant="contained" sx={buttonTest}   onClick={()=>increment() }>
                   Next
                 </Button>
               </Grid>
@@ -303,7 +344,7 @@ let data = code1.toString;
 
               <Box> 
     <AceEditor
-    mode=""
+    mode={location?.state?.language}
     theme="monokai"
     onChange={onChange}
     name="UNIQUE_ID_OF_DIV"
