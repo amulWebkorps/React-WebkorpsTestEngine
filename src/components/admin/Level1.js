@@ -28,64 +28,6 @@ import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useNavigate } from "react-router-dom";
 import All from "./All";
-function renderRow(props) {
-  const { index, style } = props;
-  const testCase = {
-    height: "42px",
-    minHeight: "10px",
-  };
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton>
-        <ListItemText
-          primary=<Paper sx={testCase} elevation={2}>
-            <Box
-              component="form"
-              sx={{
-                "& .MuiTextField-root": { m: 1, width: "25ch" },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <Container
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <FormControl
-                  sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
-                >
-                  <OutlinedInput
-                    placeholder="Input"
-                    sx={{ height: "30px" }}
-                    multiline
-                    rows={1}
-                    maxRows={10}
-                  />
-                </FormControl>
-                <FormControl
-                  sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
-                >
-                  <OutlinedInput
-                    placeholder="Output"
-                    sx={{ height: "30px" }}
-                    multiline
-                    rows={1}
-                    maxRows={10}
-                  />
-                </FormControl>
-                <div>
-                  <IconButton aria-label="add" sx={delBtn}>
-                    <CloseIcon sx={{ fontSize: "8px" }} />
-                  </IconButton>
-                </div>
-              </Container>
-            </Box>
-          </Paper>
-        />
-      </ListItemButton>
-    </ListItem>
-  );
-}
 
 const useStyles = makeStyles({
   container: {
@@ -168,6 +110,22 @@ const delBtn = {
   color: "black",
   borderRadius: "50%",
 };
+const buttonLevel = {
+  width: "260px",
+  height: "51px",
+  background: "#0057ff",
+  borderRadius: "18px 18px 18px 18px",
+  fontWeight: "700",
+  fontSize: "25px",
+  lineHeight: "19px",
+  textTransform: "none",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  paddingTop: "12px",
+  paddingLeft: "25px",
+  marginTop: "25px",
+  color: "#FFFFFF",
+};
 
 const mainContainer = {
   marginTop: "20px",
@@ -223,30 +181,22 @@ const quesIntialField = {
   sampleOutput: "",
   input: "",
   output: "",
-  testCase: {},
+ 
+ 
 };
-const buttonLevel = {
-  width: "260px",
-  height: "51px",
-  background: "#0057ff",
-  borderRadius: "18px 18px 18px 18px",
-  fontWeight: "700",
-  fontSize: "25px",
-  lineHeight: "19px",
-  textTransform: "none",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  paddingTop: "12px",
-  paddingLeft: "25px",
-  marginTop: "25px",
-  color: "#FFFFFF",
+const testInitialFields={
+  testInput:"",
+    testOutput:""
 };
 
 const Level1 = () => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const [finalQ,setFinalQ]=useState({});
   const [question, setQuestion] = useState(quesIntialField);
   const [quesId, setQuesId] = useState(null);
+  const [testCases,setTestCases]=useState(testInitialFields)
+  const [testCaseList, setTestCaseList]=useState([]);
   const [contestQuestion, setContestQuestion] = useState([
     {
       problem:
@@ -256,7 +206,7 @@ const Level1 = () => {
       sampleOutput: "much.very.program.this.like.i",
       input: "",
       output: "",
-      testCase: {},
+      testCase: [{ input: "output" }],
     },
   ]);
   const [editQuestion, setEditQuestion] = useState(false);
@@ -266,7 +216,17 @@ const Level1 = () => {
       ...question,
       [name]: value,
     });
+    setTestCases({
+      ...testCases,
+      [name]:value
+     })
   };
+
+  const addTest=()=>{
+    setTestCaseList([...testCaseList,testCases])
+    setTestCases(testInitialFields)
+  }
+  console.log('------',testCaseList)
   const addQuestion = (e) => {
     if (editQuestion) {
       setEditQuestion(false);
@@ -281,25 +241,17 @@ const Level1 = () => {
       }
     }
   };
-
+console.log(question)
   return (
     <div style={questionList}>
       <Header />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item>
           <Box variant="contained" sx={buttonLevel}>
-            Level1 Questions
+            Level 1 Questions
           </Box>
         </Grid>
       </Grid>
-      {/* <Container sx={topButton}>
-        <Grid container sx={{ justifyContent: "center" }} mt={3}>
-          <Box sx={QuestionBox}>Questions</Box>
-          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
-            Participators
-          </Box>
-        </Grid>
-      </Container> */}
       <Container sx={mainContainer}>
         <Grid>
           <Card sx={cardBody}>
@@ -507,16 +459,75 @@ const Level1 = () => {
                             width: "100%",
                             height: 180,
                             bgcolor: "white",
+                            overflowY: "overlay",
                           }}
                         >
-                          <FixedSizeList
-                            height={180}
-                            itemSize={80}
-                            itemCount={4}
-                            overscanCount={5}
+                          <Box
+                            component="form"
+                            sx={{
+                              "& > :not(style)": { m: 1, width: "15ch" },
+                            }}
+                            noValidate
+                            autoComplete="off"
                           >
-                            {renderRow}
-                          </FixedSizeList>
+                            <TextField
+                              name="testInput"
+                              value={testCases?.testInput}
+                              placeholder="testcase input"
+                              multiline
+                              rows={1}
+                              maxRows={10}
+                              color="primary"
+                              focused
+                              onChange={handleOnchange}
+                            />
+                            <TextField
+                              name="testOutput"
+                              value={testCases?.testOutput}
+                              placeholder="testcase output"
+                              multiline
+                              rows={1}
+                              maxRows={10}
+                              color="primary"
+                              focused
+                              onChange={handleOnchange}
+                            />
+                          </Box>
+                          {/* {contestQuestion?.[0]?.testCase.map((val, index) => {
+                            return (
+                              <Box
+                                component="form"
+                                sx={{
+                                  "& > :not(style)": { m: 1, width: "15ch" },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                              >
+                                <TextField
+                                  inputProps={{ readOnly: true }}
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  placeholder={Object.keys(
+                                    contestQuestion?.[0]?.testCase?.[index]
+                                  )}
+                                  color="primary"
+                                  focused
+                                />
+                                <TextField
+                                  inputProps={{ readOnly: true }}
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  placeholder={Object.values(
+                                    contestQuestion?.[0]?.testCase?.[index]
+                                  )}
+                                  color="primary"
+                                  focused
+                                />
+                              </Box>
+                            );
+                          })} */}
                         </Grid>
                         <Stack
                           spacing={2}
@@ -524,7 +535,7 @@ const Level1 = () => {
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={Addbtn}>
+                          <Button variant="contained" sx={Addbtn} onClick={addTest}>
                             Add
                           </Button>
                           <Button variant="contained" sx={Addbtn}>
