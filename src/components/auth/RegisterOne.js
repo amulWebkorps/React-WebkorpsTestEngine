@@ -12,8 +12,7 @@ import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { registerState, credentialData } from "../store/RegisterSlice";
-import { useSelector, useDispatch } from "react-redux";
+
 import Validation from "./base/Validation";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -159,9 +158,9 @@ const logoText = {
 
 const RegisterOne = ({ setregistercredential }) => {
   const [showAlert, setAlert] = useState(false);
-  let dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const registerData = useSelector(registerState);
+
   const [credential, setcredential] = useState({
     hName: "",
     email: "",

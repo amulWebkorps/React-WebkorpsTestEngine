@@ -14,9 +14,9 @@ import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+
 import { registerAdmin } from "../services/adminServices";
-import { registerState, credentialData } from "../store/RegisterSlice";
+
 import Validation from "./base/Validation";
 
 const ContainerStyle = {
@@ -149,8 +149,7 @@ const logoText = {
 
 const RegisterTwo = ({ registercredential, setregistercredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
-  let dispatch = useDispatch();
-  const registerData = useSelector(registerState);
+ 
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
