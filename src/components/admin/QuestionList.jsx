@@ -21,71 +21,13 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { FixedSizeList } from "react-window";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
-import { Box, Container,} from "@mui/system";
+import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useNavigate } from "react-router-dom";
 import All from "./All";
-function renderRow(props) {
-  const { index, style } = props;
-  const testCase = {
-    height: "42px",
-    minHeight: "10px",
-  };
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton>
-        <ListItemText
-          primary=<Paper sx={testCase} elevation={2}>
-            <Box
-              component="form"
-              sx={{
-                "& .MuiTextField-root": { m: 1, width: "25ch" },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <Container
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <FormControl
-                  sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
-                >
-                  <OutlinedInput
-                    placeholder="Input"
-                    sx={{ height: "30px" }}
-                    multiline
-                    rows={1}
-                    maxRows={10}
-                  />
-                </FormControl>
-                <FormControl
-                  sx={{ width: "12ch", height: "5px", marginTop: "5px" }}
-                >
-                  <OutlinedInput
-                    placeholder="Output"
-                    sx={{ height: "30px" }}
-                    multiline
-                    rows={1}
-                    maxRows={10}
-                  />
-                </FormControl>
-                <div>
-                  <IconButton aria-label="add" sx={delBtn}>
-                    <CloseIcon sx={{ fontSize: "8px" }} />
-                  </IconButton>
-                </div>
-              </Container>
-            </Box>
-          </Paper>
-        />
-      </ListItemButton>
-    </ListItem>
-  );
-}
 
 const useStyles = makeStyles({
   container: {
@@ -202,7 +144,6 @@ const label = {
   lineHeight: "21px",
 };
 
-
 const btn = {
   fontSize: "8",
   fontWeight: "600",
@@ -211,32 +152,90 @@ const btn = {
   width: "160px",
 };
 
-
-const Addbtn={
+const Addbtn = {
   fontSize: "8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
-    
-}
+};
+const quesIntialField = {
+  problem: "",
+  constraints: "",
+  sampleInput: "",
+  sampleOutput: "",
+  input: "",
+  output: "",
+ 
+ 
+};
+const testInitialFields={
+  testInput:"",
+    testOutput:""
+};
 
 const QuestionList = () => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const [finalQ,setFinalQ]=useState({});
+  const [question, setQuestion] = useState(quesIntialField);
+  const [quesId, setQuesId] = useState(null);
+  const [testCases,setTestCases]=useState(testInitialFields)
+  const [testCaseList, setTestCaseList]=useState([]);
+  const [contestQuestion, setContestQuestion] = useState([
+    {
+      problem:
+        "Given a String S, reverse the string without reversing its individual words. Words are separated by dots.",
+      constraints: "1 <= |S| <= 2000",
+      sampleInput: "S = i.like.this.program.very.much",
+      sampleOutput: "much.very.program.this.like.i",
+      input: "",
+      output: "",
+      testCase: [{ input: "output" }],
+    },
+  ]);
+  const [editQuestion, setEditQuestion] = useState(false);
   const handleOnchange = (e) => {
-    console.log(e.target.value);
+    const { name, value } = e.target;
+    setQuestion({
+      ...question,
+      [name]: value,
+    });
+    setTestCases({
+      ...testCases,
+      [name]:value
+     })
   };
+
+  const addTest=()=>{
+    setTestCaseList([...testCaseList,testCases])
+    setTestCases(testInitialFields)
+  }
+  console.log('------',testCaseList)
+  const addQuestion = (e) => {
+    if (editQuestion) {
+      setEditQuestion(false);
+      setQuestion(quesIntialField);
+      return (contestQuestion[quesId] = question);
+    } else {
+      if (quesIntialField.problem === "") {
+        alert("fill all field");
+      } else {
+        setContestQuestion([...contestQuestion, question]);
+        setQuestion(quesIntialField);
+      }
+    }
+  };
+console.log(question)
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-       
-          <Grid container sx={{justifyContent:"center"}} mt={3}>   
-          <Box sx={QuestionBox} >Questions</Box>
-          <Box sx={AnswerBox}  onClick={()=>navigate('/participator')}>Participators</Box>
-       
-          </Grid>
-      
+        <Grid container sx={{ justifyContent: "center" }} mt={3}>
+          <Box sx={QuestionBox}>Questions</Box>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+            Participators
+          </Box>
+        </Grid>
       </Container>
       <Container sx={mainContainer}>
         <Grid>
@@ -263,6 +262,9 @@ const QuestionList = () => {
                         multiline
                         rows={3}
                         maxRows={10}
+                        onChange={handleOnchange}
+                        name="problem"
+                        value={question?.problem}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
@@ -270,13 +272,11 @@ const QuestionList = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={handleOnchange}
                         fullWidth
                         id="fullWidth"
                         placeholder="Write Problem statement here"
                         mt={5}
                         sx={input}
-                        x
                       />
                       <br />
                       <br />
@@ -290,6 +290,9 @@ const QuestionList = () => {
                         maxRows={10}
                         sx={input}
                         fullWidth
+                        onChange={handleOnchange}
+                        name="constraints"
+                        value={question?.constraints}
                         id="fullWidth"
                         placeholder="Write Constraints here"
                         InputProps={{
@@ -314,6 +317,9 @@ const QuestionList = () => {
                           <TextField
                             id="fullWidth"
                             placeholder="Input here"
+                            onChange={handleOnchange}
+                            name="sampleInput"
+                            value={question?.sampleInput}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -335,6 +341,9 @@ const QuestionList = () => {
                             multiline
                             rows={3}
                             maxRows={10}
+                            onChange={handleOnchange}
+                            name="sampleOutput"
+                            value={question?.sampleOutput}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
@@ -356,14 +365,18 @@ const QuestionList = () => {
                         justifyContent={"flex-end"}
                         mt={2}
                       >
-                        <Button variant="contained" sx={btn}>
-                          Add Question
+                        <Button
+                          variant="contained"
+                          sx={btn}
+                          onClick={addQuestion}
+                        >
+                          {editQuestion ? `Edit Question` : `Add Question`}
                         </Button>
                         <Button
                           variant="outlined"
                           component="label"
                           startIcon={<NoteAddIcon />}
-                         >
+                        >
                           Upload File
                           <input hidden accept="file/*" multiple type="file" />
                         </Button>
@@ -396,6 +409,9 @@ const QuestionList = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Input here"
+                              onChange={handleOnchange}
+                              name="input"
+                              value={question?.input}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -406,6 +422,9 @@ const QuestionList = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Output here"
+                              onChange={handleOnchange}
+                              name="output"
+                              value={question?.output}
                             />
                           </Grid>
                         </Grid>
@@ -425,16 +444,75 @@ const QuestionList = () => {
                             width: "100%",
                             height: 180,
                             bgcolor: "white",
+                            overflowY: "overlay",
                           }}
                         >
-                          <FixedSizeList
-                            height={180}
-                            itemSize={80}
-                            itemCount={4}
-                            overscanCount={5}
+                          <Box
+                            component="form"
+                            sx={{
+                              "& > :not(style)": { m: 1, width: "15ch" },
+                            }}
+                            noValidate
+                            autoComplete="off"
                           >
-                            {renderRow}
-                          </FixedSizeList>
+                            <TextField
+                              name="testInput"
+                              value={testCases?.testInput}
+                              placeholder="testcase input"
+                              multiline
+                              rows={1}
+                              maxRows={10}
+                              color="primary"
+                              focused
+                              onChange={handleOnchange}
+                            />
+                            <TextField
+                              name="testOutput"
+                              value={testCases?.testOutput}
+                              placeholder="testcase output"
+                              multiline
+                              rows={1}
+                              maxRows={10}
+                              color="primary"
+                              focused
+                              onChange={handleOnchange}
+                            />
+                          </Box>
+                          {/* {contestQuestion?.[0]?.testCase.map((val, index) => {
+                            return (
+                              <Box
+                                component="form"
+                                sx={{
+                                  "& > :not(style)": { m: 1, width: "15ch" },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                              >
+                                <TextField
+                                  inputProps={{ readOnly: true }}
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  placeholder={Object.keys(
+                                    contestQuestion?.[0]?.testCase?.[index]
+                                  )}
+                                  color="primary"
+                                  focused
+                                />
+                                <TextField
+                                  inputProps={{ readOnly: true }}
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  placeholder={Object.values(
+                                    contestQuestion?.[0]?.testCase?.[index]
+                                  )}
+                                  color="primary"
+                                  focused
+                                />
+                              </Box>
+                            );
+                          })} */}
                         </Grid>
                         <Stack
                           spacing={2}
@@ -442,7 +520,7 @@ const QuestionList = () => {
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={Addbtn}>
+                          <Button variant="contained" sx={Addbtn} onClick={addTest}>
                             Add
                           </Button>
                           <Button variant="contained" sx={Addbtn}>
@@ -458,7 +536,14 @@ const QuestionList = () => {
             <CardActions></CardActions>
           </Card>
         </Grid>
-        <AddedQues />
+        <AddedQues
+          question={question}
+          setQuestion={setQuestion}
+          setContestQuestion={setContestQuestion}
+          contestQuestion={contestQuestion}
+          setEditQuestion={setEditQuestion}
+          setQuesId={setQuesId}
+        />
       </Container>
     </div>
   );

@@ -17,6 +17,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
 import Alert from "./base/Alert";
 import { participatorLogin } from "../services/candidate";
+import Loader from "./base/Loader";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -123,32 +124,42 @@ const Login = ({ admin }) => {
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [response, setResponse] = useState(null);
+  const [loading, setLoading]=useState(false);
   const path = window?.location?.pathname;
   const { Id } = useParams();
-  console.log("params-----", Id);
+
+  //console.log("params-----", Id);
 
   const handleLogin = async () => {
+    setLoading(true)
     if (path === "/") {
       try {
         const result = await loginAdmin(credential).then();
         if (result) {
+          setLoading(false)
           setResponse(result.data);
           navigate("/dashboard", { state: { data: result.data } });
         }
       } catch (error) {
         setAlert(true);
+        setLoading(false)
         setResponse(error?.response?.data);
         navigate("/");
-        console.log("err", error.response.data);
+        //console.log("err", error.response.data);
       }
     } else {
-      console.log("-worked-------");
+  
+      //console.log("-worked-------");
       const result = await participatorLogin(Id, credential).then();
       console.log('--------------gjbngjbnbng',result.data);
       navigate("/instruction",{ state: { data: result.data } });
+      // console.log("--------------", result.data);
+      navigate("/instruction", { state: { data: result.data } });
     }
   };
-  console.log("-----", credential);
+
+ 
+  //console.log("-----", credential);
   useEffect(() => {
     setAlert(false);
   }, [credential]);
@@ -167,11 +178,14 @@ const Login = ({ admin }) => {
           </Box>
         </Grid>
         {showAlert && <Alert severity={"error"} errMsg={response} />}
+        
       </Grid>
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
+            {loading&&  <Loader/>}
+          
             <Stack>
               <TextInput
                 label="Email Address"
@@ -179,7 +193,7 @@ const Login = ({ admin }) => {
                 onChange={(e) => handleChange(e)}
                 value={credential?.email}
               />
-
+   
               <TextInput
                 label="Password"
                 name="password"

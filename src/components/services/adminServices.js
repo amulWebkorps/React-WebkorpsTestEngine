@@ -4,6 +4,8 @@ const ADMIN_REGISTRATION_URL = `http://192.168.1.115:8085/adminRegistration`;
 const CREATE_CONTEST = `http://192.168.1.115:8085/createContest`;
 const SEND_MAIL = `http://192.168.1.115:8085/sendMail`;
 const ADD_CONTEST = `http://192.168.1.115:8085/addContest`;
+const CONTEST_URL='`http://192.168.1.115:8085/getContestDetail;'
+
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {
@@ -23,12 +25,15 @@ const registerAdmin = (credential) => {
   });
 };
 
+const getContestDetail=(id)=>{
+  return axios.get(CONTEST_URL,{
+    params:{
+      contestId:id
+    }
+  })
+}
+
 const addContest = (contestDetails) => {
-  // axios.post(`http://localhost:8085/createContest`, {
-  //       "contestName": "fresher",
-  //       "contestDescription":"for 1 to 2 year experience",
-  //      "contestLevel": "Level 2"
-  //   })
   return axios.post(CREATE_CONTEST, {
     contestName: contestDetails?.contestName,
     contestDescription: contestDetails?.contestDescription,
@@ -39,5 +44,6 @@ const sendMail = (mailAddress) => {
   return axios.post(SEND_MAIL);
 };
 
-export { loginAdmin, registerAdmin, sendMail, addContest };
+export { loginAdmin, registerAdmin, sendMail, addContest,getContestDetail};
 
+// export { loginAdmin, registerAdmin, sendMail, addContest};

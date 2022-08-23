@@ -120,11 +120,23 @@ const Instruction = () => {
   const [participatorData, setParticipator]=useState(location)
   
   console.log("data", language1);
+  // useEffect(() => {
+  //   axios
+  //     .get(CANDIDATE_LANGUAGE_URL)
+  //     .then(function (response) {
+  //       // handle success
+  //       setLanguage1(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       // handle error
+  //       console.log(error);
+  //     });
+  // }, []);
+
 
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
-  console.log(language);
 
   const handleClick2 = () => {
     navigate("/user", { state: { language,participatorData } });

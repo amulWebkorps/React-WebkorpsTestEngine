@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import { StartContestPage } from "../services/candidate";
 import { showAllLanguage } from "../services/candidate";
 
+
 function onChange(newValue) {
   console.log("change", newValue);
 }
@@ -160,9 +161,23 @@ const Compiler = () => {
 
 
 
+
+//   useEffect(() => {
+//     axios
+//      .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=2910e8d7-ef82-43f8-8b2b-f5e211ba98e2`)
+//      .then(function (response) {
+//        // handle success
+//        setdata1(response.data);
+//      })
+//      .catch(function (error) {
+//        // handle error
+//        console.log(error);
+//      });
+//  }, []);
+
  useEffect(() => {
   axios
-   .post(`http://192.168.1.115:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
+   .post(`http://192.168.1.74:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
    .then(function (response) {
      // handle success
      setdata1(response.data);
@@ -203,11 +218,10 @@ useEffect(()=>{
 
   )
 },[language2])
-
-
 console.log("rfgh",code1)
  function increment() {
     setCount(function (prevCount) {
+      console.log(prevCount,'===========')
       if (prevCount <= 2) {
         return (prevCount += 1);
       }
@@ -216,7 +230,7 @@ console.log("rfgh",code1)
       }
     });
   }
-
+ console.log(count1,"rtyg")
 function decrement() {
   setCount(function (prevCount) {
     if (prevCount > 0 ) {
@@ -226,6 +240,7 @@ function decrement() {
     }
   });
 }
+let data = code1.toString;
   return (
     <>
       <Header />
