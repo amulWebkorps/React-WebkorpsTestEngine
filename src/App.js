@@ -76,7 +76,7 @@ function App() {
               element={<Protected Component={Login} admin={admin} />}
             ></Route>
             <Route path="/candidate" element={<Login />}></Route>
-            <Route path="/loginCandidate/:Id" element={<Login />}></Route>
+            <Route path="/login/:Id" element={<Login />}></Route>
             <Route
               path="/user"
               element={<Protected Component={Compiler} />}

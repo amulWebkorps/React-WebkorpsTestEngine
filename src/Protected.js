@@ -11,6 +11,9 @@ const Protected = (props) => {
     if (!login) {
       navigate("/");
     }
+    // else{
+    //     navigate("/login")
+    // }
   },[]);
   return (
     <>

@@ -154,6 +154,7 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
   const [showAlert, setAlert] = useState(false);
   const [fillalert, setfillalert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
+  const [showemail, setshowemail] = useState(false);
   const [credential, setcredential] = useState({
     password: "",
   });
@@ -164,8 +165,6 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
     setregistercredential({ ...registercredential, [name]: value });
   };
 
-  console.log("password", credential.password);
-  console.log("confirmpassword", confirmPassword);
   const register = async () => {
     if (credential.password === "" || confirmPassword === "") {
       setalertpassword(true);
@@ -190,6 +189,10 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
           console.log("------if-");
         }
       } catch (error) {
+        setfillalert(false);
+        setalertpassword(false);
+        setAlert(false);
+        setshowemail(true);
         console.log("erro", error);
       }
     } else {
@@ -219,7 +222,9 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
       {fillalert && (
         <Validation severity={"error"} empty={"please fill correct password"} />
       )}
-
+      {showemail && (
+        <Alert severity={"error"} errMsg={"Email already registered"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>

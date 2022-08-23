@@ -183,12 +183,13 @@ const Dashbord = () => {
     // navigate("/addQuestion");
   };
 
-  const deleteContest = (id) => {
-    setContestDetails((val) => {
-      return val.filter((val, index) => {
-        return index !== id;
-      });
-    });
+  const deleteContest = async() => {
+    // setContestDetails((val) => {
+    //   return val.filter((val, index) => {
+    //     return index !== id;
+    //   });
+    // });
+    const response = await removeContest().then()
   };
   console.log("--dashbord----", location);
 
