@@ -273,12 +273,8 @@ const Level1 = () => {
       setQuestion(quesIntialField);
       return (contestQuestion[quesId] = question);
     } else {
-      if (quesIntialField.problem === "") {
-        alert("fill all field");
-      } else {
-        setContestQuestion([...contestQuestion, question]);
-        setQuestion(quesIntialField);
-      }
+      setContestQuestion([...contestQuestion, question]);
+      setQuestion(quesIntialField);
     }
   };
 
