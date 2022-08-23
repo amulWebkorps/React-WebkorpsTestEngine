@@ -130,7 +130,7 @@ const notbtn = {
   color: "#0057FF",
 };
 const Modal = ({
-  handleClickOpen,
+  setAlert,
   open,
   setOpen,
   setContestDetails,
@@ -161,6 +161,10 @@ const Modal = ({
       const response = addContest(inputData).then();
       if(response){
         handleClose()
+        setAlert(true)
+        setTimeout(() => {
+          setAlert(false)
+        }, 2000);
       }
     } catch (error) {
       alert(error.response.data)

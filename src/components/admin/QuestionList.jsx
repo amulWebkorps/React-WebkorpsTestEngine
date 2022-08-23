@@ -163,11 +163,7 @@ const quesIntialField = {
   constraints: "",
   sampleInput: "",
   sampleOutput: "",
-  input: "",
-  output: "",
-  
- 
- 
+
 };
 const testInitialFields={
   testInput:"",
@@ -407,8 +403,8 @@ console.log(question)
                               id="fullWidth"
                               placeholder="Input here"
                               onChange={handleOnchange}
-                              name="input"
-                              value={question?.input}
+                              name="testInput"
+                              value={testCases?.testInput}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -420,8 +416,8 @@ console.log(question)
                               id="fullWidth"
                               placeholder="Output here"
                               onChange={handleOnchange}
-                              name="output"
-                              value={question?.output}
+                              name="testOutput"
+                              value={testCases?.testOutput}
                             />
                           </Grid>
                         </Grid>
@@ -444,17 +440,19 @@ console.log(question)
                             overflowY: "overlay",
                           }}
                         >
-                          <Box
+                        {testCaseList?.map((val,index)=>{
+                          return(
+                            <Box
                             component="form"
                             sx={{
                               "& > :not(style)": { m: 1, width: "15ch" },
                             }}
                             noValidate
                             autoComplete="off"
-                          >
+                          >{console.log('--val--',val)}
                             <TextField
-                              name="testInput"
-                              value={testCases?.testInput}
+                              name="testInput1"
+                              value={val?.testInput}
                               placeholder="testcase input"
                               multiline
                               rows={1}
@@ -464,8 +462,8 @@ console.log(question)
                               onChange={handleOnchange}
                             />
                             <TextField
-                              name="testOutput"
-                              value={testCases?.testOutput}
+                              name="testOutput1"
+                              value={val?.testOutput}
                               placeholder="testcase output"
                               multiline
                               rows={1}
@@ -475,41 +473,10 @@ console.log(question)
                               onChange={handleOnchange}
                             />
                           </Box>
-                          {/* {contestQuestion?.[0]?.testCase.map((val, index) => {
-                            return (
-                              <Box
-                                component="form"
-                                sx={{
-                                  "& > :not(style)": { m: 1, width: "15ch" },
-                                }}
-                                noValidate
-                                autoComplete="off"
-                              >
-                                <TextField
-                                  inputProps={{ readOnly: true }}
-                                  multiline
-                                  rows={1}
-                                  maxRows={10}
-                                  placeholder={Object.keys(
-                                    contestQuestion?.[0]?.testCase?.[index]
-                                  )}
-                                  color="primary"
-                                  focused
-                                />
-                                <TextField
-                                  inputProps={{ readOnly: true }}
-                                  multiline
-                                  rows={1}
-                                  maxRows={10}
-                                  placeholder={Object.values(
-                                    contestQuestion?.[0]?.testCase?.[index]
-                                  )}
-                                  color="primary"
-                                  focused
-                                />
-                              </Box>
-                            );
-                          })} */}
+                          )
+                        })}
+                          
+                        
                         </Grid>
                         <Stack
                           spacing={2}

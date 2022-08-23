@@ -184,7 +184,7 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
         );
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 3500);
         console.log("------awit-");
         if (response) {
           console.log("------if-");

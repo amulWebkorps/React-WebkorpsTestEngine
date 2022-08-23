@@ -15,6 +15,7 @@ import Modal from "../UI/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getContestDetail ,removeContest} from "../services/adminServices";
+import Alert from "../auth/base/Alert";
 
 const containerStyle = {
   overflowY: "auto",
@@ -138,11 +139,7 @@ const months = {
   fontSize: "12px",
   lineHeight: "14px",
 };
-
-const array = [1, 1, 1];
 const levels = ["Level 1", "Level 2", "ALL"];
-const today = new Date();
-
 const contestInitialValues={
   contestName:"",
   contestDescription:"",
@@ -151,18 +148,12 @@ const contestInitialValues={
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
   const location = useLocation();
-  const [presentContestData, setPresentContes] = useState(
-    location?.state?.data?.presentContest
-  );
-  // const [contestDetails, setContestDetails] = useState([{
-  //   contestName:presentContestData?.[0]?.contestName,
-  // contestDescription:presentContestData?.[0]?.contestDescription,
-  // contestLevel:presentContestData?.[0]?.contestLevel}
-  // ]);
+  const [presentContestData, setPresentContest] = useState(location?.state?.data?.presentContest);
   const [contestDetails, setContestDetails] = useState(presentContestData);
+  const [showAlert,setAlert]=useState(false);
 
   useEffect(() => {
-    setPresentContes(location?.state?.data?.presentContest);
+    setPresentContest(location?.state?.data?.presentContest);
   }, [location]);
 
   const [open, setOpen] = useState(false);
@@ -181,7 +172,7 @@ const Dashbord = () => {
       });
     });
   };
-  console.log("--dashbord----", location);
+ 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -203,7 +194,10 @@ const Dashbord = () => {
   return (
     <div style={app}>
       <Header />
-      {/* <Typography onClick={handleLogout} >Logout</Typography> */}
+      {/* {showAlert &&<Alert
+        severity={'success'}
+        errMsg={"contest created successfully"}
+      />} */}
       {showAvailq ? (
         <>
           <Modal
@@ -212,6 +206,7 @@ const Dashbord = () => {
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
+            setAlert={setAlert}
           />
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
