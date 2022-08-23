@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { Container, Grid, Fab,} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Fab } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,18 +7,15 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { contestImg,} from "../assests/images";
+import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 
 import Modal from "../UI/Modal";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getContestDetail } from "../services/adminServices";
-
-
-
+import { getContestDetail ,removeContest} from "../services/adminServices";
 
 const containerStyle = {
   overflowY: "auto",
@@ -154,36 +151,35 @@ const date =
     : today.getMonth() + 1) +
   "/" +
   today.getFullYear();
-const contestInitialValues={
-  contestName:"",
-  contestDescription:"",
-  contestLevel:""
-}
+const contestInitialValues = {
+  contestName: "",
+  contestDescription: "",
+  contestLevel: "",
+};
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  const location =useLocation();
-  const [presentContestData, setPresentContes]=useState(location?.state?.data?.presentContest)
+  const location = useLocation();
+  const [presentContestData, setPresentContes] = useState(
+    location?.state?.data?.presentContest
+  );
   // const [contestDetails, setContestDetails] = useState([{
   //   contestName:presentContestData?.[0]?.contestName,
   // contestDescription:presentContestData?.[0]?.contestDescription,
   // contestLevel:presentContestData?.[0]?.contestLevel}
   // ]);
-  const [contestDetails, setContestDetails] = useState(
-    presentContestData
-  );
+  const [contestDetails, setContestDetails] = useState(presentContestData);
 
-  
-useEffect(() => {
- setPresentContes(location?.state?.data?.presentContest)
-}, [location])
+  useEffect(() => {
+    setPresentContes(location?.state?.data?.presentContest);
+  }, [location]);
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const handleContest = async(id) => {
-    console.log('id',contestDetails)
-   const result=await getContestDetail(id).then();
-   console.log(result.data)
-   
+  const handleContest = async (id) => {
+    console.log("id", contestDetails);
+    const result = await getContestDetail(id).then();
+    console.log(result.data);
+
     // navigate("/addQuestion");
   };
 
@@ -194,31 +190,29 @@ useEffect(() => {
       });
     });
   };
-  console.log("--dashbord----",location);
+  console.log("--dashbord----", location);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleCheck=(index)=>{
-    
-    if (index===0){
+  const handleCheck = (index) => {
+    if (index === 0) {
       navigate("/level1");
-
-    }
-    else if (index===1){
+    } else if (index === 1) {
       navigate("/level2");
-
-    }
-    else if (index===2){
+    } else if (index === 2) {
       navigate("/allavailable");
     }
-    
-    
-  }
+  };
+
+//  const handleLogout = () => {
+//   localStorage.clear();
+//  }
   return (
     <div style={app}>
       <Header />
+      {/* <Typography onClick={handleLogout} >Logout</Typography> */}
       {showAvailq ? (
         <>
           <Modal
@@ -239,7 +233,9 @@ useEffect(() => {
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
-                          onClick={() => handleContest(contestDetails?.[index]?.contestId)}
+                          onClick={() =>
+                            handleContest(contestDetails?.[index]?.contestId)
+                          }
                           style={cardImg}
                           component="img"
                           height="140"
@@ -255,7 +251,8 @@ useEffect(() => {
                         </IconButton>
                         <CardContent sx={cardBody}>
                           <h6 style={contestText}>
-                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;{contestDetails?.[index]?.contestLevel}
+                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
+                            {contestDetails?.[index]?.contestLevel}
                           </h6>
                           <p style={months}>
                             {contestDetails?.[index]?.contestDescription}
@@ -313,25 +310,19 @@ useEffect(() => {
             ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
               {levels.map((val, index) => {
-                  
                 return (
                   <Grid item md={3} mt={5}>
                     <Card sx={card}>
-                      <CardActionArea
-                       onClick={() => handleCheck(index)}>
+                      <CardActionArea onClick={() => handleCheck(index)}>
                         <CardMedia
-                         
                           style={cardImg}
                           component="img"
                           height="140"
                           image={contestImg}
                           alt="green iguana"
-                         
                         />
-                       
-                        <CardContent sx={cardBody}
-                        >
-                      
+
+                        <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
                           <p style={contestDate}>Last Changes {date}</p>
