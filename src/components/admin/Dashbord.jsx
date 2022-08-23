@@ -146,14 +146,7 @@ const months = {
 const array = [1, 1, 1];
 const levels = ["Level 1", "Level 2", "ALL"];
 const today = new Date();
-const date =
-  (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()) +
-  "/" +
-  (today.getMonth() + 1 < 10
-    ? "0" + (today.getMonth() + 1)
-    : today.getMonth() + 1) +
-  "/" +
-  today.getFullYear();
+
 const contestInitialValues={
   contestName:"",
   contestDescription:"",
@@ -260,7 +253,7 @@ useEffect(() => {
                           <p style={months}>
                             {contestDetails?.[index]?.contestDescription}
                           </p>
-                          <p style={contestDate}>Last Changes {date}</p>
+                          
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -334,7 +327,7 @@ useEffect(() => {
                       
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
-                          <p style={contestDate}>Last Changes {date}</p>
+                          
                         </CardContent>
                       </CardActionArea>
                     </Card>

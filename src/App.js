@@ -71,7 +71,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login admin={admin} />}></Route>
             <Route path="/candidate" element={<Login />}></Route>
-            <Route path="/loginCandidate/:Id" element={<Login />}></Route>
+            <Route path="/login/:Id" element={<Login />}></Route>
             <Route path="/user" element={<Compiler />}></Route>
             <Route path="/email" element={<EmailShow />}></Route>
             <Route

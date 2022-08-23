@@ -165,6 +165,7 @@ const quesIntialField = {
   sampleOutput: "",
   input: "",
   output: "",
+  
  
  
 };
@@ -217,12 +218,8 @@ const QuestionList = () => {
       setQuestion(quesIntialField);
       return (contestQuestion[quesId] = question);
     } else {
-      if (quesIntialField.problem === "") {
-        alert("fill all field");
-      } else {
-        setContestQuestion([...contestQuestion, question]);
+      setContestQuestion([...contestQuestion, question]);
         setQuestion(quesIntialField);
-      }
     }
   };
 console.log(question)

@@ -181,22 +181,21 @@ const quesIntialField = {
   sampleOutput: "",
   input: "",
   output: "",
- 
- 
+  testcase:[]
 };
-const testInitialFields={
-  testInput:"",
-    testOutput:""
+const testInitialFields = {
+  testInput: "",
+  testOutput: "",
 };
 
 const Level1 = () => {
   const navigate = useNavigate();
   const classes = useStyles();
-  const [finalQ,setFinalQ]=useState({});
+  const [finalQ, setFinalQ] = useState({});
   const [question, setQuestion] = useState(quesIntialField);
   const [quesId, setQuesId] = useState(null);
-  const [testCases,setTestCases]=useState(testInitialFields)
-  const [testCaseList, setTestCaseList]=useState([]);
+  const [testCases, setTestCases] = useState(testInitialFields);
+  const [testCaseList, setTestCaseList] = useState([]);
   const [contestQuestion, setContestQuestion] = useState([
     {
       problem:
@@ -206,42 +205,39 @@ const Level1 = () => {
       sampleOutput: "much.very.program.this.like.i",
       input: "",
       output: "",
-      testCase: [{ input: "output" }],
+      testCase: [{ input: "output" },{ input: "output" },{ input: "output" }],
     },
   ]);
   const [editQuestion, setEditQuestion] = useState(false);
   const handleOnchange = (e) => {
     const { name, value } = e.target;
+
     setQuestion({
       ...question,
       [name]: value,
     });
     setTestCases({
       ...testCases,
-      [name]:value
-     })
+      [name]: value,
+    });
   };
 
-  const addTest=()=>{
-    setTestCaseList([...testCaseList,testCases])
-    setTestCases(testInitialFields)
-  }
-  console.log('------',testCaseList)
+  const addTest = () => {
+    setTestCaseList([...testCaseList, testCases]);
+    // setTestCases(testInitialFields);
+  };
+ 
   const addQuestion = (e) => {
     if (editQuestion) {
       setEditQuestion(false);
       setQuestion(quesIntialField);
       return (contestQuestion[quesId] = question);
     } else {
-      if (quesIntialField.problem === "") {
-        alert("fill all field");
-      } else {
-        setContestQuestion([...contestQuestion, question]);
-        setQuestion(quesIntialField);
-      }
+      setContestQuestion([...contestQuestion, question]);
+      setQuestion(quesIntialField);
     }
   };
-console.log(question)
+  console.log('------------>',question);
   return (
     <div style={questionList}>
       <Header />
@@ -535,7 +531,11 @@ console.log(question)
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={Addbtn} onClick={addTest}>
+                          <Button
+                            variant="contained"
+                            sx={Addbtn}
+                            onClick={addTest}
+                          >
                             Add
                           </Button>
                           <Button variant="contained" sx={Addbtn}>
