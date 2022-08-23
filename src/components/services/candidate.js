@@ -1,6 +1,6 @@
 import axios from 'axios'
-const PARTICIPATOR_LOGIN_URL='http://192.168.1.74:8085/doSignInForParticipator'
-const CANDIDATE_REGISTRATION_URL=` http:8080/candidateRegistration`
+const PARTICIPATOR_LOGIN_URL='http://localhost:8085/doSignInForParticipator'
+const CANDIDATE_REGISTRATION_URL=` http://localhost:8085/candidateRegistration`
 
 const participatorLogin=(contestId,credential)=>{
     return axios.get(PARTICIPATOR_LOGIN_URL, {

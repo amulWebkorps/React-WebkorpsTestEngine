@@ -9,7 +9,6 @@
 //   return (
 //     <>
 //       {/* <Dashbord/>
-//       <Login/>
 //      <RegisterOne/>
 //      <RegisterTwo/>
 //       <AnswerSheet /> */}
@@ -58,21 +57,16 @@ const theme = createTheme({
 
 function App() {
   const [admin, setAdmin] = useState(true);
+  const [registercredential, setregistercredential] = useState({
+    hName: "",
+    email: "",
+    hNumber: "",
+    password: "",
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        {/* <Header />
-        <Dashbord/>
-        <Compiler/>
-        <EmailShow />
-        <All /> */}
-        {/* <Dashbord/> */}
-        {/* <Login/>
-     <RegisterOne/>
-     <RegisterTwo/>
-      <AnswerSheet /> */}
-        {/* <QuestionList/> */}
-
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login admin={admin} />}></Route>
@@ -80,16 +74,32 @@ function App() {
             <Route path="/loginCandidate/:Id" element={<Login />}></Route>
             <Route path="/user" element={<Compiler />}></Route>
             <Route path="/email" element={<EmailShow />}></Route>
-            <Route path="/register" element={<RegisterOne />}></Route>
-            <Route path="/password" element={<RegisterTwo />}></Route>
+            <Route
+              path="/register"
+              element={
+                <RegisterOne
+                  registercredential={registercredential}
+                  setregistercredential={setregistercredential}
+                />
+              }
+            ></Route>
+            <Route
+              path="/password"
+              element={
+                <RegisterTwo
+                  registercredential={registercredential}
+                  setregistercredential={setregistercredential}
+                />
+              }
+            ></Route>
             <Route path="/dashboard" element={<Dashbord />}></Route>
             <Route path="/addQuestion" element={<QuestionList />}></Route>
             <Route path="/participator" element={<AnswerSheet />}></Route>
-            <Route path="/level1" element={<Level1/>}></Route>
-          <Route path="/level2" element={<Level2/>}></Route>
-          <Route path="/all" element={<All/>}></Route>
-          <Route path="/allavailable" element={<Allavailable/>}></Route>
-          <Route path="/instruction" element={<Instruction/>}></Route>
+            <Route path="/level1" element={<Level1 />}></Route>
+            <Route path="/level2" element={<Level2 />}></Route>
+            <Route path="/all" element={<All />}></Route>
+            <Route path="/allavailable" element={<Allavailable />}></Route>
+            <Route path="/instruction" element={<Instruction />}></Route>
             <Route path="*" element={<Login />}></Route>
           </Routes>
         </BrowserRouter>

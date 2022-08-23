@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -11,8 +11,9 @@ import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
+import Validation from "./base/Validation";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -155,7 +156,11 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterOne = () => {
+const RegisterOne = ({ setregistercredential }) => {
+  const [showAlert, setAlert] = useState(false);
+
+  const navigate = useNavigate();
+
   const [credential, setcredential] = useState({
     hName: "",
     email: "",
@@ -165,6 +170,18 @@ const RegisterOne = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setcredential({ ...credential, [name]: value });
+    setregistercredential({ ...credential, [name]: value });
+  };
+  const handleClick = () => {
+    if (
+      credential.hName === "" ||
+      credential.email === "" ||
+      credential.hNumber === ""
+    ) {
+      setAlert(true);
+    } else {
+      navigate("/password");
+    }
   };
   return (
     <>
@@ -178,6 +195,9 @@ const RegisterOne = () => {
           </Box>
         </Grid>
       </Grid>
+      {showAlert && (
+        <Validation severity={"error"} empty={"please fill all details"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
@@ -215,16 +235,15 @@ const RegisterOne = () => {
                 onChange={handleChange}
                 value={credential.hNumber}
                 name="hNumber"
-                type="number"
               />
               {/* <NavLink to="/password" style={{ textDecoration: "none" }}> */}
-              <Link
+              {/* <Link
                 to={"/password"}
-                state={{ credential: credential }}
+                // state={{ credential: credential }}
                 style={{ textDecoration: "none" }}
-              >
-                <ContinueButton name="Continue" />
-              </Link>
+              > */}
+              <ContinueButton name="Continue" onClick={handleClick} />
+              {/* </Link> */}
 
               <Typography sx={footerOne}>
                 Have an account?

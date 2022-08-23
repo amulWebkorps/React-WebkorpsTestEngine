@@ -39,3 +39,9 @@ const sendMail = (mailAddress) => {
 };
 
 export { loginAdmin, registerAdmin, sendMail, addContest };
+
+
+
+
+
+
