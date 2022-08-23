@@ -162,7 +162,7 @@ const Compiler = () => {
 
  useEffect(() => {
   axios
-   .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
+   .post(`http://192.168.1.115:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
    .then(function (response) {
      // handle success
      setdata1(response.data);
