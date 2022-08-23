@@ -149,15 +149,14 @@ const logoText = {
 
 const RegisterTwo = ({ registercredential, setregistercredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
- 
+
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
+  const [fillalert, setfillalert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
   const [credential, setcredential] = useState({
     password: "",
   });
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -171,11 +170,17 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
     if (credential.password === "" || confirmPassword === "") {
       setalertpassword(true);
       setAlert(false);
+      setfillalert(false);
+    } else if (credential.password !== confirmPassword) {
+      setfillalert(true);
+      setalertpassword(false);
+      setAlert(false);
     } else if (credential.password === confirmPassword) {
       try {
         const response = await registerAdmin(registercredential).then(
           (res) => setAlert(true),
-          setalertpassword(false)
+          setalertpassword(false),
+          setfillalert(false)
         );
         setTimeout(() => {
           navigate("/");
@@ -209,8 +214,12 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
         <Alert severity={"success"} errMsg={"Admin register succesfully"} />
       )}
       {showalertpassword && (
+        <Validation severity={"error"} empty={"please fill all details"} />
+      )}
+      {fillalert && (
         <Validation severity={"error"} empty={"please fill correct password"} />
       )}
+
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
