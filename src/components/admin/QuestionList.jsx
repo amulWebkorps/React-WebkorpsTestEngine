@@ -193,6 +193,26 @@ const QuestionList = () => {
       output: "",
       testCase: [{ input: "output" }],
     },
+    {
+      problem:
+        "Java Program for Decimal to Binary Conversion.",
+      constraints: "1 <= |S| <= 2000",
+      sampleInput: "S = i.like.this.program.very.much",
+      sampleOutput: "much.very.program.this.like.i",
+      input: "",
+      output: "",
+      testCase: [{ input: "output" }],
+    },
+    {
+      problem:
+        "Convert String to Double in Java.",
+      constraints: "1 <= |S| <= 2000",
+      sampleInput: "S = i.like.this.program.very.much",
+      sampleOutput: "much.very.program.this.like.i",
+      input: "",
+      output: "",
+      testCase: [{ input: "output" }],
+    },
   ]);
   const [editQuestion, setEditQuestion] = useState(false);
   const handleOnchange = (e) => {

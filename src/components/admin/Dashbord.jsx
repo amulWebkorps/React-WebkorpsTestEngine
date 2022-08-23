@@ -177,7 +177,7 @@ useEffect(() => {
    const result=await getContestDetail(id).then();
    console.log(result.data)
    
-    // navigate("/addQuestion");
+    navigate("/addQuestion");
   };
 
   const deleteContest = (id) => {

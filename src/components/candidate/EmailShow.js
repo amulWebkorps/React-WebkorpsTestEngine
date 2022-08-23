@@ -72,6 +72,10 @@ const EmailShow = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+const handleMail=()=>{
+  alert()
+}
 const buttonEmail={
   fontSize:"8",
   fontWeight: "600",
@@ -249,7 +253,7 @@ const buttonEmail={
             mt={3}
             alignItems="flex-end"
           >
-            <Button variant="contained" size="large" sx={buttonEmail}>Email</Button>
+            <Button variant="contained" size="large" sx={buttonEmail} onClick={handleMail}>Email</Button>
           </Box>
         </Container>
       </div>
