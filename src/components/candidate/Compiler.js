@@ -10,9 +10,9 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
+
 import { useLocation } from "react-router-dom";
-import { StartContestPage } from "../services/candidate";
+import { startContestPage } from "../services/candidate";
 import { showAllLanguage } from "../services/candidate";
 
 
@@ -208,7 +208,7 @@ const Compiler = () => {
 
 const fetchData1= async( )=> {
   const response = await 
-  StartContestPage()   
+  startContestPage()   
   const user = await response.data;
   setdata1(user)
 }

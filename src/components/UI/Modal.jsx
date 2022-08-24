@@ -139,7 +139,7 @@ const Modal = ({
 
  
 }) => {
-  const [allList, setAllList] = useState();
+  
   const [inputData, setInputData] = useState({
     contestName: "",
     contestDescription: "",
@@ -171,9 +171,7 @@ const Modal = ({
     }
   };
 
- 
 
-  console.log("all list",allList);
 
   return (
     <div>
