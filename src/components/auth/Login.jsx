@@ -14,9 +14,9 @@ import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
-import Alert from "./base/Alert";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
+import MsgBar from "./base/MsgBar";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -126,8 +126,7 @@ const Login = ({ admin }) => {
   const [loading, setLoading] = useState(false);
   const path = window?.location?.pathname;
   const { Id } = useParams();
-
-  console.log("params-----", Id);
+  const [showMsg, setMsg] = useState(false);
 
   useEffect(() => {
     let login = localStorage.getItem("login");
@@ -135,6 +134,7 @@ const Login = ({ admin }) => {
       navigate("/");
     }
   }, []);
+
   const handleLogin = async () => {
     setLoading(true);
     if (path === "/") {
@@ -147,23 +147,23 @@ const Login = ({ admin }) => {
         } else if (result) {
           setLoading(false);
           setResponse(result.data);
-          navigate("/dashboard", { state: { data: result.data } });
+          setMsg(true);
+          setTimeout(() => {
+            navigate("/dashboard", { state: { data: result.data } });
+          },1500);
         }
       } catch (error) {
         setAlert(true);
         setLoading(false);
         setResponse(error?.response?.data);
         navigate("/");
-        //console.log("err", error.response.data);
       }
     } else {
-      //console.log("-worked-------");
       const result = await participatorLogin(Id, credential).then();
       navigate("/instruction", { state: { data: result.data } });
     }
   };
 
-  //console.log("-----", credential);
   useEffect(() => {
     setAlert(false);
   }, [credential]);
@@ -182,13 +182,15 @@ const Login = ({ admin }) => {
           </Box>
         </Grid>
         {showAlert && (
-          <Alert
-            severity={"error"}
+          <MsgBar
+            empty={"Please Fill Details"}
+            color={"Red"}
             errMsg={response}
-            empty={"please fill details"}
           />
         )}
       </Grid>
+      {showMsg && <MsgBar errMsg={"Admin Login Succesfully"} color={"green"} />}
+
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>

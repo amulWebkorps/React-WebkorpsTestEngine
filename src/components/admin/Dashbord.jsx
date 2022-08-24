@@ -7,13 +7,18 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { background, contestImg } from "../assests/images";
+import { useSelector } from "react-redux";
+import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
+import { increment } from "../store/slicers/adminSlice";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getContestDetail, removeContest } from "../services/adminServices";
+import { getContestDetail } from "../services/adminServices";
+import Popup from "../UI/Popup";
+import MsgBar from "../auth/base/MsgBar";
 
 const containerStyle = {
   overflowY: "auto",
@@ -151,13 +156,13 @@ const Dashbord = () => {
   );
   const [contestDetails, setContestDetails] = useState(presentContestData);
   const [showAlert, setAlert] = useState(false);
-  const [state, setState] = useState({
-    opens: true,
-    vertical: "top",
-    horizontal: "center",
+  const [delContest, setDelContest] = useState({
+    name: "",
+    id: "",
+    contestId: "",
   });
 
-  const { vertical, horizontal, opens } = state;
+  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     setPresentContest(location?.state?.data?.presentContest);
@@ -165,23 +170,33 @@ const Dashbord = () => {
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
   const handleContest = async (id) => {
-    console.log("id", contestDetails);
     const result = await getContestDetail(id).then();
-    console.log(result.data);
+
     navigate("/addQuestion");
   };
 
-  const deleteContest = (id) => {
-    setContestDetails((val) => {
-      return val.filter((val, index) => {
-        return index !== id;
-      });
+  const deleteContest = (id, Name, contestId) => {
+    setDelContest({
+      name: Name,
+      id: id,
+      contestId: contestId,
     });
+    setConfirm(true);
+    // setOpen(true)
+    // setContestDetails((val) => {
+    //   return val.filter((val, index) => {
+    //     return index !== id;
+    //   });
+    // });
   };
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+  const handlePop = () => {
+    setConfirm(true);
   };
 
   const handleCheck = (index) => {
@@ -193,31 +208,10 @@ const Dashbord = () => {
       navigate("/allavailable");
     }
   };
-
-  //  const handleLogout = () => {
-  //   localStorage.clear();
-  //  }
+  console.log("---contesdetails--", contestDetails);
   return (
     <div style={app}>
       <Header />
-      {/* {showAlert &&<Alert
-        severity={'success'}
-        errMsg={"contest created successfully"}
-      />} */}
-      {location?.state?.data && (
-        <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          open={opens}
-          message="Admin Login successfully..!"
-          key={vertical + horizontal}
-          ContentProps={{
-            sx: {
-              background: "green",
-              justifyContent: "center",
-            },
-          }}
-        />
-      )}
       {showAvailq ? (
         <>
           <Modal
@@ -228,6 +222,22 @@ const Dashbord = () => {
             contestDetails={contestDetails}
             setAlert={setAlert}
           />
+          <Popup
+            contestDetails={contestDetails}
+            setContestDetails={setContestDetails}
+            contest={delContest}
+            opens={confirm}
+            setConfirm={setConfirm}
+            setOpen={setOpen}
+            handleClickOpen={handlePop}
+            setAlert={setAlert}
+          />
+          {showAlert && (
+            <MsgBar
+              errMsg={"Contest Delete Successfully...!"}
+              color={"green"}
+            />
+          )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
@@ -253,7 +263,15 @@ const Dashbord = () => {
                           aria-label="add"
                           sx={delBtn1}
                         >
-                          <CancelIcon onClick={() => deleteContest(index)} />
+                          <CancelIcon
+                            onClick={() =>
+                              deleteContest(
+                                index,
+                                contestDetails?.[index]?.contestName,
+                                contestDetails?.[index]?.contestId
+                              )
+                            }
+                          />
                         </IconButton>
                         <CardContent sx={cardBody}>
                           <h6 style={contestText}>

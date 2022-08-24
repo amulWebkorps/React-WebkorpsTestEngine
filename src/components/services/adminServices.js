@@ -1,10 +1,12 @@
 import axios from "axios";
-const ADMIN_LOGIN_URL = `http://localhost:8085/doSignInForAdmin`;
-const ADMIN_REGISTRATION_URL = `http://localhost:8085/adminRegistration`;
-const CREATE_CONTEST = `http://localhost:8085/createContest`;
-const SEND_MAIL = `http://localhost:8085/sendMail`;
-const CONTEST_URL=`http://localhost:8085/getContestDetail`
-const ADD_CONTEST = `http://localhost:8085/addContest`;
+const  BASE_URL=`http://localhost:8085`
+const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
+const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
+const CREATE_CONTEST = `${BASE_URL}/createContest`;
+const SEND_MAIL = `${BASE_URL}/sendMail`;
+const CONTEST_URL=`${BASE_URL}/getContestDetail`;
+const DELETE_CONTEST=`${BASE_URL}/deletecontest`
+const ADD_CONTEST = `${BASE_URL}/addContest`;
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {
@@ -30,7 +32,13 @@ const getContestDetail=(id)=>{
     }
   })
 }
-
+const deleteContest=(id)=>{
+  return axios.delete(DELETE_CONTEST,{
+    params:{
+      contestId:id
+    }
+  })
+}
 const addContest = (contestDetails) => {
   return axios.post(CREATE_CONTEST, {
     contestName: contestDetails?.contestName,
@@ -44,4 +52,4 @@ const sendMail = (contestId,mailAddress) => {
   });
 };
 
-export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail };
+export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail, deleteContest };
