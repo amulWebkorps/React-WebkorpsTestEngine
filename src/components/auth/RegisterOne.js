@@ -14,6 +14,7 @@ import { logo } from "../assests/images";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import Validation from "./base/Validation";
+import MsgBar from "./base/MsgBar";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -158,7 +159,8 @@ const logoText = {
 
 const RegisterOne = ({ setregistercredential }) => {
   const [showAlert, setAlert] = useState(false);
-
+  const [showNumber, setshownumber] = useState(false);
+  const [showEmail, setshowemail] = useState(false);
   const navigate = useNavigate();
 
   const [credential, setcredential] = useState({
@@ -172,13 +174,38 @@ const RegisterOne = ({ setregistercredential }) => {
     setcredential({ ...credential, [name]: value });
     setregistercredential({ ...credential, [name]: value });
   };
+
+  // const handleValidation = (e) => {
+  //   const { name, value } = e.target;
+  //   switch (name) {
+  //     case "email":
+  //       if (!/.+@.+\.[A-Za-z]+$/.test(value)) {
+  //         setcredential({
+  //           ...credential,
+  //           error: {
+  //             name: name,
+  //             value: "Invalid Email Address",
+  //           },
+  //         });
+  //       }
+  //   }
+  // };
   const handleClick = () => {
-    if (
-      credential.hName === "" ||
-      credential.email === "" ||
-      credential.hNumber === ""
-    ) {
+    if (credential.hName === "") {
       setAlert(true);
+      setshownumber(false);
+    } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email)) {
+      setAlert(false);
+      setshownumber(false);
+      setshowemail(true);
+    } else if (
+      credential.hNumber === "" ||
+      credential.hNumber.length > 10 ||
+      credential.hNumber.length < 10
+    ) {
+      setAlert(false);
+      setshownumber(true);
+      setshowemail(false);
     } else {
       navigate("/password");
     }
@@ -196,7 +223,15 @@ const RegisterOne = ({ setregistercredential }) => {
         </Grid>
       </Grid>
       {showAlert && (
-        <Validation severity={"error"} empty={"please fill all details"} />
+        <MsgBar errMsg={"Please Fill All Details"} color={"red"}/>
+        
+      )}
+      {showNumber && (
+        <MsgBar errMsg={"Please Enter Valid Phone Number"} color={"red"}/>
+       
+      )}
+      {showEmail && (
+        <MsgBar errMsg={"Please Fill Valid Email Address"} color={"red"}/>
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
@@ -224,6 +259,7 @@ const RegisterOne = ({ setregistercredential }) => {
               <TextInput
                 label="Email Address"
                 star={"*"}
+                // onBlur={handleValidation}
                 onChange={handleChange}
                 value={credential.email}
                 name="email"
@@ -234,6 +270,7 @@ const RegisterOne = ({ setregistercredential }) => {
                 star={"*"}
                 onChange={handleChange}
                 value={credential.hNumber}
+                type="number"
                 name="hNumber"
               />
               {/* <NavLink to="/password" style={{ textDecoration: "none" }}> */}

@@ -18,6 +18,7 @@ import { loginAdmin } from "../services/adminServices";
 import Alert from "./base/Alert";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
+import MsgBar from "./base/MsgBar";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -128,7 +129,7 @@ const Login = ({ admin }) => {
   const path = window?.location?.pathname;
   const { Id } = useParams();
 
-  console.log("params-----", Id);
+  //console.log("params-----", Id);
 
   useEffect(() => {
     let login = localStorage.getItem("login");
@@ -160,6 +161,7 @@ const Login = ({ admin }) => {
     } else {
       //console.log("-worked-------");
       const result = await participatorLogin(Id, credential).then();
+      // console.log("--------------", result.data);
       navigate("/instruction", { state: { data: result.data } });
     }
   };
@@ -183,10 +185,10 @@ const Login = ({ admin }) => {
           </Box>
         </Grid>
         {showAlert && (
-          <Alert
-            severity={"error"}
+          <MsgBar
+            empty={"Please Fill Details"}
+            color={"Red"}
             errMsg={response}
-            empty={"please fill details"}
           />
         )}
       </Grid>
