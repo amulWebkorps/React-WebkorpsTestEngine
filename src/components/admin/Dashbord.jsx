@@ -156,6 +156,7 @@ const Dashbord = () => {
   );
   const [contestDetails, setContestDetails] = useState(presentContestData);
   const [showAlert, setAlert] = useState(false);
+  const [bar, setBar]=useState(false)
   const [delContest, setDelContest] = useState({
     name: "",
     id: "",
@@ -230,9 +231,9 @@ const Dashbord = () => {
             setConfirm={setConfirm}
             setOpen={setOpen}
             handleClickOpen={handlePop}
-            setAlert={setAlert}
+            setBar={setBar}
           />
-          {showAlert && (
+          {bar && (
             <MsgBar
               errMsg={"Contest Delete Successfully...!"}
               color={"green"}

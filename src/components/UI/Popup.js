@@ -14,7 +14,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Popup({
   opens,
-  setAlert,
+  setBar,
   contest,
   setConfirm,
   setContestDetails,
@@ -29,9 +29,9 @@ export default function Popup({
       });
     });
     setConfirm(false);
-    setAlert(true);
+    setBar(true);
     setTimeout(() => {
-        setAlert(false)
+        setBar(false)
     }, 1000);
   };
   const handleClose = () => {
