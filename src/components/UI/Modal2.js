@@ -10,19 +10,37 @@ import { Box } from "@mui/system";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { sendMail } from "../services/adminServices";
 
 const modalBody = {
   background: "#F9FAFC",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   borderRadius: "18px",
-  height: "510px",
+  height: "30vh",
   width:"70vh",
 };
 
-export default function Model2({ handleClickOpen, open, setOpen }) {
+const btn={
+  marginTop:"50px",
+  justifyContent:"end",
+  display:"flex"
+  
+}
+
+export default function Model2({ handleClickOpen, open, setOpen, contestDetails,emails }) {
+  console.log('email',emails)
+  const [contestId,setContestId]=React.useState();
   const handleClose = () => {
     setOpen(false);
   };
+  const handleMail=async()=>{
+    const result=await sendMail(contestId,emails).then();
+    const data=await result.data
+    console.log(data,"response")
+  }
+  const handleChange=(e)=>{
+    setContestId(e.target.value)
+  }
 
   return (
     <div>
@@ -42,20 +60,33 @@ export default function Model2({ handleClickOpen, open, setOpen }) {
 
         <DialogContent>
           <DialogContentText>
-            <Box sx={{ minWidth: 120 }} m={7}>
+            <Box sx={{ minWidth: 120 }} >
               <FormControl fullWidth >
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   defaultValue={10}
+                  
+                  onChange={handleChange}
                 >
-                  <MenuItem value={10}>rammanhotragmail.com</MenuItem>
-                  <MenuItem value={20}>rammanhotragmail.com</MenuItem>
-                  <MenuItem value={30}>rammanhotragmail.com</MenuItem>
+                {contestDetails?.map((val,index)=>{
+                return(
+                  <MenuItem value={val?.contestId}
+                  
+                  >{val.contestName}</MenuItem>
+                )
+                  
+                })}
+              
                 </Select>
               </FormControl>
             </Box>
+            
           </DialogContentText>
+          <Box  sx={btn}>
+          <Button marginTop={2} variant="contained" onClick={()=>handleMail()}>Send </Button>
+          </Box>
+         
         </DialogContent>
       </Dialog>
     </div>

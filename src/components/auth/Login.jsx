@@ -176,6 +176,7 @@ const Login = ({ admin }) => {
   useEffect(() => {
     setAlert(false);
   }, [credential]);
+  
   const handleChange = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
   };

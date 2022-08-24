@@ -32,10 +32,7 @@ const names = ["Level 1", "Level 2"];
 
 function getStyles(name, level, theme) {
   return {
-    // fontWeight:
-    //    level.indexOf(name) === -1
-    //     ? theme.typography.fontWeightRegular
-    //     : theme.typography.fontWeightMedium,
+    
   };
 }
 

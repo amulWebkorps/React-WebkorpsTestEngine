@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React,{useEffect,useState} from "react";
+import React, { useState } from "react";
 import { Container, Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
@@ -13,7 +13,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
-
+import { useLocation } from "react-router-dom";
 
 const background1 = {
   height: "100vh",
@@ -64,41 +64,37 @@ const scrollDiv = {
 
 const emailContainer = {
   overflowY: "auto",
-  height: "550px",
+  height: "350px",
 };
+
+const EmailShow = () => {
+  const [open, setOpen] = React.useState(false);
+  const location =useLocation();
+  const [contestDetails, setContestDetails]=useState(location?.state?.data)
+  const [emails, setEmails]=useState(null);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+const handleChange=(e)=>{
+  setEmails(e.target.value)
+
+}
+const handleMail=()=>{
+  
+}
+
+
 const buttonEmail={
   fontSize:"8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",}
-
-const EmailShow = () => {
-  const [mail,setMail] = useState()
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-// useEffect(() => {
-//   sentMailForParticipator()
-//       .then(function (response) {
-//         // handle success
-//         console.log(response.data,"showall")
-//         setMail(response.data);
-//       })
-//       .catch(function (error) {
-//         // handle error
-//         console.log(error);
-//       });
-//   }, []);
-
-  console.log("sent mail", mail)
-
   return (
     <>
-      <Modal2 open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} />
+      <Modal2 open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} 
+      contestDetails={contestDetails}
+      emails={emails}
+       />
       <div style={background1}>
         <Header/>
         <Container maxWidth="lg" sx={whiteContainer}>
@@ -138,116 +134,20 @@ const EmailShow = () => {
           </Grid>
           <Container sx={emailContainer}>
             <Grid container>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} >
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
+            
+  
+              
+              
               <Grid container sx={divSelect}>
                 <Grid item sm={9} sx={scrollDiv}>
                   <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
+                  akshaykhajuriya@webkorps.com
                   </Typography>
                 </Grid>
                 <Grid item sm={2} mt={1}>
                   <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="primary" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="primary" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="primary" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv} >
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    rajkushwah02hhg@gmail.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
+                    value={'akshaykhajuriya@webkorps.com'}
+                    onChange={handleChange}
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="#0057ff" />}
                     sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
@@ -268,7 +168,7 @@ const EmailShow = () => {
             mt={3}
             alignItems="flex-end"
           >
-            <Button variant="contained" size="large" sx={buttonEmail}>Email</Button>
+            <Button variant="contained" size="large" sx={buttonEmail} onClick={handleClickOpen}>Email</Button>
           </Box>
         </Container>
       </div>

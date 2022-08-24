@@ -381,7 +381,7 @@ const Dashbord = () => {
                         color="primary"
                         aria-label="add"
                         sx={addButton}
-                        onClick={() => navigate("/email")}
+                        onClick={() => navigate("/email" ,{ state: { data: contestDetails } })}
                       >
                         <AddIcon fontSize="large" />
                       </Fab>
