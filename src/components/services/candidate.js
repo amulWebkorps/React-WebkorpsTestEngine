@@ -20,7 +20,7 @@ const showAllLanguage = () => {
   return axios.get(SHOW_ALL_LANGUAGE);
 };
 
-const StartContestPage = () => {
+const startContestPage = () => {
   return axios.post(START_CONTEST_PAGE,{
     params: {
       contestId: "62f1123c197f857ee1f940e0",
@@ -30,20 +30,5 @@ const StartContestPage = () => {
 
   });
 };
-export { participatorLogin, showAllLanguage,StartContestPage};
+export { participatorLogin, showAllLanguage,startContestPage};
 
-
-// import axios from 'axios'
-// const PARTICIPATOR_LOGIN_URL='http://localhost:8085/doSignInForParticipator'
-// const CANDIDATE_REGISTRATION_URL=` http://localhost:8085/candidateRegistration`
-
-// const participatorLogin=(contestId,credential)=>{
-//     return axios.get(PARTICIPATOR_LOGIN_URL, {
-//         params: {
-//           contestId:contestId,
-//           email: credential?.email,
-//           password: credential?.password,
-//         },
-//       });
-//     }
-// export {participatorLogin}

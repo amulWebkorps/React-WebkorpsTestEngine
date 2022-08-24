@@ -10,9 +10,9 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
+
 import { useLocation } from "react-router-dom";
-import { StartContestPage } from "../services/candidate";
+import { startContestPage } from "../services/candidate";
 import { showAllLanguage } from "../services/candidate";
 
 
@@ -175,20 +175,20 @@ const Compiler = () => {
 //      });
 //  }, []);
 
- useEffect(() => {
-  axios
-   .post(`http://192.168.1.74:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
-   .then(function (response) {
-     // handle success
-     setdata1(response.data);
-   })
-   .catch(function (error) {
-     // handle error
+//  useEffect(() => {
+//   axios
+//    .post(`http://192.168.1.74:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
+//    .then(function (response) {
+//      // handle success
+//      setdata1(response.data);
+//    })
+//    .catch(function (error) {
+//      // handle error
 
-     console.log(error);
+//      console.log(error);
 
-   });
-}, []);
+//    });
+// }, []);
 
 // useEffect(() => {
 //   StartContestPage()
@@ -203,6 +203,19 @@ const Compiler = () => {
      
 //    });
 // }, []);
+
+
+
+const fetchData1= async( )=> {
+  const response = await 
+  startContestPage()   
+  const user = await response.data;
+  setdata1(user)
+}
+
+useEffect(() => {
+  fetchData1();
+},); 
 
   console.log("datastartcontest",data1)
   console.log('--profile--',profile?.participatorData?.state?.data)

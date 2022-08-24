@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Button } from "@mui/material";
 import "../../App.css";
-import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
+
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -119,19 +119,7 @@ const Instruction = () => {
   const location = useLocation();
   const [participatorData, setParticipator]=useState(location)
   
-  console.log("data", language1);
-  // useEffect(() => {
-  //   axios
-  //     .get(CANDIDATE_LANGUAGE_URL)
-  //     .then(function (response) {
-  //       // handle success
-  //       setLanguage1(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       // handle error
-  //       console.log(error);
-  //     });
-  // }, []);
+
 
 
   const handleChange = (event) => {

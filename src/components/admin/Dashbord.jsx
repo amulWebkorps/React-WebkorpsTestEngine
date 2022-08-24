@@ -20,6 +20,8 @@ import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 
+import { getAllContestList } from "../services/adminServices";
+
 const containerStyle = {
   overflowY: "auto",
   height: "68vh",
@@ -150,13 +152,11 @@ const contestInitialValues = {
 };
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
+
   const location = useLocation();
-  const [presentContestData, setPresentContest] = useState(
-    location?.state?.data?.presentContest
-  );
-  const [contestDetails, setContestDetails] = useState(presentContestData);
+
   const [showAlert, setAlert] = useState(false);
-  const [bar, setBar]=useState(false)
+  const [bar, setBar] = useState(false);
   const [delContest, setDelContest] = useState({
     name: "",
     id: "",
@@ -164,11 +164,7 @@ const Dashbord = () => {
   });
 
   const [confirm, setConfirm] = useState(false);
-
-  useEffect(() => {
-    setPresentContest(location?.state?.data?.presentContest);
-  }, [location]);
-
+  const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -209,10 +205,25 @@ const Dashbord = () => {
       navigate("/allavailable");
     }
   };
-  console.log("---contesdetails--", contestDetails);
+
+  const fetchContestData = async () => {
+    const response = await getAllContestList();
+    const user = await response.data;
+    setContestDetails(user);
+  };
+
+  useEffect(() => {
+    fetchContestData();
+  }, []);
+
+  console.log("---contest", contestDetails);
+  //  const handleLogout = () => {
+  //   localStorage.clear();
+  //  }
   return (
     <div style={app}>
       <Header />
+
       {showAvailq ? (
         <>
           <Modal
@@ -222,6 +233,7 @@ const Dashbord = () => {
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
             setAlert={setAlert}
+            fetchContestData={fetchContestData}
           />
           <Popup
             contestDetails={contestDetails}
@@ -233,11 +245,17 @@ const Dashbord = () => {
             handleClickOpen={handlePop}
             setBar={setBar}
           />
-          {bar && (
+          {bar || showAlert ? (
             <MsgBar
-              errMsg={"Contest Delete Successfully...!"}
-              color={"green"}
+              errMsg={
+                bar
+                  ? "Contest Delete Successfully...!"
+                  : "Contest Created Successfully...!"
+              }
+              color={bar ? "blue" : "green"}
             />
+          ) : (
+            <></>
           )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>

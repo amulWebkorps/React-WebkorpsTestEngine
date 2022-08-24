@@ -150,7 +150,7 @@ const Login = ({ admin }) => {
           setMsg(true);
           setTimeout(() => {
             navigate("/dashboard", { state: { data: result.data } });
-          },1500);
+          }, 1500);
         }
       } catch (error) {
         setAlert(true);
@@ -159,8 +159,17 @@ const Login = ({ admin }) => {
         navigate("/");
       }
     } else {
-      const result = await participatorLogin(Id, credential).then();
-      navigate("/instruction", { state: { data: result.data } });
+      try {
+        const result = await participatorLogin(Id, credential).then();
+        setMsg(true);
+        setTimeout(() => {
+          navigate("/instruction", { state: { data: result.data } });
+        }, 1500);
+        // navigate("/instruction", { state: { data: result.data } });
+      } catch (error) {
+        setAlert(true);
+        setLoading(false);
+      }
     }
   };
 
@@ -183,13 +192,13 @@ const Login = ({ admin }) => {
         </Grid>
         {showAlert && (
           <MsgBar
-            empty={"Please Fill Details"}
+            empty={"Please Fill Correct Details"}
             color={"Red"}
             errMsg={response}
           />
         )}
       </Grid>
-      {showMsg && <MsgBar errMsg={"Admin Login Succesfully"} color={"green"} />}
+      {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
 
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
@@ -219,9 +228,7 @@ const Login = ({ admin }) => {
                   sx={checkboxname}
                 />
               )}
-              {/* <NavLink to={path==="/candidate"?"/user":"/dashboard"} style={{ textDecoration: "none" }}>
-               
-              </NavLink> */}
+
               <LoginButton name="Log in" onClick={handleLogin} />
               {admin && (
                 <>
