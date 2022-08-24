@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Fab } from "@mui/material";
+import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,15 +7,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { contestImg } from "../assests/images";
+import { background, contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { getContestDetail ,removeContest} from "../services/adminServices";
-import Alert from "../auth/base/Alert";
+import { getContestDetail, removeContest } from "../services/adminServices";
 
 const containerStyle = {
   overflowY: "auto",
@@ -140,17 +138,26 @@ const months = {
   lineHeight: "14px",
 };
 const levels = ["Level 1", "Level 2", "ALL"];
-const contestInitialValues={
-  contestName:"",
-  contestDescription:"",
-  contestLevel:""
-}
+const contestInitialValues = {
+  contestName: "",
+  contestDescription: "",
+  contestLevel: "",
+};
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
   const location = useLocation();
-  const [presentContestData, setPresentContest] = useState(location?.state?.data?.presentContest);
+  const [presentContestData, setPresentContest] = useState(
+    location?.state?.data?.presentContest
+  );
   const [contestDetails, setContestDetails] = useState(presentContestData);
-  const [showAlert,setAlert]=useState(false);
+  const [showAlert, setAlert] = useState(false);
+  const [state, setState] = useState({
+    opens: true,
+    vertical: "top",
+    horizontal: "center",
+  });
+
+  const { vertical, horizontal, opens } = state;
 
   useEffect(() => {
     setPresentContest(location?.state?.data?.presentContest);
@@ -172,7 +179,6 @@ const Dashbord = () => {
       });
     });
   };
- 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -188,9 +194,9 @@ const Dashbord = () => {
     }
   };
 
-//  const handleLogout = () => {
-//   localStorage.clear();
-//  }
+  //  const handleLogout = () => {
+  //   localStorage.clear();
+  //  }
   return (
     <div style={app}>
       <Header />
@@ -198,6 +204,20 @@ const Dashbord = () => {
         severity={'success'}
         errMsg={"contest created successfully"}
       />} */}
+      {location?.state?.data && (
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={opens}
+          message="Admin Login successfully..!"
+          key={vertical + horizontal}
+          ContentProps={{
+            sx: {
+              background: "green",
+              justifyContent: "center",
+            },
+          }}
+        />
+      )}
       {showAvailq ? (
         <>
           <Modal
@@ -243,7 +263,6 @@ const Dashbord = () => {
                           <p style={months}>
                             {contestDetails?.[index]?.contestDescription}
                           </p>
-                          
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -311,7 +330,6 @@ const Dashbord = () => {
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
-                          
                         </CardContent>
                       </CardActionArea>
                     </Card>
