@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Container, Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
@@ -13,6 +13,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
+
 
 const background1 = {
   height: "100vh",
@@ -65,18 +66,36 @@ const emailContainer = {
   overflowY: "auto",
   height: "550px",
 };
-
-const EmailShow = () => {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 const buttonEmail={
   fontSize:"8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",}
+
+const EmailShow = () => {
+  const [mail,setMail] = useState()
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+// useEffect(() => {
+//   sentMailForParticipator()
+//       .then(function (response) {
+//         // handle success
+//         console.log(response.data,"showall")
+//         setMail(response.data);
+//       })
+//       .catch(function (error) {
+//         // handle error
+//         console.log(error);
+//       });
+//   }, []);
+
+  console.log("sent mail", mail)
+
   return (
     <>
       <Modal2 open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} />

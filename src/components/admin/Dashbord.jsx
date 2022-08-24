@@ -14,7 +14,9 @@ import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRou
 import Modal from "../UI/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getContestDetail ,removeContest} from "../services/adminServices";
+import { getContestDetail ,removeContest,} from "../services/adminServices";
+import { getAllContestList } from "../services/adminServices";
+
 
 const containerStyle = {
   overflowY: "auto",
@@ -150,8 +152,10 @@ const contestInitialValues={
 }
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
+  
   const location = useLocation();
   const [presentContestData, setPresentContes] = useState(
+   
     location?.state?.data?.presentContest
   );
   // const [contestDetails, setContestDetails] = useState([{
@@ -159,7 +163,7 @@ const Dashbord = () => {
   // contestDescription:presentContestData?.[0]?.contestDescription,
   // contestLevel:presentContestData?.[0]?.contestLevel}
   // ]);
-  const [contestDetails, setContestDetails] = useState(presentContestData);
+  const [contestDetails, setContestDetails] = useState();
 
   useEffect(() => {
     setPresentContes(location?.state?.data?.presentContest);
@@ -173,6 +177,7 @@ const Dashbord = () => {
     console.log(result.data);
     navigate("/addQuestion");
   };
+
 
   const deleteContest = (id) => {
     setContestDetails((val) => {
@@ -197,13 +202,29 @@ const Dashbord = () => {
     }
   };
 
+
+  
+  const fetchData= async( )=> {
+    const response = await 
+      getAllContestList()   
+    const user = await response.data;
+    setContestDetails(user)
+    // setAllList(user);
+
+  }
+
+  useEffect(() => {
+    fetchData();
+  },[]); 
+
+ console.log('---contest',contestDetails)
 //  const handleLogout = () => {
 //   localStorage.clear();
 //  }
   return (
     <div style={app}>
       <Header />
-      {/* <Typography onClick={handleLogout} >Logout</Typography> */}
+     
       {showAvailq ? (
         <>
           <Modal
@@ -212,6 +233,7 @@ const Dashbord = () => {
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
+           
           />
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>

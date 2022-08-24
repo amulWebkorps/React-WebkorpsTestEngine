@@ -16,6 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { addContest } from "../services/adminServices";
+import { getAllContestList } from "../services/adminServices";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -135,7 +136,10 @@ const Modal = ({
   setOpen,
   setContestDetails,
   contestDetails,
+
+ 
 }) => {
+  const [allList, setAllList] = useState();
   const [inputData, setInputData] = useState({
     contestName: "",
     contestDescription: "",
@@ -166,6 +170,10 @@ const Modal = ({
       alert(error.response.data)
     }
   };
+
+ 
+
+  console.log("all list",allList);
 
   return (
     <div>
@@ -222,7 +230,6 @@ const Modal = ({
                   }}
                   //   sx={{description}}
                 />
-
                 <FormControl sx={{ width: 300, mt: 2 }}>
                   <label style={label}>Level</label>
                   <Select
@@ -262,7 +269,8 @@ const Modal = ({
                 <Button
                   variant="contained"
                   sx={crebtn}
-                  onClick={() => createContest()}
+                  onClick={()=>createContest()  } 
+                
                 >
                   Create
                 </Button>

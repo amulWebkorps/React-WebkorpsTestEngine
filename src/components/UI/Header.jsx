@@ -17,7 +17,6 @@ const logoText = {
   fontStyle: "normal",
   fontWeight: "600",
   fontSize: "45px",
-  // lineHeight: "52px",
   lineHeight: "52.35px",
   color: "#1887C9",
 };
