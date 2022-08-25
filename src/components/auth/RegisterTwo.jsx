@@ -14,9 +14,7 @@ import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-
 import { registerAdmin } from "../services/adminServices";
-
 import Validation from "./base/Validation";
 
 const ContainerStyle = {
@@ -147,8 +145,11 @@ const logoText = {
   color: "#1887C9",
 };
 
+
+
+
 const RegisterTwo = ({ registercredential, setregistercredential }) => {
-  const [confirmPassword, setConfirmpassword] = useState("");
+const [confirmPassword, setConfirmpassword] = useState("");
 
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);

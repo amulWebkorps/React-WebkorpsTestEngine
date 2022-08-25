@@ -49,11 +49,10 @@ const sendMail = (contestId,mailAddress) => {
 };
 
 
+
 const getAllContestList =()=>{
   return axios.get(GET_ALL_CONTEST_LIST)
 }
-
-
 
 
 

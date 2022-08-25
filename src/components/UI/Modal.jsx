@@ -17,6 +17,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { addContest } from "../services/adminServices";
 import { getAllContestList } from "../services/adminServices";
+import Alert from "../auth/base/Alert";
+import Validation from "../auth/base/Validation";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -139,18 +141,22 @@ const Modal = ({
 
  
 }) => {
-  const [allList, setAllList] = useState();
+  const [value, setValue] = React.useState("");
+  const [showAlert, setAlert] = useState(false);
   const [inputData, setInputData] = useState({
     contestName: "",
     contestDescription: "",
     contestLevel: "",
   });
+
   const handleClose = () => {
     setOpen(false);
   };
   const theme = useTheme();
 
   const handleOnChange = (e) => {
+    
+
     e.preventDefault();
     const { name, value } = e?.target;
     setInputData({
@@ -159,24 +165,51 @@ const Modal = ({
     });
   };
 
-  const createContest = async () => {
-    setContestDetails([...contestDetails, inputData]);
-    try {
-      const response = addContest(inputData).then();
-      if(response){
+  // const createContest = async () => { 
+  //   try {  
+  //     if (
+  //       inputData.contestName === "" ||
+  //       inputData.contestDescription === "" ||
+  //       inputData.contestLevel === ""
+  //     ) {
+  //       alert("please fill all details")   
+  //     }
+  //     else if('response'){
+  //       setContestDetails([...contestDetails, inputData]); 
+  //       const response = addContest(inputData).then(); 
+  //       handleClose()
+  //     }
+  //   } catch (error) {
+  //     alert("fgh")
+  //   }
+  // };
+
+
+  const createContest = async () => { 
+    try {  
+      setContestDetails([...contestDetails, inputData]); 
+      const response = addContest(inputData).then(); 
+      if (
+        inputData.contestName === "" ||
+        inputData.contestDescription === "" ||
+        inputData.contestLevel === ""
+      ) {
+        alert("please fill all details")   
+      }
+      else if('response'){    
         handleClose()
       }
     } catch (error) {
-      alert(error.response.data)
+      alert("fgh")
     }
   };
 
- 
-
-  console.log("all list",allList);
-
   return (
     <div>
+       {showAlert && (
+        <Validation severity={"error"} empty={"please fill all details"} />
+      )}
+      
       <Dialog
         open={open}
         onClose={(_, reason) => {
@@ -206,6 +239,7 @@ const Modal = ({
                 }}
               >
                 <label style={label}>Name of Contest</label>
+                
                 <TextField
                   InputProps={{
                     style: nameInput,
@@ -215,7 +249,7 @@ const Modal = ({
                   onChange={handleOnChange}
                   name="contestName"
                   value={contestDetails?.contestName}
-                />
+                />              
                 <label style={label}>Add Description</label>
                 <TextField
                   id="outlined-multiline-static"
@@ -223,6 +257,7 @@ const Modal = ({
                   onChange={handleOnChange}
                   value={contestDetails?.contestDescription}
                   multiline
+                  required 
                   rows={2}
                   fullWidth
                   InputProps={{
@@ -268,9 +303,8 @@ const Modal = ({
               <Grid container sx={{ justifyContent: "start" }}>
                 <Button
                   variant="contained"
-                  sx={crebtn}
+                  sx={crebtn} 
                   onClick={()=>createContest()  } 
-                
                 >
                   Create
                 </Button>

@@ -13,9 +13,8 @@ const button = {
   marginBottom: "20px",
   textTransform: "none",
   borderRadius: "6px",
+  
 };
-
-
 const RegisterButton = ({name, onClick}) => {
   return (
     <>

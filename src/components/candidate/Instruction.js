@@ -3,15 +3,13 @@ import { Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Button } from "@mui/material";
 import "../../App.css";
-import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { startContestPage } from "../services/candidate";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -113,25 +111,11 @@ const array1 = [
 const Instruction = () => {
   const axios = require("axios").default;
   const navigate = useNavigate();
-
-  const [language1, setLanguage1] = useState();
+  const [data1, setdata1] = useState();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
   const [participatorData, setParticipator]=useState(location)
-  
-  console.log("data", language1);
-  // useEffect(() => {
-  //   axios
-  //     .get(CANDIDATE_LANGUAGE_URL)
-  //     .then(function (response) {
-  //       // handle success
-  //       setLanguage1(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       // handle error
-  //       console.log(error);
-  //     });
-  // }, []);
+
 
 
   const handleChange = (event) => {
@@ -142,10 +126,19 @@ const Instruction = () => {
     navigate("/user", { state: { language,participatorData } });
   };
 
+  const fetchData1= async( 
+    )=> {
+      const result= await startContestPage(language,participatorData).then(
+       
+      );
+      console.log('--------rrrrrr',result.data)
+    
+    }
+    console.log("participatorsss " ,)
+console.log("data" ,data1)
   return (
     <div style={background1}>
       <Header />
-
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
@@ -200,7 +193,7 @@ const Instruction = () => {
           <Grid container>
             <Button
               variant="contained"
-              onClick={handleClick2}
+              onClick={()=>{handleClick2(); fetchData1();}}
               sx={startContest}
             >
               Start Contest

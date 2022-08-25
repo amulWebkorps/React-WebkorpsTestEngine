@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { Container, display } from "@mui/system";
+import { Container } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import Header from "../UI/Header";
-import { render } from "react-dom";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { CANDIDATE_LANGUAGE_URL } from "../Services/Candidate";
 import { useLocation } from "react-router-dom";
-import { StartContestPage } from "../services/candidate";
 import { showAllLanguage } from "../services/candidate";
 
 
@@ -42,11 +39,6 @@ const rightDiv = {
   background: "white",
   borderRadius: "17px 17px 0px 0px",
   marginTop: "20px",
-};
-
-const editor = {
-  height: "60vh",
-  background: "black",
 };
 
 const testCase = {
@@ -113,12 +105,6 @@ const CodeCompilerText1 = {
   textAlign: "left",
 };
 
-const flexDrop = {
-  display: "flex",
-  flexDirection: "row",
-  textAlign: "left",
-};
-
 const buttonTest = {
   width: "100px",
   height: "40px",
@@ -136,11 +122,9 @@ const buttonTest = {
 };
 
 const Compiler = () => {
-  const axios = require("axios").default;
   const [language2, setLanguage2] = useState();
   const [data1, setdata1] = useState();
   const [code1, setCode1] = useState("");
-  const [Lan, setLan] = useState("");
   const location = useLocation()
   const [profile, setProfile]=useState(location?.state)
   const [count, setCount] = useState(0);
@@ -159,66 +143,7 @@ const Compiler = () => {
       });
   }, []);
 
-
-
-
-//   useEffect(() => {
-//     axios
-//      .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=2910e8d7-ef82-43f8-8b2b-f5e211ba98e2`)
-//      .then(function (response) {
-//        // handle success
-//        setdata1(response.data);
-//      })
-//      .catch(function (error) {
-//        // handle error
-//        console.log(error);
-//      });
-//  }, []);
-
-//  useEffect(() => {
-//   axios
-//    .post(`http://192.168.1.74:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
-//    .then(function (response) {
-//      // handle success
-//      setdata1(response.data);
-//    })
-//    .catch(function (error) {
-//      // handle error
-
-//      console.log(error);
-
-//    });
-// }, []);
-
-// useEffect(() => {
-//   StartContestPage()
-//    .then(function (response) {
-//      // handle success
-//      setdata1(response.data);
-//    })
-//    .catch(function (error) {
-//      // handle error
-
-//      console.log(error);
-     
-//    });
-// }, []);
-
-
-
-const fetchData1= async( )=> {
-  const response = await 
-  StartContestPage()   
-  const user = await response.data;
-  setdata1(user)
-}
-
-useEffect(() => {
-  fetchData1();
-},); 
-
-  console.log("datastartcontest",data1)
-  console.log('--profile--',profile?.participatorData?.state?.data)
+console.log('--profile--',profile?.participatorData?.state?.data)
 const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.language)
 console.log("getdata",dataLan)
 useEffect(()=>{
@@ -228,9 +153,10 @@ useEffect(()=>{
     setCode1(()=>{
       return dataLan[0].codeBase;
     })
-
   )
 },[language2])
+
+
 console.log("rfgh",code1)
  function increment() {
     setCount(function (prevCount) {

@@ -30,12 +30,9 @@ export default function Model2({ handleClickOpen, open, setOpen }) {
         aria-describedby="alert-dialog-description"
         PaperProps={{
           style: modalBody,
-        }} >
-      
-        <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-        
+        }} >     
+        <Box display="flex" justifyContent="flex-end" alignItems="flex-end">      
           <Button onClick={handleClose}>
-
             <img src={crossbtn} alt="logo" />
           </Button>
         </Box>

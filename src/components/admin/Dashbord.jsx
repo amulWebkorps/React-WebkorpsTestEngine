@@ -16,6 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getContestDetail ,removeContest,} from "../services/adminServices";
 import { getAllContestList } from "../services/adminServices";
+import Alert from "../auth/base/Alert";
 
 
 const containerStyle = {
@@ -209,10 +210,9 @@ const Dashbord = () => {
       getAllContestList()   
     const user = await response.data;
     setContestDetails(user)
-    // setAllList(user);
-
   }
 
+  
   useEffect(() => {
     fetchData();
   },[]); 
@@ -270,7 +270,6 @@ const Dashbord = () => {
                           <p style={months}>
                             {contestDetails?.[index]?.contestDescription}
                           </p>
-                          
                         </CardContent>
                       </CardActionArea>
                     </Card>
