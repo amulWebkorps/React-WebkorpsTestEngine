@@ -17,7 +17,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { addContest } from "../services/adminServices";
 import { getAllContestList } from "../services/adminServices";
-
+import MsgBar from "../auth/base/MsgBar";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -28,7 +28,17 @@ const MenuProps = {
     },
   },
 };
+const MenuPropsfortime = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 100,
+    },
+  },
+};
 const names = ["Level 1", "Level 2"];
+
+const times = ["30", "60"];
 
 function getStyles(name, level, theme) {
   return {
@@ -114,7 +124,6 @@ const crebtn = {
   fontWeight: "500",
   fontSize: "18px",
   lineHeight: "21px",
-
   color: "#FFFFFF",
 };
 const notbtn = {
@@ -136,18 +145,22 @@ const Modal = ({
   setOpen,
   setContestDetails,
   contestDetails,
-  fetchContestData
-
- 
+  fetchContestData,
 }) => {
-  
+  const [showMessage, setshowMessage] = useState(false);
   const [inputData, setInputData] = useState({
     contestName: "",
     contestDescription: "",
     contestLevel: "",
+    contestTime: "",
   });
   const handleClose = () => {
+    setshowMessage(false);
     setOpen(false);
+    inputData.contestName = "";
+    inputData.contestDescription = "";
+    inputData.contestLevel = "";
+    inputData.contestTime = "";
   };
   const theme = useTheme();
 
@@ -161,27 +174,39 @@ const Modal = ({
   };
 
   const createContest = async () => {
-    setContestDetails([...contestDetails, inputData]);
-    try {
-      const response = addContest(inputData).then();
-      if(response){
-        handleClose()
-        setAlert(true)
-        setTimeout(() => {
-          setAlert(false)
-        }, 2000);
+    if (
+      inputData.contestName === "" ||
+      inputData.contestDescription === "" ||
+      inputData.contestLevel === "" ||
+      inputData.contestTime === ""
+    ) {
+      setshowMessage(true);
+    } else {
+      setContestDetails([...contestDetails, inputData]);
+
+      try {
+        const response = addContest(inputData).then();
+        if (response) {
+          handleClose();
+          setAlert(true);
+          setTimeout(() => {
+            setAlert(false);
+          }, 2000);
+        }
+      } catch (error) {
+        alert(error.response.data);
       }
-    } catch (error) {
-      alert(error.response.data)
     }
   };
-useEffect(()=>{
-  fetchContestData();
-},[open])
-
+  useEffect(() => {
+    fetchContestData();
+  }, [open]);
 
   return (
     <div>
+      {showMessage && (
+        <MsgBar errMsg={"Please fill all details"} color={"red"} />
+      )}
       <Dialog
         open={open}
         onClose={(_, reason) => {
@@ -265,6 +290,37 @@ useEffect(()=>{
                     ))}
                   </Select>
                 </FormControl>
+
+                <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
+                  <label style={label}>Time</label>
+                  <Select
+                    displayEmpty
+                    name="contestTime"
+                    value={contestDetails?.contestTime}
+                    onChange={handleOnChange}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => {
+                      if (selected?.length === 0) {
+                        return <em style={secLevel}>Select Time</em>;
+                      }
+                      return selected;
+                    }}
+                    MenuProps={MenuPropsfortime}
+                    sx={level}
+                    inputProps={{ "aria-label": "Without label" }}
+                  >
+                    <MenuItem disabled value=""></MenuItem>
+                    {times.map((name) => (
+                      <MenuItem
+                        key={name}
+                        value={name}
+                        style={getStyles(name, theme)}
+                      >
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Box>
             </DialogContentText>
           </DialogContent>
@@ -274,8 +330,7 @@ useEffect(()=>{
                 <Button
                   variant="contained"
                   sx={crebtn}
-                  onClick={()=>createContest()  } 
-                
+                  onClick={() => createContest()}
                 >
                   Create
                 </Button>

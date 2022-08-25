@@ -215,20 +215,16 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
       </Grid>
 
       {showAlert && (
-        <MsgBar
-          errMsg={"Admin Register Succesfully......!"}
-          color={"green"}
-        />
-       
+        <MsgBar errMsg={"Admin Register Succesfully......!"} color={"green"} />
       )}
       {showalertpassword && (
-        <Validation severity={"error"} empty={"please fill all details"} />
+        <MsgBar errMsg={"Please fill all details."} color={"red"} />
       )}
       {fillalert && (
-        <Validation severity={"error"} empty={"please fill correct password"} />
+        <MsgBar errMsg={"Please fill correct password."} color={"red"} />
       )}
       {showemail && (
-        <Alert severity={"error"} errMsg={"Email already registered"} />
+        <MsgBar errMsg={"Email already registered."} color={"red"} />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

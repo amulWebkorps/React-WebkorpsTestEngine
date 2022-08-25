@@ -69,13 +69,11 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/login/:Id" element={<Login />}></Route>
-
             <Route
               path="/"
               element={<Protected Component={Login} admin={admin} />}
             ></Route>
-
+            <Route path="/login/:id" element={<Login />}></Route>
             <Route
               path="/user"
               element={<Protected Component={Compiler} />}
