@@ -163,6 +163,7 @@ const quesIntialField = {
   constraints: "",
   sampleInput: "",
   sampleOutput: "",
+  testCase:[]
 
 };
 const testInitialFields={

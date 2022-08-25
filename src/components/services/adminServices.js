@@ -8,6 +8,7 @@ const GET_ALL_CONTEST_LIST = `${BASE_URL}/getAllContestList`;
 const CONTEST_URL = `${BASE_URL}/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 const ADD_CONTEST = `${BASE_URL}/addContest`;
+const SENT_MAIL=`${BASE_URL}/admin/sentMailForParticipator`
 
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
