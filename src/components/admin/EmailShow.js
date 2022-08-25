@@ -15,6 +15,8 @@ import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
 import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
+import { sentMail, uploadParticipator } from "../services/adminServices";
+import { ContactSupportOutlined } from "@mui/icons-material";
 
 const background1 = {
   height: "100vh",
@@ -71,10 +73,13 @@ const EmailShow = () => {
   const location = useLocation();
   const [contestDetails, setContestDetails] = useState(location?.state?.data);
   const [emails, setEmails] = useState(null);
+  const [sentEmails, setSentEmails] = useState([]);
+  const [sent, setSent]=useState(false)
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const file = new FormData();
   const handleChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -85,7 +90,23 @@ const EmailShow = () => {
       console.log("-----false---", emails);
     }
   };
-  const handleMail = () => {};
+  const handleSentMail = async() => {
+    setSent(true)
+    const result=await sentMail().then();
+    setSentEmails(result?.data)
+    setOpen(true)
+  };
+  const handleFileSelect = (event) => {
+    try {
+      const result=uploadParticipator(event.target.files[0]).then();
+      console.log('------response',result)
+    } catch (error) {
+      console.log('---------',error)
+    }
+  }
+  const handleOnChange=(e)=>{
+       console.log('---------',e.target.value)
+  }
 
   const buttonEmail = {
     fontSize: "8",
@@ -97,12 +118,15 @@ const EmailShow = () => {
     <>
       <Modal2
         setAlert={setAlert}
+        sentEmails={sentEmails}
         showAlert={showAlert}
         open={open}
         setOpen={setOpen}
         handleClickOpen={handleClickOpen}
         contestDetails={contestDetails}
         emails={emails}
+        sent={sent}
+        setSent={setSent}
       />
       {showAlert && (
         <MsgBar errMsg={"Mail send successfully....!"} color={"green"} />
@@ -115,7 +139,7 @@ const EmailShow = () => {
               <Button
                 variant="contained"
                 sx={buttonEmail}
-                onClick={handleClickOpen}
+                onClick={handleSentMail}
               >
                 Sent Email
               </Button>
@@ -127,6 +151,7 @@ const EmailShow = () => {
                     fullWidth
                     id="standard-bare"
                     variant="outlined"
+                    onChange={handleOnChange}
                     InputProps={{
                       startAdornment: (
                         <IconButton>
@@ -140,6 +165,7 @@ const EmailShow = () => {
                       variant="contained"
                       component="label"
                       sx={buttonEmail}
+                      onChange={handleFileSelect}
                     >
                       Upload File
                       <input type="file" hidden />
@@ -170,9 +196,11 @@ const EmailShow = () => {
                   <img src={crossbtn} alt="cross" />
                 </Grid>
               </Grid>
+              
               <Grid item sx={divSelect}></Grid>
               <Grid item sx={divSelect}></Grid>
             </Grid>
+            
           </Container>
           <Box
             display="flex"

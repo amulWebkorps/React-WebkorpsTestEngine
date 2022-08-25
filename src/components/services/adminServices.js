@@ -8,7 +8,8 @@ const GET_ALL_CONTEST_LIST = `${BASE_URL}/getAllContestList`;
 const CONTEST_URL = `${BASE_URL}/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 const ADD_CONTEST = `${BASE_URL}/addContest`;
-const SENT_MAIL=`${BASE_URL}/admin/sentMailForParticipator`
+const UPLOAD_PARTICIAPTOR = `${BASE_URL}/studentUpload`;
+const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
 
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
@@ -52,9 +53,26 @@ const addContest = (contestDetails) => {
 const sendMail = (Id, mail) => {
   return axios.post(SEND_MAIL, {
     studentEmails: [mail],
-    contestId: [Id] 
-    }
-  );
+    contestId: [Id],
+  });
+};
+
+const sentMail = () => {
+  return axios.get(SENT_MAIL);
+};
+const uploadParticipator = (file) => {
+  const formData = new FormData();
+  formData.append("file", file)
+  return axios.post(UPLOAD_PARTICIAPTOR,formData)
+  // return axios({
+  //   method: "post",
+  //   url: `${UPLOAD_PARTICIAPTOR}`,
+  //   file: file,
+  //   headers: {
+  //     "Content-Type":
+  //       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  //   },
+  // });
 };
 
 const getAllContestList = () => {
@@ -69,4 +87,6 @@ export {
   getContestDetail,
   getAllContestList,
   deleteContest,
+  sentMail,
+  uploadParticipator,
 };

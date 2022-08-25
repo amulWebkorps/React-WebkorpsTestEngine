@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button,IconButton} from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,7 +24,6 @@ export default function Popup({
   contest,
   setConfirm,
   setContestDetails,
-
 }) {
   const handleDelete = async () => {
     const result = await deleteContest(contest.contestId).then();
@@ -37,7 +36,7 @@ export default function Popup({
     setConfirm(false);
     setBar(true);
     setTimeout(() => {
-        setBar(false)
+      setBar(false);
     }, 1000);
   };
   const handleClose = () => {
@@ -57,20 +56,12 @@ export default function Popup({
         }}
         aria-describedby="alert-dialog-slide-description"
         PaperProps={{
-          style: {borderRadius:"10px"},
+          style: { borderRadius: "10px" },
         }}
       >
-        <IconButton
-                          color="primary"
-                          aria-label="add"
-                          sx={delBtn1}
-                        >
-                          <CancelIcon
-                            onClick={() =>
-                              handleClose()
-                            }
-                          />
-                          </IconButton>
+        <IconButton color="primary" aria-label="add" sx={delBtn1}>
+          <CancelIcon onClick={() => handleClose()} />
+        </IconButton>
         <DialogTitle>Contest Name ~ {contest?.name}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
@@ -78,9 +69,7 @@ export default function Popup({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDelete}
-          variant="contained"
-          >
+          <Button onClick={handleDelete} variant="contained">
             Yes
           </Button>
           <Button onClick={handleClose} color="primary" variant="outlined">
