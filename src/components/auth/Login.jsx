@@ -150,7 +150,7 @@ const Login = ({ admin }) => {
           setMsg(true);
           setTimeout(() => {
             navigate("/dashboard", { state: { data: result.data } });
-          },1500);
+          }, 1500);
         }
       } catch (error) {
         setAlert(true);
