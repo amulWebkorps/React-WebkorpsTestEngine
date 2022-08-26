@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, InputBase } from "@mui/material";
 import React, { useState } from "react";
 import { Container, Box } from "@mui/system";
 import TextField from "@mui/material/TextField";
@@ -17,9 +17,10 @@ import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
 import { ContactSupportOutlined } from "@mui/icons-material";
+import Loader from "../auth/base/Loader";
 
 const background1 = {
-  height: "100vh",
+  height: "100%",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
@@ -27,10 +28,32 @@ const background1 = {
       rgba(24, 135, 201, 0.4) 100%
     )`,
 };
+const innerSearch = {
+  display: "flex",
+  height: "40px",
+  width: "212px",
+};
+
+const searchIcon = {
+  background: "#F1F1F1",
+  borderRadius: `15px 0px 0px 15px`,
+  color: "#0057FF",
+};
+
+const searchField = {
+  background: "#F1F1F1",
+  opacity: 0.5,
+  borderRadius: `0px 15px 15px 0px`,
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: 300,
+  fontSize: "16px",
+  color: "#000000",
+};
 
 const whiteContainer = {
   marginTop: "30px",
-  height: "800px",
+  height: "82vh",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -57,6 +80,7 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   marginLeft: "20px",
+  marginTop: "25px",
 };
 
 const scrollDiv = {
@@ -74,12 +98,18 @@ const EmailShow = () => {
   const [contestDetails, setContestDetails] = useState(location?.state?.data);
   const [emails, setEmails] = useState(null);
   const [sentEmails, setSentEmails] = useState([]);
-  const [sent, setSent]=useState(false)
+  const [uploadEmail, setUploadEmail] = useState(["akshay@gmail.com","raj@gmail.com","nitesh@gmail.com","rajvardhan@gmail.com","raju@gmail.com","akash@gmail.com"]);
+  const [searchString, setSearchString]=useState("");
+  const [sent, setSent] = useState(false);
+  const [upload, setUpload] = useState({
+    alert: false,
+    loader: false,
+  });
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const file = new FormData();
+
   const handleChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -90,30 +120,67 @@ const EmailShow = () => {
       console.log("-----false---", emails);
     }
   };
-  const handleSentMail = async() => {
-    setSent(true)
-    const result=await sentMail().then();
-    setSentEmails(result?.data)
-    setOpen(true)
+  const handleSentMail = async () => {
+    setSent(true);
+    const result = await sentMail().then();
+    setSentEmails(result?.data);
+    setOpen(true);
   };
   const handleFileSelect = (event) => {
+    setUpload({
+      alert: true,
+      loader: true,
+    });
     try {
-      const result=uploadParticipator(event.target.files[0]).then();
-      console.log('------response',result)
+      const result = uploadParticipator(event.target.files[0]).then((res) => {
+        const response = res?.data;
+        setUploadEmail(response);
+        if(response===[]){
+          alert();
+        }
+        setTimeout(() => {
+          setUpload({
+            alert: false,
+            loader: false,
+          });
+        }, 1000);
+      });
+
+      console.log("------response", result);
     } catch (error) {
-      console.log('---------',error)
+      console.log("---------", error);
     }
-  }
-  const handleOnChange=(e)=>{
-       console.log('---------',e.target.value)
+  };
+  const handleOnChange = (e) => {
+   setSearchString(e.target.value);
+   setUploadEmail(["akshay@gmail.com","raj@gmail.com","nitesh@gmail.com","rajvardhan@gmail.com","raju@gmail.com","akash@gmail.com"]);
+   
+  };
+
+  const handleSearch=()=>{
+    setUploadEmail((val)=>{
+      return val.filter((element)=>{
+        if (element.includes(searchString)) {
+          return true;
+        }
+      })
+    })
+    const matches = uploadEmail.filter(element => {
+      if (element.includes(searchString)) {
+        return true;
+      }
+    });
+    console.log('macthes',matches)
   }
 
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
     color: "white",
+    marginLeft: "10px",
     borderRadius: "6px",
   };
+  
   return (
     <>
       <Modal2
@@ -128,13 +195,23 @@ const EmailShow = () => {
         sent={sent}
         setSent={setSent}
       />
-      {showAlert && (
-        <MsgBar errMsg={"Mail send successfully....!"} color={"green"} />
-      )}
+      {(showAlert || upload.alert )? 
+          <MsgBar
+            errMsg={
+              showAlert
+                ? "Mail send successfully....!"
+                : "Upload participator successfully...!"
+            }
+            color={"green"}
+          />:<></>
+        }
       <div style={background1}>
         <Header />
         <Container maxWidth="lg" sx={whiteContainer}>
-          <Grid container sx={{ justifyContent: "space-between" }}>
+          <Grid
+            container
+            sx={{ justifyContent: "space-between", paddingTop: "21px" }}
+          >
             <Grid item>
               <Button
                 variant="contained"
@@ -147,29 +224,43 @@ const EmailShow = () => {
             <Grid item>
               <Grid container>
                 <Grid item justifyContent="center" flexDirection="column">
-                  <TextField
-                    fullWidth
-                    id="standard-bare"
-                    variant="outlined"
-                    onChange={handleOnChange}
-                    InputProps={{
-                      startAdornment: (
-                        <IconButton>
-                          <SearchIcon />
-                        </IconButton>
-                      ),
-                    }}
-                  />
+                  <Box sx={innerSearch}>
+                    <IconButton type="submit" sx={searchIcon}>
+                      <SearchIcon
+                      onClick={handleSearch}
+                       />
+                    </IconButton>
+                    <InputBase
+                      placeholder="Unique ID or Name"
+                      sx={searchField}
+                      onChange={handleOnChange}
+                    />
+                  </Box>
                   <Grid item textAlign="center " mt={1}>
-                    <Button
-                      variant="contained"
-                      component="label"
-                      sx={buttonEmail}
-                      onChange={handleFileSelect}
-                    >
-                      Upload File
-                      <input type="file" hidden />
-                    </Button>
+                    <Box sx={{ display: "flex" }}>
+                      {upload.loader && <Loader />}
+                      {upload.loader ? (
+                        <Button
+                          variant="contained"
+                          component="label"
+                          sx={buttonEmail}
+                          disabled
+                        >
+                          Upload File
+                          <input type="file" hidden />
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          component="label"
+                          sx={buttonEmail}
+                          onChange={handleFileSelect}
+                        >
+                          Upload File
+                          <input type="file" hidden />
+                        </Button>
+                      )}
+                    </Box>
                   </Grid>
                 </Grid>
               </Grid>
@@ -177,30 +268,32 @@ const EmailShow = () => {
           </Grid>
           <Container sx={emailContainer}>
             <Grid container>
-              <Grid container sx={divSelect}>
-                <Grid item sm={9} sx={scrollDiv}>
-                  <Typography sx={divText} mt={2.5}>
-                    akshaykhajuriya@webkorps.com
-                  </Typography>
-                </Grid>
-                <Grid item sm={2} mt={1}>
-                  <Checkbox
-                    value={"akshaykhajuriya@webkorps.com"}
-                    onChange={handleChange}
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
-                </Grid>
-              </Grid>
-              
-              <Grid item sx={divSelect}></Grid>
-              <Grid item sx={divSelect}></Grid>
-            </Grid>
+            {uploadEmail.length===0?<h1>No participator found</h1>:
+            uploadEmail?.map((val) => {
+                return (
+                  <Grid container sx={divSelect}>
+                    <Grid item sm={9} sx={scrollDiv}>
+                      <Typography sx={divText}>{val}</Typography>
+                    </Grid>
+                    <Grid item sm={2} mt={1}>
+                      <Checkbox
+                        value={"raj@webkorps.com"}
+                        onChange={handleChange}
+                        icon={<RadioButtonUncheckedIcon />}
+                        checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                        sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                      />
+                    </Grid>
+                    <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                      <img src={crossbtn} alt="cross" />
+                    </Grid>
+                  </Grid>
+                );
+              })
             
+            }
+              
+            </Grid>
           </Container>
           <Box
             display="flex"
