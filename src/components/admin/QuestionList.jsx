@@ -29,6 +29,8 @@ import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
 import All from "./All";
 import { saveQuestion } from "../services/contest/contestServices";
+import Loader from "../auth/base/Loader";
+import MsgBar from "../auth/base/MsgBar";
 
 const useStyles = makeStyles({
   container: {
@@ -169,7 +171,9 @@ const sampleTestInitialFields = {
   input: "",
   output: "",
 };
-
+const problemStatementIntialVal = {
+  question: "",
+};
 const QuestionList = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -193,9 +197,9 @@ const QuestionList = () => {
 
   const [question, setQuestion] = useState(quesIntialField);
   const [quesId, setQuesId] = useState(null);
-  const [problemStatement, setProblemStatement] = useState({
-    question: "",
-  });
+  const [problemStatement, setProblemStatement] = useState(
+    problemStatementIntialVal
+  );
   const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
   const [testCases, setTestCases] = useState(testInitialFields);
   const [testCaseList, setTestCaseList] = useState([]);
@@ -206,11 +210,12 @@ const QuestionList = () => {
   const [availableQuestions, setAvailableQuestions] = useState(
     location?.state?.data?.totalAvailableQuestion
   );
-  const [showAlert, setAlert]=useState(false);
+  const [showAlert, setAlert] = useState(false);
 
   const handleOnchange = (e) => {
     const { name, value } = e.target;
     setQuestion({
+      ...question,
       questionId: defaulValues?.questionId,
       question: problemStatement?.question,
       contestLevel: defaulValues?.contestLevel,
@@ -246,31 +251,42 @@ const QuestionList = () => {
     setAlert(true);
     try {
       const result = await saveQuestion(question).then();
+      setQuestion(quesIntialField);
+      setProblemStatement(problemStatementIntialVal);
+      setTestCases(sampleTestInitialFields);
+      setSampleTestCase(sampleTestInitialFields);
+      setTestCaseList([])
       setTimeout(() => {
-        setAlert(false)
+        setAlert(false);
       }, 1200);
       if (editQuestion) {
         setEditQuestion(false);
         setQuestion(quesIntialField);
+        setProblemStatement(problemStatementIntialVal);
+        setTestCases(sampleTestInitialFields);
+        setSampleTestCase(sampleTestInitialFields);
+        setTestCaseList([])
         return (contestQuestion[quesId] = question);
       } else {
         setContestQuestion([...contestQuestion, question]);
         setQuestion(quesIntialField);
+        setProblemStatement(problemStatementIntialVal);
+        setTestCases(sampleTestInitialFields);
+        setSampleTestCase(sampleTestInitialFields);
+        setTestCaseList([])
       }
-      
     } catch (error) {
-      console.log("error")
+      console.log("error");
     }
-    
-
-   
   };
-
+console.log('-----------testcase',sampleTestCase)
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-      
+        {showAlert && (
+          <MsgBar errMsg={"Question added successful....!"} color={"green"} />
+        )}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
           <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
@@ -360,7 +376,7 @@ const QuestionList = () => {
                             placeholder="Input here"
                             onChange={handleOnchange}
                             name="input"
-                            value={sampleTestCase?.sampleInput}
+                            value={sampleTestCase?.input}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -384,7 +400,7 @@ const QuestionList = () => {
                             maxRows={10}
                             onChange={handleOnchange}
                             name="output"
-                            value={sampleTestCase?.sampleOutput}
+                            value={sampleTestCase?.output}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">

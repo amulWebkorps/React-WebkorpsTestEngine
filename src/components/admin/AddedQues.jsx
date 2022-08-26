@@ -98,12 +98,12 @@ const AddedQues = ({
     setEditQuestion(true);
     setQuesId(id);
     setQuestion({
-      contestLevel: contestQuestion?.[0]?.contestLevel,
-      questionStatus: contestQuestion?.[0]?.questionStatus,
-      questionId: contestQuestion?.[0]?.questionId,
-      question: contestQuestion?.[0]?.question,
-      sampleTestCase: contestQuestion?.[0]?.sampleTestCase,
-      testCase: contestQuestion?.[0]?.testcases,
+      contestLevel: contestQuestion?.[id]?.contestLevel,
+      questionStatus: contestQuestion?.[id]?.questionStatus,
+      questionId: contestQuestion?.[id]?.questionId,
+      question: contestQuestion?.[id]?.question,
+      sampleTestCase: contestQuestion?.[id]?.sampleTestCase,
+      testCase: contestQuestion?.[id]?.testcases,
     });
     console.log("----contestquestion", question);
   };
