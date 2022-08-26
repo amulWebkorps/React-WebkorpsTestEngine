@@ -16,6 +16,7 @@ import { logo } from "../assests/images";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { registerAdmin } from "../services/adminServices";
 import Validation from "./base/Validation";
+import MsgBar from "./base/MsgBar";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -155,6 +156,7 @@ const [confirmPassword, setConfirmpassword] = useState("");
   const [showAlert, setAlert] = useState(false);
   const [fillalert, setfillalert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
+  const [showemail, setshowemail] = useState(false);
   const [credential, setcredential] = useState({
     password: "",
   });
@@ -165,8 +167,6 @@ const [confirmPassword, setConfirmpassword] = useState("");
     setregistercredential({ ...registercredential, [name]: value });
   };
 
-  console.log("password", credential.password);
-  console.log("confirmpassword", confirmPassword);
   const register = async () => {
     if (credential.password === "" || confirmPassword === "") {
       setalertpassword(true);
@@ -185,12 +185,16 @@ const [confirmPassword, setConfirmpassword] = useState("");
         );
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 3500);
         console.log("------awit-");
         if (response) {
           console.log("------if-");
         }
       } catch (error) {
+        setfillalert(false);
+        setalertpassword(false);
+        setAlert(false);
+        setshowemail(true);
         console.log("erro", error);
       }
     } else {
@@ -212,7 +216,11 @@ const [confirmPassword, setConfirmpassword] = useState("");
       </Grid>
 
       {showAlert && (
-        <Alert severity={"success"} errMsg={"Admin register succesfully"} />
+        <MsgBar
+          errMsg={"Admin Register Succesfully......!"}
+          color={"green"}
+        />
+       
       )}
       {showalertpassword && (
         <Validation severity={"error"} empty={"please fill all details"} />
@@ -220,7 +228,9 @@ const [confirmPassword, setConfirmpassword] = useState("");
       {fillalert && (
         <Validation severity={"error"} empty={"please fill correct password"} />
       )}
-
+      {showemail && (
+        <Alert severity={"error"} errMsg={"Email already registered"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>

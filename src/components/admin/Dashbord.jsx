@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Fab } from "@mui/material";
+import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,16 +7,22 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import { useSelector } from "react-redux";
 import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
+import { increment } from "../store/slicers/adminSlice";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { getContestDetail ,removeContest,} from "../services/adminServices";
+
+
 import { getAllContestList } from "../services/adminServices";
-import Alert from "../auth/base/Alert";
+
+import { getContestDetail } from "../services/adminServices";
+import Popup from "../UI/Popup";
+import MsgBar from "../auth/base/MsgBar";
 
 
 const containerStyle = {
@@ -141,56 +147,56 @@ const months = {
   fontSize: "12px",
   lineHeight: "14px",
 };
-
-const array = [1, 1, 1];
 const levels = ["Level 1", "Level 2", "ALL"];
-const today = new Date();
-
-const contestInitialValues={
-  contestName:"",
-  contestDescription:"",
-  contestLevel:""
-}
+const contestInitialValues = {
+  contestName: "",
+  contestDescription: "",
+  contestLevel: "",
+};
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  
+
   const location = useLocation();
-  const [presentContestData, setPresentContes] = useState(
-   
-    location?.state?.data?.presentContest
-  );
-  // const [contestDetails, setContestDetails] = useState([{
-  //   contestName:presentContestData?.[0]?.contestName,
-  // contestDescription:presentContestData?.[0]?.contestDescription,
-  // contestLevel:presentContestData?.[0]?.contestLevel}
-  // ]);
+
+  const [showAlert, setAlert] = useState(false);
+  const [bar, setBar] = useState(false);
+  const [delContest, setDelContest] = useState({
+    name: "",
+    id: "",
+    contestId: "",
+  });
+
+  const [confirm, setConfirm] = useState(false);
   const [contestDetails, setContestDetails] = useState();
-
-  useEffect(() => {
-    setPresentContes(location?.state?.data?.presentContest);
-  }, [location]);
-
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
   const handleContest = async (id) => {
-    console.log("id", contestDetails);
     const result = await getContestDetail(id).then();
-    console.log(result.data);
+
     navigate("/addQuestion");
   };
 
-
-  const deleteContest = (id) => {
-    setContestDetails((val) => {
-      return val.filter((val, index) => {
-        return index !== id;
-      });
+  const deleteContest = (id, Name, contestId) => {
+    setDelContest({
+      name: Name,
+      id: id,
+      contestId: contestId,
     });
+    setConfirm(true);
+    // setOpen(true)
+    // setContestDetails((val) => {
+    //   return val.filter((val, index) => {
+    //     return index !== id;
+    //   });
+    // });
   };
-  console.log("--dashbord----", location);
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+  const handlePop = () => {
+    setConfirm(true);
   };
 
   const handleCheck = (index) => {
@@ -203,28 +209,25 @@ const Dashbord = () => {
     }
   };
 
-
-  
-  const fetchData= async( )=> {
-    const response = await 
-      getAllContestList()   
+  const fetchContestData = async () => {
+    const response = await getAllContestList();
     const user = await response.data;
-    setContestDetails(user)
-  }
+    setContestDetails(user);
+  };
 
   
   useEffect(() => {
-    fetchData();
-  },[]); 
+    fetchContestData();
+  }, []);
 
- console.log('---contest',contestDetails)
-//  const handleLogout = () => {
-//   localStorage.clear();
-//  }
+  console.log("---contest", contestDetails);
+  //  const handleLogout = () => {
+  //   localStorage.clear();
+  //  }
   return (
     <div style={app}>
       <Header />
-     
+
       {showAvailq ? (
         <>
           <Modal
@@ -233,8 +236,31 @@ const Dashbord = () => {
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
-           
+            setAlert={setAlert}
+            fetchContestData={fetchContestData}
           />
+          <Popup
+            contestDetails={contestDetails}
+            setContestDetails={setContestDetails}
+            contest={delContest}
+            opens={confirm}
+            setConfirm={setConfirm}
+            setOpen={setOpen}
+            handleClickOpen={handlePop}
+            setBar={setBar}
+          />
+          {bar || showAlert ? (
+            <MsgBar
+              errMsg={
+                bar
+                  ? "Contest Delete Successfully...!"
+                  : "Contest Created Successfully...!"
+              }
+              color={bar ? "blue" : "green"}
+            />
+          ) : (
+            <></>
+          )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
@@ -260,7 +286,15 @@ const Dashbord = () => {
                           aria-label="add"
                           sx={delBtn1}
                         >
-                          <CancelIcon onClick={() => deleteContest(index)} />
+                          <CancelIcon
+                            onClick={() =>
+                              deleteContest(
+                                index,
+                                contestDetails?.[index]?.contestName,
+                                contestDetails?.[index]?.contestId
+                              )
+                            }
+                          />
                         </IconButton>
                         <CardContent sx={cardBody}>
                           <h6 style={contestText}>
@@ -337,7 +371,6 @@ const Dashbord = () => {
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                           <p style={months}>00 months to 06 months</p>
-                          
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -352,7 +385,7 @@ const Dashbord = () => {
                         color="primary"
                         aria-label="add"
                         sx={addButton}
-                        onClick={() => navigate("/email")}
+                        onClick={() => navigate("/email" ,{ state: { data: contestDetails } })}
                       >
                         <AddIcon fontSize="large" />
                       </Fab>

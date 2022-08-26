@@ -28,10 +28,9 @@
 
 // export default App;
 import "./App.css";
-import { Component, useState } from "react";
+import { useState } from "react";
 import AnswerSheet from "./components/admin/AnswerSheet";
 import Dashbord from "./components/admin/Dashbord";
-import Header from "./components/UI/Header";
 import Compiler from "./components/candidate/Compiler";
 import EmailShow from "./components/candidate/EmailShow";
 import Login from "./components/auth/Login";
@@ -70,14 +69,13 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-          <Route path="/login/:Id" element={<Login />}></Route>
-            {/* <Route path="/" element={<Login admin={admin} />}></Route> */}
+            <Route path="/login/:Id" element={<Login />}></Route>
+
             <Route
               path="/"
               element={<Protected Component={Login} admin={admin} />}
             ></Route>
-            {/* <Route path="/candidate" element={<Login />}></Route> */}
-           
+
             <Route
               path="/user"
               element={<Protected Component={Compiler} />}

@@ -11,11 +11,9 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useLocation } from "react-router-dom";
 import { showAllLanguage } from "../services/candidate";
-
-
-function onChange(newValue) {
-  console.log("change", newValue);
-}
+import { startContestPage } from "../services/candidate";
+import { runAndCompilerCode } from "../services/candidate";
+import { CodeRounded } from "@mui/icons-material";
 
 const div1 = {
   height: "70vh",
@@ -123,18 +121,28 @@ const buttonTest = {
 
 const Compiler = () => {
   const [language2, setLanguage2] = useState();
-  const [data1, setdata1] = useState();
-  const [code1, setCode1] = useState("");
-  const location = useLocation()
-  const [profile, setProfile]=useState(location?.state)
+  const [defaultCode, setDefaultCode] = useState("");
+  const [codeValue, setCodeValue] = useState();
+  const location = useLocation();
+  const [profile, setProfile] = useState(location?.state);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(1);
+  const [data1, setdata1] = useState();
+  const [runCode1, setRunCode1] = useState();
+  const [CandidateCode, setCandidateCode] = useState({
+    language: "C",
+    questionId: "cecd14d9-384e-4f11-9b06-6580084a8340",
+    contestId: "62ebd83ce8ea163ed17928e8",
+    studentId: "9ac7f7e5-0854-465a-839c-e2e1a5f43f2e",
+    flag: "0",
+    code: '#include <stdio.h>\n #include <stdlib.h>\n int main(int argc, char *argv[]) {\n double n = atof(argv[1]);\n printf("%f",n);\n return 0;\n }',
+  });
 
   useEffect(() => {
-     showAllLanguage()
+    showAllLanguage()
       .then(function (response) {
         // handle success
-        console.log(response.data,"showall")
+        console.log(response.data, "showall");
         setLanguage2(response.data);
       })
       .catch(function (error) {
@@ -143,45 +151,80 @@ const Compiler = () => {
       });
   }, []);
 
-console.log('--profile--',profile?.participatorData?.state?.data)
-const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.language)
-console.log("getdata",dataLan)
-useEffect(()=>{
-   dataLan === undefined ? (
-    <div></div>
-  ) : ( 
-    setCode1(()=>{
-      return dataLan[0].codeBase;
-    })
-  )
-},[language2])
+  const fetchStartContestData = async () => {
+    try {
+      const result = await startContestPage(
+        location?.state?.language,
+        profile?.participatorData
+      ).then();
+      console.log(result?.data, "akkkkkkk");
+      setdata1(result?.data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchStartContestData();
+  }, []);
 
+  console.log("uyrtdse", data1);
 
-console.log("rfgh",code1)
- function increment() {
+  const runCode = async () => {
+    try {
+      const result1 = await runAndCompilerCode(CandidateCode).then();
+      console.log(result1, "runcode");
+      setRunCode1(result1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const dataLan = language2?.filter(
+    (lan2) => lan2.language == location?.state?.language
+  );
+  console.log("getdata", dataLan);
+
+  const onchange = (newValue) => {
+    setCodeValue(newValue);
+  };
+  console.log("code---------", codeValue);
+
+  const handleRun = (e) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    dataLan === undefined ? (
+      <div></div>
+    ) : (
+      setDefaultCode(() => {
+        return dataLan[0].codeBase;
+      })
+    );
+  }, [language2]);
+
+  console.log("rfgh", defaultCode);
+  function increment() {
     setCount(function (prevCount) {
-      console.log(prevCount,'===========')
+      console.log(prevCount, "===========");
       if (prevCount <= 2) {
         return (prevCount += 1);
-      }
-      else {
-        return (prevCount= 2);
+      } else {
+        return (prevCount = 2);
       }
     });
   }
- console.log(count1,"rtyg")
-function decrement() {
-  setCount(function (prevCount) {
-    if (prevCount > 0 ) {
-      return (prevCount -= 1); 
-    } else {
-      return (prevCount = 0);
-    }
-  });
-}
-let data = code1.toString;
+  console.log(count1, "rtyg");
+  function decrement() {
+    setCount(function (prevCount) {
+      if (prevCount > 0) {
+        return (prevCount -= 1);
+      } else {
+        return (prevCount = 0);
+      }
+    });
+  }
+
   return (
-    <>
+    <div>
       <Header />
       <div className="background1">
         <Grid container>
@@ -196,17 +239,15 @@ let data = code1.toString;
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Test Case 
-                         </Typography>
+                          Test Case
+                        </Typography>
                       </Box>
                     </Grid>
                     <Grid item sm={12}>
                       <Box>
                         <label style={inputLabel}>Problem statement</label>
                         <Box style={inputField} p={2}>
-                          <p>                 
-                            {data1?.QuestionList[count]?.question}
-                          </p>
+                          <p>{data1?.QuestionList[count]?.question}</p>
                         </Box>
                       </Box>
                     </Grid>
@@ -215,7 +256,10 @@ let data = code1.toString;
                         <label style={inputLabel}>Constraints</label>
                         <Box style={inputField} p={2}>
                           <p>
-                          {data1?.QuestionList[count]?.sampleTestCase[0]?.constraints}
+                            {
+                              data1?.QuestionList[count]?.sampleTestCase[0]
+                                ?.constraints
+                            }
                           </p>
                         </Box>
                       </Box>
@@ -225,7 +269,12 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList[count]?.sampleTestCase[0]?.input}</p>
+                            <p>
+                              {
+                                data1?.QuestionList[count]?.sampleTestCase[0]
+                                  ?.input
+                              }
+                            </p>
                           </Box>
                         </Box>
                       </Grid>
@@ -233,7 +282,12 @@ let data = code1.toString;
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList[count]?.sampleTestCase[0]?.output}</p>
+                            <p>
+                              {
+                                data1?.QuestionList[count]?.sampleTestCase[0]
+                                  ?.output
+                              }
+                            </p>
                           </Box>
                         </Box>
                       </Grid>
@@ -242,10 +296,18 @@ let data = code1.toString;
                 </Grid>
               </Container>
               <Grid container sx={{ justifyContent: "space-between" }}>
-                <Button variant="contained" sx={buttonTest} onClick={()=>decrement() }>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => decrement()}
+                >
                   Prev
                 </Button>
-                <Button variant="contained" sx={buttonTest}   onClick={()=>increment() }>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => increment()}
+                >
                   Next
                 </Button>
               </Grid>
@@ -280,22 +342,29 @@ let data = code1.toString;
                   </Grid>
                 </Grid>
               </Container>
-
-              <Box> 
-    <AceEditor
-    mode={location?.state?.language}
-    theme="monokai"
-    onChange={onChange}
-    name="UNIQUE_ID_OF_DIV"
-    editorProps={{ $blockScrolling: true }}
-    height="60vh"
-    width="47vw"
-    value={code1}
-    fontSize="20px"
-  />
-  </Box>   
-    <Grid container sx={{ justifyContent: "end" }}>
-                <Button variant="contained" sx={buttonTest}>
+              <Box>
+                <AceEditor
+                  mode={location?.state?.language}
+                  theme="monokai"
+                  name="code"
+                  editorProps={{ $blockScrolling: true }}
+                  height="60vh"
+                  width="47vw"
+                  placeholder={defaultCode}
+                  value={codeValue}
+                  onChange={onchange}
+                  fontSize="20px"
+                />
+              </Box>
+              <Grid container sx={{ justifyContent: "end" }}>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => {
+                    handleRun();
+                    runCode();
+                  }}
+                >
                   Run
                 </Button>
                 <Button variant="contained" sx={buttonTest}>
@@ -320,7 +389,7 @@ let data = code1.toString;
           </Grid>
         </Grid>
       </div>
-    </>
+    </div>
   );
 };
 

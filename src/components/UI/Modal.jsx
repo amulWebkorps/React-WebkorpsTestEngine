@@ -34,10 +34,7 @@ const names = ["Level 1", "Level 2"];
 
 function getStyles(name, level, theme) {
   return {
-    // fontWeight:
-    //    level.indexOf(name) === -1
-    //     ? theme.typography.fontWeightRegular
-    //     : theme.typography.fontWeightMedium,
+    
   };
 }
 
@@ -133,16 +130,17 @@ const notbtn = {
   color: "#0057FF",
 };
 const Modal = ({
-  handleClickOpen,
   open,
   setOpen,
   setContestDetails,
   contestDetails,
+  fetchContestData
 
  
 }) => {
   const [value, setValue] = React.useState("");
   const [showAlert, setAlert] = useState(false);
+  
   const [inputData, setInputData] = useState({
     contestName: "",
     contestDescription: "",
@@ -165,24 +163,7 @@ const Modal = ({
     });
   };
 
-  // const createContest = async () => { 
-  //   try {  
-  //     if (
-  //       inputData.contestName === "" ||
-  //       inputData.contestDescription === "" ||
-  //       inputData.contestLevel === ""
-  //     ) {
-  //       alert("please fill all details")   
-  //     }
-  //     else if('response'){
-  //       setContestDetails([...contestDetails, inputData]); 
-  //       const response = addContest(inputData).then(); 
-  //       handleClose()
-  //     }
-  //   } catch (error) {
-  //     alert("fgh")
-  //   }
-  // };
+
 
 
   const createContest = async () => { 
@@ -198,11 +179,18 @@ const Modal = ({
       }
       else if('response'){    
         handleClose()
+        setAlert(true)
+        setTimeout(() => {
+          setAlert(false)
+        }, 2000);
       }
     } catch (error) {
       alert("fgh")
     }
   };
+useEffect(()=>{
+  fetchContestData();
+},[open])
 
   return (
     <div>

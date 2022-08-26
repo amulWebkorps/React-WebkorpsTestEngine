@@ -9,7 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
-import { startContestPage } from "../services/candidate";
+// import { startContestPage } from "../services/candidate";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -114,28 +114,35 @@ const Instruction = () => {
   const [data1, setdata1] = useState();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
-  const [participatorData, setParticipator]=useState(location)
-
-
+  const [participatorData, setParticipator] = useState(location);
+  
 
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
   const handleClick2 = () => {
-    navigate("/user", { state: { language,participatorData } });
+    navigate("/user", { state: { language, participatorData,data1} });
+   
   };
 
-  const fetchData1= async( 
-    )=> {
-      const result= await startContestPage(language,participatorData).then(
-       
-      );
-      console.log('--------rrrrrr',result.data)
+
+
+  // const fetchStartContestData = async () => {
+  //   try {
+  //     const result = await startContestPage(language, participatorData).then();
+  //     console.log(result?.data, "akkkkkkk");
+  //     setdata1(result?.data);
     
-    }
-    console.log("participatorsss " ,)
-console.log("data" ,data1)
+  //   } catch (error) {}
+  // };
+  // useEffect(()=>{
+  //   fetchStartContestData();
+  // },[])
+ 
+
+  console.log("participatorsss ");
+  console.log("data11111111111111", data1);
   return (
     <div style={background1}>
       <Header />
@@ -193,7 +200,11 @@ console.log("data" ,data1)
           <Grid container>
             <Button
               variant="contained"
-              onClick={()=>{handleClick2(); fetchData1();}}
+              onClick={() => {
+                handleClick2();
+              
+                
+              }}
               sx={startContest}
             >
               Start Contest

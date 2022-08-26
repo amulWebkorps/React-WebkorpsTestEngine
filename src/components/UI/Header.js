@@ -28,7 +28,7 @@ const logoText = {
   fontSize: "45px",
   lineHeight: "52px",
   color: "#1887C9",
-  width:"90vw",
+  width:"85vw",
 };
 const displayFlex1 = {
   display: "flex",
