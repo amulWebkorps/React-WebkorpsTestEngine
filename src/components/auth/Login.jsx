@@ -193,7 +193,7 @@ const Login = ({ admin }) => {
         </Grid>
         {showAlert && (
           <MsgBar
-            empty={"Please Fill Correct Details"}
+            empty={"Please fill all Details"}
             color={"Red"}
             errMsg={response}
           />

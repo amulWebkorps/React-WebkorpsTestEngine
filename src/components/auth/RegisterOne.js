@@ -194,12 +194,14 @@ const RegisterOne = ({ setregistercredential }) => {
     if (credential.hName === "") {
       setAlert(true);
       setshownumber(false);
-    } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email)) {
+    } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email)===true) {
       setAlert(false);
       setshownumber(false);
       setshowemail(true);
     } else if (
+      credential.hNumber === Number("credential.hNumber") ||
       credential.hNumber === "" ||
+      credential.hNumber[0] === "-" ||
       credential.hNumber.length > 10 ||
       credential.hNumber.length < 10
     ) {
@@ -223,15 +225,15 @@ const RegisterOne = ({ setregistercredential }) => {
         </Grid>
       </Grid>
       {showAlert && (
-        <MsgBar errMsg={"Please Fill All Details"} color={"red"}/>
+        <MsgBar errMsg={"Please fill all details"} color={"red"}/>
         
       )}
       {showNumber && (
-        <MsgBar errMsg={"Please Enter Valid Phone Number"} color={"red"}/>
+        <MsgBar errMsg={"Please enter valid phone number"} color={"red"}/>
        
       )}
       {showEmail && (
-        <MsgBar errMsg={"Please Fill Valid Email Address"} color={"red"}/>
+        <MsgBar errMsg={"Please fill valid email address"} color={"red"}/>
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

@@ -1,5 +1,6 @@
 import axios from "axios";
 const BASE_URL = `http://localhost:8085`;
+
 const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
 const CREATE_CONTEST = `${BASE_URL}/createContest`;
@@ -10,6 +11,10 @@ const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 const ADD_CONTEST = `${BASE_URL}/addContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
+
+// const CONTEST_URL = `${BASE_URL}/getContestDetail`;
+// const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
+// const ADD_CONTEST = `${BASE_URL}/addContest`;
 
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
@@ -48,6 +53,7 @@ const addContest = (contestDetails) => {
     contestName: contestDetails?.contestName,
     contestDescription: contestDetails?.contestDescription,
     contestLevel: contestDetails?.contestLevel,
+    contestTime: contestDetails?.contestTime,
   });
 };
 const sendMail = (Id, mail) => {

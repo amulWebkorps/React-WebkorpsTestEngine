@@ -22,10 +22,13 @@ const InputField = {
     padding: "15px",
     background: "#C4C4C4",
     color: "black",
+    "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
+      "-webkit-appearance": "none",
+    },
   },
 };
 
-const TextInput = ({ onChange, label, value, name, star , type }) => {
+const TextInput = ({ onChange, label, value, name, star, type }) => {
   return (
     <>
       <FormLabel sx={FormLables}>
