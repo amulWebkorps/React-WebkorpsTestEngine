@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = `http://192.168.1.74:8085`;
+const BASE_URL = `http://192.168.1.115:8085`;
 const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
 const CREATE_CONTEST = `${BASE_URL}/createContest`;
@@ -9,6 +9,7 @@ const CONTEST_URL = `${BASE_URL}/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 const ADD_CONTEST = `${BASE_URL}/addContest`;
 const SENT_MAIL=`${BASE_URL}/admin/sentMailForParticipator`
+const GET_PARTICIPATOR_DETAIL=`${BASE_URL}/getparticipatordetail` 
 
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
@@ -62,9 +63,10 @@ const getAllContestList = () => {
 
 };
 
+const getparticipatordetail = () => {
+  return axios.get(GET_PARTICIPATOR_DETAIL);
 
 
+};
 
-
-
-export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest};
+export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail};

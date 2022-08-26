@@ -1,11 +1,11 @@
 import axios from "axios";
 const PARTICIPATOR_LOGIN_URL =
-  "http://192.168.1.74:8085/doSignInForParticipator";
-const CANDIDATE_REGISTRATION_URL = ` http://192.168.1.74:8085/candidateRegistration`;
-const SHOW_ALL_LANGUAGE = `http://192.168.1.74:8085/showAllLanguage`;
-const START_CONTEST_PAGE=`http://192.168.1.74:8085/startContestPage`;
+  "http://192.168.1.115:8085/doSignInForParticipator";
+const CANDIDATE_REGISTRATION_URL = ` http://192.168.1.115:8085/candidateRegistration`;
+const SHOW_ALL_LANGUAGE = `http://192.168.1.115:8085/showAllLanguage`;
+const START_CONTEST_PAGE=`http://192.168.1.115:8085/startContestPage`;
 
-const RUN_AND_CODE_COMPILER=`http://192.168.1.74:8085/`;
+const RUN_AND_CODE_COMPILER=`http://192.168.1.115:8085/`;
 
 const participatorLogin = (contestId, credential) => {
   return axios.get(PARTICIPATOR_LOGIN_URL, {
@@ -30,7 +30,10 @@ const startContestPage = (language,participatorData) => {
 const runAndCompilerCode=(CandidateCode)=>{
   return axios.post(`RUN_AND_CODE_COMPILER`,CandidateCode);
 }
+
+
  export { participatorLogin, showAllLanguage,startContestPage,runAndCompilerCode};
+
 
 
  const sentMailForParticipator =()=>{
