@@ -166,12 +166,12 @@ const Dashbord = () => {
   const [confirm, setConfirm] = useState(false);
   const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
+  const [contestData, setContestData]=useState(null);
   const navigate = useNavigate();
 
   const handleContest = async (id) => {
     const result = await getContestDetail(id).then();
-
-    navigate("/addQuestion");
+    navigate("/addQuestion",{ state: { data: result.data } });
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -181,12 +181,7 @@ const Dashbord = () => {
       contestId: contestId,
     });
     setConfirm(true);
-    // setOpen(true)
-    // setContestDetails((val) => {
-    //   return val.filter((val, index) => {
-    //     return index !== id;
-    //   });
-    // });
+    
   };
 
   const handleClickOpen = () => {

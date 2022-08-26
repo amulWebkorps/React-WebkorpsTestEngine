@@ -84,32 +84,38 @@ const btn = {
   width: "200px",
 };
 
-const AddedQues = ({ question, setQuesId, setQuestion, contestQuestion, setContestQuestion,setEditQuestion }) => {
+const AddedQues = ({
+  question,
+  availableQuestions,
+  setQuesId,
+  setQuestion,
+  contestQuestion,
+  setContestQuestion,
+  setEditQuestion,
+}) => {
   const [showq, setShowQ] = useState(false);
-  const editQuestion=(id)=>{
+  const editQuestion = (id) => {
     setEditQuestion(true);
-    setQuesId(id)
+    setQuesId(id);
     setQuestion({
-      problem: `${contestQuestion?.[id]?.problem}`,
-      constraints: `${contestQuestion?.[id]?.constraints}`,
-      sampleInput: `${contestQuestion?.[id]?.sampleInput}`,
-      sampleOutput: `${contestQuestion?.[id]?.sampleOutput}`,
-      input: `${contestQuestion?.[id]?.input}`,
-      output: `${contestQuestion?.[id]?.output}`,
-      testCase: {}
-    })
-    
-  }
-  
-  const delQuestion=(id)=>{
-   
+      contestLevel: contestQuestion?.[0]?.contestLevel,
+      questionStatus: contestQuestion?.[0]?.questionStatus,
+      questionId: contestQuestion?.[0]?.questionId,
+      question: contestQuestion?.[0]?.question,
+      sampleTestCase: contestQuestion?.[0]?.sampleTestCase,
+      testCase: contestQuestion?.[0]?.testcases,
+    });
+    console.log("----contestquestion", question);
+  };
+
+  const delQuestion = (id) => {
     setContestQuestion((val) => {
       return val.filter((val, index) => {
         return index !== id;
       });
     });
-  }
- 
+  };
+
   return (
     <>
       <Paper sx={heading}>
@@ -134,19 +140,27 @@ const AddedQues = ({ question, setQuesId, setQuestion, contestQuestion, setConte
               <Grid item mt={2}>
                 <Paper sx={ques}>
                   <Typography sx={quesText}>
-               
-                    {val?.problem?.length >= 59
-                      ? `${val?.problem.substring(0, 59)} .....`
-                      : val?.problem}
+                    {val?.question?.length >= 59
+                      ? `${val?.question.substring(0, 59)} .....`
+                      : val?.question}
                   </Typography>
                   {/* <Typography component="span" sx={edit}>
                     Edit Question
                   </Typography> */}
-                  <Link href="#" underline="always" sx={edit} onClick={()=>editQuestion(index)}>
-                    {'Edit Question'}
+                  <Link
+                    href="#"
+                    underline="always"
+                    sx={edit}
+                    onClick={() => editQuestion(index)}
+                  >
+                    {"Edit Question"}
                   </Link>
-                  <IconButton aria-label="add" sx={delBtn}  onClick={()=>delQuestion(index)}>
-                    <CloseIcon fontSize="x-small"  />
+                  <IconButton
+                    aria-label="add"
+                    sx={delBtn}
+                    onClick={() => delQuestion(index)}
+                  >
+                    <CloseIcon fontSize="x-small" />
                   </IconButton>
                 </Paper>
               </Grid>
@@ -154,7 +168,7 @@ const AddedQues = ({ question, setQuesId, setQuestion, contestQuestion, setConte
           })}
         </Grid>
       </CardContent>
-      {showq && <All />}
+      {showq && <All availableQuestions={availableQuestions} />}
     </>
   );
 };

@@ -26,8 +26,9 @@ import React, { useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import All from "./All";
+import { saveQuestion } from "../services/contest/contestServices";
 
 const useStyles = makeStyles({
   container: {
@@ -158,72 +159,118 @@ const Addbtn = {
   color: "white",
   borderRadius: "6px",
 };
-const quesIntialField = {
-  problem: "",
-  constraints: "",
-  sampleInput: "",
-  sampleOutput: "",
-  testCase:[]
 
+const testInitialFields = {
+  testInput: "",
+  testOutput: "",
 };
-const testInitialFields={
-  testInput:"",
-    testOutput:""
+const sampleTestInitialFields = {
+  constraints: "",
+  input: "",
+  output: "",
 };
 
 const QuestionList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const classes = useStyles();
-  const [finalQ,setFinalQ]=useState({});
+  const [contestData, setContestData] = useState(
+    location?.state?.data?.contest
+  );
+  const defaulValues = {
+    questionId: "",
+    questionStatus: "true",
+    contestLevel: `${contestData?.contestLevel}@${contestData?.contestId}`,
+  };
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
+  };
+
   const [question, setQuestion] = useState(quesIntialField);
   const [quesId, setQuesId] = useState(null);
-  const [testCases,setTestCases]=useState(testInitialFields)
-  const [testCaseList, setTestCaseList]=useState([]);
-  const [contestQuestion, setContestQuestion] = useState([
-    {
-      problem:
-        "Given a String S, reverse the string without reversing its individual words. Words are separated by dots.",
-      constraints: "1 <= |S| <= 2000",
-      sampleInput: "S = i.like.this.program.very.much",
-      sampleOutput: "much.very.program.this.like.i",
-      input: "",
-      output: "",
-      testCase: [{ input: "output" }],
-    },
-  ]);
+  const [problemStatement, setProblemStatement] = useState({
+    question: "",
+  });
+  const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
+  const [testCases, setTestCases] = useState(testInitialFields);
+  const [testCaseList, setTestCaseList] = useState([]);
+  const [contestQuestion, setContestQuestion] = useState(
+    location?.state?.data?.contestQuestionDetail
+  );
   const [editQuestion, setEditQuestion] = useState(false);
+  const [availableQuestions, setAvailableQuestions] = useState(
+    location?.state?.data?.totalAvailableQuestion
+  );
+  const [showAlert, setAlert]=useState(false);
+
   const handleOnchange = (e) => {
     const { name, value } = e.target;
     setQuestion({
-      ...question,
+      questionId: defaulValues?.questionId,
+      question: problemStatement?.question,
+      contestLevel: defaulValues?.contestLevel,
+      questionStatus: defaulValues?.questionStatus,
+      sampleTestCase: [sampleTestCase],
+      testcases: testCaseList,
+    });
+    setProblemStatement({
+      ...problemStatement,
+      [name]: value,
+    });
+
+    // setQuestion({
+    //   ...question,
+    //   [name]: value,
+    // });
+    setSampleTestCase({
+      ...sampleTestCase,
       [name]: value,
     });
     setTestCases({
       ...testCases,
-      [name]:value
-     })
+      [name]: value,
+    });
   };
 
-  const addTest=()=>{
-    setTestCaseList([...testCaseList,testCases])
-    setTestCases(testInitialFields)
-  }
-  console.log('------',testCaseList)
-  const addQuestion = (e) => {
-    if (editQuestion) {
-      setEditQuestion(false);
-      setQuestion(quesIntialField);
-      return (contestQuestion[quesId] = question);
-    } else {
-      setContestQuestion([...contestQuestion, question]);
-        setQuestion(quesIntialField);
-    }
+  const addTest = () => {
+    setTestCaseList([...testCaseList, testCases]);
+    setTestCases(testInitialFields);
   };
-console.log(question)
+
+  const addQuestion = async (e) => {
+    setAlert(true);
+    try {
+      const result = await saveQuestion(question).then();
+      setTimeout(() => {
+        setAlert(false)
+      }, 1200);
+      if (editQuestion) {
+        setEditQuestion(false);
+        setQuestion(quesIntialField);
+        return (contestQuestion[quesId] = question);
+      } else {
+        setContestQuestion([...contestQuestion, question]);
+        setQuestion(quesIntialField);
+      }
+      
+    } catch (error) {
+      console.log("error")
+    }
+    
+
+   
+  };
+
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
+      
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
           <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
@@ -251,14 +298,14 @@ console.log(question)
                       <Typography sx={label} display="inline">
                         Write Problem statement
                       </Typography>
-                      {/* <label style={label}>Write Problem statement</label> */}
+
                       <TextField
                         multiline
                         rows={3}
                         maxRows={10}
                         onChange={handleOnchange}
-                        name="problem"
-                        value={question?.problem}
+                        name="question"
+                        value={problemStatement?.question}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
@@ -286,7 +333,7 @@ console.log(question)
                         fullWidth
                         onChange={handleOnchange}
                         name="constraints"
-                        value={question?.constraints}
+                        value={sampleTestCase?.constraints}
                         id="fullWidth"
                         placeholder="Write Constraints here"
                         InputProps={{
@@ -312,8 +359,8 @@ console.log(question)
                             id="fullWidth"
                             placeholder="Input here"
                             onChange={handleOnchange}
-                            name="sampleInput"
-                            value={question?.sampleInput}
+                            name="input"
+                            value={sampleTestCase?.sampleInput}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -336,8 +383,8 @@ console.log(question)
                             rows={3}
                             maxRows={10}
                             onChange={handleOnchange}
-                            name="sampleOutput"
-                            value={question?.sampleOutput}
+                            name="output"
+                            value={sampleTestCase?.sampleOutput}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
@@ -441,43 +488,41 @@ console.log(question)
                             overflowY: "overlay",
                           }}
                         >
-                        {testCaseList?.map((val,index)=>{
-                          return(
-                            <Box
-                            component="form"
-                            sx={{
-                              "& > :not(style)": { m: 1, width: "15ch" },
-                            }}
-                            noValidate
-                            autoComplete="off"
-                          >{console.log('--val--',val)}
-                            <TextField
-                              name="testInput1"
-                              value={val?.testInput}
-                              placeholder="testcase input"
-                              multiline
-                              rows={1}
-                              maxRows={10}
-                              color="primary"
-                              focused
-                              onChange={handleOnchange}
-                            />
-                            <TextField
-                              name="testOutput1"
-                              value={val?.testOutput}
-                              placeholder="testcase output"
-                              multiline
-                              rows={1}
-                              maxRows={10}
-                              color="primary"
-                              focused
-                              onChange={handleOnchange}
-                            />
-                          </Box>
-                          )
-                        })}
-                          
-                        
+                          {testCaseList?.map((val, index) => {
+                            return (
+                              <Box
+                                component="form"
+                                sx={{
+                                  "& > :not(style)": { m: 1, width: "15ch" },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                              >
+                                <TextField
+                                  name="testInput1"
+                                  value={val?.testInput}
+                                  placeholder="testcase input"
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  color="primary"
+                                  focused
+                                  onChange={handleOnchange}
+                                />
+                                <TextField
+                                  name="testOutput1"
+                                  value={val?.testOutput}
+                                  placeholder="testcase output"
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  color="primary"
+                                  focused
+                                  onChange={handleOnchange}
+                                />
+                              </Box>
+                            );
+                          })}
                         </Grid>
                         <Stack
                           spacing={2}
@@ -485,7 +530,11 @@ console.log(question)
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={Addbtn} onClick={addTest}>
+                          <Button
+                            variant="contained"
+                            sx={Addbtn}
+                            onClick={addTest}
+                          >
                             Add
                           </Button>
                           <Button variant="contained" sx={Addbtn}>
@@ -502,6 +551,7 @@ console.log(question)
           </Card>
         </Grid>
         <AddedQues
+          availableQuestions={availableQuestions}
           question={question}
           setQuestion={setQuestion}
           setContestQuestion={setContestQuestion}

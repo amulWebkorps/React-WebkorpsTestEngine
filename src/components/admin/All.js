@@ -107,7 +107,7 @@ const containerUpper = {
 
 const array = [1, 2, 3, 4, 5,6,4,4,45,5,5,1,22,5,5,4,5,6,];
 
-const All= () => {
+const All= ({availableQuestions}) => {
   return (
     <div >
      
@@ -141,12 +141,12 @@ const All= () => {
           </Grid>
         </Grid>
         <Grid container sx={{height: '400px' , overflow: 'auto'}}>
-          {array.map((val) => {
+          {availableQuestions?.map((val) => {
             return (
               <Grid container sx={divSelect}>
                 <Grid item sm={10} sx={scrollDiv}>
                   <Typography sx={divText}>
-                    write a progrom to make a star
+                    {val?.question}
                   </Typography>
                 </Grid>
                 <Grid item sm={1} mt={1}>
