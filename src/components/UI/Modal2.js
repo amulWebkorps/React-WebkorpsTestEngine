@@ -66,7 +66,7 @@ export default function Model2({
   const [loading, setLoading] = useState(true);
   const [disable, setDisable] = useState(false);
   const [contestId, setContestId] = React.useState();
-  
+
   const handleClose = () => {
     setOpen(false);
     setSent(false);
@@ -117,18 +117,21 @@ export default function Model2({
           {sent ? (
             <Container sx={emailContainer}>
               <Grid container>
-              {sentEmails.map((val)=>{
-               return(
-                <Grid container sx={divSelect}>
-                  <Grid item sm={9} sx={scrollDiv}>
-                    <Typography sx={divText} mt={2.5}>
-                     {val}
-                    </Typography>
-                  </Grid>
-                </Grid>
-               )
-              })}
-                
+                {sentEmails?.length===0 ? (
+                  <h3>Sent emails is empty now...</h3>
+                ) : (
+                  sentEmails.map((val) => {
+                    return (
+                      <Grid container sx={divSelect}>
+                        <Grid item sm={9} sx={scrollDiv}>
+                          <Typography sx={divText} mt={2.5}>
+                            {val}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    );
+                  })
+                )}
               </Grid>
             </Container>
           ) : (

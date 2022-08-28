@@ -58,7 +58,7 @@ const addContest = (contestDetails) => {
 };
 const sendMail = (Id, mail) => {
   return axios.post(SEND_MAIL, {
-    studentEmails: [mail],
+    studentEmails: mail,
     contestId: [Id],
   });
 };
