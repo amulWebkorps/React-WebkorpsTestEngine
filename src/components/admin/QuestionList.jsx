@@ -174,9 +174,10 @@ const QuestionList = () => {
   const [contestData, setContestData] = useState(
     location?.state?.data?.contest
   );
-
+  const [quesId, setQuesId] = useState(null);
+  const [index,setIndex]=useState(null);
   const defaulValues = {
-    questionId: "",
+    questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
     contestLevel: `${contestData?.contestLevel}@${contestData?.contestId}`,
   };
@@ -191,7 +192,7 @@ const QuestionList = () => {
   };
 
   const [question, setQuestion] = useState(quesIntialField);
-  const [quesId, setQuesId] = useState(null);
+
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
   );
@@ -200,18 +201,18 @@ const QuestionList = () => {
   const [testCaseList, setTestCaseList] = useState([]);
   const [contestQuestion, setContestQuestion] = useState(null);
   const [editQuestion, setEditQuestion] = useState(false);
-  const [delFromContest,setDelFromContest]=useState({
-    state:true,
-    contestId:contestData?.contestId
-  })
+  const [delFromContest, setDelFromContest] = useState({
+    state: true,
+    contestId: contestData?.contestId,
+  });
   const [availableQuestions, setAvailableQuestions] = useState(
     location?.state?.data?.totalAvailableQuestion
   );
   const [showAlert, setAlert] = useState(false);
-  const [msg,setMsg]=useState({
-    errMsg:"",
-    color:""
-  })
+  const [msg, setMsg] = useState({
+    errMsg: "",
+    color: "",
+  });
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -222,7 +223,7 @@ const QuestionList = () => {
 
   const handleTestChange = (e) => {
     const { name, value } = e.target;
-   
+
     setTestCases({
       ...testCases,
       [name]: value,
@@ -257,10 +258,18 @@ const QuestionList = () => {
     setAlert(true);
     try {
       const result = await saveQuestion(question).then();
-      setMsg({
-        errMsg:"Question added successfully...!",
-        color:"green"
-      })
+      if (editQuestion) {
+        setMsg({
+          errMsg: "Question edit successfully...!",
+          color: "green",
+        });
+      } else {
+        setMsg({
+          errMsg: "Question added successfully...!",
+          color: "green",
+        });
+      }
+
       setQuestion(quesIntialField);
       setProblemStatement(problemStatementIntialVal);
       setTestCases(sampleTestInitialFields);
@@ -276,7 +285,7 @@ const QuestionList = () => {
         setTestCases(sampleTestInitialFields);
         setSampleTestCase(sampleTestInitialFields);
         setTestCaseList([]);
-        return (contestQuestion[quesId] = question);
+        return (contestQuestion[index] = question);
       } else {
         setContestQuestion([...contestQuestion, question]);
         setQuestion(quesIntialField);
@@ -289,21 +298,18 @@ const QuestionList = () => {
       console.log("error");
     }
   };
-  useEffect(()=>{
-    const result=getContestDetail(contestData?.contestId).then((res)=>{
-      const response =res.data;
-      setContestQuestion(response?.contestQuestionDetail)
+  useEffect(() => {
+    const result = getContestDetail(contestData?.contestId).then((res) => {
+      const response = res.data;
+      setContestQuestion(response?.contestQuestionDetail);
     });
-   
-  },[])
-  console.log('contest details',testCaseList)
+  }, [alert]);
+  console.log("contest details", quesId);
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-        {showAlert && (
-          <MsgBar errMsg={msg.errMsg} color={msg.color} />
-        )}
+        {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
           <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
@@ -594,7 +600,8 @@ const QuestionList = () => {
           delFromContest={delFromContest}
           setProblemStatement={setProblemStatement}
           setTestCaseList={setTestCaseList}
-        setSampleTestCase={setSampleTestCase}
+          setSampleTestCase={setSampleTestCase}
+          setIndex={setIndex}
         />
       </Container>
     </div>

@@ -91,7 +91,8 @@ const AddedQues = ({
   delFromContest,
   availableQuestions,
   setQuesId,
-  setQuestion,
+  setIndex,
+  question,
   contestQuestion,
   setContestQuestion,
   setEditQuestion,
@@ -104,9 +105,10 @@ const AddedQues = ({
 }) => {
   const [showq, setShowQ] = useState(false);
 
-  const editQuestion = (id) => {
+  const editQuestion = (id,questionID) => {
     setEditQuestion(true);
-    setQuesId(id);
+    setQuesId(questionID);
+    setIndex(id)
     setProblemStatement({
       question:contestQuestion?.[id]?.question
     })
@@ -144,7 +146,7 @@ const AddedQues = ({
       console.log("eroror", error);
     }
   };
-console.log('contest question from addedd edit',contestQuestion)
+console.log('contest question from addedd edit',question)
   return (
     <>
       <Paper sx={heading}>
@@ -176,7 +178,7 @@ console.log('contest question from addedd edit',contestQuestion)
                   <Link
                     underline="always"
                     sx={edit}
-                    onClick={() => editQuestion(index)}
+                    onClick={() => editQuestion(index,val?.questionId)}
                   >
                     {"Edit Question"}
                   </Link>
