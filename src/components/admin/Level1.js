@@ -1,6 +1,5 @@
 import {
   Grid,
-  Paper,
   Button,
   Card,
   CardActions,
@@ -9,33 +8,31 @@ import {
   TextField,
   Stack,
   InputAdornment,
-  OutlinedInput,
-  FormControl,
-  IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { FixedSizeList } from "react-window";
+import { IconButton } from "@mui/material";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
-import { useNavigate } from "react-router-dom";
-import All from "./All";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  filterQuestion,
+  saveQuestion,
+} from "../services/contest/contestServices";
+import MsgBar from "../auth/base/MsgBar";
 
 const useStyles = makeStyles({
   container: {
-    height: "100%", // So that grids 1 & 4 go all the way down
-    minHeight: 180, // Give minimum height to a div
+    height: "100%",
+    minHeight: 180,
   },
   containerTall: {
-    minHeight: 250, // This div has higher minimum height
+    minHeight: 250,
   },
   noBorder: {
     border: "none",
@@ -44,8 +41,6 @@ const useStyles = makeStyles({
 
 const sideColumn = {
   background: "#0057FF",
-  /* vv */
-
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: " 18px 0px 0px 18px",
 };
@@ -102,29 +97,13 @@ const AnswerBox = {
 };
 
 const delBtn = {
-  position: "absolute",
-  marginTop: "8px",
-  right: "8%",
+  marginTop: "20px !important",
+  width: "30px !important",
+  fontSize: "smaller",
 
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
-};
-const buttonLevel = {
-  width: "260px",
-  height: "51px",
-  background: "#0057ff",
-  borderRadius: "18px 18px 18px 18px",
-  fontWeight: "700",
-  fontSize: "25px",
-  lineHeight: "19px",
-  textTransform: "none",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  paddingTop: "12px",
-  paddingLeft: "25px",
-  marginTop: "25px",
-  color: "#FFFFFF",
 };
 
 const mainContainer = {
@@ -168,52 +147,97 @@ const btn = {
   width: "160px",
 };
 
+const buttonLevel = {
+  width: "260px",
+  height: "51px",
+  background: "#0057ff",
+  borderRadius: "18px 18px 18px 18px",
+  fontWeight: "700",
+  fontSize: "25px",
+  lineHeight: "19px",
+  textTransform: "none",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  paddingTop: "12px",
+  paddingLeft: "25px",
+  marginTop: "25px",
+  color: "#FFFFFF",
+};
+
 const Addbtn = {
   fontSize: "8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
 };
-const quesIntialField = {
-  problem: "",
-  constraints: "",
-  sampleInput: "",
-  sampleOutput: "",
-  input: "",
-  output: "",
-  testcase:[]
-};
+
 const testInitialFields = {
   testInput: "",
   testOutput: "",
 };
-
+const sampleTestInitialFields = {
+  constraints: "",
+  input: "",
+  output: "",
+};
+const problemStatementIntialVal = {
+  question: "",
+};
 const Level1 = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const classes = useStyles();
-  const [finalQ, setFinalQ] = useState({});
+  const [contestData, setContestData] = useState(
+    location?.state?.data?.contest
+  );
+  const defaulValues = {
+    questionId: "",
+    questionStatus: "true",
+    contestLevel: `Level 1`,
+  };
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
+  };
+
   const [question, setQuestion] = useState(quesIntialField);
   const [quesId, setQuesId] = useState(null);
+  const [deleteQ, setDeleteQ] = useState(false);
+  const [problemStatement, setProblemStatement] = useState(
+    problemStatementIntialVal
+  );
+  const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
   const [testCases, setTestCases] = useState(testInitialFields);
   const [testCaseList, setTestCaseList] = useState([]);
-  const [contestQuestion, setContestQuestion] = useState([
-    {
-      problem:
-        "Given a String S, reverse the string without reversing its individual words. Words are separated by dots.",
-      constraints: "1 <= |S| <= 2000",
-      sampleInput: "S = i.like.this.program.very.much",
-      sampleOutput: "much.very.program.this.like.i",
-      input: "",
-      output: "",
-      testCase: [{ input: "output" },{ input: "output" },{ input: "output" }],
-    },
-  ]);
+  const [contestQuestion, setContestQuestion] = useState(null);
   const [editQuestion, setEditQuestion] = useState(false);
+  const [availableQuestions, setAvailableQuestions] = useState(
+    location?.state?.data?.totalAvailableQuestion
+  );
+  const [showAlert, setAlert] = useState(false);
+
   const handleOnchange = (e) => {
     const { name, value } = e.target;
-
     setQuestion({
       ...question,
+      questionId: defaulValues?.questionId,
+      question: problemStatement?.question,
+      contestLevel: defaulValues?.contestLevel,
+      questionStatus: defaulValues?.questionStatus,
+      sampleTestCase: [sampleTestCase],
+      testcases: testCaseList,
+    });
+    setProblemStatement({
+      ...problemStatement,
+      [name]: value,
+    });
+
+    setSampleTestCase({
+      ...sampleTestCase,
       [name]: value,
     });
     setTestCases({
@@ -224,23 +248,60 @@ const Level1 = () => {
 
   const addTest = () => {
     setTestCaseList([...testCaseList, testCases]);
-    // setTestCases(testInitialFields);
+    setTestCases(testInitialFields);
   };
- 
-  const addQuestion = (e) => {
-    if (editQuestion) {
-      setEditQuestion(false);
-      setQuestion(quesIntialField);
-      return (contestQuestion[quesId] = question);
-    } else {
-      setContestQuestion([...contestQuestion, question]);
-      setQuestion(quesIntialField);
+
+  const delTestCase = (id) => {
+    setTestCaseList((val) => {
+      return val.filter((a, index) => index !== id);
+    });
+  };
+
+  console.log(testCaseList, "test case list");
+  useEffect(() => {
+    const result = filterQuestion("Level 1").then((res) => {
+      const response = res.data;
+      setContestQuestion(response);
+    });
+  }, [, deleteQ]);
+
+  const addQuestion = async (e) => {
+    setAlert(true);
+    try {
+      const result = await saveQuestion(question).then((res) => {
+        const response = res.data;
+        setContestQuestion([...contestQuestion, response]);
+        setQuestion(quesIntialField);
+        setProblemStatement(problemStatementIntialVal);
+        setTestCases(sampleTestInitialFields);
+        setSampleTestCase(sampleTestInitialFields);
+        setTestCaseList([]);
+        setTimeout(() => {
+          setAlert(false);
+        }, 1200);
+      });
+
+      if (editQuestion) {
+        setEditQuestion(false);
+        setQuestion(quesIntialField);
+        setProblemStatement(problemStatementIntialVal);
+        setTestCases(sampleTestInitialFields);
+        setSampleTestCase(sampleTestInitialFields);
+        setTestCaseList([]);
+        return (contestQuestion[quesId] = question);
+      }
+    } catch (error) {
+      console.log("error");
     }
   };
-  console.log('------------>',question);
+
   return (
     <div style={questionList}>
       <Header />
+
+      {showAlert && (
+        <MsgBar errMsg={"Question added successful....!"} color={"green"} />
+      )}
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item>
           <Box variant="contained" sx={buttonLevel}>
@@ -248,6 +309,7 @@ const Level1 = () => {
           </Box>
         </Grid>
       </Grid>
+
       <Container sx={mainContainer}>
         <Grid>
           <Card sx={cardBody}>
@@ -268,13 +330,14 @@ const Level1 = () => {
                       <Typography sx={label} display="inline">
                         Write Problem statement
                       </Typography>
+
                       <TextField
                         multiline
                         rows={3}
                         maxRows={10}
                         onChange={handleOnchange}
-                        name="problem"
-                        value={question?.problem}
+                        name="question"
+                        value={problemStatement?.question}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
@@ -293,7 +356,7 @@ const Level1 = () => {
                       <Typography sx={label} display="inline">
                         Constraints
                       </Typography>
-                      {/* <label style={label}>Constraints</label> */}
+
                       <TextField
                         multiline
                         rows={3}
@@ -302,7 +365,7 @@ const Level1 = () => {
                         fullWidth
                         onChange={handleOnchange}
                         name="constraints"
-                        value={question?.constraints}
+                        value={sampleTestCase?.constraints}
                         id="fullWidth"
                         placeholder="Write Constraints here"
                         InputProps={{
@@ -328,8 +391,8 @@ const Level1 = () => {
                             id="fullWidth"
                             placeholder="Input here"
                             onChange={handleOnchange}
-                            name="sampleInput"
-                            value={question?.sampleInput}
+                            name="input"
+                            value={sampleTestCase?.input}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -352,8 +415,8 @@ const Level1 = () => {
                             rows={3}
                             maxRows={10}
                             onChange={handleOnchange}
-                            name="sampleOutput"
-                            value={question?.sampleOutput}
+                            name="output"
+                            value={sampleTestCase?.output}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
@@ -420,8 +483,8 @@ const Level1 = () => {
                               id="fullWidth"
                               placeholder="Input here"
                               onChange={handleOnchange}
-                              name="input"
-                              value={question?.input}
+                              name="testInput"
+                              value={testCases?.testInput}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -433,8 +496,8 @@ const Level1 = () => {
                               id="fullWidth"
                               placeholder="Output here"
                               onChange={handleOnchange}
-                              name="output"
-                              value={question?.output}
+                              name="testOutput"
+                              value={testCases?.testOutput}
                             />
                           </Grid>
                         </Grid>
@@ -457,38 +520,7 @@ const Level1 = () => {
                             overflowY: "overlay",
                           }}
                         >
-                          <Box
-                            component="form"
-                            sx={{
-                              "& > :not(style)": { m: 1, width: "15ch" },
-                            }}
-                            noValidate
-                            autoComplete="off"
-                          >
-                            <TextField
-                              name="testInput"
-                              value={testCases?.testInput}
-                              placeholder="testcase input"
-                              multiline
-                              rows={1}
-                              maxRows={10}
-                              color="primary"
-                              focused
-                              onChange={handleOnchange}
-                            />
-                            <TextField
-                              name="testOutput"
-                              value={testCases?.testOutput}
-                              placeholder="testcase output"
-                              multiline
-                              rows={1}
-                              maxRows={10}
-                              color="primary"
-                              focused
-                              onChange={handleOnchange}
-                            />
-                          </Box>
-                          {/* {contestQuestion?.[0]?.testCase.map((val, index) => {
+                          {testCaseList?.map((val, index) => {
                             return (
                               <Box
                                 component="form"
@@ -499,30 +531,37 @@ const Level1 = () => {
                                 autoComplete="off"
                               >
                                 <TextField
-                                  inputProps={{ readOnly: true }}
+                                  name="testInput1"
+                                  value={val?.testInput}
+                                  placeholder="testcase input"
                                   multiline
                                   rows={1}
                                   maxRows={10}
-                                  placeholder={Object.keys(
-                                    contestQuestion?.[0]?.testCase?.[index]
-                                  )}
-                                  color="primary"
-                                  focused
+                                  variant="outlined"
+                                  inputProps={{ readOnly: true }}
+                                  onChange={handleOnchange}
                                 />
                                 <TextField
-                                  inputProps={{ readOnly: true }}
+                                  name="testOutput1"
+                                  value={val?.testOutput}
+                                  placeholder="testcase output"
                                   multiline
                                   rows={1}
                                   maxRows={10}
-                                  placeholder={Object.values(
-                                    contestQuestion?.[0]?.testCase?.[index]
-                                  )}
-                                  color="primary"
-                                  focused
+                                  variant="outlined"
+                                  inputProps={{ readOnly: true }}
+                                  onChange={handleOnchange}
                                 />
+                                <IconButton
+                                  aria-label="add"
+                                  sx={delBtn}
+                                  onClick={() => delTestCase(index)}
+                                >
+                                  <CloseIcon fontSize="x-small" />
+                                </IconButton>
                               </Box>
                             );
-                          })} */}
+                          })}
                         </Grid>
                         <Stack
                           spacing={2}
@@ -551,12 +590,14 @@ const Level1 = () => {
           </Card>
         </Grid>
         <AddedQues
+          availableQuestions={availableQuestions}
           question={question}
           setQuestion={setQuestion}
           setContestQuestion={setContestQuestion}
           contestQuestion={contestQuestion}
           setEditQuestion={setEditQuestion}
           setQuesId={setQuesId}
+          setDeleteQ={setDeleteQ}
         />
       </Container>
     </div>

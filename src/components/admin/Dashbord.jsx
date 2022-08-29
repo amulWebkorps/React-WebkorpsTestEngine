@@ -212,9 +212,7 @@ const Dashbord = () => {
   }, []);
 
   console.log("---contest", contestDetails);
-  //  const handleLogout = () => {
-  //   localStorage.clear();
-  //  }
+  
   return (
     <div style={app}>
       <Header />

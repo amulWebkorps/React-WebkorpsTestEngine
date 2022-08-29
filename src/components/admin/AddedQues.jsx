@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import All from "./All";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { deleteQuestion } from "../services/contest/contestServices";
 
 const heading = {
   height: "89px",
@@ -85,37 +86,65 @@ const btn = {
 };
 
 const AddedQues = ({
-  question,
+  setMsg,
+  setAlert,
+  delFromContest,
   availableQuestions,
   setQuesId,
   setQuestion,
   contestQuestion,
   setContestQuestion,
   setEditQuestion,
+  setDeleteQ,
+  setProblemStatement,
+  setSampleTestCase,
+  setTestCaseList
+
+  
 }) => {
   const [showq, setShowQ] = useState(false);
+
   const editQuestion = (id) => {
     setEditQuestion(true);
     setQuesId(id);
-    setQuestion({
-      contestLevel: contestQuestion?.[id]?.contestLevel,
-      questionStatus: contestQuestion?.[id]?.questionStatus,
-      questionId: contestQuestion?.[id]?.questionId,
-      question: contestQuestion?.[id]?.question,
-      sampleTestCase: contestQuestion?.[id]?.sampleTestCase,
-      testCase: contestQuestion?.[id]?.testcases,
-    });
-    console.log("----contestquestion", question);
+    setProblemStatement({
+      question:contestQuestion?.[id]?.question
+    })
+    setSampleTestCase({
+      constraints:contestQuestion?.[id]?.sampleTestCase?.[0]?.constraints,
+      input:contestQuestion?.[id]?.sampleTestCase?.[0]?.input,
+      output:contestQuestion?.[id]?.sampleTestCase?.[0]?.output
+    })
+    setTestCaseList(contestQuestion?.[id]?.testcases)
   };
 
-  const delQuestion = (id) => {
+  const delQuestion = async (id, quesId) => {
+    setAlert(true);
+    const arr = [delFromContest.state?delFromContest.contestId:`questionForLevel`, quesId];
     setContestQuestion((val) => {
       return val.filter((val, index) => {
         return index !== id;
       });
     });
+    try {
+      const result = await deleteQuestion(arr).then((res) => {
+        const response = res.data;
+        setMsg({
+          errMsg:"Question deleted successfully...!",
+          color:"red"
+        })
+        setTimeout(() => {
+          setAlert(false)
+        }, 1200);
+        if (response) {
+          setDeleteQ(true);
+        }
+      });
+    } catch (error) {
+      console.log("eroror", error);
+    }
   };
-
+console.log('contest question from addedd edit',contestQuestion)
   return (
     <>
       <Paper sx={heading}>
@@ -144,11 +173,7 @@ const AddedQues = ({
                       ? `${val?.question.substring(0, 59)} .....`
                       : val?.question}
                   </Typography>
-                  {/* <Typography component="span" sx={edit}>
-                    Edit Question
-                  </Typography> */}
                   <Link
-                    href="#"
                     underline="always"
                     sx={edit}
                     onClick={() => editQuestion(index)}
@@ -158,7 +183,7 @@ const AddedQues = ({
                   <IconButton
                     aria-label="add"
                     sx={delBtn}
-                    onClick={() => delQuestion(index)}
+                    onClick={() => delQuestion(index, val?.questionId)}
                   >
                     <CloseIcon fontSize="x-small" />
                   </IconButton>

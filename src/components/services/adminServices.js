@@ -70,15 +70,7 @@ const uploadParticipator = (file) => {
   const formData = new FormData();
   formData.append("file", file)
   return axios.post(UPLOAD_PARTICIAPTOR,formData)
-  // return axios({
-  //   method: "post",
-  //   url: `${UPLOAD_PARTICIAPTOR}`,
-  //   file: file,
-  //   headers: {
-  //     "Content-Type":
-  //       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  //   },
-  // });
+ 
 };
 
 const getAllContestList = () => {

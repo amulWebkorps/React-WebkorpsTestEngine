@@ -248,7 +248,7 @@ console.log(question)
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item>
           <Box variant="contained" sx={buttonLevel}>
-            Level 1 Questions
+            Level 2 Questions
           </Box>
         </Grid>
       </Grid>
@@ -493,41 +493,7 @@ console.log(question)
                               onChange={handleOnchange}
                             />
                           </Box>
-                          {/* {contestQuestion?.[0]?.testCase.map((val, index) => {
-                            return (
-                              <Box
-                                component="form"
-                                sx={{
-                                  "& > :not(style)": { m: 1, width: "15ch" },
-                                }}
-                                noValidate
-                                autoComplete="off"
-                              >
-                                <TextField
-                                  inputProps={{ readOnly: true }}
-                                  multiline
-                                  rows={1}
-                                  maxRows={10}
-                                  placeholder={Object.keys(
-                                    contestQuestion?.[0]?.testCase?.[index]
-                                  )}
-                                  color="primary"
-                                  focused
-                                />
-                                <TextField
-                                  inputProps={{ readOnly: true }}
-                                  multiline
-                                  rows={1}
-                                  maxRows={10}
-                                  placeholder={Object.values(
-                                    contestQuestion?.[0]?.testCase?.[index]
-                                  )}
-                                  color="primary"
-                                  focused
-                                />
-                              </Box>
-                            );
-                          })} */}
+                        
                         </Grid>
                         <Stack
                           spacing={2}
