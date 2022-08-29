@@ -97,8 +97,11 @@ const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const [contestDetails, setContestDetails] = useState(location?.state?.data);
+  const [msg, setMsg]=useState({
+    errMsg:"",
+    color:""
+  })
   const [emails, setEmails] = useState([]);
-  const [delAlert,setDelAlert]=useState(false);
   const [sentEmails, setSentEmails] = useState([]);
   const [uploadEmail, setUploadEmail] = useState([]);
   const [searchString, setSearchString] = useState("");
@@ -107,6 +110,8 @@ const EmailShow = () => {
     alert: false,
     loader: false,
   });
+
+
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -124,26 +129,40 @@ const EmailShow = () => {
   };
 
   const handleDelete = async (mail) => {
-    setDelAlert(true);
+    setUpload({
+      alert: true,
+      loader: true,
+    });
     try {
       const result = await deletestudent(mail).then();
+      setMsg({
+        errMsg:"Participator deleted Successfully...!",
+        color:"red"
+      })
       setTimeout(() => {
-        setDelAlert(false)
+        setUpload({
+          alert: false,
+          loader: false,
+        });
       }, 1200);
       setUploadEmail((val) => {
         return val.filter((id) => id !== mail);
       });
-      console.log("respisssss", result.data);
+  
     } catch (error) {
-      console.log("errrrrrrrrrrrr", error);
+      console.log("error", error);
     }
   };
+
+
   const handleSentMail = async () => {
     setSent(true);
     const result = await sentMail().then();
     setSentEmails(result?.data);
     setOpen(true);
   };
+
+
   const handleFileSelect = (event) => {
     setUpload({
       alert: true,
@@ -153,8 +172,15 @@ const EmailShow = () => {
       const result = uploadParticipator(event.target.files[0]).then((res) => {
         const response = res?.data;
         setUploadEmail(response);
+        setMsg({
+          errMsg:"Participator Uploaded Successfully...!",
+          color:"green"
+        })
         if (response === []) {
-          alert();
+        setMsg({
+        errMsg:"Participator is already uploaded...!",
+        color:"red"
+      })
         }
         setTimeout(() => {
           setUpload({
@@ -163,12 +189,12 @@ const EmailShow = () => {
           });
         }, 1000);
       });
-
-      console.log("------response", result);
     } catch (error) {
       console.log("---------", error);
     }
   };
+
+
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
     setUploadEmail([]);
@@ -188,7 +214,8 @@ const EmailShow = () => {
       }
     });
   };
-  console.log("macthes", uploadEmail.length);
+
+
 
   const buttonEmail = {
     fontSize: "8",
@@ -215,24 +242,15 @@ const EmailShow = () => {
       {showAlert || upload.alert ? (
 
         <MsgBar
-          errMsg={
-           ( showAlert
-              ? "Mail send successfully....!"
-              : "Upload participator successfully...!")
-          }
-          color={"green"}
+        errMsg={
+          msg.errMsg
+        }
+        color={msg.color}
         />
       ) : (
         <></>
       )}
-      {delAlert&&
-        <MsgBar
-          errMsg={"Student deleted successfully.....!"
-          }
-          color={"red"}
-        />
-      
-      }
+
       <div style={background1}>
         <Header />
         <Container maxWidth="lg" sx={whiteContainer}>
