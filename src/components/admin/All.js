@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import { Container} from "@mui/system";
-import { Button } from "@mui/material";
+import { Container } from "@mui/system";
+import { Button, IconButton, InputLabel } from "@mui/material";
 import "../../App.css";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { crossbtn } from "../assests/images";
+import CloseIcon from "@mui/icons-material/Close";
 import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-
+import { filterQuestion } from "../services/contest/contestServices";
 
 const background1 = {
   height: "100%",
@@ -21,10 +22,19 @@ const background1 = {
       rgba(24, 135, 201, 0.4) 100%
     )`,
 };
-
+const delBtn = {
+  top: "29%",
+  height: "30px",
+  width: "30px",
+  fontSize: "smaller",
+  // backgroundColor: '#E5E5E5',
+  backgroundColor: "#E5E5E5",
+  color: "black",
+  borderRadius: "50%",
+};
 const whiteContainer = {
   marginTop: "50px",
- 
+
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -64,9 +74,6 @@ const buttonEmail = {
   marginLeft: "20px",
 };
 
-
-
-
 const levelSubHeading = {
   width: "100%",
   height: "89px",
@@ -75,15 +82,16 @@ const levelSubHeading = {
 };
 
 const divText = {
-  width: "515px",
-  height: "28px",
-  fontFamily: "Raleway",
+  width: "70%",
+  fontFamily: "railway",
+  paddingTop: 3,
+  marginLeft: 2,
   fontStyle: "normal",
-  fontWeight: "300",
+  fontWeight: 300,
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  marginLeft: "20px",
+  overflowY: "auto",
 };
 
 const scrollDiv = {
@@ -105,15 +113,20 @@ const containerUpper = {
   justifyContent: "center",
 };
 
-const array = [1, 2, 3, 4, 5,6,4,4,45,5,5,1,22,5,5,4,5,6,];
-
-const All= ({availableQuestions}) => {
+const All = ({ availableQuestions, setAvailableQuestions }) => {
+  const [dropValue,setDropValue]=useState("All")
+  const handleChange = async (e) => {
+    const { value } = e.target;
+    setDropValue(value)
+    const result = await filterQuestion(value).then((res) => {
+      const response = res.data;
+      setAvailableQuestions(response);
+    });
+    console.log("------rrrr", result.data);
+  };
   return (
-    <div >
-     
-      <Grid container sx={{ justifyContent: "center" }}>
-      
-      </Grid>
+    <div>
+      <Grid container sx={{ justifyContent: "center" }}></Grid>
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
@@ -123,14 +136,16 @@ const All= ({availableQuestions}) => {
           </Grid>
           <Grid item sm={2}>
             <FormControl sx={{ mt: 2, minWidth: 160 }} size="small">
+              {/* <InputLabel id="demo-simple-select-label">All</InputLabel> */}
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                defaultValue={1}
-              >
-                <MenuItem value={1}>All</MenuItem>
-                <MenuItem value={2}>Level1</MenuItem>
-                <MenuItem value={3}>Level2</MenuItem>
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                value={dropValue}
+                onChange={handleChange}>
+
+                <MenuItem value={"All"}>All</MenuItem>
+                <MenuItem value={"Level 1"}>Level 1</MenuItem>
+                <MenuItem value={"Level 2"}>Level 2</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -140,24 +155,28 @@ const All= ({availableQuestions}) => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container sx={{height: '400px' , overflow: 'auto'}}>
+        <Grid container sx={{ height: "400px", overflow: "auto" }}>
           {availableQuestions?.map((val) => {
             return (
               <Grid container sx={divSelect}>
                 <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>
-                    {val?.question}
-                  </Typography>
+                  <Typography sx={divText}>{val?.question}</Typography>
                 </Grid>
-                <Grid item sm={1} mt={1}>
+                <Grid item sm={1} mt={2}>
                   <Checkbox
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="#0057ff" />}
                     sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                   />
                 </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
+                <Grid item sm={1} x={{ justifyContent: "end" }}>
+                  <IconButton
+                    aria-label="add"
+                    sx={delBtn}
+                    // onClick={() => delQuestion(index, val?.questionId)}
+                  >
+                    <CloseIcon fontSize="x-small" />
+                  </IconButton>
                 </Grid>
               </Grid>
             );

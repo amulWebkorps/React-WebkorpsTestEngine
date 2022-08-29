@@ -56,6 +56,7 @@ const quesText = {
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
+  overflowY:"auto"
 };
 const edit = {
   paddingTop: "2%",
@@ -92,7 +93,7 @@ const AddedQues = ({
   availableQuestions,
   setQuesId,
   setIndex,
-  question,
+  setAvailableQuestions,
   contestQuestion,
   setContestQuestion,
   setEditQuestion,
@@ -107,6 +108,7 @@ const AddedQues = ({
 
   const editQuestion = (id,questionID) => {
     setEditQuestion(true);
+  
     setQuesId(questionID);
     setIndex(id)
     setProblemStatement({
@@ -146,7 +148,7 @@ const AddedQues = ({
       console.log("eroror", error);
     }
   };
-console.log('contest question from addedd edit',question)
+
   return (
     <>
       <Paper sx={heading}>
@@ -171,9 +173,10 @@ console.log('contest question from addedd edit',question)
               <Grid item mt={2}>
                 <Paper sx={ques}>
                   <Typography sx={quesText}>
-                    {val?.question?.length >= 59
+                  {val?.question}
+                    {/* {val?.question?.length >= 59
                       ? `${val?.question.substring(0, 59)} .....`
-                      : val?.question}
+                      : val?.question} */}
                   </Typography>
                   <Link
                     underline="always"
@@ -195,7 +198,7 @@ console.log('contest question from addedd edit',question)
           })}
         </Grid>
       </CardContent>
-      {showq && <All availableQuestions={availableQuestions} />}
+      {showq && <All availableQuestions={availableQuestions} setAvailableQuestions={setAvailableQuestions} />}
     </>
   );
 };

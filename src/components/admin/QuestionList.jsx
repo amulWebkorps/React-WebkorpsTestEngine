@@ -304,7 +304,7 @@ const QuestionList = () => {
       setContestQuestion(response?.contestQuestionDetail);
     });
   }, [alert]);
-  console.log("contest details", quesId);
+
   return (
     <div style={questionList}>
       <Header />
@@ -590,6 +590,7 @@ const QuestionList = () => {
         <AddedQues
           setMsg={setMsg}
           availableQuestions={availableQuestions}
+          setAvailableQuestions={setAvailableQuestions}
           question={question}
           setQuestion={setQuestion}
           setContestQuestion={setContestQuestion}
