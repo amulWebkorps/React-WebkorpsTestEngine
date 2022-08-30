@@ -87,6 +87,7 @@ const btn = {
 };
 
 const AddedQues = ({
+  question,
   setMsg,
   setAlert,
   delFromContest,
@@ -100,15 +101,13 @@ const AddedQues = ({
   setDeleteQ,
   setProblemStatement,
   setSampleTestCase,
-  setTestCaseList
-
-  
+  setTestCaseList,
+  quesId
 }) => {
   const [showq, setShowQ] = useState(false);
 
   const editQuestion = (id,questionID) => {
     setEditQuestion(true);
-  
     setQuesId(questionID);
     setIndex(id)
     setProblemStatement({
@@ -148,6 +147,8 @@ const AddedQues = ({
       console.log("eroror", error);
     }
   };
+  console.log('question',question)
+  console.log('id------->',quesId)
 
   return (
     <>

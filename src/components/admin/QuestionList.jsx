@@ -175,7 +175,7 @@ const QuestionList = () => {
     location?.state?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
-  const [index,setIndex]=useState(null);
+  const [index, setIndex] = useState(null);
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
@@ -253,57 +253,75 @@ const QuestionList = () => {
     setTestCaseList([...testCaseList, testCases]);
     setTestCases(testInitialFields);
   };
-
+console.log(testCaseList.length,";list")
   const addQuestion = async (e) => {
-    setAlert(true);
-    try {
-      const result = await saveQuestion(question).then();
-      if (editQuestion) {
-        setMsg({
-          errMsg: "Question edit successfully...!",
-          color: "green",
-        });
-      } else {
-        setMsg({
-          errMsg: "Question added successfully...!",
-          color: "green",
-        });
-      }
-
-      setQuestion(quesIntialField);
-      setProblemStatement(problemStatementIntialVal);
-      setTestCases(sampleTestInitialFields);
-      setSampleTestCase(sampleTestInitialFields);
-      setTestCaseList([]);
-      setTimeout(() => {
-        setAlert(false);
-      }, 1200);
-      if (editQuestion) {
-        setEditQuestion(false);
-        setQuestion(quesIntialField);
-        setProblemStatement(problemStatementIntialVal);
-        setTestCases(sampleTestInitialFields);
-        setSampleTestCase(sampleTestInitialFields);
-        setTestCaseList([]);
-        return (contestQuestion[index] = question);
-      } else {
-        setContestQuestion([...contestQuestion, question]);
-        setQuestion(quesIntialField);
-        setProblemStatement(problemStatementIntialVal);
-        setTestCases(sampleTestInitialFields);
-        setSampleTestCase(sampleTestInitialFields);
-        setTestCaseList([]);
-      }
-    } catch (error) {
-      console.log("error");
+    if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
+      setAlert(true);
+      setMsg({
+        errMsg: "Please fill details...!",
+        color: "red",
+      });
+         setTimeout(() => {
+          setAlert(false);
+        }, 1200);
     }
+    else{
+      setAlert(true);
+      try {
+        const result = await saveQuestion(question).then((res)=>{
+          const response = res.data
+          setQuesId(null);
+        });
+        if (editQuestion) {
+          setMsg({
+            errMsg: "Question edit successfully...!",
+            color: "green",
+          });
+         
+        } else {
+          setMsg({
+            errMsg: "Question added successfully...!",
+            color: "green",
+          });
+        }
+        setQuestion(quesIntialField);
+        setProblemStatement(problemStatementIntialVal);
+        setTestCases(sampleTestInitialFields);
+        setSampleTestCase(sampleTestInitialFields);
+        setTestCaseList([]);
+        setTimeout(() => {
+          setAlert(false);
+        }, 1200);
+        if (editQuestion) {
+         console.log('editquestion')
+          setEditQuestion(false);
+          setQuestion(quesIntialField);
+          setProblemStatement(problemStatementIntialVal);
+          setTestCases(sampleTestInitialFields);
+          setSampleTestCase(sampleTestInitialFields);
+          setTestCaseList([]);
+          return (contestQuestion[index] = question);
+        } else {
+          console.log('editquestion else')
+          setContestQuestion([...contestQuestion, question]);
+          setQuestion(quesIntialField);
+          setProblemStatement(problemStatementIntialVal);
+          setTestCases(sampleTestInitialFields);
+          setSampleTestCase(sampleTestInitialFields);
+          setTestCaseList([]);
+        }
+      } catch (error) {
+        console.log("error");
+      }
+    }
+    
   };
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId).then((res) => {
       const response = res.data;
       setContestQuestion(response?.contestQuestionDetail);
     });
-  }, [alert]);
+  }, [showAlert]);
 
   return (
     <div style={questionList}>
@@ -597,6 +615,9 @@ const QuestionList = () => {
           contestQuestion={contestQuestion}
           setEditQuestion={setEditQuestion}
           setQuesId={setQuesId}
+     quesId={quesId}
+
+
           setAlert={setAlert}
           delFromContest={delFromContest}
           setProblemStatement={setProblemStatement}
