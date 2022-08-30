@@ -61,7 +61,7 @@ const quesText = {
 const edit = {
   paddingTop: "2%",
   width: "24%",
-
+  cursor:"pointer",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 300,

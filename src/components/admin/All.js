@@ -34,7 +34,7 @@ const delBtn = {
 };
 const whiteContainer = {
   marginTop: "50px",
-
+  height: "350px",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -104,7 +104,7 @@ const divSelect = {
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
-  marginTop: "10px",
+  marginTop: "12px",
 };
 
 const containerUpper = {
@@ -114,16 +114,27 @@ const containerUpper = {
 };
 
 const All = ({ availableQuestions, setAvailableQuestions }) => {
-  const [dropValue,setDropValue]=useState("All")
+  const [dropValue, setDropValue] = useState("All");
+  const [questionArr, setQuestionArr]=useState([]);
+  const handleQuestion=(e)=>{
+    const {checked,value}=e.target
+   if(checked){
+      setQuestionArr([...questionArr,value])
+   }else{
+      setQuestionArr((val)=>{
+        return val.filter((index)=>index!==value)
+      })
+   }
+   }
   const handleChange = async (e) => {
     const { value } = e.target;
-    setDropValue(value)
+    setDropValue(value);
     const result = await filterQuestion(value).then((res) => {
       const response = res.data;
       setAvailableQuestions(response);
-    });
-    console.log("------rrrr", result.data);
+    });   
   };
+  console.log('qqqq',questionArr)
   return (
     <div>
       <Grid container sx={{ justifyContent: "center" }}></Grid>
@@ -141,8 +152,8 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 value={dropValue}
-                onChange={handleChange}>
-
+                onChange={handleChange}
+              >
                 <MenuItem value={"All"}>All</MenuItem>
                 <MenuItem value={"Level 1"}>Level 1</MenuItem>
                 <MenuItem value={"Level 2"}>Level 2</MenuItem>
@@ -155,7 +166,7 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container sx={{ height: "400px", overflow: "auto" }}>
+        <Grid container sx={{ overflow: "auto" }}>
           {availableQuestions?.map((val) => {
             return (
               <Grid container sx={divSelect}>
@@ -167,16 +178,9 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="#0057ff" />}
                     sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                    value={val?.questionId}
+                    onChange={handleQuestion}
                   />
-                </Grid>
-                <Grid item sm={1} x={{ justifyContent: "end" }}>
-                  <IconButton
-                    aria-label="add"
-                    sx={delBtn}
-                    // onClick={() => delQuestion(index, val?.questionId)}
-                  >
-                    <CloseIcon fontSize="x-small" />
-                  </IconButton>
                 </Grid>
               </Grid>
             );

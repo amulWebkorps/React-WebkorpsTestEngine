@@ -7,8 +7,10 @@ import {
   Typography,
   TextField,
   Stack,
-  InputAdornment,
+  InputAdornment,IconButton
+
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
@@ -21,6 +23,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { saveQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   container: {
@@ -96,9 +99,9 @@ const AnswerBox = {
 };
 
 const delBtn = {
-  position: "absolute",
-  marginTop: "8px",
-  right: "8%",
+  marginTop: "20px !important",
+  width: "30px !important",
+  fontSize: "smaller",
 
   backgroundColor: "#E5E5E5",
   color: "black",
@@ -249,11 +252,12 @@ const QuestionList = () => {
       testcases: testCaseList,
     });
   };
+
   const addTest = () => {
     setTestCaseList([...testCaseList, testCases]);
     setTestCases(testInitialFields);
   };
-console.log(testCaseList.length,";list")
+
   const addQuestion = async (e) => {
     if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
       setAlert(true);
@@ -272,18 +276,6 @@ console.log(testCaseList.length,";list")
           const response = res.data
           setQuesId(null);
         });
-        if (editQuestion) {
-          setMsg({
-            errMsg: "Question edit successfully...!",
-            color: "green",
-          });
-         
-        } else {
-          setMsg({
-            errMsg: "Question added successfully...!",
-            color: "green",
-          });
-        }
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
         setTestCases(sampleTestInitialFields);
@@ -293,6 +285,10 @@ console.log(testCaseList.length,";list")
           setAlert(false);
         }, 1200);
         if (editQuestion) {
+          setMsg({
+            errMsg: "Question edit successfully...!",
+            color: "green",
+          });
          console.log('editquestion')
           setEditQuestion(false);
           setQuestion(quesIntialField);
@@ -302,6 +298,10 @@ console.log(testCaseList.length,";list")
           setTestCaseList([]);
           return (contestQuestion[index] = question);
         } else {
+          setMsg({
+            errMsg: "Question added successfully...!",
+            color: "green",
+          });
           console.log('editquestion else')
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
@@ -314,15 +314,25 @@ console.log(testCaseList.length,";list")
         console.log("error");
       }
     }
-    
   };
+  const delTestCase = (id) => {
+    setTestCaseList((val) => {
+      return val.filter((a, index) => index !== id);
+    });
+  };
+
+  const editTestcase=(e,id)=>{
+    console.log('djdjdj',id)
+    console.log('inside',e.target.value)
+  }
+
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId).then((res) => {
       const response = res.data;
       setContestQuestion(response?.contestQuestionDetail);
     });
   }, [showAlert]);
-
+console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
       <Header />
@@ -546,6 +556,7 @@ console.log(testCaseList.length,";list")
                           }}
                         >
                           {testCaseList?.map((val, index) => {
+                            {console.log('index from map',index)}
                             return (
                               <Box
                                 component="form"
@@ -556,18 +567,20 @@ console.log(testCaseList.length,";list")
                                 autoComplete="off"
                               >
                                 <TextField
-                                  name="testInput1"
+                                  name="input"
                                   value={val?.input}
                                   placeholder="testcase input"
                                   multiline
                                   rows={1}
+                                  onChange={(e)=>editTestcase(e,index)}
                                   maxRows={10}
                                   color="primary"
                                   focused
                                 />
                                 <TextField
-                                  name="testOutput1"
+                                  name="output"
                                   value={val?.output}
+                                  onChange={(e)=>editTestcase(e,index)}
                                   placeholder="testcase output"
                                   multiline
                                   rows={1}
@@ -575,6 +588,13 @@ console.log(testCaseList.length,";list")
                                   color="primary"
                                   focused
                                 />
+                                 <IconButton
+                                  aria-label="add"
+                                  sx={delBtn}
+                                  onClick={(e) => delTestCase(index)}
+                                >
+                                  <CloseIcon fontSize="x-small" />
+                                </IconButton>
                               </Box>
                             );
                           })}
@@ -615,9 +635,7 @@ console.log(testCaseList.length,";list")
           contestQuestion={contestQuestion}
           setEditQuestion={setEditQuestion}
           setQuesId={setQuesId}
-     quesId={quesId}
-
-
+          quesId={quesId}
           setAlert={setAlert}
           delFromContest={delFromContest}
           setProblemStatement={setProblemStatement}
