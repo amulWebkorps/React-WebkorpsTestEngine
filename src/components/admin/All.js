@@ -34,7 +34,7 @@ const delBtn = {
 };
 const whiteContainer = {
   marginTop: "50px",
-  height: "350px",
+  height: "460px",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -147,7 +147,6 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
           </Grid>
           <Grid item sm={2}>
             <FormControl sx={{ mt: 2, minWidth: 160 }} size="small">
-              {/* <InputLabel id="demo-simple-select-label">All</InputLabel> */}
               <Select
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -166,7 +165,7 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container sx={{ overflow: "auto" }}>
+        <Grid container sx={{ maxHeight:"350px", overflowY: "auto" }}>
           {availableQuestions?.map((val) => {
             return (
               <Grid container sx={divSelect}>

@@ -1,18 +1,17 @@
-import React from "react";
-import { Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Grid, Typography,IconButton } from "@mui/material";
 import { Container} from "@mui/system";
 import { Button } from "@mui/material";
 import "../../App.css";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { crossbtn } from "../assests/images";
-import Checkbox from "@mui/material/Checkbox";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Box } from "@mui/system";
 import Header from "../UI/Header";
-
+import CloseIcon from "@mui/icons-material/Close";
+import { filterQuestion } from "../services/contest/contestServices";
+import MsgBar from "../auth/base/MsgBar";
+import { deleteQuestion } from "../services/contest/contestServices";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -29,6 +28,16 @@ const whiteContainer = {
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
+};
+const delBtn = {
+  top: "29%",
+  height: "30px",
+  width: "30px",
+  fontSize: "smaller",
+  // backgroundColor: '#E5E5E5',
+  backgroundColor: "#E5E5E5",
+  color: "black",
+  borderRadius: "50%",
 };
 const buttonLevel = {
   width: "260px",
@@ -73,15 +82,16 @@ const levelSubHeading = {
 };
 
 const divText = {
-  width: "515px",
-  height: "28px",
-  fontFamily: "Raleway",
+  width: "70%",
+  fontFamily: "railway",
+  paddingTop: 3,
+  marginLeft: 2,
   fontStyle: "normal",
-  fontWeight: "300",
+  fontWeight: 300,
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  marginLeft: "20px",
+  overflowY: "auto",
 };
 
 const scrollDiv = {
@@ -106,8 +116,61 @@ const containerUpper = {
 const array = [1, 2, 3, 4, 5,6,4,4,45,5,5,1,22,5,5,4,5,6,];
 
 const Allavailable = () => {
+  const [allAvailQues,setAllAvailQues]=useState([]);
+  const [filterValue,setFilterValue]=useState("All");
+  const [msg,setMsg]=useState({
+    state:false,
+    msg:"",
+    color:""
+  });
+  const handleChange=(e)=>{
+    setFilterValue(e.target.value)
+  }
+
+  const handleDelete=(id,quesId)=>{
+    const arr=[`questionForLevel`, quesId]
+    setMsg({
+      state:true
+    })
+   console.log('----------',id,quesId)
+    setAllAvailQues((val)=>{
+      return val.filter((e,index)=>index!==id)
+    })
+    try {
+      const result=deleteQuestion(arr).then((res)=>{
+        setMsg({
+          state:true,
+          msg:"Question delete succesfully",
+          color:"red"
+        })
+        setTimeout(() => {
+          setMsg({
+            state:false,
+            msg:"",
+            color:""
+          })
+        }, 1200);
+      });
+      
+    } catch (error) {
+      
+    }
+  }
+console.log('------',allAvailQues)
+  useEffect(()=>{
+    const result = filterQuestion(filterValue).then((res)=>{
+      const response= res.data
+      setAllAvailQues(response)
+   
+    })
+  },[filterValue])
+
   return (
     <div style={background1}>
+    {msg.state&& <MsgBar
+      errMsg={msg.msg} color={msg.color}
+    />}
+   
       <Header/>
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item mt={5}>
@@ -128,11 +191,12 @@ const Allavailable = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                defaultValue={1}
+                defaultValue={"All"}
+                onChange={handleChange}
               >
-                <MenuItem value={1}>All</MenuItem>
-                <MenuItem value={2}>Level1</MenuItem>
-                <MenuItem value={3}>Level2</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
+                <MenuItem value={"Level 1"}>Level 1</MenuItem>
+                <MenuItem value={"Level 2"}>Level 2</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -142,24 +206,25 @@ const Allavailable = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container sx={{height: '800px' , overflow: 'auto'}}>
-          {array.map((val) => {
+        <Grid container sx={{maxHeight:"500px", overflow: 'auto'}}>
+          {allAvailQues?.map((val,index) => {
             return (
               <Grid container sx={divSelect}>
                 <Grid item sm={10} sx={scrollDiv}>
                   <Typography sx={divText}>
-                    write a progrom to make a star
+                   {val?.question}
                   </Typography>
                 </Grid>
                 <Grid item sm={1} mt={1}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
                 </Grid>
-                <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                  <img src={crossbtn} alt="cross" />
+                <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
+                <IconButton
+                    aria-label="add"
+                    sx={delBtn}
+                    onClick={() => handleDelete(index, val?.questionId)}
+                  >
+                    <CloseIcon fontSize="x-small" />
+                  </IconButton>
                 </Grid>
               </Grid>
             );

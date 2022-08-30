@@ -240,7 +240,7 @@ const QuestionList = () => {
       [name]: value,
     });
   };
-
+console.log('-------',contestData?.contestId)
   const handleFocus = () => {
     setQuestion({
       ...question,
@@ -324,6 +324,7 @@ const QuestionList = () => {
   const editTestcase=(e,id)=>{
     console.log('djdjdj',id)
     console.log('inside',e.target.value)
+
   }
 
   useEffect(() => {

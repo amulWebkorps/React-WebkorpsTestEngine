@@ -7,12 +7,12 @@ import {
   Typography,
   TextField,
   Stack,
-  InputAdornment,
+  InputAdornment,IconButton
+
 } from "@mui/material";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { IconButton } from "@mui/material";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import CloseIcon from "@mui/icons-material/Close";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -20,11 +20,10 @@ import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  filterQuestion,
-  saveQuestion,
-} from "../services/contest/contestServices";
+import { filterQuestion, saveQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
+import { getContestDetail } from "../services/adminServices";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   container: {
@@ -44,6 +43,7 @@ const sideColumn = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: " 18px 0px 0px 18px",
 };
+
 const questionList = {
   height: "100vh",
   background: `linear-gradient(
@@ -59,6 +59,7 @@ const topButton = {
   display: "flex",
   justifyContent: "center",
 };
+
 const MainBox = {
   height: "15vh",
   width: "100%",
@@ -67,6 +68,7 @@ const MainBox = {
   alignItems: "center",
   textAlign: "center",
 };
+
 const QuestionBox = {
   cursor: "pointer",
   width: "250px",
@@ -115,6 +117,7 @@ const cardBody = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
+
 const addQues = {
   background: "#F9FAFC",
 };
@@ -131,6 +134,7 @@ const input = {
 const testCol = {
   background: "#F9FAFC",
 };
+
 const label = {
   fontFamily: "railway",
   fontStyle: "normal",
@@ -147,23 +151,6 @@ const btn = {
   width: "160px",
 };
 
-const buttonLevel = {
-  width: "260px",
-  height: "51px",
-  background: "#0057ff",
-  borderRadius: "18px 18px 18px 18px",
-  fontWeight: "700",
-  fontSize: "25px",
-  lineHeight: "19px",
-  textTransform: "none",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  paddingTop: "12px",
-  paddingLeft: "25px",
-  marginTop: "25px",
-  color: "#FFFFFF",
-};
-
 const Addbtn = {
   fontSize: "8",
   fontWeight: "600",
@@ -172,8 +159,8 @@ const Addbtn = {
 };
 
 const testInitialFields = {
-  testInput: "",
-  testOutput: "",
+  input: "",
+  output: "",
 };
 const sampleTestInitialFields = {
   constraints: "",
@@ -190,11 +177,14 @@ const Level1 = () => {
   const [contestData, setContestData] = useState(
     location?.state?.data?.contest
   );
+  const [quesId, setQuesId] = useState(null);
+  const [index, setIndex] = useState(null);
   const defaulValues = {
-    questionId: "",
+    questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
     contestLevel: `Level 1`,
   };
+
   const quesIntialField = {
     questionId: defaulValues?.questionId,
     question: "",
@@ -205,8 +195,6 @@ const Level1 = () => {
   };
 
   const [question, setQuestion] = useState(quesIntialField);
-  const [quesId, setQuesId] = useState(null);
-  const [deleteQ, setDeleteQ] = useState(false);
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
   );
@@ -215,13 +203,42 @@ const Level1 = () => {
   const [testCaseList, setTestCaseList] = useState([]);
   const [contestQuestion, setContestQuestion] = useState(null);
   const [editQuestion, setEditQuestion] = useState(false);
-  const [availableQuestions, setAvailableQuestions] = useState(
-    location?.state?.data?.totalAvailableQuestion
-  );
+  const [delFromContest, setDelFromContest] = useState({
+    state: false,
+    }
+);
+  const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
-
-  const handleOnchange = (e) => {
+  const [msg, setMsg] = useState({
+    errMsg: "",
+    color: "",
+  });
+  const handleConstraintChange = (e) => {
     const { name, value } = e.target;
+    setSampleTestCase({
+      ...sampleTestCase,
+      [name]: value,
+    });
+  };
+
+  const handleTestChange = (e) => {
+    const { name, value } = e.target;
+
+    setTestCases({
+      ...testCases,
+      [name]: value,
+    });
+  };
+
+  const handelQuestionChange = (e) => {
+    const { name, value } = e.target;
+    setProblemStatement({
+      ...problemStatement,
+      [name]: value,
+    });
+  };
+
+  const handleFocus = () => {
     setQuestion({
       ...question,
       questionId: defaulValues?.questionId,
@@ -231,19 +248,6 @@ const Level1 = () => {
       sampleTestCase: [sampleTestCase],
       testcases: testCaseList,
     });
-    setProblemStatement({
-      ...problemStatement,
-      [name]: value,
-    });
-
-    setSampleTestCase({
-      ...sampleTestCase,
-      [name]: value,
-    });
-    setTestCases({
-      ...testCases,
-      [name]: value,
-    });
   };
 
   const addTest = () => {
@@ -251,26 +255,24 @@ const Level1 = () => {
     setTestCases(testInitialFields);
   };
 
-  const delTestCase = (id) => {
-    setTestCaseList((val) => {
-      return val.filter((a, index) => index !== id);
-    });
-  };
-
-  console.log(testCaseList, "test case list");
-  useEffect(() => {
-    const result = filterQuestion("Level 1").then((res) => {
-      const response = res.data;
-      setContestQuestion(response);
-    });
-  }, [, deleteQ]);
-
   const addQuestion = async (e) => {
-    setAlert(true);
-    try {
-      const result = await saveQuestion(question).then((res) => {
-        const response = res.data;
-        setContestQuestion([...contestQuestion, response]);
+    if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
+      setAlert(true);
+      setMsg({
+        errMsg: "Please fill details...!",
+        color: "red",
+      });
+         setTimeout(() => {
+          setAlert(false);
+        }, 1200);
+    }
+    else{
+      setAlert(true);
+      try {
+        const result = await saveQuestion(question).then((res)=>{
+          const response = res.data
+          setQuesId(null);
+        });
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
         setTestCases(sampleTestInitialFields);
@@ -279,37 +281,75 @@ const Level1 = () => {
         setTimeout(() => {
           setAlert(false);
         }, 1200);
-      });
-
-      if (editQuestion) {
-        setEditQuestion(false);
-        setQuestion(quesIntialField);
-        setProblemStatement(problemStatementIntialVal);
-        setTestCases(sampleTestInitialFields);
-        setSampleTestCase(sampleTestInitialFields);
-        setTestCaseList([]);
-        return (contestQuestion[quesId] = question);
+        if (editQuestion) {
+          setMsg({
+            errMsg: "Question edit successfully...!",
+            color: "green",
+          });
+         console.log('editquestion')
+          setEditQuestion(false);
+          setQuestion(quesIntialField);
+          setProblemStatement(problemStatementIntialVal);
+          setTestCases(sampleTestInitialFields);
+          setSampleTestCase(sampleTestInitialFields);
+          setTestCaseList([]);
+          return (contestQuestion[index] = question);
+        } else {
+          setMsg({
+            errMsg: "Question added successfully...!",
+            color: "green",
+          });
+          console.log('editquestion else')
+          setContestQuestion([...contestQuestion, question]);
+          setQuestion(quesIntialField);
+          setProblemStatement(problemStatementIntialVal);
+          setTestCases(sampleTestInitialFields);
+          setSampleTestCase(sampleTestInitialFields);
+          setTestCaseList([]);
+        }
+      } catch (error) {
+        console.log("error");
       }
-    } catch (error) {
-      console.log("error");
     }
   };
+  const delTestCase = (id) => {
+    setTestCaseList((val) => {
+      return val.filter((a, index) => index !== id);
+    });
+  };
 
+  const editTestcase=(e,id)=>{
+    console.log('djdjdj',id)
+    console.log('inside',e.target.value)
+    
+  }
+
+  useEffect(() => {
+    const result = filterQuestion("Level 1").then((res) => {
+      const response = res.data;
+      setContestQuestion(response);
+    });
+  }, [showAlert]);
+
+  useEffect(()=>{
+  const result= filterQuestion("All").then((res)=>{
+    const response=res.data
+    setAvailableQuestions(response);
+  })
+  },[])
+console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
       <Header />
-
-      {showAlert && (
-        <MsgBar errMsg={"Question added successful....!"} color={"green"} />
-      )}
-      <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item>
-          <Box variant="contained" sx={buttonLevel}>
-            Level 1 Questions
+      <Container sx={topButton}>
+        {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
+        <Grid container sx={{ justifyContent: "center" }} mt={3}>
+          <Box sx={QuestionBox}>Questions</Box>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+            Participators
           </Box>
         </Grid>
-      </Grid>
-
+      </Container>
       <Container sx={mainContainer}>
         <Grid>
           <Card sx={cardBody}>
@@ -335,7 +375,7 @@ const Level1 = () => {
                         multiline
                         rows={3}
                         maxRows={10}
-                        onChange={handleOnchange}
+                        onChange={handelQuestionChange}
                         name="question"
                         value={problemStatement?.question}
                         InputProps={{
@@ -356,14 +396,13 @@ const Level1 = () => {
                       <Typography sx={label} display="inline">
                         Constraints
                       </Typography>
-
                       <TextField
                         multiline
                         rows={3}
                         maxRows={10}
                         sx={input}
                         fullWidth
-                        onChange={handleOnchange}
+                        onChange={handleConstraintChange}
                         name="constraints"
                         value={sampleTestCase?.constraints}
                         id="fullWidth"
@@ -390,7 +429,7 @@ const Level1 = () => {
                           <TextField
                             id="fullWidth"
                             placeholder="Input here"
-                            onChange={handleOnchange}
+                            onChange={handleConstraintChange}
                             name="input"
                             value={sampleTestCase?.input}
                             multiline
@@ -414,7 +453,7 @@ const Level1 = () => {
                             multiline
                             rows={3}
                             maxRows={10}
-                            onChange={handleOnchange}
+                            onChange={handleConstraintChange}
                             name="output"
                             value={sampleTestCase?.output}
                             InputProps={{
@@ -441,6 +480,7 @@ const Level1 = () => {
                         <Button
                           variant="contained"
                           sx={btn}
+                          onMouseOver={handleFocus}
                           onClick={addQuestion}
                         >
                           {editQuestion ? `Edit Question` : `Add Question`}
@@ -482,9 +522,9 @@ const Level1 = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Input here"
-                              onChange={handleOnchange}
-                              name="testInput"
-                              value={testCases?.testInput}
+                              onChange={handleTestChange}
+                              name="input"
+                              value={testCases?.input}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -495,9 +535,9 @@ const Level1 = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Output here"
-                              onChange={handleOnchange}
-                              name="testOutput"
-                              value={testCases?.testOutput}
+                              onChange={handleTestChange}
+                              name="output"
+                              value={testCases?.output}
                             />
                           </Grid>
                         </Grid>
@@ -521,6 +561,7 @@ const Level1 = () => {
                           }}
                         >
                           {testCaseList?.map((val, index) => {
+                            {console.log('index from map',index)}
                             return (
                               <Box
                                 component="form"
@@ -531,31 +572,31 @@ const Level1 = () => {
                                 autoComplete="off"
                               >
                                 <TextField
-                                  name="testInput1"
-                                  value={val?.testInput}
+                                  name="input"
+                                  value={val?.input}
                                   placeholder="testcase input"
                                   multiline
                                   rows={1}
+                                  onChange={(e)=>editTestcase(e,index)}
                                   maxRows={10}
-                                  variant="outlined"
-                                  inputProps={{ readOnly: true }}
-                                  onChange={handleOnchange}
+                                  color="primary"
+                                  focused
                                 />
                                 <TextField
-                                  name="testOutput1"
-                                  value={val?.testOutput}
+                                  name="output"
+                                  value={val?.output}
+                                  onChange={(e)=>editTestcase(e,index)}
                                   placeholder="testcase output"
                                   multiline
                                   rows={1}
                                   maxRows={10}
-                                  variant="outlined"
-                                  inputProps={{ readOnly: true }}
-                                  onChange={handleOnchange}
+                                  color="primary"
+                                  focused
                                 />
-                                <IconButton
+                                 <IconButton
                                   aria-label="add"
                                   sx={delBtn}
-                                  onClick={() => delTestCase(index)}
+                                  onClick={(e) => delTestCase(index)}
                                 >
                                   <CloseIcon fontSize="x-small" />
                                 </IconButton>
@@ -590,14 +631,22 @@ const Level1 = () => {
           </Card>
         </Grid>
         <AddedQues
+          setMsg={setMsg}
           availableQuestions={availableQuestions}
+          setAvailableQuestions={setAvailableQuestions}
           question={question}
           setQuestion={setQuestion}
           setContestQuestion={setContestQuestion}
           contestQuestion={contestQuestion}
           setEditQuestion={setEditQuestion}
           setQuesId={setQuesId}
-          setDeleteQ={setDeleteQ}
+          quesId={quesId}
+          setAlert={setAlert}
+          delFromContest={delFromContest}
+          setProblemStatement={setProblemStatement}
+          setTestCaseList={setTestCaseList}
+          setSampleTestCase={setSampleTestCase}
+          setIndex={setIndex}
         />
       </Container>
     </div>

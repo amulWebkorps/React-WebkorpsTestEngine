@@ -155,7 +155,7 @@ const AddedQues = ({
       <Paper sx={heading}>
         <div>
           <Typography sx={headText}>
-            Contest Contain Following
+            {`Level 2`} Contain Following
             <br />
             Questions:
           </Typography>
