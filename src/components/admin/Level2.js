@@ -319,8 +319,16 @@ const Level2 = () => {
   };
 
   const editTestcase=(e,id)=>{
-    console.log('djdjdj',id)
-    console.log('inside',e.target.value)
+    const { name, value } = e.target;
+    setTestCaseList((prevState) => {
+      const newState = prevState.map((obj,inn) => {
+        if (index === inn) {
+          return { ...obj, [name]: value };
+        }
+        return obj;
+      });
+      return newState;
+    });
     
   }
 

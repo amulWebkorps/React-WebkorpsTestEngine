@@ -217,8 +217,6 @@ const QuestionList = () => {
     color: "",
   });
 
-  const [newValue, setNewValue] = useState(null);
-
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -332,7 +330,7 @@ const QuestionList = () => {
   const editTestcase = (e, index) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj,inn) => {
+      const newState = prevState.map((obj, inn) => {
         if (index === inn) {
           return { ...obj, [name]: value };
         }
@@ -583,7 +581,7 @@ const QuestionList = () => {
                               >
                                 <TextField
                                   name="input"
-                                  value={newValue ?? val?.input}
+                                  value={val?.input}
                                   placeholder="testcase input"
                                   multiline
                                   rows={1}
@@ -591,8 +589,9 @@ const QuestionList = () => {
                                   maxRows={10}
                                   color="primary"
                                   focused
+                                
                                 />
-                                {console.log(newValue, "----NEW VALUE")}
+
                                 <TextField
                                   name="output"
                                   value={val?.output}
@@ -603,6 +602,7 @@ const QuestionList = () => {
                                   maxRows={10}
                                   color="primary"
                                   focused
+                                
                                 />
                                 <IconButton
                                   aria-label="add"
