@@ -201,9 +201,9 @@ console.log('------',allAvailQues)
             </FormControl>
           </Grid>
           <Grid item mt={2}>
-            <Button variant="contained" sx={buttonEmail}>
+            {/* <Button variant="contained" sx={buttonEmail}>
               Add questions
-            </Button>
+            </Button> */}
           </Grid>
         </Grid>
         <Grid container sx={{maxHeight:"500px", overflow: 'auto'}}>

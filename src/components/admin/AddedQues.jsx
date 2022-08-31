@@ -147,17 +147,14 @@ const AddedQues = ({
       console.log("eroror", error);
     }
   };
-  console.log('question',question)
-  console.log('id------->',quesId)
+
 
   return (
     <>
       <Paper sx={heading}>
         <div>
           <Typography sx={headText}>
-            {`Level 2`} Contain Following
-            <br />
-            Questions:
+           Present  Questions:
           </Typography>
         </div>
         <div>

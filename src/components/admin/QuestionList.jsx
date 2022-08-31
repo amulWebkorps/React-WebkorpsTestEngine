@@ -7,8 +7,8 @@ import {
   Typography,
   TextField,
   Stack,
-  InputAdornment,IconButton
-
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -216,6 +216,9 @@ const QuestionList = () => {
     errMsg: "",
     color: "",
   });
+
+  const [newValue, setNewValue] = useState(null);
+
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -240,7 +243,7 @@ const QuestionList = () => {
       [name]: value,
     });
   };
-console.log('-------',contestData?.contestId)
+
   const handleFocus = () => {
     setQuestion({
       ...question,
@@ -259,21 +262,26 @@ console.log('-------',contestData?.contestId)
   };
 
   const addQuestion = async (e) => {
-    if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
+    if (
+      problemStatement.question === "" ||
+      sampleTestCase.constraints === "" ||
+      sampleTestCase?.input === "" ||
+      sampleTestCase?.output === "" ||
+      testCaseList.length === 0
+    ) {
       setAlert(true);
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
-         setTimeout(() => {
-          setAlert(false);
-        }, 1200);
-    }
-    else{
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
+    } else {
       setAlert(true);
       try {
-        const result = await saveQuestion(question).then((res)=>{
-          const response = res.data
+        const result = await saveQuestion(question).then((res) => {
+          const response = res.data;
           setQuesId(null);
         });
         setQuestion(quesIntialField);
@@ -289,7 +297,7 @@ console.log('-------',contestData?.contestId)
             errMsg: "Question edit successfully...!",
             color: "green",
           });
-         console.log('editquestion')
+
           setEditQuestion(false);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -302,7 +310,7 @@ console.log('-------',contestData?.contestId)
             errMsg: "Question added successfully...!",
             color: "green",
           });
-          console.log('editquestion else')
+
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -321,11 +329,18 @@ console.log('-------',contestData?.contestId)
     });
   };
 
-  const editTestcase=(e,id)=>{
-    console.log('djdjdj',id)
-    console.log('inside',e.target.value)
-
-  }
+  const editTestcase = (e, index) => {
+    const { name, value } = e.target;
+    setTestCaseList((prevState) => {
+      const newState = prevState.map((obj,inn) => {
+        if (index === inn) {
+          return { ...obj, [name]: value };
+        }
+        return obj;
+      });
+      return newState;
+    });
+  };
 
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId).then((res) => {
@@ -333,7 +348,7 @@ console.log('-------',contestData?.contestId)
       setContestQuestion(response?.contestQuestionDetail);
     });
   }, [showAlert]);
-console.log('test case list',testCaseList)
+  console.log("test case list", testCaseList);
   return (
     <div style={questionList}>
       <Header />
@@ -557,7 +572,6 @@ console.log('test case list',testCaseList)
                           }}
                         >
                           {testCaseList?.map((val, index) => {
-                            {console.log('index from map',index)}
                             return (
                               <Box
                                 component="form"
@@ -569,19 +583,20 @@ console.log('test case list',testCaseList)
                               >
                                 <TextField
                                   name="input"
-                                  value={val?.input}
+                                  value={newValue ?? val?.input}
                                   placeholder="testcase input"
                                   multiline
                                   rows={1}
-                                  onChange={(e)=>editTestcase(e,index)}
+                                  onChange={(e) => editTestcase(e, index)}
                                   maxRows={10}
                                   color="primary"
                                   focused
                                 />
+                                {console.log(newValue, "----NEW VALUE")}
                                 <TextField
                                   name="output"
                                   value={val?.output}
-                                  onChange={(e)=>editTestcase(e,index)}
+                                  onChange={(e) => editTestcase(e, index)}
                                   placeholder="testcase output"
                                   multiline
                                   rows={1}
@@ -589,7 +604,7 @@ console.log('test case list',testCaseList)
                                   color="primary"
                                   focused
                                 />
-                                 <IconButton
+                                <IconButton
                                   aria-label="add"
                                   sx={delBtn}
                                   onClick={(e) => delTestCase(index)}
