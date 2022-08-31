@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Button, IconButton, InputLabel } from "@mui/material";
@@ -114,6 +114,7 @@ const containerUpper = {
 };
 
 const All = ({ availableQuestions, setAvailableQuestions }) => {
+  const ref=useRef(null);
   const [dropValue, setDropValue] = useState("All");
   const [questionArr, setQuestionArr]=useState([]);
   const handleQuestion=(e)=>{
@@ -134,9 +135,12 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
       setAvailableQuestions(response);
     });   
   };
+  useEffect(()=>{
+    ref.current?.scrollIntoView({behavior: 'smooth'});
+  },[])
   console.log('qqqq',questionArr)
   return (
-    <div>
+    <div ref={ref}>
       <Grid container sx={{ justifyContent: "center" }}></Grid>
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>

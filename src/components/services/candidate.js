@@ -1,11 +1,12 @@
 import axios from "axios";
 const PARTICIPATOR_LOGIN_URL =
-  "http://192.168.1.115:8085/doSignInForParticipator";
+  "http://localhost:8085/doSignInForParticipator";
 const CANDIDATE_REGISTRATION_URL = ` http:8080/candidateRegistration`;
-const SHOW_ALL_LANGUAGE = `http://192.168.1.115:8085/showAllLanguage`;
-const START_CONTEST_PAGE=`http://192.168.1.115:8085/startContestPage`
+const SHOW_ALL_LANGUAGE = `http://localhost:8085/showAllLanguage`;
+const START_CONTEST_PAGE=`http://localhost:8085/startContestPage`
 
 const participatorLogin = (contestId, credential) => {
+  console.log('-----',contestId)
   return axios.get(PARTICIPATOR_LOGIN_URL, {
     params: {
       contestId: contestId,

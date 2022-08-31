@@ -125,7 +125,7 @@ const Login = ({ admin }) => {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const path = window?.location?.pathname;
-  const { Id } = useParams();
+  const { id } = useParams();
   const [showMsg, setMsg] = useState(false);
 
   useEffect(() => {
@@ -160,7 +160,7 @@ const Login = ({ admin }) => {
       }
     } else {
       try {
-        const result = await participatorLogin(Id, credential).then();
+        const result = await participatorLogin(id, credential).then();
         setMsg(true);
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });

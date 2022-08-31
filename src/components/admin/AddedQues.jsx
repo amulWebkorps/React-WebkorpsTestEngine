@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import All from "./All";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { deleteQuestion } from "../services/contest/contestServices";
 
 const heading = {
@@ -105,6 +105,13 @@ const AddedQues = ({
   quesId
 }) => {
   const [showq, setShowQ] = useState(false);
+  const ref = useRef(null);
+
+  const scrollBottom = () => {
+    setShowQ(true);
+    ref.current?.scrollIntoView({behavior: 'smooth'});
+  
+  };
 
   const editQuestion = (id,questionID) => {
     setEditQuestion(true);
@@ -159,7 +166,7 @@ const AddedQues = ({
         </div>
         <div>
           {" "}
-          <Button variant="contained" sx={btn} onClick={() => setShowQ(true)}>
+          <Button variant="contained" sx={btn} onClick={() => scrollBottom()}>
             available Question
           </Button>
         </div>
@@ -196,7 +203,8 @@ const AddedQues = ({
           })}
         </Grid>
       </CardContent>
-      {showq && <All availableQuestions={availableQuestions} setAvailableQuestions={setAvailableQuestions} />}
+      <div ref={ref}></div>
+      {showq &&  <All ref={ref} availableQuestions={availableQuestions} setAvailableQuestions={setAvailableQuestions} />}
     </>
   );
 };

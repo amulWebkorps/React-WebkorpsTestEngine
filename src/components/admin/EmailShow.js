@@ -134,6 +134,7 @@ const EmailShow = () => {
       loader: true,
     });
     try {
+      
       const result = await deletestudent(mail).then();
       setMsg({
         errMsg:"Participator deleted Successfully...!",
@@ -150,6 +151,10 @@ const EmailShow = () => {
       });
   
     } catch (error) {
+      setUpload({
+        alert: false,
+        loader: false,
+      });
       console.log("error", error);
     }
   };
@@ -190,6 +195,10 @@ const EmailShow = () => {
         }, 1000);
       });
     } catch (error) {
+      setUpload({
+        alert: false,
+        loader: false,
+      });
       console.log("---------", error);
     }
   };
