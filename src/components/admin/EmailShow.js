@@ -238,6 +238,7 @@ const EmailShow = () => {
     <>
       <Modal2
         setAlert={setAlert}
+        setMsg={setMsg}
         sentEmails={sentEmails}
         showAlert={showAlert}
         open={open}

@@ -16,7 +16,9 @@ const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
 // const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 // const ADD_CONTEST = `${BASE_URL}/addContest`;
 
-const loginAdmin = (credential) => {
+const 
+
+loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {
       email: credential?.email,

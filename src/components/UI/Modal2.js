@@ -62,6 +62,7 @@ export default function Model2({
   sentEmails,
   sent,
   setSent,
+  setMsg
 }) {
   const [loading, setLoading] = useState(true);
   const [disable, setDisable] = useState(false);
@@ -84,6 +85,10 @@ export default function Model2({
       const result = await sendMail(contestId, emails).then();
       const data = await result.data;
       setAlert(true);
+      setMsg({
+        errMsg:"Mail send successfully...!",
+        color:"green"
+      })
       setTimeout(() => {
         setAlert(false);
       }, 1100);
