@@ -179,10 +179,10 @@ const Modal = ({
     ) {
       setshowMessage(true);
     } else {
-      setContestDetails([...contestDetails, inputData]);
-
       try {
         const response = addContest(inputData).then();
+        setContestDetails([...contestDetails, inputData]);
+        fetchContestData();
         if (response) {
           handleClose();
           setAlert(true);
@@ -195,10 +195,6 @@ const Modal = ({
       }
     }
   };
-  useEffect(() => {
-    fetchContestData();
-  }, [open]);
-
   return (
     <div>
       {showMessage && (

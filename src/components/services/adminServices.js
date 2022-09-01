@@ -1,6 +1,5 @@
 import axios from "axios";
 const BASE_URL = `http://localhost:8085`;
-
 const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
 const CREATE_CONTEST = `${BASE_URL}/createContest`;
@@ -90,3 +89,7 @@ export {
   sentMail,
   uploadParticipator,
 };
+
+
+
+// export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail,viewParticipatorOfContest};

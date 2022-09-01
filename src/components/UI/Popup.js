@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { deleteContest } from "../services/adminServices";
 import CancelIcon from "@mui/icons-material/Cancel";
+
 const delBtn1 = {
   position: "absolute",
   top: "-0.5%",

@@ -97,10 +97,10 @@ const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const [contestDetails, setContestDetails] = useState(location?.state?.data);
-  const [msg, setMsg]=useState({
-    errMsg:"",
-    color:""
-  })
+  const [msg, setMsg] = useState({
+    errMsg: "",
+    color: "",
+  });
   const [emails, setEmails] = useState([]);
   const [sentEmails, setSentEmails] = useState([]);
   const [uploadEmail, setUploadEmail] = useState([]);
@@ -110,7 +110,6 @@ const EmailShow = () => {
     alert: false,
     loader: false,
   });
-
 
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
@@ -131,15 +130,14 @@ const EmailShow = () => {
   const handleDelete = async (mail) => {
     setUpload({
       alert: true,
-      loader: true,
+      loader: false,
     });
     try {
-      
-      const result = await deletestudent(mail).then();
+      const result = await deletestudent(mail);
       setMsg({
-        errMsg:"Participator deleted Successfully...!",
-        color:"red"
-      })
+        errMsg: "Participator deleted Successfully...!",
+        color: "red",
+      });
       setTimeout(() => {
         setUpload({
           alert: false,
@@ -149,7 +147,6 @@ const EmailShow = () => {
       setUploadEmail((val) => {
         return val.filter((id) => id !== mail);
       });
-  
     } catch (error) {
       setUpload({
         alert: false,
@@ -159,7 +156,6 @@ const EmailShow = () => {
     }
   };
 
-
   const handleSentMail = async () => {
     setSent(true);
     const result = await sentMail().then();
@@ -167,32 +163,34 @@ const EmailShow = () => {
     setOpen(true);
   };
 
-
   const handleFileSelect = (event) => {
+    const { files } = event.target;
+    console.log("type of file", files.type);
     setUpload({
       alert: true,
       loader: true,
     });
     try {
-      const result = uploadParticipator(event.target.files[0]).then((res) => {
+      const result = uploadParticipator(files[0]).then((res) => {
         const response = res?.data;
+        console.log("responsesss", response.length);
         setUploadEmail(response);
         setMsg({
-          errMsg:"Participator Uploaded Successfully...!",
-          color:"green"
-        })
-        if (response === []) {
-        setMsg({
-        errMsg:"Participator is already uploaded...!",
-        color:"red"
-      })
+          errMsg: "Participator Uploaded Successfully...!",
+          color: "green",
+        });
+        if (response?.length === 0) {
+          setMsg({
+            errMsg: "Participator is already uploaded...!",
+            color: "#EE9A4D",
+          });
         }
         setTimeout(() => {
           setUpload({
             alert: false,
             loader: false,
           });
-        }, 1000);
+        }, 1500);
       });
     } catch (error) {
       setUpload({
@@ -202,7 +200,6 @@ const EmailShow = () => {
       console.log("---------", error);
     }
   };
-
 
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
@@ -223,8 +220,6 @@ const EmailShow = () => {
       }
     });
   };
-
-
 
   const buttonEmail = {
     fontSize: "8",
@@ -250,13 +245,7 @@ const EmailShow = () => {
         setSent={setSent}
       />
       {showAlert || upload.alert ? (
-
-        <MsgBar
-        errMsg={
-          msg.errMsg
-        }
-        color={msg.color}
-        />
+        <MsgBar errMsg={msg.errMsg} color={msg.color} />
       ) : (
         <></>
       )}
@@ -285,15 +274,26 @@ const EmailShow = () => {
                       <SearchIcon onClick={handleSearch} />
                     </IconButton>
                     <InputBase
-                      placeholder="Unique ID or Name"
+                      placeholder="Search emails"
                       sx={searchField}
+                      // color="black"
                       onChange={handleOnChange}
                     />
                   </Box>
                   <Grid item textAlign="center " mt={1}>
                     <Box sx={{ display: "flex" }}>
                       {upload.loader && <Loader />}
-                      {upload.loader ? (
+                      <Button
+                        variant="contained"
+                        component="label"
+                        sx={buttonEmail}
+                        onChange={handleFileSelect}
+                        disabled={upload?.loader}
+                      >
+                        Upload File
+                        <input type="file" hidden />
+                      </Button>
+                      {/* {upload.loader ? (
                         <Button
                           variant="contained"
                           component="label"
@@ -313,7 +313,7 @@ const EmailShow = () => {
                           Upload File
                           <input type="file" hidden />
                         </Button>
-                      )}
+                      )} */}
                     </Box>
                   </Grid>
                 </Grid>

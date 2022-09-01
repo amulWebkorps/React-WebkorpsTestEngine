@@ -339,12 +339,12 @@ const Level2 = () => {
     });
   }, [showAlert]);
 
-  useEffect(()=>{
-  const result= filterQuestion("All").then((res)=>{
-    const response=res.data
-    setAvailableQuestions(response);
-  })
-  },[])
+  // useEffect(()=>{
+  // const result= filterQuestion("All").then((res)=>{
+  //   const response=res.data
+  //   setAvailableQuestions(response);
+  // })
+  // },[])
 console.log('test case list',testCaseList)
   return (
     <div style={questionList}>

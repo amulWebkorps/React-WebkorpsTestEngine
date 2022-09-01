@@ -16,11 +16,14 @@ import Modal from "../UI/Modal";
 import { increment } from "../store/slicers/adminSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+
+
+import { getAllContestList } from "../services/adminServices";
+
 import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 
-import { getAllContestList } from "../services/adminServices";
 
 const containerStyle = {
   overflowY: "auto",
@@ -203,10 +206,10 @@ const Dashbord = () => {
 
   const fetchContestData = async () => {
     const response = await getAllContestList();
-    const user = await response.data;
-    setContestDetails(user);
+    setContestDetails(response.data)
   };
 
+  
   useEffect(() => {
     fetchContestData();
   }, []);

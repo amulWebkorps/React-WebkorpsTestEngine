@@ -213,6 +213,7 @@ const QuestionList = () => {
     location?.state?.data?.totalAvailableQuestion
   );
   const [showAlert, setAlert] = useState(false);
+  const [showValidation, setShowValidation]=useState(false);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -268,13 +269,14 @@ const QuestionList = () => {
       sampleTestCase?.output === "" ||
       testCaseList.length === 0
     ) {
-      setAlert(true);
+      // setAlert(true);
+      setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
       setTimeout(() => {
-        setAlert(false);
+        setShowValidation(false);
       }, 1200);
     } else {
       setAlert(true);
@@ -347,15 +349,16 @@ const QuestionList = () => {
       setContestQuestion(response?.contestQuestionDetail);
     });
   }, [showAlert]);
+  
   console.log("test case list", testCaseList);
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-        {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
+        {showAlert ||showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:location?.state})}>
             Participators
           </Box>
         </Grid>

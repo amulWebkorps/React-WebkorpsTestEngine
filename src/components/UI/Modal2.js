@@ -62,9 +62,9 @@ export default function Model2({
   sentEmails,
   sent,
   setSent,
-  setMsg
+  setMsg,
 }) {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [disable, setDisable] = useState(false);
   const [contestId, setContestId] = React.useState();
 
@@ -82,13 +82,12 @@ export default function Model2({
   const handleMail = async () => {
     setDisable(true);
     try {
-      const result = await sendMail(contestId, emails).then();
-      const data = await result.data;
+      const result = await sendMail(contestId, emails);
       setAlert(true);
       setMsg({
-        errMsg:"Mail send successfully...!",
-        color:"green"
-      })
+        errMsg: "Mail send successfully...!",
+        color: "green",
+      });
       setTimeout(() => {
         setAlert(false);
       }, 1100);
@@ -96,6 +95,16 @@ export default function Model2({
       setDisable(false);
     } catch (error) {
       console.log("errorororr", error);
+      setAlert(true);
+      setMsg({
+        errMsg: "Mail not send...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setAlert(false);
+      }, 1100);
+      setOpen(false);
+      setDisable(false);
     }
   };
   const handleChange = (e) => {
@@ -117,12 +126,11 @@ export default function Model2({
             <img src={crossbtn} alt="logo" />
           </Button>
         </Box>
-
         <DialogContent>
           {sent ? (
             <Container sx={emailContainer}>
               <Grid container>
-                {sentEmails?.length===0 ? (
+                {sentEmails?.length === 0 ? (
                   <h3>Sent emails is empty now...</h3>
                 ) : (
                   sentEmails.map((val) => {

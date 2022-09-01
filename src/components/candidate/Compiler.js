@@ -1,24 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { Container, display } from "@mui/system";
+import { Container } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import Header from "../UI/Header";
-import { render } from "react-dom";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
-
-import { useLocation } from "react-router-dom";
-import { startContestPage } from "../services/candidate";
+import { Navigate, useLocation } from "react-router-dom";
 import { showAllLanguage } from "../services/candidate";
+import { startContestPage } from "../services/candidate";
+import { runAndCompilerCode } from "../services/candidate";
+import { useNavigate } from "react-router-dom";
+import MsgBar from "../auth/base/MsgBar";
 
-
-function onChange(newValue) {
-  console.log("change", newValue);
-}
 
 const div1 = {
   height: "70vh",
@@ -42,11 +39,6 @@ const rightDiv = {
   background: "white",
   borderRadius: "17px 17px 0px 0px",
   marginTop: "20px",
-};
-
-const editor = {
-  height: "60vh",
-  background: "black",
 };
 
 const testCase = {
@@ -79,7 +71,6 @@ const testCaseText2 = {
   lineHeight: "35px",
   color: "#000000",
 };
-
 const inputLabel = {
   fontFamily: "Raleway",
   fontSize: "18px",
@@ -113,12 +104,6 @@ const CodeCompilerText1 = {
   textAlign: "left",
 };
 
-const flexDrop = {
-  display: "flex",
-  flexDirection: "row",
-  textAlign: "left",
-};
-
 const buttonTest = {
   width: "100px",
   height: "40px",
@@ -135,179 +120,330 @@ const buttonTest = {
   lineHeight: "19px",
 };
 
+ const testCaseData1={
+  display: "flex",
+  flexDirection:"row",
+  justifyContent:"end",
+
+ }
+ const testCaseData={
+  display: "flex",
+  flexDirection:"row",
+ }
+ const inputName={
+  fontWeight: "600",
+  fontweight: "bold",
+
+ }
+
+ const timerText={
+  fontWeight: "500",
+  fontweight: "bold",
+
+ }
+ 
+
 const Compiler = () => {
-  const axios = require("axios").default;
   const [language2, setLanguage2] = useState();
-  const [data1, setdata1] = useState();
-  const [code1, setCode1] = useState("");
-  const [Lan, setLan] = useState("");
-  const location = useLocation()
-  const [profile, setProfile]=useState(location?.state)
+  const [defaultCode, setDefaultCode] = useState("");
+  const [codeValue, setCodeValue] = useState();
+  const location = useLocation();
+  const [profile, setProfile] = useState(location?.state);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(1);
+  const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
+  const [runCode1, setRunCode1] = useState();
+  const [codeArray, setCodeArray] = useState([]);
+  const [show, setShow] = useState(false);
+  const [showTestCase, setShowTestCase] = useState(false);
+  const [times,setTime]=useState(10000);
+  const [counter, setCounter]=useState(0);
+  const [showError,setShowError]=useState(false)
+  const Ref = useRef(null);
+  const ref = useRef(null);
+	const [timer, setTimer] = useState('00:00:00');
 
+
+  const timerGet=.20
+  const finalGet=(timerGet*60000)
+  console.log(finalGet,"getdatahhh")
+  const  changeseconds=(timerGet*60)
+
+  const fetchStartContestData = async () => {
+    try {
+      const result = await startContestPage(
+        location?.state?.language,
+        profile?.participatorData
+      ).then();
+      console.log(result?.data, "akkkkkkk");
+
+      setParticipatorsContestDetails(result?.data);
+    } catch (error) {
+      console.log("error");
+    }
+  };
   useEffect(() => {
-     showAllLanguage()
-      .then(function (response) {
-        // handle success
-        console.log(response.data,"showall")
-        setLanguage2(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+    fetchStartContestData();
   }, []);
+  
+
+useEffect(()=>{
+    if (runCode1?.complilationMessage===null){
+      setShowError(true)
+    }
+},[runCode1])
+
+useEffect(() => {
+  let timeout
+  if (showError) {
+    timeout = setTimeout(() =>setShowError(false), 3000);
+  }
+  return () => clearTimeout(timeout);
+}, [showError]);
 
 
 
 
-//   useEffect(() => {
-//     axios
-//      .post(`http://192.168.1.93:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=2910e8d7-ef82-43f8-8b2b-f5e211ba98e2`)
-//      .then(function (response) {
-//        // handle success
-//        setdata1(response.data);
-//      })
-//      .catch(function (error) {
-//        // handle error
-//        console.log(error);
-//      });
-//  }, []);
 
-//  useEffect(() => {
-//   axios
-//    .post(`http://192.168.1.74:8085/startContestPage?contestId=62f1123c197f857ee1f940e0&language=${location?.state?.language}&studentId=${profile?.participatorData?.state?.data?.id}`)
-//    .then(function (response) {
-//      // handle success
-//      setdata1(response.data);
-//    })
-//    .catch(function (error) {
-//      // handle error
+ console.log(" participatorsContestDetails", participatorsContestDetails)
+  console.log("location", location);
 
-//      console.log(error);
+  const runCode = async (flag) => {
+    try {
+      const resultData = await runAndCompilerCode( {
+        language: participatorsContestDetails?.languageCode?.language,
+        questionId: participatorsContestDetails?.QuestionList[count]?.questionId,
+        contestId: participatorsContestDetails?.contestId,
+        studentId: participatorsContestDetails?.studentId,
+        flag: flag,
+        code: `${codeValue}`,
+      }).then();
+      console.log(resultData, "runcode");
+      setRunCode1(resultData.data);
+    
+    
+      setShowTestCase(true)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-//    });
-// }, []);
+  console.log("runcode", runCode1);
 
-// useEffect(() => {
-//   StartContestPage()
-//    .then(function (response) {
-//      // handle success
-//      setdata1(response.data);
-//    })
-//    .catch(function (error) {
-//      // handle error
 
-//      console.log(error);
+  
+
+  const handleScroll = () => {
+    ref.current?.scrollIntoView({behavior: 'smooth'});
+  };
+
+
+  const onChange = (codeData) => {
+    setCodeValue(codeData);
+  };
+
+  const handleRun = () => {
+   setCodeArray((oldArray) => [...oldArray, codeValue]);
+  };
+
+  console.log("code---------cfc", codeValue);
+  console.log("hjbjhbvss", codeArray);
+ 
+
+  const navigate = useNavigate();
+useEffect(()=>{
+   if  (runCode1?.complilationMessage===null){
+  }
+
+  else if (count===participatorsContestDetails?.QuestionList?.length){
+    console.log('------if part')
+    alert("final button")
+    navigate('/thanku')
+  }
+  else{
+    console.log('-------else part')
+  }
+
+
+},[counter])
+ const handleButton=()=>{
+  setCounter(counter+1)
+  console.log(counter,"counter")
+ }
+
+  console.log("rfgh", defaultCode);
+  const nextQuestion = (e) => {
+    setCount(function (prevCount) {
+      console.log(prevCount, "===========");
+      if (prevCount <= participatorsContestDetails?.QuestionList?.length) {
+        return (prevCount += 1);
+      } else {
+        return (prevCount = participatorsContestDetails?.QuestionList?.length);
+      }
+    });
+    setCodeValue(location?.state?.defaultCode);
+    
+  };
+  console.log(count1, "rtyg");
+  const prevQuestion = (e) => {
+    setCount(function (prevCount) {
+      if (prevCount > 0) {
+        return (prevCount -= 1);
+      } else {
+        return (prevCount = 0);
+      }
+    });   
+  };
+  useEffect(()=>{  
+    if(times>0){
+     setTimeout(()=>setTime(times-1),1000)
      
-//    });
-// }, []);
+    }  
+},[times])
 
 
 
-const fetchData1= async( )=> {
-  const response = await 
-  startContestPage()   
-  const user = await response.data;
-  setdata1(user)
+
+const getTimeRemaining = (e) => {
+  const total = Date.parse(e) - Date.parse(new Date());
+  const seconds = Math.floor((total / 1000) % 60);
+  const minutes = Math.floor((total / 1000 / 60) % 60);
+  const hours = Math.floor((total / 1000 / 60 / 60) % 24);
+  return {
+    total, hours, minutes, seconds
+  };
+}
+
+
+const startTimer = (e) => {
+  let { total, hours, minutes, seconds }
+        = getTimeRemaining(e);
+  if (total >= 0) {
+    setTimer(
+      (hours > 9 ? hours : '0' + hours) + ':' +
+      (minutes > 9 ? minutes : '0' + minutes) + ':'
+      + (seconds > 9 ? seconds : '0' + seconds)
+    )
+  }
+}
+
+
+const clearTimer = (e) => {
+  if (Ref.current) clearInterval(Ref.current);
+  const id = setInterval(() => {
+    startTimer(e);
+  }, 100)
+  Ref.current = id;	
+}
+
+const getDeadTime = () => {
+  let deadline = new Date();
+  deadline.setSeconds(deadline.getSeconds() + changeseconds);
+  return deadline;
 }
 
 useEffect(() => {
-  fetchData1();
-},); 
+  clearTimer(getDeadTime());
+}, []);
 
-  console.log("datastartcontest",data1)
-  console.log('--profile--',profile?.participatorData?.state?.data)
-const dataLan = language2?.filter(lan2 => lan2.language ==location?.state?.language)
-console.log("getdata",dataLan)
-useEffect(()=>{
-   dataLan === undefined ? (
-    <div></div>
-  ) : ( 
-    setCode1(()=>{
-      return dataLan[0].codeBase;
-    })
 
-  )
-},[language2])
-console.log("rfgh",code1)
- function increment() {
-    setCount(function (prevCount) {
-      console.log(prevCount,'===========')
-      if (prevCount <= 2) {
-        return (prevCount += 1);
-      }
-      else {
-        return (prevCount= 2);
-      }
-    });
-  }
- console.log(count1,"rtyg")
-function decrement() {
-  setCount(function (prevCount) {
-    if (prevCount > 0 ) {
-      return (prevCount -= 1); 
-    } else {
-      return (prevCount = 0);
-    }
-  });
-}
-let data = code1.toString;
+// setTimeout(function(){
+//   window.location.href = '/thanku';
+// }, finalGet);
+
+
+
   return (
-    <>
+    <Box>
       <Header />
-      <div className="background1">
+      <Box className="background1">
+       
+     { showError &&   <MsgBar
+              errMsg={
+              "error while compile"
+              }
+              color={"orange" }
+            />}
         <Grid container>
+          
           <Grid item sm={6}>
+          <Box sx={testCaseData1} mx={5} >
+      <Typography>Remaining Time :-</Typography ><Typography sx={timerText}>{timer}</Typography>  
+      </Box>
+        
             <Box mx={3}>
               <Container sx={div1}>
                 <Grid container>
                   <Grid item sm={0.5} sx={blue1}>
                     <box></box>
                   </Grid>
+
                   <Grid item sm={11.5}>
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Test Case 
-                         </Typography>
+                          Test Case {count1}
+                        </Typography>
                       </Box>
                     </Grid>
+
                     <Grid item sm={12}>
                       <Box>
-                        <label style={inputLabel}>Problem statement</label>
+                        <Typography style={inputLabel}>
+                          Problem statement
+                        </Typography>
                         <Box style={inputField} p={2}>
-                          <p>                 
-                            {data1?.QuestionList[count]?.question}
-                          </p>
+                          <Typography>
+                            {
+                              participatorsContestDetails?.QuestionList[count]
+                                ?.question
+                            }
+                          </Typography>
                         </Box>
                       </Box>
                     </Grid>
                     <Grid item sm={12}>
                       <Box>
-                        <label style={inputLabel}>Constraints</label>
+                        <Typography style={inputLabel}>Constraints</Typography>
                         <Box style={inputField} p={2}>
-                          <p>
-                          {data1?.QuestionList[count]?.sampleTestCase[0]?.constraints}
-                          </p>
+                          <Typography>
+                            {
+                              participatorsContestDetails?.QuestionList[count]
+                                ?.sampleTestCase[0]?.constraints
+                            }
+                          </Typography>
                         </Box>
                       </Box>
                     </Grid>
                     <Grid container sm={12}>
                       <Grid item sm={6} px={2}>
                         <Box>
-                          <label style={inputLabel}>Sample Input</label>
+                          <Typography style={inputLabel}>
+                            Sample Input
+                          </Typography>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList[count]?.sampleTestCase[0]?.input}</p>
+                            <Typography>
+                              {
+                                participatorsContestDetails?.QuestionList[count]
+                                  ?.sampleTestCase[0]?.input
+                              }
+                            </Typography>
                           </Box>
                         </Box>
                       </Grid>
                       <Grid sm={6} px={2}>
                         <Box>
-                          <label style={inputLabel}>Sample Output</label>
+                          <Typography style={inputLabel}>
+                            Sample Output
+                          </Typography>
                           <Box style={inputField} p={2}>
-                            <p>{data1?.QuestionList[count]?.sampleTestCase[0]?.output}</p>
+                            <Typography>
+                              {
+                                participatorsContestDetails?.QuestionList[count]
+                                  ?.sampleTestCase[0]?.output
+                              }
+                            </Typography>
                           </Box>
                         </Box>
                       </Grid>
@@ -316,10 +452,20 @@ let data = code1.toString;
                 </Grid>
               </Container>
               <Grid container sx={{ justifyContent: "space-between" }}>
-                <Button variant="contained" sx={buttonTest} onClick={()=>decrement() }>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => prevQuestion()}
+                  disabled={count===0 }
+                >
                   Prev
                 </Button>
-                <Button variant="contained" sx={buttonTest}   onClick={()=>increment() }>
+                <Button                 
+                  variant="contained"               
+                  sx={buttonTest}
+                  onClick={() => nextQuestion()}
+                  disabled={participatorsContestDetails?.QuestionList?.length-1 === count }
+                >
                   Next
                 </Button>
               </Grid>
@@ -329,20 +475,24 @@ let data = code1.toString;
             <Box mx={3}>
               <Grid container>
                 <Grid item sm={6} sx={{ display: "flex" }}>
-                  <label>
-                    <h3>Name:- </h3>
-                  </label>
-                  <box>
-                    <h3>{profile?.participatorData?.state?.data?.name}</h3>
-                  </box>
+                  <Box>
+                    <Typography sx={inputName}>Name:- </Typography>
+                  </Box>
+                  <>
+                    <Typography sx={inputName}>
+                      {profile?.participatorData?.state?.data?.name}
+                    </Typography>
+                  </>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
-                  <label>
-                    <h3>Email:- </h3>
-                  </label>
-                  <box>
-                    <h3>{profile?.participatorData?.state?.data?.email}</h3>
-                  </box>
+                  <Box>
+                    <Typography sx={inputName}>Email:- </Typography>
+                  </Box>
+                  <Box>
+                    <Typography sx={inputName}>
+                      {profile?.participatorData?.state?.data?.email}
+                    </Typography>
+                  </Box>
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
@@ -354,47 +504,89 @@ let data = code1.toString;
                   </Grid>
                 </Grid>
               </Container>
-
-              <Box> 
-    <AceEditor
-    mode={location?.state?.language}
-    theme="monokai"
-    onChange={onChange}
-    name="UNIQUE_ID_OF_DIV"
-    editorProps={{ $blockScrolling: true }}
-    height="60vh"
-    width="47vw"
-    value={code1}
-    fontSize="20px"
-  />
-  </Box>   
-    <Grid container sx={{ justifyContent: "end" }}>
-                <Button variant="contained" sx={buttonTest}>
+              <Box>
+                <AceEditor
+                  mode={location?.state?.language}
+                  theme="monokai"
+                  name="code"
+                  editorProps={{ $blockScrolling: true }}
+                  height="60vh"
+                  width="46.5vw"
+                  value={codeValue}
+                  onChange={onChange}
+                  defaultValue={location?.state?.defaultCode}
+                  fontSize="20px"
+                />
+              </Box>
+              <Grid container sx={{ justifyContent: "end" }}>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => {
+                    runCode("0"); 
+                    handleScroll()                                 
+                  }}
+                >
                   Run
                 </Button>
-                <Button variant="contained" sx={buttonTest}>
-                  Submit
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => {  
+                    runCode("1")     
+                  handleButton()           
+                  }}
+                >
+                 {show ? "final submit" : 'submit'}
                 </Button>
+               
               </Grid>
             </Box>
             <Grid>
-              <Grid containner sx={testCase} m={3}>
+              <Grid containner sx={testCase} m={3} ref={ref} >
                 <Grid item sm={12} sx={testCaseResult}>
                   <Typography m={3} mt={2} sx={testCaseText1}>
                     Test Case
                   </Typography>
                 </Grid>
-                <Grid>
-                  <Typography m={3} mt={2} sx={testCaseText2}>
-                    fail
-                  </Typography>
-                </Grid>
+                { showTestCase && 
+                 <Grid sx={testCaseData} >
+                 <Typography m={3} mt={2} sx={testCaseText2}>
+                 input               
+                      {participatorsContestDetails?.QuestionList[count]
+                                 ?.testcases.map((val,index)=>{
+                                   return(
+                                   <div key={index}>
+                                    <p>{val.input}</p>
+                                   </div>
+                                   )
+                                 })}
+                                                   
+                 </Typography>
+                 <Typography m={3} mt={2} sx={testCaseText2}>
+                 output   
+                 <br/>
+                      {participatorsContestDetails?.QuestionList[count]
+                                 ?.testcases.map((val,index)=>{
+                                   return(
+                                   <div key={index}>
+                                    <p>{val.output}</p>
+                                   </div>
+                                   )
+                                 })}                                       
+                   {runCode1?.complilationMessage}
+                 </Typography>
+                 <Typography m={3} mt={2} sx={testCaseText2}>           
+                   {runCode1?.complilationMessage}
+                 </Typography>
+               </Grid>  
+            }            
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 };
 

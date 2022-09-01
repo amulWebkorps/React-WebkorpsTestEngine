@@ -3,15 +3,13 @@ import { Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { Button } from "@mui/material";
 import "../../App.css";
-
 import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { showAllLanguage } from "../services/candidate";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -113,27 +111,73 @@ const array1 = [
 const Instruction = () => {
   const axios = require("axios").default;
   const navigate = useNavigate();
-
-  const [language1, setLanguage1] = useState();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
-  const [participatorData, setParticipator]=useState(location)
+  const [participatorData, setParticipator] = useState(location);
+  const [language2,setLanguage2]=useState()
   
-
-
-
+  const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
   const handleClick2 = () => {
-    navigate("/user", { state: { language,participatorData } });
+    navigate("/user", { state: { language, participatorData,language2,defaultCode} });
+   
   };
+
+  useEffect(() => {
+    showAllLanguage()
+      .then(function (response) {
+        // handle success
+        console.log(response.data, "showall");
+        setLanguage2(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+
+  
+  const dataLan = language2?.filter(
+    (lan2) => lan2.language == language
+  
+  );
+
+
+  useEffect(() => {
+    dataLan === undefined ? (
+      <div></div>
+    ) : (
+      setDefaultCode(() => {
+        return dataLan[0]?.codeBase;
+      })
+    );
+  }, [language]);
+
+  console.log ("defaultCode",defaultCode)
+  
+
+  
+    
+    
+ 
+
+  
+
+  
+
+
+
+
+ 
+
+  console.log("participatorsss ");
 
   return (
     <div style={background1}>
       <Header />
-
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
@@ -188,7 +232,11 @@ const Instruction = () => {
           <Grid container>
             <Button
               variant="contained"
-              onClick={handleClick2}
+              onClick={() => {
+                handleClick2();
+              
+                
+              }}
               sx={startContest}
             >
               Start Contest

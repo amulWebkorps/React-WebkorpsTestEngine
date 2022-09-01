@@ -1,10 +1,9 @@
 import axios from "axios";
-const PARTICIPATOR_LOGIN_URL =
-  "http://localhost:8085/doSignInForParticipator";
-const CANDIDATE_REGISTRATION_URL = ` http:8080/candidateRegistration`;
-const SHOW_ALL_LANGUAGE = `http://localhost:8085/showAllLanguage`;
-const START_CONTEST_PAGE=`http://localhost:8085/startContestPage`
-
+import { BASE_URL } from "./base";
+const PARTICIPATOR_LOGIN_URL =`${BASE_URL}/doSignInForParticipator`;
+const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
+const START_CONTEST_PAGE=`${ BASE_URL}/startContestPage`;
+const RUN_AND_CODE_COMPILER=`${BASE_URL}/runAndCompilerCode`;
 const participatorLogin = (contestId, credential) => {
   console.log('-----',contestId)
   return axios.get(PARTICIPATOR_LOGIN_URL, {
@@ -15,21 +14,26 @@ const participatorLogin = (contestId, credential) => {
     },
   });
 };
-
-
 const showAllLanguage = () => {
   return axios.get(SHOW_ALL_LANGUAGE);
 };
 
-const startContestPage = () => {
-  return axios.post(START_CONTEST_PAGE,{
-    params: {
-      contestId: "62f1123c197f857ee1f940e0",
-      language: "java",
-      studentId: "2910e8d7-ef82-43f8-8b2b-f5e211ba98e2",
-    }, 
-
-  });
+const startContestPage = (language,participatorData) => {
+  return axios.post(`${START_CONTEST_PAGE}?contestId=${participatorData?.state?.data?.contestId}&language=${language}&studentId=${participatorData?.state?.data?.id}` ,
+ );
 };
-export { participatorLogin, showAllLanguage,startContestPage};
+
+
+const runAndCompilerCode=(candidateCode)=>{
+  return axios.post(`${RUN_AND_CODE_COMPILER}`,candidateCode);
+}
+
+
+ export { participatorLogin, showAllLanguage,startContestPage,runAndCompilerCode};
+
+
+
+ 
+
+
 

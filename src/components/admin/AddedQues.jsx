@@ -179,9 +179,7 @@ const AddedQues = ({
                 <Paper sx={ques}>
                   <Typography sx={quesText}>
                   {val?.question}
-                    {/* {val?.question?.length >= 59
-                      ? `${val?.question.substring(0, 59)} .....`
-                      : val?.question} */}
+            
                   </Typography>
                   <Link
                     underline="always"

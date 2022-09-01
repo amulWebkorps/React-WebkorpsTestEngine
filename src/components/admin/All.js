@@ -130,11 +130,15 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
   const handleChange = async (e) => {
     const { value } = e.target;
     setDropValue(value);
-    const result = await filterQuestion(value).then((res) => {
+   
+  };
+  useEffect(()=>{
+    const result =  filterQuestion(dropValue).then((res) => {
       const response = res.data;
       setAvailableQuestions(response);
     });   
-  };
+  },[dropValue])
+
   useEffect(()=>{
     ref.current?.scrollIntoView({behavior: 'smooth'});
   },[])

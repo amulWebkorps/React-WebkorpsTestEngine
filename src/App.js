@@ -46,6 +46,8 @@ import Level2 from "./components/admin/Level2";
 import Allavailable from "./components/admin/Allavailable";
 import Instruction from "./components/candidate/Instruction";
 import Protected from "./Protected";
+import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
+import Thankupage from "./components/UI/Thankupage";
 
 const theme = createTheme({
   palette: {
@@ -112,6 +114,10 @@ function App() {
               path="/participator"
               element={<Protected Component={AnswerSheet} />}
             ></Route>
+              <Route
+              path="/viewparticipator"
+              element={<Protected Component={viewParticipatorDetail} />}
+            ></Route>
             <Route
               path="/level1"
               element={<Protected Component={Level1} />}
@@ -128,6 +134,10 @@ function App() {
             <Route
               path="/instruction"
               element={<Protected Component={Instruction} />}
+            ></Route>
+            <Route
+              path="/thanku"
+              element={<Protected Component={Thankupage} />}
             ></Route>
             {/* <Route
               path="*"

@@ -209,6 +209,7 @@ const Level1 = () => {
 );
   const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
+  const [showValidation,setShowValidation]=useState(false);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -257,13 +258,14 @@ const Level1 = () => {
 
   const addQuestion = async (e) => {
     if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
-      setAlert(true);
+      // setAlert(true);
+      setShowValidation(true)
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
          setTimeout(() => {
-          setAlert(false);
+          setShowValidation(false);
         }, 1200);
     }
     else{
@@ -339,18 +341,18 @@ const Level1 = () => {
     });
   }, [showAlert]);
 
-  useEffect(()=>{
-  const result= filterQuestion("All").then((res)=>{
-    const response=res.data
-    setAvailableQuestions(response);
-  })
-  },[])
+  // useEffect(()=>{
+  // const result= filterQuestion("All").then((res)=>{
+  //   const response=res.data
+  //   setAvailableQuestions(response);
+  // })
+  // },[])
 console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
-      <Header />
+      <Header />s
       <Container sx={topButton}>
-        {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
+        {showAlert || showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
           <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
