@@ -360,11 +360,6 @@ useEffect(() => {
 
 
 
-
-
-
-
-
   return (
     <Box>
       <Header />
