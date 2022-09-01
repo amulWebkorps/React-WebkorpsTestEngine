@@ -173,8 +173,8 @@ const Dashbord = () => {
 
   const handleContest = async (id) => {
     const result = await getContestDetail(id).then();
-
-    navigate("/addQuestion");
+     console.log(result.data.contest.contestId,"resultsss.da")
+    navigate("/addQuestion" ,{state:result.data.contest.contestId});
   };
 
   const deleteContest = (id, Name, contestId) => {

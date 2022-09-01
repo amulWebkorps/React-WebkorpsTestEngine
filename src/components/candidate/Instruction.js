@@ -9,7 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { startContestPage } from "../services/candidate";
+import { showAllLanguage } from "../services/candidate";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -111,38 +111,70 @@ const array1 = [
 const Instruction = () => {
   const axios = require("axios").default;
   const navigate = useNavigate();
-  const [data1, setdata1] = useState();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
   const [participatorData, setParticipator] = useState(location);
+  const [language2,setLanguage2]=useState()
   
-
+  const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
   const handleClick2 = () => {
-    navigate("/user", { state: { language, participatorData,data1} });
+    navigate("/user", { state: { language, participatorData,language2,defaultCode} });
    
   };
 
+  useEffect(() => {
+    showAllLanguage()
+      .then(function (response) {
+        // handle success
+        console.log(response.data, "showall");
+        setLanguage2(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
+
+  
+  const dataLan = language2?.filter(
+    (lan2) => lan2.language == language
+  
+  );
 
 
-  // const fetchStartContestData = async () => {
-  //   try {
-  //     const result = await startContestPage(language, participatorData).then();
-  //     console.log(result?.data, "akkkkkkk");
-  //     setdata1(result?.data);
+  useEffect(() => {
+    dataLan === undefined ? (
+      <div></div>
+    ) : (
+      setDefaultCode(() => {
+        return dataLan[0]?.codeBase;
+      })
+    );
+  }, [language]);
+
+  console.log ("defaultCode",defaultCode)
+  
+
+  
     
-  //   } catch (error) {}
-  // };
-  // useEffect(()=>{
-  //   fetchStartContestData();
-  // },[])
+    
+ 
+
+  
+
+  
+
+
+
+
  
 
   console.log("participatorsss ");
-  console.log("data11111111111111", data1);
+
   return (
     <div style={background1}>
       <Header />

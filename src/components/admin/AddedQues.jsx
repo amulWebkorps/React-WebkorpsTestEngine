@@ -121,7 +121,6 @@ const AddedQues = ({ question, setQuesId, setQuestion, contestQuestion, setConte
           </Typography>
         </div>
         <div>
-          {" "}
           <Button variant="contained" sx={btn} onClick={() => setShowQ(true)}>
             available Question
           </Button>

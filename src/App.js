@@ -47,6 +47,7 @@ import Allavailable from "./components/admin/Allavailable";
 import Instruction from "./components/candidate/Instruction";
 import Protected from "./Protected";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
+import Thankupage from "./components/UI/Thankupage";
 
 const theme = createTheme({
   palette: {
@@ -135,6 +136,10 @@ function App() {
             <Route
               path="/instruction"
               element={<Protected Component={Instruction} />}
+            ></Route>
+            <Route
+              path="/thanku"
+              element={<Protected Component={Thankupage} />}
             ></Route>
             {/* <Route
               path="*"

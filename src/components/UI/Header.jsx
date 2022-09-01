@@ -11,6 +11,8 @@ const Headers = {
   flexDirection: "Row",
 };
 
+
+
 const logoText = {
   height: " 56px",
   fontFamily: "Raleway",

@@ -10,6 +10,7 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { getparticipatordetail } from "../services/adminServices";
+import { useLocation } from "react-router-dom";
 
 
 const div1 = {
@@ -120,7 +121,10 @@ const ViewParticipatorDetail = () => {
 
     const [count, setCount] = useState(0);
     const [count1, setCount1] = useState(1);
-  
+    const location = useLocation();
+    const [participatorDetails,setParticipatorDetails]=useState(location?.state);
+
+
   function increment() {
     setCount(function (prevCount) {
       console.log(prevCount, "===========");
@@ -145,13 +149,12 @@ const ViewParticipatorDetail = () => {
 
   const HandleParticipatorDetail = async () => {
       try {
-        const result = await getparticipatordetail().then();
-      
+        const result = await getparticipatordetail().then();        
         }
         catch {
-
         }
     }
+
   return (
     <div>
       <Header />
@@ -271,9 +274,10 @@ const ViewParticipatorDetail = () => {
                   height="60vh"
                   width="47vw"
                   placeholder=""
-                  value=""
+                  value="trrrrrrrrrrrrr"
                   onChange={onchange}
                   fontSize="20px"
+                  readOnly="true"
                 />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>

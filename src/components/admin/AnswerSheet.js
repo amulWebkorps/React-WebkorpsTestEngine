@@ -1,5 +1,5 @@
-import { Container, Typography } from "@mui/material";
-import React from "react";
+import { Button, Container, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { logo } from "../assests/images";
@@ -7,6 +7,11 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import { getparticipatordetail } from "../services/adminServices";
+import {viewParticipatorOfContest} from "../services/adminServices";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 
 const BigContainer = {
   background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
@@ -157,6 +162,11 @@ const ViewDetail = {
   fontSize: "20px",
   color: "#0057FF",
   textDecoration: "underline",
+  cursor:"pointer",
+  padding:"40px"
+
+
+
 };
 const deleteIcon = {
   background: "#E5E5E5",
@@ -170,9 +180,63 @@ const deleteIcon = {
   marginLeft: "20px",
   fontSize: "18px",
 };
-const array = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12];
+
+
+const linkQuestion={
+  textDecoration:"none",
+  color: "black",
+}
+
+const array = [1,];
 const AnswerSheet = () => {
-  const navigate=useNavigate();
+   const[getParticipatorDetails , setGetParticipatorDetails]=useState()
+   const[getParticipatorList,setGetParticipatorList]=useState()
+   const navigate=useNavigate();
+   const location = useLocation();
+   const handleViewParticipatorList= async () => {
+    try {
+      const result = await viewParticipatorOfContest(location?.state).then();
+       setGetParticipatorList(result)
+      }
+      catch {
+        console.log("error")
+      }
+  }
+
+  useEffect(()=>{
+    handleViewParticipatorList()
+  },[])
+
+  console.log(location.state,"locationsstate")
+
+
+  const HandleParticipatorDetail = async () => {
+    try {
+      const result = await getparticipatordetail(getParticipatorList.id).then();
+      setGetParticipatorDetails(result.data)
+    if (result){
+
+      navigate('/viewparticipator', { state: {getParticipatorDetails} })
+
+    }
+    else{
+      navigate('/viewparticipator')
+      
+    } 
+      
+      }
+     
+      catch {
+
+      }
+    
+  }
+  console.log(getParticipatorDetails,"viewdetails")
+
+
+  
+console.log(location,"locatioview")
+ 
   return (
     <>
       <Grid item sx={Headers}>
@@ -185,7 +249,7 @@ const AnswerSheet = () => {
       </Grid>
       <Container sx={BigContainer}>
         <Box sx={MainBox}>
-          <Box sx={QuestionBox} onClick={()=>navigate('/addQuestion')} >Questions</Box>
+          <Box sx={QuestionBox} ><Link  style={linkQuestion} to="/addQuestion">Questions</Link></Box>
           <Box sx={AnswerBox}>Participators</Box>
         </Box>
         <Container sx={MainContainer}>
@@ -199,16 +263,16 @@ const AnswerSheet = () => {
             </Box>
           </Box>
           <Container>
-            {array.map((val) => {
+            {array?.map((val,index) => {
               return (
                 <Grid sx={maindata}>
                   <Box sx={innerdata}>
-                    <Typography sx={Sno}>1.</Typography>
-                    <Typography sx={UniqueId}> (101)</Typography>
-                    <Typography sx={UserName}>Ramesh Malhotra</Typography>
+                    <Typography sx={Sno}>1</Typography>
+                    <Typography sx={UniqueId}> {val?.id}</Typography>
+                    <Typography sx={UserName}>{val?.email}</Typography>
                   </Box>
                   <Box sx={innerdata}>
-                    <Typography sx={ViewDetail}>View Details</Typography>
+                    <Typography style={ViewDetail}  onClick={()=>HandleParticipatorDetail()}>View Details</Typography>
                     <Typography sx={deleteIcon}>x</Typography>
                   </Box>
                 </Grid>

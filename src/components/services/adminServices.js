@@ -10,6 +10,7 @@ const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 const ADD_CONTEST = `${BASE_URL}/addContest`;
 const SENT_MAIL=`${BASE_URL}/admin/sentMailForParticipator`
 const GET_PARTICIPATOR_DETAIL=`${BASE_URL}/getparticipatordetail` 
+const VIEW_PARTICIPATOR_OF_CONTEST=`${BASE_URL}/viewparticipatorofcontest`
 
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
@@ -60,13 +61,20 @@ const sendMail = (Id, mail) => {
 
 const getAllContestList = () => {
   return axios.get(GET_ALL_CONTEST_LIST);
-
 };
 
-const getparticipatordetail = () => {
-  return axios.get(GET_PARTICIPATOR_DETAIL);
 
 
+const viewParticipatorOfContest = (contestId) => {
+  return axios.get(`${VIEW_PARTICIPATOR_OF_CONTEST}?ContestId=${contestId}`);
+  
 };
 
-export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail};
+const getparticipatordetail = (studentId) => {
+  return axios.get(`${GET_PARTICIPATOR_DETAIL}?studentId=${studentId}`);
+  
+};
+
+
+
+export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail,viewParticipatorOfContest};

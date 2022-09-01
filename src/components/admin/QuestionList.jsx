@@ -28,6 +28,7 @@ import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useNavigate } from "react-router-dom";
 import All from "./All";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   container: {
@@ -179,6 +180,7 @@ const QuestionList = () => {
   const [quesId, setQuesId] = useState(null);
   const [testCases,setTestCases]=useState(testInitialFields)
   const [testCaseList, setTestCaseList]=useState([]);
+  const location = useLocation();
   const [contestQuestion, setContestQuestion] = useState([
     {
       problem:
@@ -219,6 +221,7 @@ const QuestionList = () => {
         setQuestion(quesIntialField);
     }
   };
+  console.log(location,"newlocations")
 console.log(question)
   return (
     <div style={questionList}>
@@ -226,7 +229,7 @@ console.log(question)
       <Container sx={topButton}>
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:location?.state})}>
             Participators
           </Box>
         </Grid>
