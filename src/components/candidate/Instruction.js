@@ -123,7 +123,6 @@ const Instruction = () => {
 
   const handleClick2 = () => {
     navigate("/user", { state: { language, participatorData,language2,defaultCode} });
-   
   };
 
   useEffect(() => {

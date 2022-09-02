@@ -176,7 +176,7 @@ const QuestionList = () => {
   const location = useLocation();
   const classes = useStyles();
   const [contestData, setContestData] = useState(
-    location?.state?.data?.contest
+    location?.state?.result?.contest
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
@@ -260,6 +260,7 @@ const QuestionList = () => {
     setTestCases(testInitialFields);
   };
 
+  console.log('------llll0',contestData)
   const addQuestion = async (e) => {
     if (
       problemStatement.question === "" ||
@@ -340,9 +341,8 @@ const QuestionList = () => {
 
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId).then((res) => {
-      const response = res.data;
-      setContestQuestion(response?.contestQuestionDetail);
-    });
+      setContestQuestion(res?.contestQuestionDetail);
+    }).catch("dmndv");
   }, [showAlert]);
 
   console.log("test case list", testCaseList);

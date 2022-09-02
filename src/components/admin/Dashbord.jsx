@@ -173,8 +173,14 @@ const Dashbord = () => {
   const navigate = useNavigate();
 
   const handleContest = async (id) => {
-    const result = await getContestDetail(id).then();
-    navigate("/addQuestion",{ state: { data: result.data } });
+    try {
+      const result = await getContestDetail(id);
+      navigate("/addQuestion",{ state: {result} });
+    } catch (error) {
+      
+    }
+    
+   
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -206,7 +212,7 @@ const Dashbord = () => {
 
   const fetchContestData = async () => {
     const response = await getAllContestList();
-    setContestDetails(response.data)
+    setContestDetails(response)
   };
 
   
@@ -259,6 +265,7 @@ const Dashbord = () => {
           <Container sx={containerStyle}>
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
+                
                 return (
                   <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>

@@ -138,7 +138,7 @@ const Login = ({ admin }) => {
   const handleLogin = async () => {
     setLoading(true);
     if (path === "/") {
-      localStorage.setItem("login", true);
+      // localStorage.setItem("login", true);
       try {
         const result = await loginAdmin(credential)
         if (credential.email === "" || credential.password === "") {
@@ -146,7 +146,10 @@ const Login = ({ admin }) => {
           setAlert(true);
         } else if (result) {
           setLoading(false);
-          setResponse(result.data);
+          setResponse(result?.data);
+          const token =result?.data?.token;
+          localStorage.setItem("token",token);
+          
           setMsg(true);
           setTimeout(() => {
             navigate("/dashboard", { state: { data: result.data } });

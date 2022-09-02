@@ -152,7 +152,7 @@ const Compiler = () => {
   const [codeArray, setCodeArray] = useState([]);
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
-  const [times, setTime] = useState(10000);
+  const [times, setTime] = useState(10);
   const [counter, setCounter] = useState(0);
   const [showError, setShowError] = useState(false);
   const Ref = useRef(null);
@@ -194,13 +194,13 @@ const Compiler = () => {
     return () => clearTimeout(timeout);
   }, [showError]);
 
-  console.log(" participatorsContestDetails", participatorsContestDetails);
-  console.log("location", location);
+  console.log(" participatorsContestDetails", location?.state?.language);
+ 
 
   const runCode = async (flag) => {
     try {
       const resultData = await runAndCompilerCode({
-        language: participatorsContestDetails?.languageCode?.language,
+        language: location?.state?.language,
         questionId:
           participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: participatorsContestDetails?.contestId,
@@ -272,12 +272,34 @@ const Compiler = () => {
       }
     });
   };
-  useEffect(() => {
+
+  useEffect( () => {
     if (times > 0) {
       setTimeout(() => setTime(times - 1), 1000);
     }
+    if (times===0){
+      try {
+        const resultData = runAndCompilerCode({
+          language: location?.state?.language,
+          questionId:
+            participatorsContestDetails?.QuestionList[count]?.questionId,
+          contestId: participatorsContestDetails?.contestId,
+          studentId: participatorsContestDetails?.studentId,
+          flag: "1",
+          code: `${codeValue}`,
+        }).hthen();
+        console.log(resultData, "runcode");
+        setRunCode1(resultData.data);
+  
+        setShowTestCase(true);
+      } catch (error) {
+        console.log(error);
+      }
+      window.location.href = '/thanku';
+    }
   }, [times]);
 
+  console.log('sdvsdvds,ms nd--------->',times)
   const getTimeRemaining = (e) => {
     const total = Date.parse(e) - Date.parse(new Date());
     const seconds = Math.floor((total / 1000) % 60);

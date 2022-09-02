@@ -1,23 +1,17 @@
 import axios from "axios";
+
+import api from "./api";
 const BASE_URL = `http://localhost:8085`;
-const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
-const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
-const CREATE_CONTEST = `${BASE_URL}/createContest`;
+const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
+const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
+const CREATE_CONTEST = `${BASE_URL}/admin/createContest`;
 const SEND_MAIL = `http://localhost:8085/admin/sendMail`;
-const GET_ALL_CONTEST_LIST = `${BASE_URL}/getAllContestList`;
-const CONTEST_URL = `${BASE_URL}/getContestDetail`;
-const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
-const ADD_CONTEST = `${BASE_URL}/addContest`;
+const GET_ALL_CONTEST_LIST = `${BASE_URL}/admin/getAllContestList`;
+const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
+const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
-
-// const CONTEST_URL = `${BASE_URL}/getContestDetail`;
-// const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
-// const ADD_CONTEST = `${BASE_URL}/addContest`;
-
-const 
-
-loginAdmin = (credential) => {
+ const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {
       email: credential?.email,
@@ -36,21 +30,22 @@ const registerAdmin = (credential) => {
 };
 
 const getContestDetail = (id) => {
-  return axios.get(CONTEST_URL, {
+  console.log('----->>>>>>>>>',id)
+  return api.get(CONTEST_URL, {
     params: {
       contestId: id,
     },
   });
 };
 const deleteContest = (id) => {
-  return axios.delete(DELETE_CONTEST, {
+  return api.delete(DELETE_CONTEST, {
     params: {
       contestId: id,
     },
   });
 };
 const addContest = (contestDetails) => {
-  return axios.post(CREATE_CONTEST, {
+  return api.post(CREATE_CONTEST, {
     contestName: contestDetails?.contestName,
     contestDescription: contestDetails?.contestDescription,
     contestLevel: contestDetails?.contestLevel,
@@ -75,7 +70,7 @@ const uploadParticipator = (file) => {
 };
 
 const getAllContestList = () => {
-  return axios.get(GET_ALL_CONTEST_LIST);
+  return api.get(GET_ALL_CONTEST_LIST);
 };
 
 export {
