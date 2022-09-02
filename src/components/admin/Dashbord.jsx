@@ -67,7 +67,7 @@ const app = {
 
 const card = {
   width: "220px",
-  maxHeight: "27vh",
+  maxHeight: "211px",
   borderRadius: "11px",
 };
 
@@ -106,7 +106,7 @@ const contestDate = {
 const createContest = {
   marginTop: "40px",
   width: "220px",
-  maxHeight: "27vh",
+  maxHeight: "211px",
   borderRadius: "11px",
 };
 
@@ -260,7 +260,7 @@ const Dashbord = () => {
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
                 return (
-                  <Grid item md={3} mt={5}>
+                  <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
@@ -277,15 +277,15 @@ const Dashbord = () => {
                           color="primary"
                           aria-label="add"
                           sx={delBtn1}
-                        >
-                          <CancelIcon
-                            onClick={() =>
+                          onClick={() =>
                               deleteContest(
                                 index,
                                 contestDetails?.[index]?.contestName,
                                 contestDetails?.[index]?.contestId
                               )
                             }
+                        >
+                          <CancelIcon
                           />
                         </IconButton>
                         <CardContent sx={cardBody}>
@@ -349,7 +349,7 @@ const Dashbord = () => {
             <Grid container ml={4} mt={2}>
               {levels.map((val, index) => {
                 return (
-                  <Grid item md={3} mt={5}>
+                  <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
                       <CardActionArea onClick={() => handleCheck(index)}>
                         <CardMedia

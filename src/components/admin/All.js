@@ -174,9 +174,9 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
           </Grid>
         </Grid>
         <Grid container sx={{ maxHeight:"350px", overflowY: "auto" }}>
-          {availableQuestions?.map((val) => {
+          {availableQuestions?.map((val,index) => {
             return (
-              <Grid container sx={divSelect}>
+              <Grid container sx={divSelect} key={index}>
                 <Grid item sm={10} sx={scrollDiv}>
                   <Typography sx={divText}>{val?.question}</Typography>
                 </Grid>

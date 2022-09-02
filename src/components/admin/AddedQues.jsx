@@ -173,7 +173,7 @@ const AddedQues = ({
         <Grid container direction="row" flexDirection={"column"}>
           {contestQuestion?.map?.((val, index) => {
             return (
-              <Grid item mt={2}>
+              <Grid item mt={2} key={index}>
                 <Paper sx={ques}>
                   <Typography sx={quesText}>
                   {val?.question}
