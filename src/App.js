@@ -45,7 +45,7 @@ import Level1 from "./components/admin/Level1";
 import Level2 from "./components/admin/Level2";
 import Allavailable from "./components/admin/Allavailable";
 import Instruction from "./components/candidate/Instruction";
-import Protected from "./Protected";
+import CandidataLogin from "./components/candidate/CandidateLogin";
 
 const theme = createTheme({
   palette: {
@@ -69,19 +69,11 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={<Protected Component={Login} admin={admin} />}
-            ></Route>
-            <Route path="/login/:id" element={<Login />}></Route>
-            <Route
-              path="/user"
-              element={<Protected Component={Compiler} />}
-            ></Route>
-            <Route
-              path="/email"
-              element={<Protected Component={EmailShow} />}
-            ></Route>
+            <Route path="/" element={<Login admin={admin} />}></Route>
+            {/* <Route path="/login/:id" element={<Login />}></Route> */}
+            <Route path="/user" element={<Compiler />}></Route>
+            <Route path="/login/:id" element={<CandidataLogin />}></Route>
+            <Route path="/email" element={<EmailShow />}></Route>
             <Route
               path="/register"
               element={
@@ -100,35 +92,14 @@ function App() {
                 />
               }
             ></Route>
-            <Route
-              path="/dashboard"
-              element={<Protected Component={Dashbord} />}
-            ></Route>
-            <Route
-              path="/addQuestion"
-              element={<Protected Component={QuestionList} />}
-            ></Route>
-            <Route
-              path="/participator"
-              element={<Protected Component={AnswerSheet} />}
-            ></Route>
-            <Route
-              path="/level1"
-              element={<Protected Component={Level1} />}
-            ></Route>
-            <Route
-              path="/level2"
-              element={<Protected Component={Level2} />}
-            ></Route>
-            <Route path="/all" element={<Protected Component={All} />}></Route>
-            <Route
-              path="/allavailable"
-              element={<Protected Component={Allavailable} />}
-            ></Route>
-            <Route
-              path="/instruction"
-              element={<Protected Component={Instruction} />}
-            ></Route>
+            <Route path="/dashboard" element={<Dashbord />}></Route>
+            <Route path="/addQuestion" element={<QuestionList />}></Route>
+            <Route path="/participator" element={<AnswerSheet />}></Route>
+            <Route path="/level1" element={<Level1 />}></Route>
+            <Route path="/level2" element={<Level2 />}></Route>
+            <Route path="/all" element={<All />}></Route>
+            <Route path="/allavailable" element={<Allavailable />}></Route>
+            <Route path="/instruction" element={<Instruction />}></Route>
             {/* <Route
               path="*"
               element={<Protected Component={Login} admin={admin} />}

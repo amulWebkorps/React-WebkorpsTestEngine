@@ -1,13 +1,16 @@
 import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
+import api from "./token";
 const BASE_URL = `http://localhost:8085`;
 
-const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
-const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
-const CREATE_CONTEST = `${BASE_URL}/createContest`;
+const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
+const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
+const CREATE_CONTEST = `${BASE_URL}/admin/createContest`;
 const SEND_MAIL = `http://localhost:8085/admin/sendMail`;
-const GET_ALL_CONTEST_LIST = `${BASE_URL}/getAllContestList`;
-const CONTEST_URL = `${BASE_URL}/getContestDetail`;
-const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
+const GET_ALL_CONTEST_LIST = `${BASE_URL}/admin/getAllContestList`;
+const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
+const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const ADD_CONTEST = `${BASE_URL}/addContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
@@ -16,13 +19,25 @@ const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
 // const DELETE_CONTEST = `${BASE_URL}/deletecontest`;
 // const ADD_CONTEST = `${BASE_URL}/addContest`;
 
+// const token = localStorage.getItem("token");
+// useEffect(() => {
+//   setTimeout(() => console.log("token", token), 2000);
+// }, [token]);
+
+//const token = localStorage.getItem("token");
+//console.log(token, "---TOKEN----");
 const loginAdmin = (credential) => {
-  return axios.get(ADMIN_LOGIN_URL, {
-    params: {
-      email: credential?.email,
-      password: credential?.password,
-    },
-  });
+  return axios.get(
+    ADMIN_LOGIN_URL,
+    {
+      params: {
+        email: credential?.email,
+        password: credential?.password,
+      },
+    }
+    // (axios.defaults.headers.common["Authorization"] =
+    //   localStorage.getItem("token"))
+  );
 };
 const registerAdmin = (credential) => {
   return axios.post(ADMIN_REGISTRATION_URL, {
@@ -35,26 +50,45 @@ const registerAdmin = (credential) => {
 };
 
 const getContestDetail = (id) => {
-  return axios.get(CONTEST_URL, {
-    params: {
-      contestId: id,
-    },
-  });
+  return api.get(
+    CONTEST_URL,
+    {
+      params: {
+        contestId: id,
+      },
+      // headers: {
+      //   Authorization: localStorage.getItem("token"),
+      // },
+    }
+    // (axios.defaults.headers.common["Authorization"] =
+    //   localStorage.getItem("token"))
+  );
 };
 const deleteContest = (id) => {
-  return axios.delete(DELETE_CONTEST, {
-    params: {
-      contestId: id,
-    },
-  });
+  return api.delete(
+    DELETE_CONTEST,
+    {
+      params: {
+        contestId: id,
+      },
+    }
+    // (axios.defaults.headers.common["Authorization"] =
+    //   localStorage.getItem("token"))
+  );
 };
+
 const addContest = (contestDetails) => {
-  return axios.post(CREATE_CONTEST, {
-    contestName: contestDetails?.contestName,
-    contestDescription: contestDetails?.contestDescription,
-    contestLevel: contestDetails?.contestLevel,
-    contestTime: contestDetails?.contestTime,
-  });
+  return api.post(
+    CREATE_CONTEST,
+    {
+      contestName: contestDetails?.contestName,
+      contestDescription: contestDetails?.contestDescription,
+      contestLevel: contestDetails?.contestLevel,
+      contestTime: contestDetails?.contestTime,
+    }
+    // (axios.defaults.headers.common["Authorization"] =
+    //   localStorage.getItem("token"))
+  );
 };
 const sendMail = (Id, mail) => {
   return axios.post(SEND_MAIL, {
@@ -68,8 +102,8 @@ const sentMail = () => {
 };
 const uploadParticipator = (file) => {
   const formData = new FormData();
-  formData.append("file", file)
-  return axios.post(UPLOAD_PARTICIAPTOR,formData)
+  formData.append("file", file);
+  return axios.post(UPLOAD_PARTICIAPTOR, formData);
   // return axios({
   //   method: "post",
   //   url: `${UPLOAD_PARTICIAPTOR}`,
@@ -82,9 +116,22 @@ const uploadParticipator = (file) => {
 };
 
 const getAllContestList = () => {
-  return axios.get(GET_ALL_CONTEST_LIST);
+  return api.get(
+    GET_ALL_CONTEST_LIST
+    //  {headers : {
+    //     Authorization: localStorage.getItem("token"),
+    //     "Access-Control-Allow-Origin": "*",
+    //   }},
+    // (axios.defaults.headers.common["Authorization"] =
+    //   localStorage.getItem("token"))
+  );
 };
 
+const adminServices = () => {
+  return <></>;
+};
+
+export default BASE_URL;
 export {
   loginAdmin,
   registerAdmin,

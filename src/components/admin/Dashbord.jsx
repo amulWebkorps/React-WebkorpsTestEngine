@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Fab,
+  Button,
+  Snackbar,
+  useColorScheme,
+} from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -169,7 +176,7 @@ const Dashbord = () => {
   const navigate = useNavigate();
 
   const handleContest = async (id) => {
-    const result = await getContestDetail(id).then();
+    const result = await getContestDetail(id);
 
     navigate("/addQuestion");
   };
@@ -207,9 +214,14 @@ const Dashbord = () => {
   };
 
   const fetchContestData = async () => {
-    const response = await getAllContestList();
-    const user = await response.data;
-    setContestDetails(user);
+    try {
+      const response = await getAllContestList();
+      console.log(response, "rewspoo");
+
+      setContestDetails(response);
+    } catch (error) {
+      console.log("erororor", error);
+    }
   };
 
   useEffect(() => {
@@ -381,7 +393,11 @@ const Dashbord = () => {
                         color="primary"
                         aria-label="add"
                         sx={addButton}
-                        onClick={() => navigate("/email" ,{ state: { data: contestDetails } })}
+                        onClick={() =>
+                          navigate("/email", {
+                            state: { data: contestDetails },
+                          })
+                        }
                       >
                         <AddIcon fontSize="large" />
                       </Fab>
