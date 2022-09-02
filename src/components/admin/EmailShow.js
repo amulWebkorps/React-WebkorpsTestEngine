@@ -276,7 +276,7 @@ const EmailShow = () => {
                     <InputBase
                       placeholder="Search emails"
                       sx={searchField}
-                      // color="black"
+                      color="black"
                       onChange={handleOnChange}
                     />
                   </Box>

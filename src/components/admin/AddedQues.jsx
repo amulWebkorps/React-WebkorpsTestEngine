@@ -110,7 +110,6 @@ const AddedQues = ({
   const scrollBottom = () => {
     setShowQ(true);
     ref.current?.scrollIntoView({behavior: 'smooth'});
-  
   };
 
   const editQuestion = (id,questionID) => {
