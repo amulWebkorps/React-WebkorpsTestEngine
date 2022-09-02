@@ -23,7 +23,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { saveQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
-import { ConstructionOutlined } from "@mui/icons-material";
+import { ConstructionOutlined, SettingsRemote } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   container: {
@@ -196,7 +196,6 @@ const QuestionList = () => {
   };
 
   const [question, setQuestion] = useState(quesIntialField);
-
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
   );
@@ -281,10 +280,8 @@ const QuestionList = () => {
     } else {
       setAlert(true);
       try {
-        const result = await saveQuestion(question).then((res) => {
-          const response = res.data;
-          setQuesId(null);
-        });
+        const result = await saveQuestion(question);
+        setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
         setTestCases(sampleTestInitialFields);
@@ -298,7 +295,6 @@ const QuestionList = () => {
             errMsg: "Question edit successfully...!",
             color: "green",
           });
-
           setEditQuestion(false);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -311,7 +307,6 @@ const QuestionList = () => {
             errMsg: "Question added successfully...!",
             color: "green",
           });
-
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -349,7 +344,7 @@ const QuestionList = () => {
       setContestQuestion(response?.contestQuestionDetail);
     });
   }, [showAlert]);
-  
+
   console.log("test case list", testCaseList);
   return (
     <div style={questionList}>

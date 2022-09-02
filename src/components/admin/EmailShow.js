@@ -158,7 +158,7 @@ const EmailShow = () => {
 
   const handleSentMail = async () => {
     setSent(true);
-    const result = await sentMail().then();
+    const result = await sentMail();
     setSentEmails(result?.data);
     setOpen(true);
   };
@@ -321,9 +321,9 @@ const EmailShow = () => {
             </Grid>
           </Grid>
           <Container sx={emailContainer}>
-            <Grid container>
+            <Grid container sx={{display:"flex",justifyContent:"center"}}>
               {uploadEmail.length === 0 ? (
-                <h1>No participator found</h1>
+                <h1>No participator uploaded</h1>
               ) : (
                 uploadEmail?.map((val) => {
                   return (

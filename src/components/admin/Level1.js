@@ -271,10 +271,8 @@ const Level1 = () => {
     else{
       setAlert(true);
       try {
-        const result = await saveQuestion(question).then((res)=>{
-          const response = res.data
-          setQuesId(null);
-        });
+        const result = await saveQuestion(question);
+        setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
         setTestCases(sampleTestInitialFields);
@@ -314,6 +312,7 @@ const Level1 = () => {
       }
     }
   };
+
   const delTestCase = (id) => {
     setTestCaseList((val) => {
       return val.filter((a, index) => index !== id);
@@ -331,7 +330,6 @@ const Level1 = () => {
       });
       return newState;
     });
-    
   }
 
   useEffect(() => {
@@ -401,8 +399,8 @@ console.log('test case list',testCaseList)
                         mt={5}
                         sx={input}
                       />
-                      <br />
-                      <br />
+                      <br/>
+                      <br/>
                       <Typography sx={label} display="inline">
                         Constraints
                       </Typography>
@@ -425,8 +423,8 @@ console.log('test case list',testCaseList)
                           ),
                         }}
                       />
-                      <br />
-                      <br />
+                      <br/>
+                      <br/>
                       <Grid
                         container
                         direction="row"

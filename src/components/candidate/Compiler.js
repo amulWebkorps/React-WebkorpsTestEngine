@@ -16,7 +16,6 @@ import { runAndCompilerCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 
-
 const div1 = {
   height: "70vh",
   marginTop: "30px",
@@ -120,28 +119,24 @@ const buttonTest = {
   lineHeight: "19px",
 };
 
- const testCaseData1={
+const testCaseData1 = {
   display: "flex",
-  flexDirection:"row",
-  justifyContent:"end",
-
- }
- const testCaseData={
+  flexDirection: "row",
+  justifyContent: "end",
+};
+const testCaseData = {
   display: "flex",
-  flexDirection:"row",
- }
- const inputName={
+  flexDirection: "row",
+};
+const inputName = {
   fontWeight: "600",
   fontweight: "bold",
+};
 
- }
-
- const timerText={
+const timerText = {
   fontWeight: "500",
   fontweight: "bold",
-
- }
- 
+};
 
 const Compiler = () => {
   const [language2, setLanguage2] = useState();
@@ -151,31 +146,30 @@ const Compiler = () => {
   const [profile, setProfile] = useState(location?.state);
   const [count, setCount] = useState(0);
   const [count1, setCount1] = useState(1);
-  const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
+  const [participatorsContestDetails, setParticipatorsContestDetails] =
+    useState();
   const [runCode1, setRunCode1] = useState();
   const [codeArray, setCodeArray] = useState([]);
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
-  const [times,setTime]=useState(10000);
-  const [counter, setCounter]=useState(0);
-  const [showError,setShowError]=useState(false)
+  const [times, setTime] = useState(10000);
+  const [counter, setCounter] = useState(0);
+  const [showError, setShowError] = useState(false);
   const Ref = useRef(null);
   const ref = useRef(null);
-	const [timer, setTimer] = useState('00:00:00');
+  const [timer, setTimer] = useState("00:00:00");
 
-
-  const timerGet=.20
-  const finalGet=(timerGet*60000)
-  console.log(finalGet,"getdatahhh")
-  const  changeseconds=(timerGet*60)
+  const timerGet = 0.2;
+  const finalGet = timerGet * 60000;
+  console.log(finalGet, "getdatahhh");
+  const changeseconds = timerGet * 60;
 
   const fetchStartContestData = async () => {
     try {
       const result = await startContestPage(
         location?.state?.language,
         profile?.participatorData
-      ).then();
-      console.log(result?.data, "akkkkkkk");
+      )
 
       setParticipatorsContestDetails(result?.data);
     } catch (error) {
@@ -185,45 +179,39 @@ const Compiler = () => {
   useEffect(() => {
     fetchStartContestData();
   }, []);
-  
 
-useEffect(()=>{
-    if (runCode1?.complilationMessage===null){
-      setShowError(true)
+  useEffect(() => {
+    if (runCode1?.complilationMessage === null) {
+      setShowError(true);
     }
-},[runCode1])
+  }, [runCode1]);
 
-useEffect(() => {
-  let timeout
-  if (showError) {
-    timeout = setTimeout(() =>setShowError(false), 3000);
-  }
-  return () => clearTimeout(timeout);
-}, [showError]);
+  useEffect(() => {
+    let timeout;
+    if (showError) {
+      timeout = setTimeout(() => setShowError(false), 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showError]);
 
-
-
-
-
- console.log(" participatorsContestDetails", participatorsContestDetails)
+  console.log(" participatorsContestDetails", participatorsContestDetails);
   console.log("location", location);
 
   const runCode = async (flag) => {
     try {
-      const resultData = await runAndCompilerCode( {
+      const resultData = await runAndCompilerCode({
         language: participatorsContestDetails?.languageCode?.language,
-        questionId: participatorsContestDetails?.QuestionList[count]?.questionId,
+        questionId:
+          participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: participatorsContestDetails?.contestId,
         studentId: participatorsContestDetails?.studentId,
         flag: flag,
         code: `${codeValue}`,
-      }).then();
+      })
       console.log(resultData, "runcode");
       setRunCode1(resultData.data);
-    
-    
-      setShowTestCase(true)
-      
+
+      setShowTestCase(true);
     } catch (error) {
       console.log(error);
     }
@@ -231,46 +219,36 @@ useEffect(() => {
 
   console.log("runcode", runCode1);
 
-
-  
-
   const handleScroll = () => {
-    ref.current?.scrollIntoView({behavior: 'smooth'});
+    ref.current?.scrollIntoView({ behavior: "smooth" });
   };
-
 
   const onChange = (codeData) => {
     setCodeValue(codeData);
   };
 
   const handleRun = () => {
-   setCodeArray((oldArray) => [...oldArray, codeValue]);
+    setCodeArray((oldArray) => [...oldArray, codeValue]);
   };
 
   console.log("code---------cfc", codeValue);
   console.log("hjbjhbvss", codeArray);
- 
 
   const navigate = useNavigate();
-useEffect(()=>{
-   if  (runCode1?.complilationMessage===null){
-  }
-
-  else if (count===participatorsContestDetails?.QuestionList?.length){
-    console.log('------if part')
-    alert("final button")
-    navigate('/thanku')
-  }
-  else{
-    console.log('-------else part')
-  }
-
-
-},[counter])
- const handleButton=()=>{
-  setCounter(counter+1)
-  console.log(counter,"counter")
- }
+  useEffect(() => {
+    if (runCode1?.complilationMessage === null) {
+    } else if (count === participatorsContestDetails?.QuestionList?.length) {
+      console.log("------if part");
+      alert("final button");
+      navigate("/thanku");
+    } else {
+      console.log("-------else part");
+    }
+  }, [counter]);
+  const handleButton = () => {
+    setCounter(counter + 1);
+    console.log(counter, "counter");
+  };
 
   console.log("rfgh", defaultCode);
   const nextQuestion = (e) => {
@@ -283,7 +261,6 @@ useEffect(()=>{
       }
     });
     setCodeValue(location?.state?.defaultCode);
-    
   };
   console.log(count1, "rtyg");
   const prevQuestion = (e) => {
@@ -293,85 +270,76 @@ useEffect(()=>{
       } else {
         return (prevCount = 0);
       }
-    });   
+    });
   };
-  useEffect(()=>{  
-    if(times>0){
-     setTimeout(()=>setTime(times-1),1000)
-     
-    }  
-},[times])
+  useEffect(() => {
+    if (times > 0) {
+      setTimeout(() => setTime(times - 1), 1000);
+    }
+  }, [times]);
 
-
-
-
-const getTimeRemaining = (e) => {
-  const total = Date.parse(e) - Date.parse(new Date());
-  const seconds = Math.floor((total / 1000) % 60);
-  const minutes = Math.floor((total / 1000 / 60) % 60);
-  const hours = Math.floor((total / 1000 / 60 / 60) % 24);
-  return {
-    total, hours, minutes, seconds
+  const getTimeRemaining = (e) => {
+    const total = Date.parse(e) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    const hours = Math.floor((total / 1000 / 60 / 60) % 24);
+    return {
+      total,
+      hours,
+      minutes,
+      seconds,
+    };
   };
-}
 
+  const startTimer = (e) => {
+    let { total, hours, minutes, seconds } = getTimeRemaining(e);
+    if (total >= 0) {
+      setTimer(
+        (hours > 9 ? hours : "0" + hours) +
+          ":" +
+          (minutes > 9 ? minutes : "0" + minutes) +
+          ":" +
+          (seconds > 9 ? seconds : "0" + seconds)
+      );
+    }
+  };
 
-const startTimer = (e) => {
-  let { total, hours, minutes, seconds }
-        = getTimeRemaining(e);
-  if (total >= 0) {
-    setTimer(
-      (hours > 9 ? hours : '0' + hours) + ':' +
-      (minutes > 9 ? minutes : '0' + minutes) + ':'
-      + (seconds > 9 ? seconds : '0' + seconds)
-    )
-  }
-}
+  const clearTimer = (e) => {
+    if (Ref.current) clearInterval(Ref.current);
+    const id = setInterval(() => {
+      startTimer(e);
+    }, 100);
+    Ref.current = id;
+  };
 
+  const getDeadTime = () => {
+    let deadline = new Date();
+    deadline.setSeconds(deadline.getSeconds() + changeseconds);
+    return deadline;
+  };
 
-const clearTimer = (e) => {
-  if (Ref.current) clearInterval(Ref.current);
-  const id = setInterval(() => {
-    startTimer(e);
-  }, 100)
-  Ref.current = id;	
-}
+  useEffect(() => {
+    clearTimer(getDeadTime());
+  }, []);
 
-const getDeadTime = () => {
-  let deadline = new Date();
-  deadline.setSeconds(deadline.getSeconds() + changeseconds);
-  return deadline;
-}
-
-useEffect(() => {
-  clearTimer(getDeadTime());
-}, []);
-
-
-// setTimeout(function(){
-//   window.location.href = '/thanku';
-// }, finalGet);
-
-
+  // setTimeout(function(){
+  //   window.location.href = '/thanku';
+  // }, finalGet);
 
   return (
     <Box>
       <Header />
       <Box className="background1">
-       
-     { showError &&   <MsgBar
-              errMsg={
-              "error while compile"
-              }
-              color={"orange" }
-            />}
+        {showError && (
+          <MsgBar errMsg={"error while compile"} color={"orange"} />
+        )}
         <Grid container>
-          
           <Grid item sm={6}>
-          <Box sx={testCaseData1} mx={5} >
-      <Typography>Remaining Time :-</Typography ><Typography sx={timerText}>{timer}</Typography>  
-      </Box>
-        
+            <Box sx={testCaseData1} mx={5}>
+              <Typography>Remaining Time :-</Typography>
+              <Typography sx={timerText}>{timer}</Typography>
+            </Box>
+
             <Box mx={3}>
               <Container sx={div1}>
                 <Grid container>
@@ -456,15 +424,18 @@ useEffect(() => {
                   variant="contained"
                   sx={buttonTest}
                   onClick={() => prevQuestion()}
-                  disabled={count===0 }
+                  disabled={count === 0}
                 >
                   Prev
                 </Button>
-                <Button                 
-                  variant="contained"               
+                <Button
+                  variant="contained"
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
-                  disabled={participatorsContestDetails?.QuestionList?.length-1 === count }
+                  disabled={
+                    participatorsContestDetails?.QuestionList?.length - 1 ===
+                    count
+                  }
                 >
                   Next
                 </Button>
@@ -523,8 +494,8 @@ useEffect(() => {
                   variant="contained"
                   sx={buttonTest}
                   onClick={() => {
-                    runCode("0"); 
-                    handleScroll()                                 
+                    runCode("0");
+                    handleScroll();
                   }}
                 >
                   Run
@@ -532,55 +503,55 @@ useEffect(() => {
                 <Button
                   variant="contained"
                   sx={buttonTest}
-                  onClick={() => {  
-                    runCode("1")     
-                  handleButton()           
+                  onClick={() => {
+                    runCode("1");
+                    handleButton();
                   }}
                 >
-                 {show ? "final submit" : 'submit'}
+                  {show ? "final submit" : "submit"}
                 </Button>
-               
               </Grid>
             </Box>
             <Grid>
-              <Grid containner sx={testCase} m={3} ref={ref} >
+              <Grid containner sx={testCase} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
                   <Typography m={3} mt={2} sx={testCaseText1}>
                     Test Case
                   </Typography>
                 </Grid>
-                { showTestCase && 
-                 <Grid sx={testCaseData} >
-                 <Typography m={3} mt={2} sx={testCaseText2}>
-                 input               
-                      {participatorsContestDetails?.QuestionList[count]
-                                 ?.testcases.map((val,index)=>{
-                                   return(
-                                   <div key={index}>
-                                    <p>{val.input}</p>
-                                   </div>
-                                   )
-                                 })}
-                                                   
-                 </Typography>
-                 <Typography m={3} mt={2} sx={testCaseText2}>
-                 output   
-                 <br/>
-                      {participatorsContestDetails?.QuestionList[count]
-                                 ?.testcases.map((val,index)=>{
-                                   return(
-                                   <div key={index}>
-                                    <p>{val.output}</p>
-                                   </div>
-                                   )
-                                 })}                                       
-                   {runCode1?.complilationMessage}
-                 </Typography>
-                 <Typography m={3} mt={2} sx={testCaseText2}>           
-                   {runCode1?.complilationMessage}
-                 </Typography>
-               </Grid>  
-            }            
+                {showTestCase && (
+                  <Grid sx={testCaseData}>
+                    <Typography m={3} mt={2} sx={testCaseText2}>
+                      input
+                      {participatorsContestDetails?.QuestionList[
+                        count
+                      ]?.testcases.map((val, index) => {
+                        return (
+                          <div key={index}>
+                            <p>{val.input}</p>
+                          </div>
+                        );
+                      })}
+                    </Typography>
+                    <Typography m={3} mt={2} sx={testCaseText2}>
+                      output
+                      <br />
+                      {participatorsContestDetails?.QuestionList[
+                        count
+                      ]?.testcases.map((val, index) => {
+                        return (
+                          <div key={index}>
+                            <p>{val.output}</p>
+                          </div>
+                        );
+                      })}
+                      {runCode1?.complilationMessage}
+                    </Typography>
+                    <Typography m={3} mt={2} sx={testCaseText2}>
+                      {runCode1?.complilationMessage}
+                    </Typography>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
           </Grid>

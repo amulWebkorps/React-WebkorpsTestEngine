@@ -140,7 +140,7 @@ const Login = ({ admin }) => {
     if (path === "/") {
       localStorage.setItem("login", true);
       try {
-        const result = await loginAdmin(credential).then();
+        const result = await loginAdmin(credential)
         if (credential.email === "" || credential.password === "") {
           setLoading(false);
           setAlert(true);
@@ -160,7 +160,7 @@ const Login = ({ admin }) => {
       }
     } else {
       try {
-        const result = await participatorLogin(id, credential).then();
+        const result = await participatorLogin(id, credential)
         setMsg(true);
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });

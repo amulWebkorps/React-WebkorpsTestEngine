@@ -130,14 +130,14 @@ const AddedQues = ({
   const delQuestion = async (id, quesId) => {
     setAlert(true);
     const arr = [delFromContest.state?delFromContest.contestId:`questionForLevel`, quesId];
-    setContestQuestion((val) => {
-      return val.filter((val, index) => {
-        return index !== id;
-      });
-    });
     try {
-      const result = await deleteQuestion(arr).then((res) => {
-        const response = res.data;
+      const result = await deleteQuestion(arr);
+      setContestQuestion((val) => {
+        return val.filter((val, index) => {
+          return index !== id;
+        });
+      });
+        const response = result?.data;
         setMsg({
           errMsg:"Question deleted successfully...!",
           color:"red"
@@ -148,7 +148,6 @@ const AddedQues = ({
         if (response) {
           setDeleteQ(true);
         }
-      });
     } catch (error) {
       console.log("eroror", error);
     }

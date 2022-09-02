@@ -269,10 +269,9 @@ const Level2 = () => {
     else{
       setAlert(true);
       try {
-        const result = await saveQuestion(question).then((res)=>{
-          const response = res.data
-          setQuesId(null);
-        });
+        const result = await saveQuestion(question);
+          // const response = res.data
+        setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
         setTestCases(sampleTestInitialFields);

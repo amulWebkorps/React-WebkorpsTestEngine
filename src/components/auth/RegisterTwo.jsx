@@ -146,11 +146,8 @@ const logoText = {
   color: "#1887C9",
 };
 
-
-
-
 const RegisterTwo = ({ registercredential, setregistercredential }) => {
-const [confirmPassword, setConfirmpassword] = useState("");
+  const [confirmPassword, setConfirmpassword] = useState("");
 
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
@@ -178,11 +175,8 @@ const [confirmPassword, setConfirmpassword] = useState("");
       setAlert(false);
     } else if (credential.password === confirmPassword) {
       try {
-        const response = await registerAdmin(registercredential).then(
-          (res) => setAlert(true),
-          setalertpassword(false),
-          setfillalert(false)
-        );
+        const response = await registerAdmin(registercredential);
+        setAlert(true); setalertpassword(false); setfillalert(false);
         setTimeout(() => {
           navigate("/");
         }, 3500);

@@ -27,7 +27,7 @@ export default function Popup({
   setContestDetails,
 }) {
   const handleDelete = async () => {
-    const result = await deleteContest(contest.contestId).then();
+    const result = await deleteContest(contest.contestId)
     console.log("ressss", result);
     setContestDetails((val) => {
       return val.filter((val, index) => {
