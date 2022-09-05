@@ -48,7 +48,7 @@ import Instruction from "./components/candidate/Instruction";
 import Protected from "./Protected";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
 import Thankupage from "./components/UI/Thankupage";
-
+import CandidateLogin from "./components/candidate/CandidateLogin";
 const theme = createTheme({
   palette: {
     primary: {
@@ -75,11 +75,8 @@ function App() {
               path="/"
               element={<Protected Component={Login} admin={admin} />}
             ></Route>
-            <Route path="/login/:id" element={<Login />}></Route>
-            <Route
-              path="/user"
-              element={<Protected Component={Compiler} />}
-            ></Route>
+            <Route path="/login/:id" element={<CandidateLogin />}></Route>
+            <Route path="/user" element={<Compiler />}></Route>
             <Route
               path="/email"
               element={<Protected Component={EmailShow} />}
@@ -114,7 +111,7 @@ function App() {
               path="/participator"
               element={<Protected Component={AnswerSheet} />}
             ></Route>
-              <Route
+            <Route
               path="/viewparticipator"
               element={<Protected Component={viewParticipatorDetail} />}
             ></Route>

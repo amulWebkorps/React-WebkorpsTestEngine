@@ -3,20 +3,18 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
 import LoginButton from "./base/LoginButton";
-import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { loginAdmin } from "../services/adminServices";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
 import MsgBar from "./base/MsgBar";
+import axios from "axios";
+import { TryRounded } from "@mui/icons-material";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -52,40 +50,6 @@ const Boxstyle = {
   position: "absolute",
 };
 
-const footerOne = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "65px",
-  "a:-webkit-any-link": {
-    cursor: "pointer",
-    textDecoration: "none",
-  },
-};
-
-const footerTwo = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "105px",
-};
-
-const RegisterButton = {
-  fontSize: 14,
-  fontWeight: 600,
-  color: "#0057FF",
-  textTransform: "none",
-};
-
-const checkboxname = {
-  ".css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
-    marginTop: "-13px",
-  },
-  ".css-ahj2mt-MuiTypography-root": {
-    fontSize: "13px",
-    fontWeight: "100",
-    marginTop: "3px",
-  },
-};
-
 const copyright = {
   color: "white",
   textAlign: "center",
@@ -115,61 +79,49 @@ const logoText = {
   color: "#1887C9",
 };
 
-const Login = ({ admin }) => {
+const CandidateLogin = () => {
   const [credential, setCredential] = useState({
     email: "",
     password: "",
   });
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
+  const [showMsg, setMsg] = useState(false);
+  const [ErrorMsg, setErrorMsg] = useState(false);
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const path = window?.location?.pathname;
-  const { id } = useParams();
-  const [showMsg, setMsg] = useState(false);
+  const { Id } = useParams();
 
-  // useEffect(() => {
-  //   let login = localStorage.getItem("login");
-  //   if (!login) {
-  //     navigate("/");
-  //   }
-  // }, []);
+  //   useEffect(() => {
+  //     let login = localStorage.getItem("login");
+  //     if (!login) {
+  //       navigate("/");
+  //     }
+  //   }, []);
 
   const handleLogin = async () => {
     setLoading(true);
-    if (path === "/") {
-      try {
-        const result = await loginAdmin(credential);
-        if (credential.email === "" || credential.password === "") {
-          setLoading(false);
-          setAlert(true);
-        } else if (result) {
-          setLoading(false);
-          setResponse(result?.data);
-          const token = result?.data?.token;
-          localStorage.setItem("token", token);
-          //localStorage.setItem("login", "true");
-          setMsg(true);
-          setTimeout(() => {
-            navigate("/dashboard", { state: { data: result.data } });
-          }, 1500);
-        }
-      } catch (error) {
-        setAlert(true);
-        setLoading(false);
-        setResponse(error?.response?.data);
-        navigate("/");
-      }
+    if (credential.email === "" || credential.password === "") {
+      setAlert(true);
+      setLoading(false);
+      setTimeout(() => {
+        setAlert(false);
+      }, 2000);
     } else {
       try {
-        const result = await participatorLogin(id, credential);
+        const result = await participatorLogin(Id, credential).then();
+        setLoading(true);
         setMsg(true);
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);
       } catch (error) {
-        setAlert(true);
         setLoading(false);
+        setErrorMsg(true);
+        setTimeout(() => {
+          setErrorMsg(false);
+        }, 2000);
       }
     }
   };
@@ -201,13 +153,14 @@ const Login = ({ admin }) => {
         )}
       </Grid>
       {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
-
+      {ErrorMsg && (
+        <MsgBar errMsg={"Please fill correct details"} color={"red"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
             {loading && <Loader />}
-
             <Stack>
               <TextInput
                 label="Email Address"
@@ -215,7 +168,6 @@ const Login = ({ admin }) => {
                 onChange={(e) => handleChange(e)}
                 value={credential?.email}
               />
-
               <TextInput
                 label="Password"
                 name="password"
@@ -223,26 +175,7 @@ const Login = ({ admin }) => {
                 onChange={(e) => handleChange(e)}
                 value={credential?.password}
               />
-              {admin && (
-                <FormControlLabel
-                  control={<Checkbox size="10px" />}
-                  label="Remember me"
-                  sx={checkboxname}
-                />
-              )}
-
               <LoginButton name="Log in" onClick={handleLogin} />
-              {admin && (
-                <>
-                  <Typography sx={footerOne}>
-                    Don't have account?
-                    <NavLink to="/register">
-                      <Button sx={RegisterButton}>Register</Button>
-                    </NavLink>
-                  </Typography>
-                  <Typography sx={footerTwo}>Forgot Password?</Typography>
-                </>
-              )}
             </Stack>
           </Box>
         </Box>
@@ -252,4 +185,4 @@ const Login = ({ admin }) => {
   );
 };
 
-export default Login;
+export default CandidateLogin;

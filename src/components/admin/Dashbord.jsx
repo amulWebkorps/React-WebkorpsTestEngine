@@ -17,13 +17,11 @@ import { increment } from "../store/slicers/adminSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 import { getAllContestList } from "../services/adminServices";
 
 import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
-
 
 const containerStyle = {
   overflowY: "auto",
@@ -169,18 +167,14 @@ const Dashbord = () => {
   const [confirm, setConfirm] = useState(false);
   const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
-  const [contestData, setContestData]=useState(null);
+  const [contestData, setContestData] = useState(null);
   const navigate = useNavigate();
 
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
-      navigate("/addQuestion",{ state: {result} });
-    } catch (error) {
-      
-    }
-    
-   
+      navigate("/addQuestion", { state: { result } });
+    } catch (error) {}
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -190,7 +184,6 @@ const Dashbord = () => {
       contestId: contestId,
     });
     setConfirm(true);
-    
   };
 
   const handleClickOpen = () => {
@@ -212,16 +205,15 @@ const Dashbord = () => {
 
   const fetchContestData = async () => {
     const response = await getAllContestList();
-    setContestDetails(response)
+    setContestDetails(response);
   };
 
-  
   useEffect(() => {
     fetchContestData();
   }, []);
 
-  console.log("---contest", contestDetails);
-  
+  // console.log("---contest", contestDetails);
+
   return (
     <div style={app}>
       <Header />
@@ -229,8 +221,8 @@ const Dashbord = () => {
       {showAvailq ? (
         <>
           <Modal
-            open={open}
-            setOpen={setOpen}
+            open={open}         
+            setOpen={setOpen} 
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
@@ -265,7 +257,6 @@ const Dashbord = () => {
           <Container sx={containerStyle}>
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
-                
                 return (
                   <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
@@ -285,15 +276,14 @@ const Dashbord = () => {
                           aria-label="add"
                           sx={delBtn1}
                           onClick={() =>
-                              deleteContest(
-                                index,
-                                contestDetails?.[index]?.contestName,
-                                contestDetails?.[index]?.contestId
-                              )
-                            }
+                            deleteContest(
+                              index,
+                              contestDetails?.[index]?.contestName,
+                              contestDetails?.[index]?.contestId
+                            )
+                          }
                         >
-                          <CancelIcon
-                          />
+                          <CancelIcon />
                         </IconButton>
                         <CardContent sx={cardBody}>
                           <h6 style={contestText}>
@@ -384,7 +374,11 @@ const Dashbord = () => {
                         color="primary"
                         aria-label="add"
                         sx={addButton}
-                        onClick={() => navigate("/email" ,{ state: { data: contestDetails } })}
+                        onClick={() =>
+                          navigate("/email", {
+                            state: { data: contestDetails },
+                          })
+                        }
                       >
                         <AddIcon fontSize="large" />
                       </Fab>
