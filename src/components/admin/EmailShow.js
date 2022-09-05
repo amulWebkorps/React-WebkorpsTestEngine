@@ -172,7 +172,7 @@ const EmailShow = () => {
     });
     try {
       const result = uploadParticipator(files[0]).then((res) => {
-        const response = res?.data;
+        const response = res;
         console.log("responsesss", response.length);
         setUploadEmail(response);
         setMsg({

@@ -149,7 +149,7 @@ const Login = ({ admin }) => {
           setResponse(result?.data);
           const token =result?.data?.token;
           localStorage.setItem("token",token);
-          
+          localStorage.setItem("login","true");
           setMsg(true);
           setTimeout(() => {
             navigate("/dashboard", { state: { data: result.data } });

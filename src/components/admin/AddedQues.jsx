@@ -56,12 +56,12 @@ const quesText = {
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  overflowY:"auto"
+  overflowY: "auto",
 };
 const edit = {
   paddingTop: "2%",
   width: "24%",
-  cursor:"pointer",
+  cursor: "pointer",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 300,
@@ -102,34 +102,39 @@ const AddedQues = ({
   setProblemStatement,
   setSampleTestCase,
   setTestCaseList,
-  quesId
+  quesId,
+  contestId,
+  level,
 }) => {
   const [showq, setShowQ] = useState(false);
   const ref = useRef(null);
-
+console.log('level',level)
   const scrollBottom = () => {
     setShowQ(true);
-    ref.current?.scrollIntoView({behavior: 'smooth'});
+    ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const editQuestion = (id,questionID) => {
+  const editQuestion = (id, questionID) => {
     setEditQuestion(true);
     setQuesId(questionID);
-    setIndex(id)
+    setIndex(id);
     setProblemStatement({
-      question:contestQuestion?.[id]?.question
-    })
+      question: contestQuestion?.[id]?.question,
+    });
     setSampleTestCase({
-      constraints:contestQuestion?.[id]?.sampleTestCase?.[0]?.constraints,
-      input:contestQuestion?.[id]?.sampleTestCase?.[0]?.input,
-      output:contestQuestion?.[id]?.sampleTestCase?.[0]?.output
-    })
-    setTestCaseList(contestQuestion?.[id]?.testcases)
+      constraints: contestQuestion?.[id]?.sampleTestCase?.[0]?.constraints,
+      input: contestQuestion?.[id]?.sampleTestCase?.[0]?.input,
+      output: contestQuestion?.[id]?.sampleTestCase?.[0]?.output,
+    });
+    setTestCaseList(contestQuestion?.[id]?.testcases);
   };
 
   const delQuestion = async (id, quesId) => {
     setAlert(true);
-    const arr = [delFromContest.state?delFromContest.contestId:`questionForLevel`, quesId];
+    const arr = [
+      delFromContest.state ? delFromContest.contestId : `questionForLevel`,
+      quesId,
+    ];
     try {
       const result = await deleteQuestion(arr);
       setContestQuestion((val) => {
@@ -137,36 +142,37 @@ const AddedQues = ({
           return index !== id;
         });
       });
-        const response = result?.data;
-        setMsg({
-          errMsg:"Question deleted successfully...!",
-          color:"red"
-        })
-        setTimeout(() => {
-          setAlert(false)
-        }, 1200);
-        if (response) {
-          setDeleteQ(true);
-        }
+      const response = result?.data;
+      setMsg({
+        errMsg: "Question deleted successfully...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
+      if (response) {
+        setDeleteQ(true);
+      }
     } catch (error) {
       console.log("eroror", error);
     }
   };
-
+  console.log("-------question", question);
 
   return (
     <>
       <Paper sx={heading}>
         <div>
-          <Typography sx={headText}>
-           Present  Questions:
-          </Typography>
+          <Typography sx={headText}>Present Questions:</Typography>
         </div>
         <div>
-          {" "}
-          <Button variant="contained" sx={btn} onClick={() => scrollBottom()}>
-            available Question
-          </Button>
+          {level ? (
+            <></>
+          ) : (
+            <Button variant="contained" sx={btn} onClick={() => scrollBottom()}>
+              available Question
+            </Button>
+          )}
         </div>
       </Paper>
       <CardContent sx={card}>
@@ -175,14 +181,11 @@ const AddedQues = ({
             return (
               <Grid item mt={2} key={index}>
                 <Paper sx={ques}>
-                  <Typography sx={quesText}>
-                  {val?.question}
-            
-                  </Typography>
+                  <Typography sx={quesText}>{val?.question}</Typography>
                   <Link
                     underline="always"
                     sx={edit}
-                    onClick={() => editQuestion(index,val?.questionId)}
+                    onClick={() => editQuestion(index, val?.questionId)}
                   >
                     {"Edit Question"}
                   </Link>
@@ -200,7 +203,18 @@ const AddedQues = ({
         </Grid>
       </CardContent>
       <div ref={ref}></div>
-      {showq &&  <All ref={ref} availableQuestions={availableQuestions} setAvailableQuestions={setAvailableQuestions} />}
+      {showq && (
+        <All
+          ref={ref}
+          availableQuestions={availableQuestions}
+          setAvailableQuestions={setAvailableQuestions}
+          setContestQuestion={setContestQuestion}
+          contestQuestion={contestQuestion}
+          setAlert={setAlert}
+          setMsg={setMsg}
+          contestId={contestId}
+        />
+      )}
     </>
   );
 };

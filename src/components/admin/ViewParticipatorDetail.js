@@ -149,7 +149,7 @@ const ViewParticipatorDetail = () => {
 
   // const HandleParticipatorDetail = async () => {
   //     try {
-  //       const result = await getparticipatordetail().then();        
+  //       const result =    getparticipatordetail().then();        
   //       }
   //       catch {
   //       }

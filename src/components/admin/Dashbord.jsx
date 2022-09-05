@@ -177,7 +177,7 @@ const Dashbord = () => {
       const result = await getContestDetail(id);
       navigate("/addQuestion",{ state: {result} });
     } catch (error) {
-      
+      console.log('0-fsfffsdfasdff',error) 
     }
     
    

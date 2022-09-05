@@ -20,7 +20,7 @@ import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
-import { saveQuestion } from "../services/contest/contestServices";
+import { saveQuestion, uploadQuestions } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
 import { ConstructionOutlined, SettingsRemote } from "@mui/icons-material";
@@ -202,7 +202,7 @@ const QuestionList = () => {
   const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
   const [testCases, setTestCases] = useState(testInitialFields);
   const [testCaseList, setTestCaseList] = useState([]);
-  const [contestQuestion, setContestQuestion] = useState(null);
+  const [contestQuestion, setContestQuestion] = useState();
   const [editQuestion, setEditQuestion] = useState(false);
   const [delFromContest, setDelFromContest] = useState({
     state: true,
@@ -217,7 +217,7 @@ const QuestionList = () => {
     errMsg: "",
     color: "",
   });
-
+  const [files,setFiles]=useState(null);
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -260,7 +260,7 @@ const QuestionList = () => {
     setTestCases(testInitialFields);
   };
 
-  console.log('------llll0',contestData)
+
   const addQuestion = async (e) => {
     if (
       problemStatement.question === "" ||
@@ -338,14 +338,33 @@ const QuestionList = () => {
       return newState;
     });
   };
-
+  const uploadQuestion=async(e)=>{
+   const {files}=e.target;
+   setAlert(true);
+   try {
+    const result=await uploadQuestions(files[0],contestData?.contestId);
+    setContestQuestion([...contestQuestion,...result])
+    setMsg({
+      errMsg: "Question uploaded successfully...!",
+      color: "green",
+    });
+  setTimeout(() => {
+      setAlert(false);
+    }, 1200);
+    return  setContestQuestion([...contestQuestion, ...result]);
+   } catch (error) {
+    setAlert(false);
+    console.log('ee',error)
+   }
+  }
+  console.log('--questions', contestQuestion)
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId).then((res) => {
+      console.log(res)
       setContestQuestion(res?.contestQuestionDetail);
     }).catch("dmndv");
   }, [showAlert]);
 
-  console.log("test case list", testCaseList);
   return (
     <div style={questionList}>
       <Header />
@@ -496,10 +515,12 @@ const QuestionList = () => {
                         <Button
                           variant="outlined"
                           component="label"
+                          onChange={uploadQuestion}
                           startIcon={<NoteAddIcon />}
                         >
                           Upload File
-                          <input hidden accept="file/*" multiple type="file" />
+                          <input hidden accept="file/*" multiple type="file"
+                           />
                         </Button>
                       </Stack>
                     </Grid>
@@ -642,6 +663,7 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
+          contestId={contestData?.contestId}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}
@@ -658,6 +680,7 @@ const QuestionList = () => {
           setTestCaseList={setTestCaseList}
           setSampleTestCase={setSampleTestCase}
           setIndex={setIndex}
+         
         />
       </Container>
     </div>

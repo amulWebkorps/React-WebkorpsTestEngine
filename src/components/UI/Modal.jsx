@@ -180,7 +180,7 @@ const Modal = ({
       setshowMessage(true);
     } else {
       try {
-        const response = addContest(inputData).then();
+        const response = await addContest(inputData);
         setContestDetails([...contestDetails, inputData]);
         fetchContestData();
         if (response) {

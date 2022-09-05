@@ -334,7 +334,7 @@ const Level1 = () => {
 
   useEffect(() => {
     const result = filterQuestion("Level 1").then((res) => {
-      const response = res.data;
+      const response = res;
       setContestQuestion(response);
     });
   }, [showAlert]);
@@ -348,7 +348,7 @@ const Level1 = () => {
 console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
-      <Header />s
+      <Header />
       <Container sx={topButton}>
         {showAlert || showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
@@ -655,6 +655,7 @@ console.log('test case list',testCaseList)
           setTestCaseList={setTestCaseList}
           setSampleTestCase={setSampleTestCase}
           setIndex={setIndex}
+          level={true}
         />
       </Container>
     </div>

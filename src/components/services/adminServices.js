@@ -9,7 +9,7 @@ const SEND_MAIL = `http://localhost:8085/admin/sendMail`;
 const GET_ALL_CONTEST_LIST = `${BASE_URL}/admin/getAllContestList`;
 const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
-const UPLOAD_PARTICIAPTOR = `${BASE_URL}/studentUpload`;
+const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
  const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
@@ -53,7 +53,7 @@ const addContest = (contestDetails) => {
   });
 };
 const sendMail = (Id, mail) => {
-  return axios.post(SEND_MAIL, {
+  return api.post(SEND_MAIL, {
     studentEmails: mail,
     contestId: [Id],
   });
@@ -65,7 +65,7 @@ const sentMail = () => {
 const uploadParticipator = (file) => {
   const formData = new FormData();
   formData.append("file", file)
-  return axios.post(UPLOAD_PARTICIAPTOR,formData)
+  return api.post(UPLOAD_PARTICIAPTOR,formData)
  
 };
 

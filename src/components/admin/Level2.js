@@ -333,7 +333,7 @@ const Level2 = () => {
 
   useEffect(() => {
     const result = filterQuestion("Level 2").then((res) => {
-      const response = res.data;
+      const response = res;
       setContestQuestion(response);
     });
   }, [showAlert]);
@@ -654,6 +654,7 @@ console.log('test case list',testCaseList)
           setTestCaseList={setTestCaseList}
           setSampleTestCase={setSampleTestCase}
           setIndex={setIndex}
+          level={true}
         />
       </Container>
     </div>
