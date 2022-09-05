@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = `http://192.168.1.115:8085`;
+const BASE_URL = `http://192.168.1.63:8085`;
 const ADMIN_LOGIN_URL = `${BASE_URL}/doSignInForAdmin`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/adminRegistration`;
 const CREATE_CONTEST = `${BASE_URL}/createContest`;

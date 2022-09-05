@@ -10,6 +10,7 @@ import Select from "@mui/material/Select";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showAllLanguage } from "../services/candidate";
+import { startContestPage } from "../services/candidate";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -115,16 +116,18 @@ const Instruction = () => {
   const location = useLocation();
   const [participatorData, setParticipator] = useState(location);
   const [language2,setLanguage2]=useState()
+  const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
   
   const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
-  const handleClick2 = () => {
-    navigate("/user", { state: { language, participatorData,language2,defaultCode} });
-   
+  const handleLanguage = () => {
+    navigate("/user", { state: { language, participatorData,language2,defaultCode,participatorsContestDetails} }); 
   };
+  console.log(location,"location")
+
 
   useEffect(() => {
     showAllLanguage()
@@ -144,6 +147,21 @@ const Instruction = () => {
     (lan2) => lan2.language == language
   
   );
+  const fetchStartContestData = async () => {
+    try {
+      const result = await startContestPage(
+      language,
+      participatorData
+      )
+      setParticipatorsContestDetails(result?.data,"result.data");
+    } catch (error) {
+      console.log("error");
+    }
+  };
+  useEffect(() => {
+    fetchStartContestData();
+  }, [language]);
+
 
 
   useEffect(() => {
@@ -233,7 +251,7 @@ const Instruction = () => {
             <Button
               variant="contained"
               onClick={() => {
-                handleClick2();
+                handleLanguage();
               
                 
               }}

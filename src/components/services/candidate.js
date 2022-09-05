@@ -1,8 +1,8 @@
 import axios from "axios";
-const PARTICIPATOR_LOGIN_URL ="http://192.168.1.115:8085/doSignInForParticipator";
-const SHOW_ALL_LANGUAGE = `http://192.168.1.115:8085/showAllLanguage`;
-const START_CONTEST_PAGE=`http://192.168.1.115:8085/startContestPage`;
-const RUN_AND_CODE_COMPILER=`http://192.168.1.115:8085/runAndCompilerCode`;
+const PARTICIPATOR_LOGIN_URL ="http://192.168.1.63:8085/doSignInForParticipator";
+const SHOW_ALL_LANGUAGE = `http://192.168.1.63:8085/showAllLanguage`;
+const START_CONTEST_PAGE=`http://192.168.1.63:8085/startContestPage`;
+const RUN_AND_CODE_COMPILER=`http://192.168.1.63:8085/runAndCompilerCode`;
 const participatorLogin = (contestId, credential) => {
   return axios.get(PARTICIPATOR_LOGIN_URL, {
     params: {

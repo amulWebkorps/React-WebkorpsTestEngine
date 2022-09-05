@@ -10,11 +10,10 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
-import { showAllLanguage } from "../services/candidate";
-import { startContestPage } from "../services/candidate";
 import { runAndCompilerCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
+import screenfull from 'screenfull';
 
 
 const div1 = {
@@ -141,52 +140,37 @@ const buttonTest = {
   fontweight: "bold",
 
  }
+ const intitalState={
+  language:'',
+      questionId: "",
+      contestId: "",
+      studentId:"",
+      flag: "1",
+      code: ""
+ }
  
-
 const Compiler = () => {
-  const [language2, setLanguage2] = useState();
+  const location = useLocation();
   const [defaultCode, setDefaultCode] = useState("");
   const [codeValue, setCodeValue] = useState();
-  const location = useLocation();
   const [profile, setProfile] = useState(location?.state);
   const [count, setCount] = useState(0);
-  const [count1, setCount1] = useState(1);
-  const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
   const [runCode1, setRunCode1] = useState();
   const [codeArray, setCodeArray] = useState([]);
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
-  const [times,setTime]=useState(10000);
   const [counter, setCounter]=useState(0);
   const [showError,setShowError]=useState(false)
   const Ref = useRef(null);
   const ref = useRef(null);
 	const [timer, setTimer] = useState('00:00:00');
+  const navigate = useNavigate();
 
-
-  var TimeFormat = require('hh-mm-ss')
 
   const timerGet=.20
   const finalGet=(timerGet*60000)
-  console.log(finalGet,"getdatahhh")
   const  changeseconds=(timerGet*60)
 
-  const fetchStartContestData = async () => {
-    try {
-      const result = await startContestPage(
-        location?.state?.language,
-        profile?.participatorData
-      ).then();
-      console.log(result?.data, "akkkkkkk");
-
-      setParticipatorsContestDetails(result?.data);
-    } catch (error) {
-      console.log("error");
-    }
-  };
-  useEffect(() => {
-    fetchStartContestData();
-  }, []);
   
 
 useEffect(()=>{
@@ -194,6 +178,9 @@ useEffect(()=>{
       setShowError(true)
     }
 },[runCode1])
+
+
+
 
 useEffect(() => {
   let timeout
@@ -203,91 +190,92 @@ useEffect(() => {
   return () => clearTimeout(timeout);
 }, [showError]);
 
-
-
-
-
- console.log(" participatorsContestDetails", participatorsContestDetails)
-  console.log("location", location);
-
   const runCode = async (flag) => {
     try {
-      const resultData = await runAndCompilerCode( {
-        language: participatorsContestDetails?.languageCode?.language,
-        questionId: participatorsContestDetails?.QuestionList[count]?.questionId,
-        contestId: participatorsContestDetails?.contestId,
-        studentId: participatorsContestDetails?.studentId,
+      const resultData = await runAndCompilerCode({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        questionId: profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
         code: `${codeValue}`,
-      }).then();
+      })
       console.log(resultData, "runcode");
       setRunCode1(resultData.data);
     
     
       setShowTestCase(true)
-      
+
     } catch (error) {
       console.log(error);
     }
+
   };
-
-  console.log("runcode", runCode1);
-
-
-  
-
-  const handleScroll = () => {
+  useEffect(()=>{{
+  try {
+    if (timer==="00:00:01"){
+      const resultData =  runAndCompilerCode({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        questionId: profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
+        flag: "1",
+        code: `${codeValue}`,
+      }).then()
+      console.log(resultData.data, "runcode");
+      setRunCode1(resultData.data); 
+      setShowTestCase(true)  
+    }
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+  },[timer])
+    
+  const handleScroll = () => { 
     ref.current?.scrollIntoView({behavior: 'smooth'});
   };
 
-
   const onChange = (codeData) => {
     setCodeValue(codeData);
+  
+
   };
 
-  const handleRun = () => {
-   setCodeArray((oldArray) => [...oldArray, codeValue]);
-  };
 
-  console.log("code---------cfc", codeValue);
-  console.log("hjbjhbvss", codeArray);
- 
 
-  const navigate = useNavigate();
+console.log(location,"newlocation")
+
+
 useEffect(()=>{
    if  (runCode1?.complilationMessage===null){
   }
-
-  else if (count===participatorsContestDetails?.QuestionList?.length){
+  else if (count===profile.participatorsContestDetails?.QuestionList?.length){
     console.log('------if part')
     alert("final button")
     navigate('/thanku')
   }
   else{
-    console.log('-------else part')
+   
   }
-
-
-},[counter])
+},[count])
  const handleButton=()=>{
   setCounter(counter+1)
-  console.log(counter,"counter")
  }
-
-  console.log("rfgh", defaultCode);
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       console.log(prevCount, "===========");
-      if (prevCount <= participatorsContestDetails?.QuestionList?.length) {
+      if (prevCount <= profile.participatorsContestDetails?.QuestionList?.length) {
         return (prevCount += 1);
       } else {
-        return (prevCount = participatorsContestDetails?.QuestionList?.length);
+        return (prevCount = profile.participatorsContestDetails?.QuestionList?.length);
       }
     });
     setCodeValue(location?.state?.defaultCode);
-    
+    setShowTestCase(false)    
   };
-  console.log(count1, "rtyg");
+  
   const prevQuestion = (e) => {
     setCount(function (prevCount) {
       if (prevCount > 0) {
@@ -297,17 +285,7 @@ useEffect(()=>{
       }
     });   
   };
-  useEffect(()=>{  
-    if(times>0){
-     setTimeout(()=>setTime(times-1),1000)
-     
-    }  
-},[times])
-
-useEffect(()=>{
-  const Time = TimeFormat?.fromS(1000, 'hh:mm:ss') 
- console.log(Time,"Time")
-},[participatorsContestDetails])
+ 
 
 
 
@@ -320,6 +298,20 @@ const getTimeRemaining = (e) => {
     total, hours, minutes, seconds
   };
 }
+
+useEffect(()=>{
+  if (screenfull.isEnabled) {
+    screenfull.on('change', () => {
+      console.log('Am I fullscreen?', screenfull.isFullscreen ? 'Yes' : 'No');
+    });
+  }
+},[screenfull])
+  // enabling fullscreen has to be done after some user input
+const  toggleFullScreen = () => {
+    if (screenfull.isEnabled) {
+      screenfull.toggle();
+    }
+  }
 
 
 const startTimer = (e) => {
@@ -348,16 +340,30 @@ const getDeadTime = () => {
   deadline.setSeconds(deadline.getSeconds() + changeseconds);
   return deadline;
 }
-
 useEffect(() => {
   clearTimer(getDeadTime());
 }, []);
 
 
-// setTimeout(function(){
-//   window.location.href = '/thanku';
-// }, finalGet);
 
+// setTimeout(function(){
+
+//   window.location.href = '/thanku';
+// }, 10000000);
+
+
+
+
+
+// useEffect(() => {
+  
+//   const timer = setTimeout(() => {
+    
+//     runCode("1")
+//   },finalGet );
+
+//   return () => clearTimeout(timer);
+// }, []);
 
 
   return (
@@ -389,7 +395,7 @@ useEffect(() => {
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Test Case {count1}
+                          Test Case 
                         </Typography>
                       </Box>
                     </Grid>
@@ -402,7 +408,7 @@ useEffect(() => {
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              participatorsContestDetails?.QuestionList[count]
+                              profile.participatorsContestDetails?.QuestionList[count]
                                 ?.question
                             }
                           </Typography>
@@ -415,7 +421,7 @@ useEffect(() => {
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              participatorsContestDetails?.QuestionList[count]
+                              profile.participatorsContestDetails?.QuestionList[count]
                                 ?.sampleTestCase[0]?.constraints
                             }
                           </Typography>
@@ -431,7 +437,7 @@ useEffect(() => {
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                participatorsContestDetails?.QuestionList[count]
+                                profile.participatorsContestDetails?.QuestionList[count]
                                   ?.sampleTestCase[0]?.input
                               }
                             </Typography>
@@ -446,7 +452,7 @@ useEffect(() => {
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                participatorsContestDetails?.QuestionList[count]
+                                profile.participatorsContestDetails?.QuestionList[count]
                                   ?.sampleTestCase[0]?.output
                               }
                             </Typography>
@@ -470,7 +476,7 @@ useEffect(() => {
                   variant="contained"               
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
-                  disabled={participatorsContestDetails?.QuestionList?.length-1 === count }
+                  disabled={profile.participatorsContestDetails?.QuestionList?.length-1 === count }
                 >
                   Next
                 </Button>
@@ -559,7 +565,7 @@ useEffect(() => {
                  <Grid sx={testCaseData} >
                  <Typography m={3} mt={2} sx={testCaseText2}>
                  input               
-                      {participatorsContestDetails?.QuestionList[count]
+                      {profile.participatorsContestDetails?.QuestionList[count]
                                  ?.testcases.map((val,index)=>{
                                    return(
                                    <div key={index}>
@@ -572,7 +578,7 @@ useEffect(() => {
                  <Typography m={3} mt={2} sx={testCaseText2}>
                  output   
                  <br/>
-                      {participatorsContestDetails?.QuestionList[count]
+                      {profile.participatorsContestDetails?.QuestionList[count]
                                  ?.testcases.map((val,index)=>{
                                    return(
                                    <div key={index}>
@@ -592,6 +598,8 @@ useEffect(() => {
           </Grid>
         </Grid>
       </Box>
+      
+      <button onClick={toggleFullScreen}>Toggle fullscreen</button>
     </Box>
   );
 };
