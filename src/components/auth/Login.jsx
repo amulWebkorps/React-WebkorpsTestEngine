@@ -136,32 +136,34 @@ const Login = ({ admin }) => {
   }, []);
 
   const handleLogin = async () => {
-    setLoading(true);
+   // setLoading(true);
     if (path === "/") {
+      console.log('clickeds')
       // localStorage.setItem("login", true);
-      try {
-        const result = await loginAdmin(credential)
-        if (credential.email === "" || credential.password === "") {
-          setLoading(false);
-          setAlert(true);
-        } else if (result) {
-          setLoading(false);
-          setResponse(result?.data);
-          const token =result?.data?.token;
-          localStorage.setItem("token",token);
+    //   try {
+    //     console.log('try')
+    //     const result = await loginAdmin(credential)
+    //     if (credential.email === "" || credential.password === "") {
+    //       setLoading(false);
+    //       setAlert(true);
+    //     } else if (result) {
+    //       setLoading(false);
+    //       setResponse(result?.data);
+    //       const token =result?.data?.token;
+    //       localStorage.setItem("token",token);
           
-          setMsg(true);
-          setTimeout(() => {
-            navigate("/dashboard", { state: { data: result.data } });
-          }, 1500);
-        }
-      } catch (error) {
-        setAlert(true);
-        setLoading(false);
-        setResponse(error?.response?.data);
-        navigate("/");
-      }
-    } else {
+    //       setMsg(true);
+    //       setTimeout(() => {
+    //         navigate("/dashboard", { state: { data: result.data } });
+    //       }, 1500);
+    //     }
+    //   } catch (error) {
+    //     setAlert(true);
+    //     setLoading(false);
+    //     setResponse(error?.response?.data);
+    //     navigate("/");
+    //   }
+    // } else {
       try {
         const result = await participatorLogin(id, credential)
         setMsg(true);

@@ -1,7 +1,7 @@
 import axios from "axios";
-
+import { BASE_URL } from "./base";
 import api from "./api";
-const BASE_URL = `http://localhost:8085`;
+
 const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
 const CREATE_CONTEST = `${BASE_URL}/admin/createContest`;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "./base";
-const PARTICIPATOR_LOGIN_URL =`${BASE_URL}/doSignInForParticipator`;
+const PARTICIPATOR_LOGIN_URL =`${BASE_URL}/public/doSignInForParticipator`;
 const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
 const START_CONTEST_PAGE=`${ BASE_URL}/startContestPage`;
 const RUN_AND_CODE_COMPILER=`${BASE_URL}/runAndCompilerCode`;

@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = `http://localhost:8085`;
+import { BASE_URL } from "./base";
 const api = axios.create({
   baseURL: BASE_URL,
   responseType: "json",
@@ -10,7 +10,7 @@ api.interceptors.request.use(
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       Accept: "*/*",
       "Content-Type": "application/Json",
-      "Access-Control-Allow-Origin": "http://localhost:8085",
+      "Access-Control-Allow-Origin": `${BASE_URL}`,
     };
     return config;
   },
