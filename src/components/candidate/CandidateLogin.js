@@ -3,21 +3,18 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
 import LoginButton from "./base/LoginButton";
-import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { loginAdmin } from "../services/adminServices";
+import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
 import MsgBar from "./base/MsgBar";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import axios from "axios";
+import { TryRounded } from "@mui/icons-material";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -53,40 +50,6 @@ const Boxstyle = {
   position: "absolute",
 };
 
-const footerOne = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "65px",
-  "a:-webkit-any-link": {
-    cursor: "pointer",
-    textDecoration: "none",
-  },
-};
-
-const footerTwo = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "105px",
-};
-
-const RegisterButton = {
-  fontSize: 14,
-  fontWeight: 600,
-  color: "#0057FF",
-  textTransform: "none",
-};
-
-const checkboxname = {
-  ".css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
-    marginTop: "-13px",
-  },
-  ".css-ahj2mt-MuiTypography-root": {
-    fontSize: "13px",
-    fontWeight: "100",
-    marginTop: "3px",
-  },
-};
-
 const copyright = {
   color: "white",
   textAlign: "center",
@@ -116,28 +79,29 @@ const logoText = {
   color: "#1887C9",
 };
 
-const showIcon = {
-  position: "absolute",
-  margin: "126px 0px 0px 290px",
-};
-const hideIcon = {
-  position: "absolute",
-  margin: "126px 0px 0px 290px",
-};
-
-const Login = () => {
+const CandidateLogin = () => {
   const [credential, setCredential] = useState({
     email: "",
     password: "",
   });
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
-  const [showWarning, setShowwarning] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [showMsg, setMsg] = useState(false);
-  const [seenPassword, setSeenpassword] = useState(false);
+  const [ErrorMsg, setErrorMsg] = useState(false);
+  const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const path = window?.location?.pathname;
+  const { id } = useParams();
 
+  //   useEffect(() => {
+  //     let login = localStorage.getItem("login");
+  //     if (!login) {
+  //       navigate("/");
+  //     }
+  //   }, []);
+  console.log("id", id);
   const handleLogin = async () => {
+    setLoading(true);
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
       setLoading(false);
@@ -146,30 +110,22 @@ const Login = () => {
       }, 2000);
     } else {
       try {
-        const result = await loginAdmin(credential);
+        const result = await participatorLogin(id, credential);
+
         setLoading(true);
         setMsg(true);
-        const token = result?.data?.token;
-        localStorage.setItem("token", token);
+        localStorage.setItem("login", "true");
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/instruction", { state: { data: result.data } });
         }, 1500);
       } catch (error) {
         setLoading(false);
-        setShowwarning(true);
+        setErrorMsg(true);
         setTimeout(() => {
-          setShowwarning(false);
-        }, 3000);
-        navigate("/");
+          setErrorMsg(false);
+        }, 2000);
       }
     }
-  };
-
-  const showPassword = () => {
-    setSeenpassword(true);
-  };
-  const hidePassword = () => {
-    setSeenpassword(false);
   };
 
   useEffect(() => {
@@ -191,20 +147,22 @@ const Login = () => {
           </Box>
         </Grid>
         {showAlert && (
-          <MsgBar empty={"Please fill all Details"} color={"Red"} />
-        )}
-        {showWarning && (
-          <MsgBar color={"Red"} errMsg={"email and password does not match"} />
+          <MsgBar
+            empty={"Please fill all Details"}
+            color={"Red"}
+            errMsg={response}
+          />
         )}
       </Grid>
       {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
-
+      {ErrorMsg && (
+        <MsgBar errMsg={"Please fill correct details"} color={"red"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
             {loading && <Loader />}
-
             <Stack>
               <TextInput
                 label="Email Address"
@@ -212,43 +170,14 @@ const Login = () => {
                 onChange={(e) => handleChange(e)}
                 value={credential?.email}
               />
-
               <TextInput
                 label="Password"
                 name="password"
-                type={seenPassword ? "text" : "password"}
+                type={"password"}
                 onChange={(e) => handleChange(e)}
                 value={credential?.password}
-              ></TextInput>
-              {credential?.password !== "" &&
-                (seenPassword ? (
-                  <VisibilityIcon
-                    sx={showIcon}
-                    onClick={hidePassword}
-                    fontSize="small"
-                  />
-                ) : (
-                  <VisibilityOffIcon
-                    sx={hideIcon}
-                    onClick={showPassword}
-                    fontSize="small"
-                  />
-                ))}
-              <FormControlLabel
-                control={<Checkbox size="10px" />}
-                label="Remember me"
-                sx={checkboxname}
               />
               <LoginButton name="Log in" onClick={handleLogin} />
-              <>
-                <Typography sx={footerOne}>
-                  Don't have account?
-                  <NavLink to="/register">
-                    <Button sx={RegisterButton}>Register</Button>
-                  </NavLink>
-                </Typography>
-                <Typography sx={footerTwo}>Forgot Password?</Typography>
-              </>
             </Stack>
           </Box>
         </Box>
@@ -258,4 +187,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default CandidateLogin;

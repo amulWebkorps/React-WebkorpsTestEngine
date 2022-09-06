@@ -11,7 +11,7 @@ const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
- const loginAdmin = (credential) => {
+const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {
       email: credential?.email,
@@ -30,7 +30,7 @@ const registerAdmin = (credential) => {
 };
 
 const getContestDetail = (id) => {
-  console.log('----->>>>>>>>>',id)
+  console.log('-------id',id)
   return api.get(CONTEST_URL, {
     params: {
       contestId: id,
@@ -84,7 +84,5 @@ export {
   sentMail,
   uploadParticipator,
 };
-
-
 
 // export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail,viewParticipatorOfContest};
