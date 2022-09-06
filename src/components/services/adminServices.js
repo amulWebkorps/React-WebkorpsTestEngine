@@ -22,7 +22,7 @@ const loginAdmin = (credential) => {
 const registerAdmin = (credential) => {
   return axios.post(ADMIN_REGISTRATION_URL, {
     email: credential?.email,
-    hId: "string",
+    hId: "",
     hName: credential?.hName,
     hNumber: credential?.hNumber,
     password: credential?.password,
@@ -30,7 +30,6 @@ const registerAdmin = (credential) => {
 };
 
 const getContestDetail = (id) => {
-  console.log("----->>>>>>>>>", id);
   return api.get(CONTEST_URL, {
     params: {
       contestId: id,

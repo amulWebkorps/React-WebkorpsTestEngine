@@ -91,7 +91,7 @@ const CandidateLogin = () => {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const path = window?.location?.pathname;
-  const { Id } = useParams();
+  const { id } = useParams();
 
   //   useEffect(() => {
   //     let login = localStorage.getItem("login");
@@ -99,7 +99,7 @@ const CandidateLogin = () => {
   //       navigate("/");
   //     }
   //   }, []);
-
+  console.log("id", id);
   const handleLogin = async () => {
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
@@ -110,9 +110,11 @@ const CandidateLogin = () => {
       }, 2000);
     } else {
       try {
-        const result = await participatorLogin(Id, credential).then();
+        const result = await participatorLogin(id, credential);
+
         setLoading(true);
         setMsg(true);
+        localStorage.setItem("login", "true");
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);

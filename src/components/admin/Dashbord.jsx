@@ -204,11 +204,13 @@ const Dashbord = () => {
   };
 
   const fetchContestData = async () => {
+    
     const response = await getAllContestList();
     setContestDetails(response);
   };
 
   useEffect(() => {
+    
     fetchContestData();
   }, []);
 
@@ -221,8 +223,8 @@ const Dashbord = () => {
       {showAvailq ? (
         <>
           <Modal
-            open={open}         
-            setOpen={setOpen} 
+            open={open}
+            setOpen={setOpen}
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}

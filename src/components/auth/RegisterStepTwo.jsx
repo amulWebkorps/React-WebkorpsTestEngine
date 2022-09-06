@@ -17,6 +17,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { registerAdmin } from "../services/adminServices";
 import Validation from "./base/Validation";
 import MsgBar from "./base/MsgBar";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
@@ -146,9 +148,28 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterTwo = ({ registercredential, setregistercredential }) => {
-  const [confirmPassword, setConfirmpassword] = useState("");
+const showIcon = {
+  position: "absolute",
+  margin: "110px 0px 0px 290px",
+};
+const hideIcon = {
+  position: "absolute",
+  margin: "110px 0px 0px 290px",
+};
 
+const showIconConfirm = {
+  position: "absolute",
+  margin: "200px 0px 0px 290px",
+};
+const hideIconConfirm = {
+  position: "absolute",
+  margin: "200px 0px 0px 290px",
+};
+
+const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
+  const [confirmPassword, setConfirmpassword] = useState("");
+  const [seenPassword, setSeenpassword] = useState(false);
+  const [seenConfirmPassword, setSeenConfirmpassword] = useState(false);
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [fillalert, setfillalert] = useState(false);
@@ -176,7 +197,9 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
     } else if (credential.password === confirmPassword) {
       try {
         const response = await registerAdmin(registercredential);
-        setAlert(true); setalertpassword(false); setfillalert(false);
+        setAlert(true);
+        setalertpassword(false);
+        setfillalert(false);
         setTimeout(() => {
           navigate("/");
         }, 3500);
@@ -196,6 +219,21 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
       setAlert(false);
     }
   };
+
+  const showPassword = () => {
+    setSeenpassword(true);
+  };
+  const hidePassword = () => {
+    setSeenpassword(false);
+  };
+
+  const showPasswordConfirm = () => {
+    setSeenConfirmpassword(true);
+  };
+  const hidePasswordConfirm = () => {
+    setSeenConfirmpassword(false);
+  };
+
   return (
     <>
       <Grid container>
@@ -238,21 +276,47 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
               <TextInput
                 label="Password"
                 star={"*"}
-                type="password"
+                type={seenPassword ? "text" : "password"}
                 onChange={handleChange}
                 value={credential.password}
                 name="password"
               />
+              {credential?.password !== "" &&
+                (seenPassword ? (
+                  <VisibilityIcon
+                    sx={showIcon}
+                    onClick={hidePassword}
+                    fontSize="small"
+                  />
+                ) : (
+                  <VisibilityOffIcon
+                    sx={hideIcon}
+                    onClick={showPassword}
+                    fontSize="small"
+                  />
+                ))}
               <TextInput
                 label="Confirm Password"
                 star={"*"}
-                type="password"
+                type={seenConfirmPassword ? "text" : "password"}
                 onChange={(e) => setConfirmpassword(e.target.value)}
                 value={confirmPassword}
               />
-              {/* <NavLink  style={{ textDecoration: "none" }}>
-                
-              </NavLink> */}
+              {confirmPassword !== "" &&
+                (seenConfirmPassword ? (
+                  <VisibilityIcon
+                    sx={showIconConfirm}
+                    fontSize="small"
+                    onClick={hidePasswordConfirm}
+                  />
+                ) : (
+                  <VisibilityOffIcon
+                    sx={hideIconConfirm}
+                    fontSize="small"
+                    onClick={showPasswordConfirm}
+                  />
+                ))}
+
               <RegisterButton name="Register" onClick={register} />
               <Typography sx={footerOne}>
                 Have an account?
@@ -269,4 +333,4 @@ const RegisterTwo = ({ registercredential, setregistercredential }) => {
   );
 };
 
-export default RegisterTwo;
+export default RegisterStepTwo;
