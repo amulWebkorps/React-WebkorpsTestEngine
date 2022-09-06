@@ -22,7 +22,7 @@ const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
 const registerAdmin = (credential) => {
   return axios.post(ADMIN_REGISTRATION_URL, {
     email: credential?.email,
-    hId: "string",
+    hId: "",
     hName: credential?.hName,
     hNumber: credential?.hNumber,
     password: credential?.password,
@@ -60,7 +60,7 @@ const sendMail = (Id, mail) => {
 };
 
 const sentMail = () => {
-  return axios.get(SENT_MAIL);
+  return api.get(SENT_MAIL);
 };
 const uploadParticipator = (file) => {
   const formData = new FormData();

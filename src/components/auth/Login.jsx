@@ -152,7 +152,7 @@ const Login = ({ admin }) => {
           localStorage.setItem("login","true");
           setMsg(true);
           setTimeout(() => {
-            navigate("/dashboard", { state: { data: result.data } });
+            navigate("/dashboard");
           }, 1500);
         }
       } catch (error) {

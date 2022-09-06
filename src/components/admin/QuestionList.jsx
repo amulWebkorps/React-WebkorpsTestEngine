@@ -351,7 +351,7 @@ const QuestionList = () => {
   setTimeout(() => {
       setAlert(false);
     }, 1200);
-    return  setContestQuestion([...contestQuestion, ...result]);
+    
    } catch (error) {
     setAlert(false);
     console.log('ee',error)
@@ -639,7 +639,7 @@ const QuestionList = () => {
                         <Stack
                           spacing={2}
                           direction="row"
-                          justifyContent={"flex-end"}
+                          justifyContent={"flex-start"}
                           mt={2}
                         >
                           <Button
@@ -649,9 +649,7 @@ const QuestionList = () => {
                           >
                             Add
                           </Button>
-                          <Button variant="contained" sx={Addbtn}>
-                            Close
-                          </Button>
+      
                         </Stack>
                       </Container>
                     </div>

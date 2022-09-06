@@ -159,9 +159,7 @@ const Allavailable = () => {
 console.log('------',allAvailQues)
   useEffect(()=>{
     const result = filterQuestion(filterValue).then((res)=>{
-      const response= res.data
-      setAllAvailQues(response)
-   
+      setAllAvailQues(res)
     })
   },[filterValue])
 

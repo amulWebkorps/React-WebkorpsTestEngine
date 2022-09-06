@@ -38,7 +38,6 @@ import RegisterOne from "./components/auth/RegisterOne";
 import RegisterTwo from "./components/auth/RegisterTwo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
-import Errorpage from "./components/auth/Errorpage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import All from "./components/admin/All";
 import Level1 from "./components/admin/Level1";

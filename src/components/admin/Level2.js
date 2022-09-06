@@ -22,8 +22,7 @@ import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
 import { filterQuestion, saveQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
-import { getContestDetail } from "../services/adminServices";
-import { ConstructionOutlined } from "@mui/icons-material";
+import { uploadQuestions } from "../services/contest/contestServices";
 
 const useStyles = makeStyles({
   container: {
@@ -311,6 +310,26 @@ const Level2 = () => {
       }
     }
   };
+
+  const uploadQuestion=async(e)=>{
+    const {files}=e.target;
+    setAlert(true);
+    try {
+     const result=await uploadQuestions(files[0],"");
+     setContestQuestion([...contestQuestion,...result])
+     setMsg({
+       errMsg: "Question uploaded successfully...!",
+       color: "green",
+     });
+   setTimeout(() => {
+       setAlert(false);
+     }, 1200);
+    } catch (error) {
+     setAlert(false);
+     console.log('ee',error)
+    }
+   }
+
   const delTestCase = (id) => {
     setTestCaseList((val) => {
       return val.filter((a, index) => index !== id);
@@ -495,6 +514,7 @@ console.log('test case list',testCaseList)
                         <Button
                           variant="outlined"
                           component="label"
+                          onChange={uploadQuestion}
                           startIcon={<NoteAddIcon />}
                         >
                           Upload File
