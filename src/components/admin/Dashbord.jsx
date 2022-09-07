@@ -365,7 +365,7 @@ const Dashbord = () => {
 
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
-                          <p style={months}>00 months to 06 months</p>
+                     
                         </CardContent>
                       </CardActionArea>
                     </Card>
