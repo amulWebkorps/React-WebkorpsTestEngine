@@ -137,6 +137,12 @@ const Login = () => {
   const [showMsg, setMsg] = useState(false);
   const [seenPassword, setSeenpassword] = useState(false);
 
+  // const token = localStorage.getItem("token");
+  // // if(token){
+  // //   console.log("token :-", token)
+  // //   navigate("/")
+  // // }
+
   const handleLogin = async () => {
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
@@ -146,6 +152,7 @@ const Login = () => {
       }, 2000);
     } else {
       try {
+       
         const result = await loginAdmin(credential);
         setLoading(true);
         setMsg(true);

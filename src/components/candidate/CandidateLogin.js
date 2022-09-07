@@ -13,6 +13,8 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
 import MsgBar from "./base/MsgBar";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { TryRounded } from "@mui/icons-material";
 const ContainerStyle = {
@@ -79,6 +81,15 @@ const logoText = {
   color: "#1887C9",
 };
 
+const showIcon = {
+  position: "absolute",
+  margin: "126px 0px 0px 290px",
+};
+const hideIcon = {
+  position: "absolute",
+  margin: "126px 0px 0px 290px",
+};
+
 const CandidateLogin = () => {
   const [credential, setCredential] = useState({
     email: "",
@@ -90,6 +101,7 @@ const CandidateLogin = () => {
   const [ErrorMsg, setErrorMsg] = useState(false);
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
 
@@ -126,6 +138,13 @@ const CandidateLogin = () => {
         }, 2000);
       }
     }
+  };
+
+  const showPassword = () => {
+    setSeenpassword(true);
+  };
+  const hidePassword = () => {
+    setSeenpassword(false);
   };
 
   useEffect(() => {
@@ -173,10 +192,24 @@ const CandidateLogin = () => {
               <TextInput
                 label="Password"
                 name="password"
-                type={"password"}
+                type={seenPassword ? "text" : "password"}
                 onChange={(e) => handleChange(e)}
                 value={credential?.password}
-              />
+              />{" "}
+              {credential?.password !== "" &&
+                (seenPassword ? (
+                  <VisibilityIcon
+                    sx={showIcon}
+                    onClick={hidePassword}
+                    fontSize="small"
+                  />
+                ) : (
+                  <VisibilityOffIcon
+                    sx={hideIcon}
+                    onClick={showPassword}
+                    fontSize="small"
+                  />
+                ))}
               <LoginButton name="Log in" onClick={handleLogin} />
             </Stack>
           </Box>
