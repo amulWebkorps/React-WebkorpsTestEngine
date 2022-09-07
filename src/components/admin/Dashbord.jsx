@@ -173,12 +173,10 @@ const Dashbord = () => {
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
-      navigate("/addQuestion",{ state: {result} });
+      navigate("/addQuestion", { state: { result } });
     } catch (error) {
-      console.log('0-fsfffsdfasdff',error) 
+      console.log("0-fsfffsdfasdff", error);
     }
-    
-   
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -208,13 +206,11 @@ const Dashbord = () => {
   };
 
   const fetchContestData = async () => {
-    
     const response = await getAllContestList();
     setContestDetails(response);
   };
 
   useEffect(() => {
-    
     fetchContestData();
   }, []);
 
@@ -249,8 +245,8 @@ const Dashbord = () => {
             <MsgBar
               errMsg={
                 bar
-                  ? "Contest Delete Successfully...!"
-                  : "Contest Created Successfully...!"
+                  ? "Contest delete Successfully...!"
+                  : "Contest created Successfully...!"
               }
               color={bar ? "blue" : "green"}
             />
@@ -365,7 +361,6 @@ const Dashbord = () => {
 
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
-                     
                         </CardContent>
                       </CardActionArea>
                     </Card>

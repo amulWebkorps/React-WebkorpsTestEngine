@@ -10,6 +10,7 @@ import Select from "@mui/material/Select";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showAllLanguage } from "../services/candidate";
+import { startContestPage } from "../services/candidate";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -114,23 +115,22 @@ const Instruction = () => {
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
   const [participatorData, setParticipator] = useState(location);
-  const [language2,setLanguage2]=useState()
-  
+  const [languages,setLanguages]=useState()
+  const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
   const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
-  const handleClick2 = () => {
-    navigate("/user", { state: { language, participatorData,language2,defaultCode} });
-  };
+
+  console.log(location,"location getjhbjb")
 
   useEffect(() => {
     showAllLanguage()
       .then(function (response) {
         // handle success
         console.log(response.data, "showall");
-        setLanguage2(response.data);
+        setLanguages(response)
       })
       .catch(function (error) {
         // handle error
@@ -138,13 +138,11 @@ const Instruction = () => {
       });
   }, []);
 
+  console.log(location,"hugyf")
   
-  const dataLan = language2?.filter(
+  const dataLan = languages?.filter(
     (lan2) => lan2.language == language
-  
   );
-
-
   useEffect(() => {
     dataLan === undefined ? (
       <div></div>
@@ -157,22 +155,33 @@ const Instruction = () => {
 
   console.log ("defaultCode",defaultCode)
   
+  console.log("participatorsss");
 
-  
-    
-    
+  const fetchStartContestData = async () => {
+    try {
+      const result = await startContestPage(
+      language,
+      participatorData
+      )
+      setParticipatorsContestDetails(result,"result.data");
+     
+      
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
+
  
-
+  if (participatorsContestDetails){
+    setTimeout(()=>{
+      navigate("/user", { state: { language, participatorData,languages,defaultCode,participatorsContestDetails} });      
   
+    },1000) 
 
-  
+  }
 
 
-
-
- 
-
-  console.log("participatorsss ");
 
   return (
     <div style={background1}>
@@ -232,9 +241,8 @@ const Instruction = () => {
             <Button
               variant="contained"
               onClick={() => {
-                handleClick2();
-              
-                
+               
+                fetchStartContestData();
               }}
               sx={startContest}
             >
@@ -251,3 +259,4 @@ const Instruction = () => {
 };
 
 export default Instruction;
+

@@ -111,10 +111,11 @@ const CandidateLogin = () => {
     } else {
       try {
         const result = await participatorLogin(id, credential);
-
+        localStorage.setItem("token", result?.data?.token);
         setLoading(true);
         setMsg(true);
         localStorage.setItem("login", "true");
+        
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);
