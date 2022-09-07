@@ -173,12 +173,10 @@ const Dashbord = () => {
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
-      navigate("/addQuestion",{ state: {result} });
+      navigate("/addQuestion", { state: { result } });
     } catch (error) {
-      console.log('0-fsfffsdfasdff',error) 
+      console.log("0-fsfffsdfasdff", error);
     }
-    
-   
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -206,22 +204,26 @@ const Dashbord = () => {
       navigate("/allavailable");
     }
   };
+ 
 
+  function noBack() {
+    window.history.forward();
+    navigate("/dashboard");
+   
+  }
   const fetchContestData = async () => {
-    
     const response = await getAllContestList();
     setContestDetails(response);
   };
 
   useEffect(() => {
-    
     fetchContestData();
   }, []);
 
   // console.log("---contest", contestDetails);
 
   return (
-    <div style={app}>
+    <div style={app} onLoad={noBack}>
       <Header />
 
       {showAvailq ? (

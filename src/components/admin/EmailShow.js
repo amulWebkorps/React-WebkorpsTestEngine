@@ -145,6 +145,7 @@ const EmailShow = () => {
           loader: false,
         });
       }, 1200);
+      getParticipatorData();
       setUploadEmail((val) => {
         return val.filter((id) => id !== mail);
       });

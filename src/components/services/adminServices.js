@@ -31,11 +31,7 @@ const registerAdmin = (credential) => {
 
 const getContestDetail = (id) => {
   console.log('-------id',id)
-  return api.get(CONTEST_URL, {
-    params: {
-      contestId: id,
-    },
-  });
+  return api.get(`${CONTEST_URL}?contestId=${id}`);
 };
 const deleteContest = (id) => {
   return api.delete(DELETE_CONTEST, {

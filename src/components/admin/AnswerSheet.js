@@ -20,9 +20,9 @@ const BigContainer = {
 const MainContainer = {
   background: "#F9FAFC",
   width: "70vw",
-  height: "71vh",
+  height: "65vh",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
-  borderRadius: "17px",
+  // borderRadius: "17px",
   overflow: "auto",
 };
 
@@ -53,7 +53,7 @@ const MainBox = {
   textAlign: "center",
 };
 const QuestionBox = {
-  cursor:"pointer",
+  cursor: "pointer",
   width: "250px",
   height: "55px",
   background: "#FDFEFF;",
@@ -67,7 +67,7 @@ const QuestionBox = {
 };
 
 const AnswerBox = {
-  cursor:"pointer",
+  cursor: "pointer",
   width: "250px",
   height: "55px",
   background: "#0057FF",
@@ -82,12 +82,16 @@ const AnswerBox = {
 };
 
 const innerHeading = {
+  width: "70vw",
+  // height: "71vh",
+  background: '#F9FAFC',
+  borderRadius:" 17px 17px 0px 0px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  marginLeft: "30px",
-  marginRight: "30px",
-  paddingTop: "20px",
+  marginLeft: "-11px",
+  // marginRight: "30px",
+  paddingTop: "10px",
 };
 
 const innerSearch = {
@@ -106,6 +110,7 @@ const searchField = {
   background: "#F1F1F1",
   opacity: 0.5,
   borderRadius: `0px 15px 15px 0px`,
+  marginRight:"10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 300,
@@ -114,6 +119,7 @@ const searchField = {
 };
 
 const Answerheading = {
+  marginLeft:"30px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
@@ -160,6 +166,7 @@ const ViewDetail = {
   textDecoration: "underline",
 };
 const deleteIcon = {
+  cursor:"pointer",
   background: "#E5E5E5",
   borderRadius: "50%",
   height: "30px",
@@ -171,39 +178,44 @@ const deleteIcon = {
   marginLeft: "20px",
   fontSize: "18px",
 };
+const person=["Ramesh Malhotra","Ram Malhotra","Raju Malhotra","Rajkumari Malhotra","rajesh","nitesh","akshay","swad","sohan","salve"]
 const array = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12];
 const AnswerSheet = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   return (
     <>
-      <Header/>
+      <Header />
       <Container sx={BigContainer}>
         <Box sx={MainBox}>
-          <Box sx={QuestionBox} onClick={()=>navigate(-1)} >Questions</Box>
+          <Box sx={QuestionBox} onClick={() => navigate(-1)}>
+            Questions
+          </Box>
           <Box sx={AnswerBox}>Participators</Box>
         </Box>
-        <Container sx={MainContainer}>
-          <Box sx={innerHeading}>
-            <Typography sx={Answerheading}>Answer Sheets</Typography>
-            <Box sx={innerSearch}>
-              <IconButton type="submit" sx={searchIcon}>
-                <SearchIcon />
-              </IconButton>
-              <InputBase placeholder="Unique ID or Name" sx={searchField} />
-            </Box>
+        <Container>
+        <Box sx={innerHeading}>
+          <Typography sx={Answerheading}>Answer Sheets</Typography>
+          <Box sx={innerSearch}>
+            <IconButton type="submit" sx={searchIcon}>
+              <SearchIcon />
+            </IconButton>
+            <InputBase placeholder="Unique ID or Name" sx={searchField} />
           </Box>
+        </Box>
+        </Container>
+        <Container sx={MainContainer}>
           <Container>
-            {array.map((val) => {
+            {array.map((val,index) => {
               return (
                 <Grid sx={maindata}>
                   <Box sx={innerdata}>
                     <Typography sx={Sno}>1.</Typography>
                     <Typography sx={UniqueId}> (101)</Typography>
-                    <Typography sx={UserName}>Ramesh Malhotra</Typography>
+                    <Typography sx={UserName}>{person[index]}</Typography>
                   </Box>
                   <Box sx={innerdata}>
                     <Typography sx={ViewDetail}>View Details</Typography>
-                    <Typography sx={deleteIcon}>x</Typography>
+                    <Typography sx={deleteIcon} onClick={()=>console.log('--')}>x</Typography>
                   </Box>
                 </Grid>
               );
