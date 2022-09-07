@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const path = window?.location?.pathname;
 
-const Protected = (props) => {
-  const { Component, admin } = props;
+const AdminRoutes = (props) => {
+  const { Component } = props;
   const navigate = useNavigate();
+
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if ((path === "/dashboard" && token) || path === "/dashboard") {
+    if (path === "/dashboard" && token) {
       navigate("/dashboard");
     } else if (path === "/addQuestion" && token) {
       navigate("/addQuestion");
@@ -26,9 +27,9 @@ const Protected = (props) => {
   }, []);
   return (
     <>
-      <Component admin={admin} />
+      <Component />
     </>
   );
 };
 
-export default Protected;
+export default AdminRoutes;

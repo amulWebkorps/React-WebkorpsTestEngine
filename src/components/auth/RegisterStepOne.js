@@ -157,7 +157,7 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterOne = ({ setregistercredential }) => {
+const RegisterStepOne = ({ setregistercredential }) => {
   const [showAlert, setAlert] = useState(false);
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
@@ -174,27 +174,11 @@ const RegisterOne = ({ setregistercredential }) => {
     setcredential({ ...credential, [name]: value });
     setregistercredential({ ...credential, [name]: value });
   };
-
-  // const handleValidation = (e) => {
-  //   const { name, value } = e.target;
-  //   switch (name) {
-  //     case "email":
-  //       if (!/.+@.+\.[A-Za-z]+$/.test(value)) {
-  //         setcredential({
-  //           ...credential,
-  //           error: {
-  //             name: name,
-  //             value: "Invalid Email Address",
-  //           },
-  //         });
-  //       }
-  //   }
-  // };
   const handleClick = () => {
     if (credential.hName === "") {
       setAlert(true);
       setshownumber(false);
-    } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email)===true) {
+    } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email) === true) {
       setAlert(false);
       setshownumber(false);
       setshowemail(true);
@@ -224,16 +208,12 @@ const RegisterOne = ({ setregistercredential }) => {
           </Box>
         </Grid>
       </Grid>
-      {showAlert && (
-        <MsgBar errMsg={"Please fill all details"} color={"red"}/>
-        
-      )}
+      {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
       {showNumber && (
-        <MsgBar errMsg={"Please enter valid phone number"} color={"red"}/>
-       
+        <MsgBar errMsg={"Please enter valid phone number"} color={"red"} />
       )}
       {showEmail && (
-        <MsgBar errMsg={"Please fill valid email address"} color={"red"}/>
+        <MsgBar errMsg={"Please fill valid email address"} color={"red"} />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
@@ -261,7 +241,6 @@ const RegisterOne = ({ setregistercredential }) => {
               <TextInput
                 label="Email Address"
                 star={"*"}
-                // onBlur={handleValidation}
                 onChange={handleChange}
                 value={credential.email}
                 name="email"
@@ -275,14 +254,8 @@ const RegisterOne = ({ setregistercredential }) => {
                 type="number"
                 name="hNumber"
               />
-              {/* <NavLink to="/password" style={{ textDecoration: "none" }}> */}
-              {/* <Link
-                to={"/password"}
-                // state={{ credential: credential }}
-                style={{ textDecoration: "none" }}
-              > */}
+
               <ContinueButton name="Continue" onClick={handleClick} />
-              {/* </Link> */}
 
               <Typography sx={footerOne}>
                 Have an account?
@@ -300,4 +273,4 @@ const RegisterOne = ({ setregistercredential }) => {
   );
 };
 
-export default RegisterOne;
+export default RegisterStepOne;

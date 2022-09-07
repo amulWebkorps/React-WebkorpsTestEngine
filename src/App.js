@@ -34,18 +34,20 @@ import Dashbord from "./components/admin/Dashbord";
 import Compiler from "./components/candidate/Compiler";
 import EmailShow from "./components/admin/EmailShow";
 import Login from "./components/auth/Login";
-import RegisterOne from "./components/auth/RegisterOne";
-import RegisterTwo from "./components/auth/RegisterTwo";
+import RegisterStepOne from "./components/auth/RegisterStepOne";
+import RegisterStepTwo from "./components/auth/RegisterStepTwo";
+// import RegisterOne from "./components/auth/RegisterStepOne";
+// import RegisterTwo from "./components/auth/RegisterStepTwo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
-import Errorpage from "./components/auth/Errorpage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import All from "./components/admin/All";
 import Level1 from "./components/admin/Level1";
 import Level2 from "./components/admin/Level2";
 import Allavailable from "./components/admin/Allavailable";
 import Instruction from "./components/candidate/Instruction";
-import Protected from "./Protected";
+import AdminRoutes from "./AdminRoutes";
+import CandidateRoutes from "./CandidateRoutes";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
 import Thankupage from "./components/UI/Thankupage";
 import CandidateLogin from "./components/candidate/CandidateLogin";
@@ -58,7 +60,6 @@ const theme = createTheme({
 });
 
 function App() {
-  const [admin, setAdmin] = useState(true);
   const [registercredential, setregistercredential] = useState({
     hName: "",
     email: "",
@@ -71,20 +72,15 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={<Protected Component={Login} admin={admin} />}
-            ></Route>
-            <Route path="/login/:id" element={<CandidateLogin />}></Route>
-            <Route path="/user" element={<Compiler />}></Route>
+            <Route path="/" element={<AdminRoutes Component={Login} />}></Route>
             <Route
               path="/email"
-              element={<Protected Component={EmailShow} />}
+              element={<AdminRoutes Component={EmailShow} />}
             ></Route>
             <Route
               path="/register"
               element={
-                <RegisterOne
+                <RegisterStepOne
                   registercredential={registercredential}
                   setregistercredential={setregistercredential}
                 />
@@ -93,7 +89,7 @@ function App() {
             <Route
               path="/password"
               element={
-                <RegisterTwo
+                <RegisterStepTwo
                   registercredential={registercredential}
                   setregistercredential={setregistercredential}
                 />
@@ -101,29 +97,33 @@ function App() {
             ></Route>
             <Route
               path="/dashboard"
-              element={<Protected Component={Dashbord} />}
+              element={<AdminRoutes Component={Dashbord} />}
             ></Route>
             <Route
               path="/addQuestion"
-              element={<Protected Component={QuestionList} />}
+              element={<AdminRoutes Component={QuestionList} />}
             ></Route>
             <Route
               path="/participator"
-              element={<Protected Component={AnswerSheet} />}
+              element={<AdminRoutes Component={AnswerSheet} />}
             ></Route>
             <Route
               path="/viewparticipator"
-              element={<Protected Component={viewParticipatorDetail} />}
+              element={<AdminRoutes Component={viewParticipatorDetail} />}
             ></Route>
+            
             <Route
               path="/level1"
-              element={<Protected Component={Level1} />}
+              element={<AdminRoutes Component={Level1} />}
             ></Route>
             <Route
               path="/level2"
-              element={<Protected Component={Level2} />}
+              element={<AdminRoutes Component={Level2} />}
             ></Route>
-            <Route path="/all" element={<Protected Component={All} />}></Route>
+            <Route
+              path="/all"
+              element={<AdminRoutes Component={All} />}
+            ></Route>
             <Route
               path="/allavailable"
               element={<Allavailable/>}
@@ -136,10 +136,6 @@ function App() {
               path="/thanku"
               element={<Thankupage/>}
             ></Route>
-            {/* <Route
-              path="*"
-              element={<Protected Component={Login} admin={admin} />}
-            ></Route> */}
           </Routes>
         </BrowserRouter>
       </div>

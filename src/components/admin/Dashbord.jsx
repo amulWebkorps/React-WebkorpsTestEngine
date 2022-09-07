@@ -173,8 +173,12 @@ const Dashbord = () => {
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
-      navigate("/addQuestion", { state: { result } });
-    } catch (error) {}
+      navigate("/addQuestion",{ state: {result} });
+    } catch (error) {
+      console.log('0-fsfffsdfasdff',error) 
+    }
+    
+   
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -204,11 +208,13 @@ const Dashbord = () => {
   };
 
   const fetchContestData = async () => {
+    
     const response = await getAllContestList();
     setContestDetails(response);
   };
 
   useEffect(() => {
+    
     fetchContestData();
   }, []);
 
@@ -221,8 +227,8 @@ const Dashbord = () => {
       {showAvailq ? (
         <>
           <Modal
-            open={open}         
-            setOpen={setOpen} 
+            open={open}
+            setOpen={setOpen}
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
@@ -359,7 +365,7 @@ const Dashbord = () => {
 
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
-                          <p style={months}>00 months to 06 months</p>
+                     
                         </CardContent>
                       </CardActionArea>
                     </Card>

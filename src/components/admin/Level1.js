@@ -23,7 +23,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { filterQuestion, saveQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
-import { ConstructionOutlined } from "@mui/icons-material";
+import { uploadQuestions } from "../services/contest/contestServices";
 
 const useStyles = makeStyles({
   container: {
@@ -331,10 +331,35 @@ const Level1 = () => {
       return newState;
     });
   }
+  const uploadQuestion=async(e)=>{
+    const {files}=e.target;
+    setAlert(true);
+    try {
+     const result=await uploadQuestions(files[0],"");
+     setContestQuestion([...contestQuestion,...result])
+     setMsg({
+       errMsg: "Question uploaded successfully...!",
+       color: "green",
+     });
+   setTimeout(() => {
+       setAlert(false);
+     }, 1200);
+    } catch (error) {
+     setAlert(false);
+     console.log('ee',error)
+    }
+   }
+   console.log('--questions', contestQuestion)
+   useEffect(() => {
+     const result = getContestDetail(contestData?.contestId).then((res) => {
+       console.log(res)
+       setContestQuestion(res?.contestQuestionDetail);
+     }).catch("dmndv");
+   }, [showAlert]);
 
   useEffect(() => {
     const result = filterQuestion("Level 1").then((res) => {
-      const response = res.data;
+      const response = res;
       setContestQuestion(response);
     });
   }, [showAlert]);
@@ -348,7 +373,7 @@ const Level1 = () => {
 console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
-      <Header />s
+      <Header />
       <Container sx={topButton}>
         {showAlert || showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
@@ -497,6 +522,7 @@ console.log('test case list',testCaseList)
                           variant="outlined"
                           component="label"
                           startIcon={<NoteAddIcon />}
+                          onChange={uploadQuestion}
                         >
                           Upload File
                           <input hidden accept="file/*" multiple type="file" />
@@ -655,6 +681,7 @@ console.log('test case list',testCaseList)
           setTestCaseList={setTestCaseList}
           setSampleTestCase={setSampleTestCase}
           setIndex={setIndex}
+          level={true}
         />
       </Container>
     </div>

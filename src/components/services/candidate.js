@@ -6,8 +6,9 @@ const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
 const START_CONTEST_PAGE=`${ BASE_URL}/startContestPage`;
 const RUN_AND_CODE_COMPILER=`${BASE_URL}/runAndCompilerCode`;
 
+
 const participatorLogin = (contestId, credential) => {
-  console.log('-----',contestId)
+  console.log("-----", contestId);
   return axios.get(PARTICIPATOR_LOGIN_URL, {
     params: {
       contestId: contestId,
@@ -23,19 +24,16 @@ const showAllLanguage = () => {
 const startContestPage = (language,participatorData) => {
   return candidateApi.post(`${START_CONTEST_PAGE}?contestId=${participatorData?.state?.data?.student?.contestId}&language=${language}&studentId=${participatorData?.state?.data?.student?.id}` ,
  );
-};
-
-
-const runAndCompilerCode=(candidateCode)=>{
-  return  candidateApi.post(`${RUN_AND_CODE_COMPILER}`,candidateCode);
 }
 
 
+const runAndCompilerCode = (candidateCode) => {
+  return  candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
+};
+
+
+
  export {participatorLogin, showAllLanguage,startContestPage,runAndCompilerCode};
-
-
-
- 
 
 
 

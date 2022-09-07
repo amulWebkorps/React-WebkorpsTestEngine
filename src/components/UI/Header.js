@@ -70,19 +70,9 @@ const Header = () => {
     }
   }
 
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-    prevOpen.current = open;
-  }, [open]);
+  
   return (
-   
       <Grid container sx={headerc}>
-       
-          {/* <Countdown date={Date.now() + 10000} /> */}
         <Grid item sx={displayFlex1}>
           <Box ml={2} my={2} >
             <img src={logo} alt="logo" />
@@ -123,7 +113,7 @@ const Header = () => {
                       }}
                     >
                       <Paper>
-                        <ClickAwayListener onClickAway={handleClose}>
+                        <ClickAwayListener>
                           <MenuList
                             autoFocusItem={open}
                             id="composition-menu"

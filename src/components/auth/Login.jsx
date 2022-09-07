@@ -153,6 +153,7 @@ const Login = () => {
         localStorage.setItem("token", token);
         setTimeout(() => {
           navigate("/dashboard", { state: { data: result.data } });
+        
         }, 1500);
       } catch (error) {
         setLoading(false);
@@ -219,13 +220,20 @@ const Login = () => {
                 type={seenPassword ? "text" : "password"}
                 onChange={(e) => handleChange(e)}
                 value={credential?.password}
-               
               ></TextInput>
               {credential?.password !== "" &&
                 (seenPassword ? (
-                  <VisibilityIcon sx={showIcon} onClick={hidePassword} fontSize="small"/>
+                  <VisibilityIcon
+                    sx={showIcon}
+                    onClick={hidePassword}
+                    fontSize="small"
+                  />
                 ) : (
-                  <VisibilityOffIcon sx={hideIcon} onClick={showPassword} fontSize="small" />
+                  <VisibilityOffIcon
+                    sx={hideIcon}
+                    onClick={showPassword}
+                    fontSize="small"
+                  />
                 ))}
               <FormControlLabel
                 control={<Checkbox size="10px" />}

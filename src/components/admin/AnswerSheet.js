@@ -7,10 +7,11 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import Header from "../UI/Header";
 
 const BigContainer = {
   background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
-  height: "86vh",
+  height: "88vh",
   minWidth: "100vw",
   position: "relative",
   opacity: 0.8,
@@ -175,17 +176,10 @@ const AnswerSheet = () => {
   const navigate=useNavigate();
   return (
     <>
-      <Grid item sx={Headers}>
-        <Box ml={2} my={2}>
-          <img src={logo} alt="logo" />
-        </Box>
-        <Box sx={logoText} my={3}>
-          Webkorps
-        </Box>
-      </Grid>
+      <Header/>
       <Container sx={BigContainer}>
         <Box sx={MainBox}>
-          <Box sx={QuestionBox} onClick={()=>navigate('/addQuestion')} >Questions</Box>
+          <Box sx={QuestionBox} onClick={()=>navigate(-1)} >Questions</Box>
           <Box sx={AnswerBox}>Participators</Box>
         </Box>
         <Container sx={MainContainer}>

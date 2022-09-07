@@ -99,7 +99,7 @@ const CandidateLogin = () => {
   //       navigate("/");
   //     }
   //   }, []);
-
+  console.log("id", id);
   const handleLogin = async () => {
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
@@ -115,6 +115,7 @@ const CandidateLogin = () => {
         localStorage.setItem("token",token);
         setLoading(true);
         setMsg(true);
+        localStorage.setItem("login", "true");
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);

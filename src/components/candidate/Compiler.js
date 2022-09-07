@@ -246,14 +246,14 @@ console.log(location,"newlocation")
 
 useEffect(()=>{
    if  (runCode?.complilationMessage===null){
+
   }
   else if (count===profile.participatorsContestDetails?.QuestionList?.length){
     console.log('------if part')
     alert("final button")
     // navigate('/thanku')
   }
-  else{
-   
+  else{ 
   }
 },[count])
  const handleButton=()=>{
@@ -337,22 +337,15 @@ useEffect(()=>{
   }, []);
   
   
-  
   // setTimeout(function(){
   //   window.location.href ='/thanku';
   // }, finalGet);
-   
-  // useEffect(() => {
-    
-  //   const timer = setTimeout(() => {
-      
+  // useEffect(() => {  
+  //   const timer = setTimeout(() => {    
   //     runCode("1")
   //   },finalGet );
-  
   //   return () => clearTimeout(timer);
   // }, []); 
-
-
   // if (performance.navigation.type === 1) {
   //   // page was just refreshed:
   //   // alert("warning do not refresh")

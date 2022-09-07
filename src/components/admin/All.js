@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { filterQuestion } from "../services/contest/contestServices";
+import { addSelectiveQuestion, filterQuestion } from "../services/contest/contestServices";
 
 const background1 = {
   height: "100%",
@@ -113,36 +113,66 @@ const containerUpper = {
   justifyContent: "center",
 };
 
-const All = ({ availableQuestions, setAvailableQuestions }) => {
+const All = ({ availableQuestions, setAvailableQuestions,setContestQuestion, contestQuestion, setAlert, setMsg,contestId }) => {
   const ref=useRef(null);
   const [dropValue, setDropValue] = useState("All");
   const [questionArr, setQuestionArr]=useState([]);
+  const [selectiveQuestion, setSelectiveQuestion]=useState({
+    questionsIds:"",
+    contestId:[]
+  })
   const handleQuestion=(e)=>{
     const {checked,value}=e.target
    if(checked){
       setQuestionArr([...questionArr,value])
+     
    }else{
       setQuestionArr((val)=>{
         return val.filter((index)=>index!==value)
       })
    }
    }
+
+  const handleFocus=()=>{
+    setSelectiveQuestion({
+      questionsIds:questionArr,
+      contestId:[contestId]
+        })
+  }
+
   const handleChange = async (e) => {
     const { value } = e.target;
     setDropValue(value);
    
   };
+ 
+  const addSelectiveQuestions=async()=>{
+    setAlert(true);
+    try {
+      const result = await addSelectiveQuestion(selectiveQuestion);
+      setMsg({
+        errMsg: "slected Question  added successfully...!",
+        color: "green",
+      });
+      setTimeout(() => {
+        setAlert(false)
+      }, 1200);
+      setContestQuestion([...contestQuestion,...result])
+    } catch (error) {
+      console.log('question err',error)
+    }
+    
+  }
   useEffect(()=>{
     const result =  filterQuestion(dropValue).then((res) => {
-      const response = res.data;
-      setAvailableQuestions(response);
+      setAvailableQuestions(res);
     });   
   },[dropValue])
 
   useEffect(()=>{
     ref.current?.scrollIntoView({behavior: 'smooth'});
   },[])
-  console.log('qqqq',questionArr)
+  console.log('cmldsmv',contestQuestion);
   return (
     <div ref={ref}>
       <Grid container sx={{ justifyContent: "center" }}></Grid>
@@ -168,7 +198,7 @@ const All = ({ availableQuestions, setAvailableQuestions }) => {
             </FormControl>
           </Grid>
           <Grid item mt={2}>
-            <Button variant="contained" sx={buttonEmail}>
+            <Button variant="contained" sx={buttonEmail} onMouseOver={handleFocus} onClick={()=> addSelectiveQuestions()}>
               Add questions
             </Button>
           </Grid>

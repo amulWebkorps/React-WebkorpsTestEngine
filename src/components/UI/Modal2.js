@@ -18,7 +18,7 @@ import { sendMail } from "../services/adminServices";
 import Loader from "../auth/base/Loader";
 
 const scrollDiv = {
-  overflowY: "auto",
+  // overflowY: "auto",
 };
 const divText = {
   // width: "515px",
@@ -44,7 +44,7 @@ const divSelect = {
 };
 const emailContainer = {
   overflowY: "auto",
-  height: "250px",
+  height: "340px",
 };
 
 const btn = {
