@@ -126,15 +126,15 @@ function App() {
             <Route path="/all" element={<Protected Component={All} />}></Route>
             <Route
               path="/allavailable"
-              element={<Protected Component={Allavailable} />}
+              element={<Allavailable/>}
             ></Route>
             <Route
               path="/instruction"
-              element={<Protected Component={Instruction} />}
+              element={<Instruction/>}
             ></Route>
             <Route
               path="/thanku"
-              element={<Protected Component={Thankupage} />}
+              element={<Thankupage/>}
             ></Route>
             {/* <Route
               path="*"
