@@ -1,32 +1,3 @@
-// import "./App.css";
-// import AnswerSheet from "./components/admin/AnswerSheet";
-// import Dashbord from "./components/admin/Dashbord";
-// import Login from "./components/auth/Login";
-// import RegisterOne from "./components/auth/RegisterOne";
-// import RegisterTwo from "./components/auth/RegisterTwo";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// function App() {
-//   return (
-//     <>
-//       {/* <Dashbord/>
-//      <RegisterOne/>
-//      <RegisterTwo/>
-//       <AnswerSheet /> */}
-
-//       <BrowserRouter>
-//         <Routes>
-//           <Route path="/" element={<Login />}></Route>
-//           <Route path="/register" element={<RegisterOne />}></Route>
-//           <Route path="/password" element={<RegisterTwo/>}></Route>
-//           <Route path="/dashboard" element={<Dashbord/>}></Route>
-//           <Route path="/answersheet" element={<AnswerSheet/>}></Route>
-//         </Routes>
-//       </BrowserRouter>
-//     </>
-//   );
-// }
-
-// export default App;
 import "./App.css";
 import { useState } from "react";
 import AnswerSheet from "./components/admin/AnswerSheet";
@@ -111,7 +82,6 @@ function App() {
               path="/viewparticipator"
               element={<AdminRoutes Component={viewParticipatorDetail} />}
             ></Route>
-            
             <Route
               path="/level1"
               element={<AdminRoutes Component={Level1} />}
@@ -126,15 +96,20 @@ function App() {
             ></Route>
             <Route
               path="/allavailable"
-              element={<Allavailable/>}
+              element={<AdminRoutes Component={Allavailable} />}
             ></Route>
             <Route
               path="/instruction"
-              element={<Instruction/>}
+              element={<CandidateRoutes Component={Instruction} />}
             ></Route>
             <Route
               path="/thanku"
-              element={<Thankupage/>}
+              element={<CandidateRoutes Component={Thankupage} />}
+            ></Route>
+            <Route path="/login/:id" element={<CandidateLogin />}></Route>
+            <Route
+              path="/user"
+              element={<CandidateRoutes Component={Compiler} />}
             ></Route>
           </Routes>
         </BrowserRouter>
@@ -144,5 +119,3 @@ function App() {
 }
 
 export default App;
-
-

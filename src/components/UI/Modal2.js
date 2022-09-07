@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -14,7 +14,7 @@ import { Box } from "@mui/system";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { sendMail } from "../services/adminServices";
+import { getAllContestList, sendMail } from "../services/adminServices";
 import Loader from "../auth/base/Loader";
 
 const scrollDiv = {
@@ -57,7 +57,6 @@ export default function Model2({
   setAlert,
   open,
   setOpen,
-  contestDetails,
   emails,
   sentEmails,
   sent,
@@ -66,7 +65,16 @@ export default function Model2({
 }) {
   // const [loading, setLoading] = useState(true);
   const [disable, setDisable] = useState(false);
-  const [contestId, setContestId] = React.useState();
+  const [contestId, setContestId] =useState();
+  const [contestDetails, setContestDetails]=useState(null);
+  useEffect(() => {
+   const response=getAllContestList().then((res)=>{
+    setContestDetails(res);
+   });
+  
+   
+  }, [])
+  
 
   const handleClose = () => {
     setOpen(false);
@@ -110,7 +118,7 @@ export default function Model2({
   const handleChange = (e) => {
     setContestId(e.target.value);
   };
-
+console.log('contest dataaaa',contestDetails)
   return (
     <div>
       <Dialog

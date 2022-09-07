@@ -1,13 +1,14 @@
 import { Container, Typography } from "@mui/material";
-import React from "react";
+import React,{useState} from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { logo } from "../assests/images";
+import CloseIcon from "@mui/icons-material/Close";
+import {IconButton} from "@mui/material";
 import InputBase from "@mui/material/InputBase";
-import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import Header from "../UI/Header";
+import { useSelect } from "@mui/base";
 
 const BigContainer = {
   background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
@@ -84,8 +85,8 @@ const AnswerBox = {
 const innerHeading = {
   width: "70vw",
   // height: "71vh",
-  background: '#F9FAFC',
-  borderRadius:" 17px 17px 0px 0px",
+  background: "#F9FAFC",
+  borderRadius: " 17px 17px 0px 0px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -110,7 +111,7 @@ const searchField = {
   background: "#F1F1F1",
   opacity: 0.5,
   borderRadius: `0px 15px 15px 0px`,
-  marginRight:"10px",
+  marginRight: "10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 300,
@@ -119,7 +120,7 @@ const searchField = {
 };
 
 const Answerheading = {
-  marginLeft:"30px",
+  marginLeft: "30px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
@@ -161,27 +162,68 @@ const UserName = {
 };
 
 const ViewDetail = {
+  cursor:"pointer",
+  marginRight:"30px",
   fontSize: "20px",
   color: "#0057FF",
   textDecoration: "underline",
 };
-const deleteIcon = {
-  cursor:"pointer",
-  background: "#E5E5E5",
+
+const delBtn = {
+  marginTop: "0px !important",
+  width: "30px !important",
+  fontSize: "smaller",
+
+  backgroundColor: "#E5E5E5",
+  color: "black",
   borderRadius: "50%",
-  height: "30px",
-  width: "30px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  marginLeft: "20px",
-  fontSize: "18px",
 };
-const person=["Ramesh Malhotra","Ram Malhotra","Raju Malhotra","Rajkumari Malhotra","rajesh","nitesh","akshay","swad","sohan","salve"]
+const person = [
+  "Ramesh Malhotra",
+  "Ram Malhotra",
+  "Raju Malhotra",
+  "Rajkumari Malhotra",
+  "rajesh",
+  "nitesh",
+  "akshay",
+  "swad",
+  "sohan",
+  "salve",
+];
 const array = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12];
 const AnswerSheet = () => {
   const navigate = useNavigate();
+  const [searchString,setSearchString]=useState("");
+  const [participator, setParticipator]=useState([
+    "Ramesh Malhotra",
+    "Ram Malhotra",
+    "Raju Malhotra",
+    "Rajkumari Malhotra",
+    "rajesh",
+    "nitesh",
+    "akshay",
+    "swad",
+    "sohan",
+    "salve",
+  ])
+  const [filteredResults,setFilteredResults]=useState([]);
+  const handleSearch = (e) => {
+   
+    setSearchString(e.target.value);
+    if (searchString !== "") {
+      const filteredData = participator?.filter((item) => {
+        // if (item.includes(searchString)) {
+        //   return true;
+        // }
+
+        return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(participator);
+    }
+  };
+  console.log('search sss',searchString)
   return (
     <>
       <Header />
@@ -193,19 +235,42 @@ const AnswerSheet = () => {
           <Box sx={AnswerBox}>Participators</Box>
         </Box>
         <Container>
-        <Box sx={innerHeading}>
-          <Typography sx={Answerheading}>Answer Sheets</Typography>
-          <Box sx={innerSearch}>
-            <IconButton type="submit" sx={searchIcon}>
-              <SearchIcon />
-            </IconButton>
-            <InputBase placeholder="Unique ID or Name" sx={searchField} />
+          <Box sx={innerHeading}>
+            <Typography sx={Answerheading}>Answer Sheets</Typography>
+            <Box sx={innerSearch}>
+              <IconButton type="submit" sx={searchIcon}>
+                <SearchIcon />
+              </IconButton>
+              <InputBase onChange={handleSearch} placeholder="Unique ID or Name" sx={searchField} />
+            </Box>
           </Box>
-        </Box>
         </Container>
         <Container sx={MainContainer}>
           <Container>
-            {array.map((val,index) => {
+          {searchString?.length > 1 ? (
+                    filteredResults.map((val,index) => {
+                      return (
+                        <Grid sx={maindata}>
+                  <Box sx={innerdata}>
+                    <Typography sx={Sno}>1.</Typography>
+                    <Typography sx={UniqueId}> (101)</Typography>
+                    <Typography sx={UserName}>{person[index]}</Typography>
+                  </Box>
+                  <Box sx={innerdata}>
+                    <Typography sx={ViewDetail}>View Details</Typography>
+                    <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      // onClick={(e) => delTestCase(index)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
+                  </Box>
+                </Grid>
+                  );
+                    })
+                ):
+            array.map((val, index) => {
               return (
                 <Grid sx={maindata}>
                   <Box sx={innerdata}>
@@ -215,7 +280,13 @@ const AnswerSheet = () => {
                   </Box>
                   <Box sx={innerdata}>
                     <Typography sx={ViewDetail}>View Details</Typography>
-                    <Typography sx={deleteIcon} onClick={()=>console.log('--')}>x</Typography>
+                    <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      // onClick={(e) => delTestCase(index)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
                   </Box>
                 </Grid>
               );

@@ -1,7 +1,7 @@
 import { Grid, InputBase } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Container, Box } from "@mui/system";
-import TextField from "@mui/material/TextField";
+import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,7 +21,7 @@ import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 
 const background1 = {
-  height: "100%",
+  height: "100vh",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
@@ -70,6 +70,15 @@ const divSelect = {
   marginTop: "10px",
   marginLeft: "100px",
 };
+const delBtn = {
+  marginTop: "10px !important",
+  width: "30px !important",
+  fontSize: "smaller",
+
+  backgroundColor: "#E5E5E5",
+  color: "black",
+  borderRadius: "50%",
+};
 
 const divText = {
   width: "515px",
@@ -90,13 +99,12 @@ const scrollDiv = {
 
 const emailContainer = {
   overflowY: "auto",
-  height: "500px",
+  height: "450px",
 };
 
 const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
-  const [contestDetails, setContestDetails] = useState(location?.state?.data);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -114,7 +122,25 @@ const EmailShow = () => {
 
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
+   if(emails.length<=0){
+    setUpload({
+      alert: true,
+      loader: false,
+    });
+    setMsg({
+      errMsg: "Please select participator...!",
+      color: "red",
+    });
+    setTimeout(() => {
+      setUpload({
+        alert: false,
+        loader: false,
+      });
+    }, 1200);
+   }else{
     setOpen(true);
+   }
+   
   };
 
   const handleChange = (e) => {
@@ -127,7 +153,7 @@ const EmailShow = () => {
       });
     }
   };
-
+console.log('emailsss',emails.length)
   const handleDelete = async (mail) => {
     setUpload({
       alert: true,
@@ -158,6 +184,7 @@ const EmailShow = () => {
     }
   };
 
+
   const handleSentMail = async () => {
     setSent(true);
     const result = await sentMail();
@@ -167,15 +194,19 @@ const EmailShow = () => {
   useEffect(()=>{
     getParticipatorData();
   },[])
-  const getParticipatorData=()=>{
-    const res=getParticipator().then((res)=>{
-      setUploadEmail(res);
-    }).catch((err)=>console.log(err,'error'))
+  const getParticipatorData=async()=>{
+    try {
+      const res=await getParticipator();
+      setUploadEmail(res)
+      setFilteredResults(res);
+    } catch (error) {
+      console.log('-------->>>>>>errorroor',error?.response?.data)
+    }
+   
   }
 
   const handleFileSelect = (event) => {
     const { files } = event.target;
-    console.log("type of file", files.type);
     setUpload({
       alert: true,
       loader: true,
@@ -215,12 +246,8 @@ const EmailShow = () => {
   const handleOnChange = (e) => {
     setSearchString(e.target.value)
         if (searchString !== '') {
-            const filteredData =  uploadEmail?.filter((item) => {
-              if (item.includes(searchString)) {
-                      return true;
-                    }
-                  
-                // return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
+            const filteredData =  uploadEmail?.filter((item) => {     
+                return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
             })
             setFilteredResults(filteredData)
         }
@@ -229,25 +256,7 @@ const EmailShow = () => {
         }
   };
 
-  const handleSearch = () => {
-   
-
-
-    // setUploadEmail((val) => {
-    //   return val.filter((element) => {
-    //     if (element.includes(searchString)) {
-    //       return true;
-    //     }
-    //   });
-    // });
-    // const matches = uploadEmail.filter((element) => {
-    //   if (element.includes(searchString)) {
-    //     return true;
-    //   }
-    // });
-  
-  };
-console.log('search--',uploadEmail?.length)
+console.log('search--',uploadEmail?.length,filteredResults?.length)
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -266,7 +275,6 @@ console.log('search--',uploadEmail?.length)
         open={open}
         setOpen={setOpen}
         handleClickOpen={handleClickOpen}
-        contestDetails={contestDetails}
         emails={emails}
         sent={sent}
         setSent={setSent}
@@ -298,7 +306,7 @@ console.log('search--',uploadEmail?.length)
                 <Grid item justifyContent="center" flexDirection="column">
                   <Box sx={innerSearch}>
                     <IconButton type="submit" sx={searchIcon}>
-                      <SearchIcon onClick={handleSearch} />
+                      <SearchIcon disabled />
                     </IconButton>
                     <InputBase
                       placeholder="Search emails"
@@ -329,15 +337,15 @@ console.log('search--',uploadEmail?.length)
           </Grid>
           <Container sx={emailContainer}>
             <Grid container sx={{display:"flex",justifyContent:"center"}}>
-          
-            {searchString?.length > 1 ? (
+          {uploadEmail?.length<=0||filteredResults?.length<=0?<h1>No data </h1>:
+          searchString?.length > 1 ? (
                     filteredResults.map((val) => {
                       return (
                     <Grid container sx={divSelect}>
                       <Grid item sm={9} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
-                      <Grid item sm={2} mt={1}>
+                      <Grid item sm={2} mt={2}>
                         <Checkbox
                           value={val}
                           onChange={handleChange}
@@ -346,12 +354,15 @@ console.log('search--',uploadEmail?.length)
                           sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                         />
                       </Grid>
+                      
                       <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                        <img
-                          onClick={() => handleDelete(val)}
-                          src={crossbtn}
-                          alt="cross"
-                        />
+                      <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      onClick={(e) =>  handleDelete(val)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
                       </Grid>
                     </Grid>
                   );
@@ -363,7 +374,7 @@ console.log('search--',uploadEmail?.length)
                       <Grid item sm={9} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
-                      <Grid item sm={2} mt={1}>
+                      <Grid item sm={2} mt={2}>
                         <Checkbox
                           value={val}
                           onChange={handleChange}
@@ -373,16 +384,20 @@ console.log('search--',uploadEmail?.length)
                         />
                       </Grid>
                       <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                        <img
-                          onClick={() => handleDelete(val)}
-                          src={crossbtn}
-                          alt="cross"
-                        />
+                      <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      onClick={(e) =>  handleDelete(val)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
                       </Grid>
                     </Grid>
                   );
                 })
-              )}
+              )
+          }
+            
             </Grid>
           </Container>
           <Box
