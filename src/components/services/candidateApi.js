@@ -1,11 +1,10 @@
 import axios from "axios";
 import { BASE_URL } from "./base";
-//const BASE_URL = `http://localhost:8085`;
-const api = axios.create({
+const candidateApi = axios.create({
   baseURL: BASE_URL,
   responseType: "json",
 });
-api.interceptors.request.use(
+candidateApi.interceptors.request.use(
   async (config) => {
     config.headers = {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -19,7 +18,7 @@ api.interceptors.request.use(
     Promise.reject(error);
   }
 );
-api.interceptors.response.use(
+candidateApi.interceptors.response.use(
   function (response) {
     return response.data;
   },
@@ -28,4 +27,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export default api;
+export default candidateApi;

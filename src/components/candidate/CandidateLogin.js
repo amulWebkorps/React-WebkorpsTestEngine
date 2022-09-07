@@ -122,14 +122,16 @@ const CandidateLogin = () => {
       }, 2000);
     } else {
       try {
-        const result = await participatorLogin(id, credential);
-
+        const result = await participatorLogin(id, credential).then();
+        const token = result?.data?.token;
+        localStorage.setItem("token",token);
         setLoading(true);
         setMsg(true);
         localStorage.setItem("login", "true");
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);
+        console.log(result.data,"result")
       } catch (error) {
         setLoading(false);
         setErrorMsg(true);

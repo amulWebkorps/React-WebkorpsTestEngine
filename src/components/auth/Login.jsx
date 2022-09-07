@@ -159,7 +159,8 @@ const Login = () => {
         const token = result?.data?.token;
         localStorage.setItem("token", token);
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/dashboard", { state: { data: result.data } });
+        
         }, 1500);
       } catch (error) {
         setLoading(false);

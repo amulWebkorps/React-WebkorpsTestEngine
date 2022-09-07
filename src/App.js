@@ -111,6 +111,7 @@ function App() {
               path="/viewparticipator"
               element={<AdminRoutes Component={viewParticipatorDetail} />}
             ></Route>
+            
             <Route
               path="/level1"
               element={<AdminRoutes Component={Level1} />}
@@ -125,20 +126,15 @@ function App() {
             ></Route>
             <Route
               path="/allavailable"
-              element={<AdminRoutes Component={Allavailable} />}
+              element={<Allavailable/>}
             ></Route>
             <Route
               path="/instruction"
-              element={<CandidateRoutes Component={Instruction} />}
+              element={<Instruction/>}
             ></Route>
             <Route
               path="/thanku"
-              element={<CandidateRoutes Component={Thankupage} />}
-            ></Route>
-            <Route path="/login/:id" element={<CandidateLogin />}></Route>
-            <Route
-              path="/user"
-              element={<CandidateRoutes Component={Compiler} />}
+              element={<Thankupage/>}
             ></Route>
           </Routes>
         </BrowserRouter>
