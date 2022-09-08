@@ -160,10 +160,10 @@ console.log('level',level)
   console.log("-------question", question);
 
   return (
-    <>
+    <div>
       <Paper sx={heading}>
         <div>
-          <Typography sx={headText}>Present Questions:</Typography>
+          <Typography sx={headText}>Added Questions</Typography>
         </div>
         <div>
           {level ? (
@@ -215,7 +215,7 @@ console.log('level',level)
           contestId={contestId}
         />
       )}
-    </>
+    </div>
   );
 };
 

@@ -206,11 +206,11 @@ const Dashbord = () => {
   };
  
 
-  function noBack() {
-    window.history.forward();
-    navigate("/dashboard");
+  // function noBack() {
+  //   // window.history.forward();
+  //   navigate("/dashboard");
    
-  }
+  // }
   const fetchContestData = async () => {
     const response = await getAllContestList();
     setContestDetails(response);
@@ -223,7 +223,7 @@ const Dashbord = () => {
   // console.log("---contest", contestDetails);
 
   return (
-    <div style={app} onLoad={noBack}>
+    <div style={app}>
       <Header />
 
       {showAvailq ? (

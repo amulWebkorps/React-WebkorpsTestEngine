@@ -105,6 +105,7 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "12px",
+  justifyContent:"space-between"
 };
 
 const containerUpper = {
@@ -132,7 +133,7 @@ const All = ({ availableQuestions, setAvailableQuestions,setContestQuestion, con
       })
    }
    }
-
+console.log('que qrr',questionArr);
   const handleFocus=()=>{
     setSelectiveQuestion({
       questionsIds:questionArr,

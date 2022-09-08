@@ -351,7 +351,7 @@ console.log('search--',uploadEmail?.length,filteredResults?.length)
                           onChange={handleChange}
                           icon={<RadioButtonUncheckedIcon />}
                           checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30,marginLeft:"90px" } }}
                         />
                       </Grid>
                       
@@ -380,7 +380,7 @@ console.log('search--',uploadEmail?.length,filteredResults?.length)
                           onChange={handleChange}
                           icon={<RadioButtonUncheckedIcon />}
                           checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30,marginLeft:"90px" } }}
                         />
                       </Grid>
                       <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>

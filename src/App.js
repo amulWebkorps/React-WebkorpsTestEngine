@@ -70,6 +70,7 @@ function App() {
               path="/dashboard"
               element={<AdminRoutes Component={Dashbord} />}
             ></Route>
+            
             <Route
               path="/addQuestion"
               element={<AdminRoutes Component={QuestionList} />}

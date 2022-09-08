@@ -23,12 +23,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { saveQuestion, uploadQuestions } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
-import { ConstructionOutlined, SettingsRemote } from "@mui/icons-material";
+
 
 const useStyles = makeStyles({
   container: {
     height: "100%",
     minHeight: 180,
+    
   },
   containerTall: {
     minHeight: 250,
@@ -53,6 +54,7 @@ const questionList = {
         rgba(24, 135, 201, 0.4) 100%
       )`,
   overflow: "auto",
+ 
 };
 
 const topButton = {
@@ -112,6 +114,8 @@ const delBtn = {
 const mainContainer = {
   marginTop: "20px",
   background: "white",
+  borderRadius: "18px"
+ 
 };
 
 const cardBody = {
@@ -368,7 +372,9 @@ const QuestionList = () => {
   return (
     <div style={questionList}>
       <Header />
+     
       <Container sx={topButton}>
+      <Button onClick={()=>navigate("/dashboard")}>Back-></Button>
         {showAlert ||showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
