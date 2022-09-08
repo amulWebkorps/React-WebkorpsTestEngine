@@ -1,14 +1,18 @@
-import { Container, Typography } from "@mui/material";
-import React,{useState} from "react";
+import { Button, Container, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
-import {IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../UI/Header";
 import { useSelect } from "@mui/base";
+import { getParticipatorOfContest } from "../services/contest/contestServices";
+import { deletestudent } from "../services/mail/particiaptiorMail";
+import { CollectionsBookmarkRounded } from "@mui/icons-material";
+import MsgBar from "../auth/base/MsgBar";
 
 const BigContainer = {
   background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
@@ -90,7 +94,7 @@ const innerHeading = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  marginLeft: "-11px",
+  marginLeft: "125px",
   // marginRight: "30px",
   paddingTop: "10px",
 };
@@ -159,11 +163,12 @@ const UniqueId = {
 };
 const UserName = {
   fontSize: "20px",
+  marginLeft: "2vh",
 };
 
 const ViewDetail = {
-  cursor:"pointer",
-  marginRight:"30px",
+  cursor: "pointer",
+  marginRight: "30px",
   fontSize: "20px",
   color: "#0057FF",
   textDecoration: "underline",
@@ -190,43 +195,73 @@ const person = [
   "sohan",
   "salve",
 ];
-const array = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12];
+
 const AnswerSheet = () => {
   const navigate = useNavigate();
-  const [searchString,setSearchString]=useState("");
-  const [participator, setParticipator]=useState([
-    "Ramesh Malhotra",
-    "Ram Malhotra",
-    "Raju Malhotra",
-    "Rajkumari Malhotra",
-    "rajesh",
-    "nitesh",
-    "akshay",
-    "swad",
-    "sohan",
-    "salve",
-  ])
-  const [filteredResults,setFilteredResults]=useState([]);
+  const location = useLocation();
+  const [searchString, setSearchString] = useState("");
+  const [participator, setParticipator] = useState([]);
+  const [contestId, setContestId] = useState(location?.state);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [delMsg, setDelMsg] = useState({
+    msg: "",
+    color: "",
+    state: false,
+  });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const participators = await getParticipatorOfContest(contestId);
+        setParticipator(participators);
+        setFilteredResults(participators);
+      } catch (error) {
+        console.log("--", error);
+      }
+    })();
+    return () => {};
+  }, [delMsg?.state]);
+
   const handleSearch = (e) => {
-   
     setSearchString(e.target.value);
     if (searchString !== "") {
       const filteredData = participator?.filter((item) => {
-        // if (item.includes(searchString)) {
-        //   return true;
-        // }
-
-        return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
+        return Object?.values(item)
+          ?.join("")
+          ?.toLowerCase()
+          ?.includes(searchString?.toLowerCase());
       });
       setFilteredResults(filteredData);
     } else {
       setFilteredResults(participator);
     }
   };
-  console.log('search sss',searchString)
+
+  const removeStudent = async (emailId) => {
+    try {
+      const res = await deletestudent(emailId);
+      setDelMsg({
+        msg: "Student deleted successfully...!",
+        color: "red",
+        state: true,
+      });
+      setTimeout(() => {
+        setDelMsg({
+          msg: "Student deleted successfully...!",
+          color: "red",
+          state: false,
+        });
+      }, 1200);
+      console.log("resss", res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Header />
+      {delMsg?.state && <MsgBar errMsg={delMsg?.msg} color={delMsg?.color} />}
       <Container sx={BigContainer}>
         <Box sx={MainBox}>
           <Box sx={QuestionBox} onClick={() => navigate(-1)}>
@@ -241,56 +276,72 @@ const AnswerSheet = () => {
               <IconButton type="submit" sx={searchIcon}>
                 <SearchIcon />
               </IconButton>
-              <InputBase onChange={handleSearch} placeholder="Unique ID or Name" sx={searchField} />
+              <InputBase
+                onChange={handleSearch}
+                placeholder="Unique ID or Name"
+                sx={searchField}
+              />
             </Box>
           </Box>
         </Container>
         <Container sx={MainContainer}>
           <Container>
-          {searchString?.length > 1 ? (
-                    filteredResults.map((val,index) => {
-                      return (
-                        <Grid sx={maindata}>
-                  <Box sx={innerdata}>
-                    <Typography sx={Sno}>1.</Typography>
-                    <Typography sx={UniqueId}> (101)</Typography>
-                    <Typography sx={UserName}>{person[index]}</Typography>
-                  </Box>
-                  <Box sx={innerdata}>
-                    <Typography sx={ViewDetail}>View Details</Typography>
-                    <IconButton
-                      aria-label="add"
-                      sx={delBtn}
-                      // onClick={(e) => delTestCase(index)}
-                    >
-                      <CloseIcon fontSize="x-small" />
-                    </IconButton>
-                  </Box>
-                </Grid>
-                  );
-                    })
-                ):
-            array.map((val, index) => {
-              return (
-                <Grid sx={maindata}>
-                  <Box sx={innerdata}>
-                    <Typography sx={Sno}>1.</Typography>
-                    <Typography sx={UniqueId}> (101)</Typography>
-                    <Typography sx={UserName}>{person[index]}</Typography>
-                  </Box>
-                  <Box sx={innerdata}>
-                    <Typography sx={ViewDetail}>View Details</Typography>
-                    <IconButton
-                      aria-label="add"
-                      sx={delBtn}
-                      // onClick={(e) => delTestCase(index)}
-                    >
-                      <CloseIcon fontSize="x-small" />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              );
-            })}
+            {participator?.length <= 0 || filteredResults?.length <= 0 ? (
+              <h1>No data </h1>
+            ) : searchString?.length > 1 ? (
+              filteredResults?.map((val, index) => {
+                return (
+                  <Grid sx={maindata}>
+                    <Box sx={innerdata}>
+                      <Typography sx={UniqueId}> {index + 1}.</Typography>
+                      <Typography sx={UserName}>{val?.email}</Typography>
+                    </Box>
+                    <Box sx={innerdata}>
+                      <Button>
+                        {" "}
+                        <Typography sx={ViewDetail}
+                         onClick={()=>navigate("/viewparticipator", {id:val?.email})}
+                        >View Details</Typography>
+                      </Button>
+
+                      <IconButton
+                        aria-label="add"
+                        sx={delBtn}
+                        onClick={(e) => removeStudent(val?.email)}
+                      >
+                        <CloseIcon fontSize="x-small" />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                );
+              })
+            ) : (
+              participator?.map((val, index) => {
+                return (
+                  <Grid sx={maindata}>
+                    <Box sx={innerdata}>
+                      {/* <Typography sx={Sno}></Typography> */}
+                      <Typography sx={UniqueId}>{index + 1}</Typography>
+                      <Typography sx={UserName}>{val?.email}</Typography>
+                    </Box>
+                    <Box sx={innerdata}>
+                    <Button  sx={ViewDetail} onClick={()=>navigate("/viewparticipator")}>
+                        {" "}
+                        <Typography>View Details</Typography>
+                      </Button>
+
+                      <IconButton
+                        aria-label="add"
+                        sx={delBtn}
+                        onClick={(e) => removeStudent(val?.email)}
+                      >
+                        <CloseIcon fontSize="x-small" />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                );
+              })
+            )}
           </Container>
         </Container>
       </Container>

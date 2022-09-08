@@ -124,7 +124,7 @@ const ViewParticipatorDetail = () => {
     const location = useLocation();
     const [participatorDetails,setParticipatorDetails]=useState(location?.state);
 
-
+console.log('location-------',location)
   function increment() {
     setCount(function (prevCount) {
       console.log(prevCount, "===========");

@@ -372,13 +372,11 @@ const QuestionList = () => {
   return (
     <div style={questionList}>
       <Header />
-     
       <Container sx={topButton}>
-      <Button onClick={()=>navigate("/dashboard")}>Back-></Button>
         {showAlert ||showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-          <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:location?.state})}>
+          <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}>
             Participators
           </Box>
         </Grid>

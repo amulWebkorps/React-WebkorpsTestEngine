@@ -7,10 +7,12 @@ import { Typography } from "@mui/material";
 import Header from "../UI/Header";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/theme-monokai";
+import 'ace-builds/src-noconflict/mode-c_cpp';
+import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
 import { runAndCompilerCode } from "../services/candidate";
+
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 // import screenfull from 'screenfull';
@@ -513,9 +515,10 @@ const Compiler = () => {
               </Container>
               <Box>
                 <AceEditor
-                  mode={location?.state?.language}
+                  mode="python"
+                  // theme="github"
                   theme="monokai"
-                  name="code"
+                  name='ace-editor'
                   editorProps={{ $blockScrolling: true }}
                   height="60vh"
                   width="46.5vw"
