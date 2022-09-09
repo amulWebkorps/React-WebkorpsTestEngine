@@ -59,9 +59,9 @@ const title = {
   fontWeight: "700",
   fontSize: "30px",
   lineHeight: "35px",
-
   color: " #000000",
 };
+
 const delBtn = {
   position: "absolute",
   top: "3%",
@@ -136,6 +136,7 @@ const notbtn = {
   lineHeight: "21px",
   color: "#0057FF",
 };
+
 const Modal = ({
   setAlert,
   open,

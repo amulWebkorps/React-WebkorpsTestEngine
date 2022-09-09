@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { Container } from "@mui/system";
+import { Container, width } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
@@ -10,11 +10,13 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
 import { runAndCompilerCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
+import Loader from "./base/Loader";
 // import screenfull from 'screenfull';
-
 
 const div1 = {
   height: "70vh",
@@ -62,6 +64,7 @@ const testCaseText1 = {
   lineHeight: "35px",
   color: "#000000",
 };
+
 const testCaseText2 = {
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -69,7 +72,10 @@ const testCaseText2 = {
   fontSize: "25px",
   lineHeight: "35px",
   color: "#000000",
+  overflowY:"auto",
+ 
 };
+
 const inputLabel = {
   fontFamily: "Raleway",
   fontSize: "18px",
@@ -90,7 +96,7 @@ const inputField = {
   marginTop: "10px",
   height: "14vh",
   background: "#FFFFFF",
-  overflowY: "scroll",
+  overflowY: "auto",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
@@ -119,36 +125,43 @@ const buttonTest = {
   lineHeight: "19px",
 };
 
- const testCaseData1={
+const testCaseData1 = {
   display: "flex",
-  flexDirection:"row",
-  justifyContent:"end",
-
- }
- const testCaseData={
+  flexDirection: "row",
+  justifyContent: "end",
+  overflowY:"auto",
+ 
+};
+const testCaseData = {
   display: "flex",
-  flexDirection:"row",
- }
- const inputName={
+  flexDirection: "row",
+  
+};
+const inputName = {
   fontWeight: "600",
   fontweight: "bold",
+};
 
- }
-
- const timerText={
+const timerText = {
   fontWeight: "500",
   fontweight: "bold",
+};
+
+
+ const textTestCases={
+padding:"10px",
+background:"#FFFFFF",
+boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
+borderRadius: "14px",
+margin: "10px",
+width: '200px',
+display: 'flex',
+justifyContent:"space-between"
+
 
  }
- const intitalState={
-  language:'',
-      questionId: "",
-      contestId: "",
-      studentId:"",
-      flag: "1",
-      code: ""
- }
  
+
 const Compiler = () => {
   const location = useLocation();
   const [defaultCode, setDefaultCode] = useState("");
@@ -159,119 +172,143 @@ const Compiler = () => {
   const [codeArray, setCodeArray] = useState([]);
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
-  const [counter, setCounter]=useState(0);
-  const [showError,setShowError]=useState(false)
+  const [counter, setCounter] = useState(0);
+  const [showCompilationError,setshowCompilationError]=useState(false)
+  const [showError, setShowError] = useState(false);
   const Ref = useRef(null);
   const ref = useRef(null);
-	const [timer, setTimer] = useState('00:00:00');
+  const [timer, setTimer] = useState("00:00:00");
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(true)
 
+  const timerGet = 300;
+  const finalGet = timerGet * 60000;
+  const changeseconds = timerGet * 60;
+  const timeOut = true;
 
-  const timerGet=.20
-  const finalGet=(timerGet*60000)
-  const  changeseconds=(timerGet*60)
-
-useEffect(()=>{
-    if (runCode?.complilationMessage===null){
-      setShowError(true)
+  useEffect(() => {
+    if (runCode?.successMessage === "Code Submitted Successfully") {
+      setShowError(true);
     }
-},[runCode])
+  }, [runCode]);
 
 
-useEffect(() => {
-  let timeout
-  if (showError) {
-    timeout = setTimeout(() =>setShowError(false), 3000);
-  }
-  return () => clearTimeout(timeout);
-}, [showError]);
+ 
+  useEffect(() => {
+    if (runCode?.complilationMessage ==null){
+    }
+    else {
+      setshowCompilationError(true);
+    }
+  }, [runCode]);
+
+
+  useEffect(() => {
+    let timeout;
+    if (showCompilationError) {
+      timeout = setTimeout(() => setshowCompilationError(false), 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showCompilationError]);
+
+
+  useEffect(() => {
+    let timeout;
+    if (showError) {
+      timeout = setTimeout(() => setShowError(false), 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showError]);
 
   const runCodes = async (flag) => {
-    try {
+    try {    
+        // timeOut = false;
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId: profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        questionId:
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
-        flag: flag,
+        flag: flag, 
+        // timeOut: false,
         code: `${codeValue}`,
-         
-      })
+      });
       console.log(resultData, "runcode");
-      setRunCode(resultData.data);
-      setShowTestCase(true)    
+      setRunCode(resultData);
+      setShowTestCase(true);
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(()=>{{
-  try {
-    if (timer==="00:00:01"){
-      const resultData =  runAndCompilerCode({
-        language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId: profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-        contestId: profile.participatorsContestDetails?.contestId,
-        studentId: profile.participatorsContestDetails?.studentId,
-        flag: "1",
-        code: `${codeValue}`,
-      }).then()
-      console.log(resultData.data, "runcode");
-      setRunCode(resultData.data); 
-      setShowTestCase(true)  
+  useEffect(() => {
+    {
+      try {
+        if (timer==="00:00:01"){
+          const resultData =  runAndCompilerCode({
+            language: profile.participatorsContestDetails?.languageCode?.language,
+            questionId: profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+            contestId: profile.participatorsContestDetails?.contestId,
+            studentId: profile.participatorsContestDetails?.studentId,
+            flag: "1",
+            timeOut: true,
+            code: `${codeValue}`,
+          }).then()
+          console.log(resultData.data, "runcode");
+          setRunCode(resultData.data);
+          setLoading(false)
+          setShowTestCase(true)
 
+        }
+        if (timer==="00:00:01")
+        { navigate ('/thanku')}
+      } catch (error) {
+        console.log(error);
+      }
     }
-    // if (timer==="00:00:01")
-    // { navigate ('/thanku')} 
+  }, [timer]);
 
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-  },[timer])
-    
-  const handleScroll = () => { 
-    ref.current?.scrollIntoView({behavior: 'smooth'});
+  const handleScroll = () => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const onChange = (codeData) => {
     setCodeValue(codeData);
-    setShowTestCase(false)  
+    setShowTestCase(false);
   };
 
+  console.log(profile, "profilesskjnhjb");
+  console.log(location, "newlocation");
 
-console.log( profile,"profilesskjnhjb")
-console.log(location,"newlocation")
-
-
-useEffect(()=>{
-   if  (runCode?.complilationMessage===null){
-  }
-  else if (count===profile.participatorsContestDetails?.QuestionList?.length){
-    console.log('------if part')
-    alert("final button")
-    // navigate('/thanku')
-  }
-  else{
-   
-  }
-},[count])
- const handleButton=()=>{
-  setCounter(counter+1)
- }
+  useEffect(() => {
+  if (runCode?.complilationMessage !== null) {
+    } else if (
+      count === profile.participatorsContestDetails?.QuestionList?.length
+    ) {
+     
+    } else {
+    
+    }
+  }, [count]);
+  const handleButton = () => {
+    setCounter(counter + 1);
+    setCodeValue( profile?.participatorsContestDetails?.languageCode?.codeBase)
+  };
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       console.log(prevCount, "===========");
-      if (prevCount <= profile.participatorsContestDetails?.QuestionList?.length) {
+      if (
+        prevCount <= profile.participatorsContestDetails?.QuestionList?.length
+      ) {
         return (prevCount += 1);
       } else {
-        return (prevCount = profile.participatorsContestDetails?.QuestionList?.length);
+        return (prevCount =
+          profile.participatorsContestDetails?.QuestionList?.length);
       }
-    })
+    });
     setCodeValue(location?.state?.defaultCode);
-    setShowTestCase(false)    
+    setShowTestCase(false);
   };
-  
+
   const prevQuestion = (e) => {
     setCount(function (prevCount) {
       if (prevCount > 0) {
@@ -279,8 +316,13 @@ useEffect(()=>{
       } else {
         return (prevCount = 0);
       }
-    });   
+    });
   };
+
+ const handleNext=()=>{
+   setCount(count+1)
+
+ }
 
   const getTimeRemaining = (e) => {
     const total = Date.parse(e) - Date.parse(new Date());
@@ -288,10 +330,13 @@ useEffect(()=>{
     const minutes = Math.floor((total / 1000 / 60) % 60);
     const hours = Math.floor((total / 1000 / 60 / 60) % 24);
     return {
-      total, hours, minutes, seconds
+      total,
+      hours,
+      minutes,
+      seconds,
     };
-  }
-  
+  };
+
   // useEffect(()=>{
   //   if (screenfull.isEnabled) {
   //     screenfull.on('change', () => {
@@ -305,301 +350,291 @@ useEffect(()=>{
   //       screenfull.toggle();
   //     }
   //   }
-  
-  
+
   const startTimer = (e) => {
-    let { total, hours, minutes, seconds }
-          = getTimeRemaining(e);
+    let { total, hours, minutes, seconds } = getTimeRemaining(e);
     if (total >= 0) {
       setTimer(
-        (hours > 9 ? hours : '0' + hours) + ':' +
-        (minutes > 9 ? minutes : '0' + minutes) + ':'
-        + (seconds > 9 ? seconds : '0' + seconds)
-      )
+        (hours > 9 ? hours : "0" + hours) +
+          ":" +
+          (minutes > 9 ? minutes : "0" + minutes) +
+          ":" +
+          (seconds > 9 ? seconds : "0" + seconds)
+      );
     }
-  }
-  
+  };
+
   const clearTimer = (e) => {
     if (Ref.current) clearInterval(Ref.current);
     const id = setInterval(() => {
       startTimer(e);
-    }, 100)
-    Ref.current = id;	
-  }
-  
+    }, 100);
+    Ref.current = id;
+  };
+
   const getDeadTime = () => {
     let deadline = new Date();
     deadline.setSeconds(deadline.getSeconds() + changeseconds);
     return deadline;
-  }
+  };
+
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
-  
-  
-  
   // setTimeout(function(){
   //   window.location.href ='/thanku';
   // }, finalGet);
-   
+
   // useEffect(() => {
-    
+
   //   const timer = setTimeout(() => {
-      
+
   //     runCode("1")
   //   },finalGet );
-  
-  //   return () => clearTimeout(timer);
-  // }, []); 
 
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   // if (performance.navigation.type === 1) {
   //   // page was just refreshed:
   //   // alert("warning do not refresh")
-  //   window.location.href = '/thanku';
+  //   window.location.href = "/thanku";
   // } else {
-
-
   //   // rest of your Javascript
   // }
 
-    return (
-      <Box>
-        <Header />
-        <Box className="background1">
-         
-       { showError &&   <MsgBar
-                errMsg={
-                "error while compile"
-                }
-                color={"orange" }
-              />}
-          <Grid container>
-            
-            <Grid item sm={6}>
-            <Box sx={testCaseData1} mx={5} >
-        <Typography>Remaining Time :-</Typography ><Typography sx={timerText}>{timer}</Typography>  
-        </Box>
-          
-              <Box mx={3}>
-                <Container sx={div1}>
-                  <Grid container>
-                    <Grid item sm={0.5} sx={blue1}>
-                      <box></box>
+
+ console.log("data") 
+  return (
+    <Box>
+      <Header />
+      <Box className="background1">
+      {showCompilationError && (
+          <MsgBar errMsg={runCode?.complilationMessage} color={"red"} />
+        )}
+        {showError && (
+          <MsgBar errMsg={"successfully submitted code"} color={"green"} />
+        )}
+        <Grid container>
+          <Grid item sm={6}>
+            <Box sx={testCaseData1} mx={5}>
+              <Typography>Remaining Time :-</Typography>
+              <Typography sx={timerText}>{timer}</Typography>
+            </Box>
+
+            <Box mx={3}>
+              <Container sx={div1}>
+                <Grid container>
+                  <Grid item sm={0.5} sx={blue1}>
+                    <box></box>
+                  </Grid>
+
+                  <Grid item sm={11.5}>
+                    <Grid item sm={12}>
+                      <Box sx={testCaseText}>
+                        <Typography sx={testCaseText1} mx={2}>
+                          Test Case
+                        </Typography>
+                      </Box>
                     </Grid>
-  
-                    <Grid item sm={11.5}>
-                      <Grid item sm={12}>
-                        <Box sx={testCaseText}>
-                          <Typography sx={testCaseText1} mx={2}>
-                            Test Case 
+
+                    <Grid item sm={12}>
+                      <Box>
+                        <Typography style={inputLabel}>
+                          Problem statement
+                        </Typography>
+                        <Box style={inputField} p={2}>
+                          <Typography>
+                            {
+                              profile.participatorsContestDetails?.QuestionList[
+                                count
+                              ]?.question
+                            }
                           </Typography>
                         </Box>
-                      </Grid>
-  
-                      <Grid item sm={12}>
+                      </Box>
+                    </Grid>
+                    <Grid item sm={12}>
+                      <Box>
+                        <Typography style={inputLabel}>Constraints</Typography>
+                        <Box style={inputField} p={2}>
+                          <Typography>
+                            {
+                              profile.participatorsContestDetails?.QuestionList[
+                                count
+                              ]?.sampleTestCase[0]?.constraints
+                            }
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Grid>
+                    <Grid container sm={12}>
+                      <Grid item sm={6} px={2}>
                         <Box>
                           <Typography style={inputLabel}>
-                            Problem statement
+                            Sample Input
                           </Typography>
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                profile.participatorsContestDetails?.QuestionList[count]
-                                  ?.question
+                                profile.participatorsContestDetails
+                                  ?.QuestionList[count]?.sampleTestCase[0]
+                                  ?.input
                               }
                             </Typography>
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item sm={12}>
+                      <Grid sm={6} px={2}>
                         <Box>
-                          <Typography style={inputLabel}>Constraints</Typography>
+                          <Typography style={inputLabel}>
+                            Sample Output
+                          </Typography>
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                profile.participatorsContestDetails?.QuestionList[count]
-                                  ?.sampleTestCase[0]?.constraints
+                                profile.participatorsContestDetails
+                                  ?.QuestionList[count]?.sampleTestCase[0]
+                                  ?.output
                               }
                             </Typography>
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid container sm={12}>
-                        <Grid item sm={6} px={2}>
-                          <Box>
-                            <Typography style={inputLabel}>
-                              Sample Input
-                            </Typography>
-                            <Box style={inputField} p={2}>
-                              <Typography>
-                                {
-                                  profile.participatorsContestDetails?.QuestionList[count]
-                                    ?.sampleTestCase[0]?.input
-                                }
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Grid>
-                        <Grid sm={6} px={2}>
-                          <Box>
-                            <Typography style={inputLabel}>
-                              Sample Output
-                            </Typography>
-                            <Box style={inputField} p={2}>
-                              <Typography>
-                                {
-                                  profile.participatorsContestDetails?.QuestionList[count]
-                                    ?.sampleTestCase[0]?.output
-                                }
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Grid>
-                      </Grid>
                     </Grid>
                   </Grid>
-                </Container>
-                <Grid container sx={{ justifyContent: "space-between" }}>
-                  <Button
-                    variant="contained"
-                    sx={buttonTest}
-                    onClick={() => prevQuestion()}
-                    disabled={count===0 }
-                  >
-                    Prev
-                  </Button>
-                  <Button                 
-                    variant="contained"               
-                    sx={buttonTest}
-                    onClick={() => nextQuestion()}
-                    disabled={profile.participatorsContestDetails?.QuestionList?.length-1 === count }
-                  >
-                    Next
-                  </Button>
                 </Grid>
-              </Box>
-            </Grid>
-            <Grid item sm={6}>
-              <Box mx={3}>
+              </Container>
+              <Grid container sx={{ justifyContent: "space-between" }}>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => prevQuestion()}
+                  disabled={count === 0}
+                >
+                  Prev
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => nextQuestion()}
+                  disabled={
+                    profile.participatorsContestDetails?.QuestionList?.length -
+                      1 ===
+                    count
+                  }
+                >
+                  Next
+                </Button>
+              </Grid>
+            </Box>
+          </Grid>
+          <Grid item sm={6}>
+            <Box mx={3}>
+              <Grid container>
+                <Grid item sm={6} sx={{ display: "flex" }}>
+                  <Box>
+                    <Typography sx={inputName}>Name:- </Typography>
+                  </Box>
+                  <>
+                    <Typography sx={inputName}>
+                      {profile?.participatorData?.state?.data?.student?.name}
+                    </Typography>
+                  </>
+                </Grid>
+                <Grid item sm={6} sx={{ display: "flex" }}>
+                  <Box>
+                    <Typography sx={inputName}>Email:- </Typography>
+                  </Box>
+                  <Box>
+                    <Typography sx={inputName}>
+                      {profile?.participatorData?.state?.data?.student?.email}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+              <Container sx={rightDiv}>
                 <Grid container>
-                  <Grid item sm={6} sx={{ display: "flex" }}>
-                    <Box>
-                      <Typography sx={inputName}>Name:- </Typography>
-                    </Box>
-                    <>
-                      <Typography sx={inputName}>
-                        {profile?.participatorData?.state?.data?.student?.name}
-                      </Typography>
-                    </>
-                  </Grid>
-                  <Grid item sm={6} sx={{ display: "flex" }}>
-                    <Box>
-                      <Typography sx={inputName}>Email:- </Typography>
-                    </Box>
-                    <Box>
-                      <Typography sx={inputName}>
-                        {profile?.participatorData?.state?.data?.student?.email}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Container sx={rightDiv}>
-                  <Grid container>
-                    <Grid item sm={12}>
-                      <Typography mt={1.5}>
-                        <div style={CodeCompilerText1}>Code Compiler</div>
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Container>
-                <Box>
-                  <AceEditor
-                    mode={location?.state?.language}
-                    theme="monokai"
-                    name="code"
-                    editorProps={{ $blockScrolling: true }}
-                    height="60vh"
-                    width="46.5vw"
-                    value={codeValue}
-                    onChange={onChange}
-                    defaultValue={profile?.participatorsContestDetails?.languageCode?.codeBase}
-                    fontSize="20px"
-                  />
-                </Box>
-                <Grid container sx={{ justifyContent: "end" }}>
-                  <Button
-                    variant="contained"
-                    sx={buttonTest}
-                    onClick={() => {
-                      runCodes("0"); 
-                      handleScroll()                                 
-                    }}
-                  >
-                    Run
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={buttonTest}
-                    onClick={() => {  
-                      runCodes("1")     
-                    handleButton()           
-                    }}
-                  >
-                   {show ? "final submit" : 'submit'}
-                  </Button>
-                 
-                </Grid>
-              </Box>
-              <Grid>
-                <Grid containner sx={testCase} m={3} ref={ref} >
-                  <Grid item sm={12} sx={testCaseResult}>
-                    <Typography m={3} mt={2} sx={testCaseText1}>
-                      Test Case
+                  <Grid item sm={12}>
+                    <Typography mt={1.5}>
+                      <div style={CodeCompilerText1}>Code Compiler</div>
                     </Typography>
                   </Grid>
-                  { showTestCase && 
-                   <Grid sx={testCaseData} >
-                   <Typography m={3} mt={2} sx={testCaseText2}>
-                   input               
-                        {profile.participatorsContestDetails?.QuestionList[count]
-                                   ?.testcases.map((val,index)=>{
-                                     return(
-                                     <div key={index}>
-                                      <p>{val.input}</p>
-                                     </div>
-                                     )
-                                   })}
-                                                     
-                   </Typography>
-                   <Typography m={3} mt={2} sx={testCaseText2}>
-                   output   
-                   <br/>
-                        {profile.participatorsContestDetails?.QuestionList[count]
-                                   ?.testcases.map((val,index)=>{
-                                     return(
-                                     <div key={index}>
-                                      <p>{val.output}</p>
-                                     </div>
-                                     )
-                                   })}                                       
-                   </Typography>
-                   <Typography m={3} mt={2} sx={testCaseText2}>           
-                     {runCode?.complilationMessage}
-                   </Typography>
-                 </Grid>  
-              }            
                 </Grid>
+              </Container>
+              <Box>
+                <AceEditor
+                  mode={location?.state?.language}
+                  theme="monokai"
+                  name="code"
+                  editorProps={{ $blockScrolling: true }}
+                  height="60vh"
+                  width="46.5vw"
+                  value={codeValue}
+                  onChange={onChange}
+                  defaultValue={
+                    profile?.participatorsContestDetails?.languageCode?.codeBase
+                  }
+                  fontSize="20px"
+                />
+              </Box>
+              <Grid container sx={{ justifyContent: "end" }}>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => {
+                    runCodes("0");
+                    handleScroll();
+                  }}
+                >
+                  Run
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={buttonTest}
+                  onClick={() => {
+                    runCodes("1");
+                    handleButton();
+                    handleNext()
+                  }}
+                >
+                  {show ? "final submit" : "submit"}
+                </Button>
+              </Grid>
+            </Box>
+            <Grid>
+              <Grid containner sx={testCase} m={3} ref={ref}>
+                <Grid item sm={12} sx={testCaseResult}>
+                  <Typography m={3} mt={2} sx={testCaseText1}>
+                    Test Case
+                  </Typography>
+                </Grid>
+                {showTestCase && (
+                  isLoading ? (   //Checkif if is loading
+                  <Loader/>) : (
+                  <Grid sx={testCaseData}>
+                    <Box m={3} mt={2}  sx={testCaseText2}>
+                      {runCode?.testCasesSuccess?.map((val,index)=>{                      
+                        return(
+                          <Box key={index}   sx={textTestCases}>
+                            <span>TestCase{index+1}</span>
+                            <Typography variant="h5">{val?<DoneIcon sx={{color:"green", fontSize: 40}}/>:<ClearIcon sx={{color:"red",fontSize: 40 }}/>}</Typography>
+                          </Box>
+                        )                      
+                      })}
+                    </Box>
+                   
+                  </Grid>)
+                )}
               </Grid>
             </Grid>
           </Grid>
-        </Box>
-{/*         
-        <button onClick={toggleFullScreen}>Toggle fullscreen</button> */}
+        </Grid>
       </Box>
-    );
-  };
-  
-  export default Compiler;
-  
-  
+      {/*         
+        <button onClick={toggleFullScreen}>Toggle fullscreen</button> */}
+    </Box>
+  );
+};
+
+export default Compiler;

@@ -1,16 +1,19 @@
 import axios from "axios";
 
 import api from "./api";
-const BASE_URL = `http://localhost:8085`;
+const BASE_URL = `http://192.168.1.175:8085`;
 const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
 const CREATE_CONTEST = `${BASE_URL}/admin/createContest`;
-const SEND_MAIL = `http://localhost:8085/admin/sendMail`;
+const SEND_MAIL = `${BASE_URL}/admin/sendMail`;
 const GET_ALL_CONTEST_LIST = `${BASE_URL}/admin/getAllContestList`;
 const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
+
+
+
 const loginAdmin = (credential) => {
   return axios.get(ADMIN_LOGIN_URL, {
     params: {

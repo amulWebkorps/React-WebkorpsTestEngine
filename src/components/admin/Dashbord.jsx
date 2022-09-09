@@ -205,6 +205,7 @@ const Dashbord = () => {
     }
   };
 
+
   const fetchContestData = async () => {
     const response = await getAllContestList();
     setContestDetails(response);

@@ -118,6 +118,7 @@ const Instruction = () => {
   const [languages,setLanguages]=useState()
   const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
   const [defaultCode, setDefaultCode] = useState();
+  
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
@@ -176,11 +177,11 @@ const Instruction = () => {
   if (participatorsContestDetails){
     setTimeout(()=>{
       navigate("/user", { state: { language, participatorData,languages,defaultCode,participatorsContestDetails} });      
-  
     },1000) 
-
   }
 
+
+  console.log("languages",defaultCode)
 
 
   return (
