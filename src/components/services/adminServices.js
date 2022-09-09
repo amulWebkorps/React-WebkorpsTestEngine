@@ -30,7 +30,7 @@ const registerAdmin = (credential) => {
 };
 
 const getContestDetail = (id) => {
-  console.log('-------id',id)
+  console.log("-------id", id);
   return api.get(`${CONTEST_URL}?contestId=${id}`);
 };
 const deleteContest = (id) => {
@@ -60,9 +60,8 @@ const sentMail = () => {
 };
 const uploadParticipator = (file) => {
   const formData = new FormData();
-  formData.append("file", file)
-  return api.post(UPLOAD_PARTICIAPTOR,formData)
- 
+  formData.append("file", file);
+  return api.post(UPLOAD_PARTICIAPTOR, formData);
 };
 
 const getAllContestList = () => {

@@ -152,15 +152,13 @@ const Login = () => {
       }, 2000);
     } else {
       try {
-       
         const result = await loginAdmin(credential);
         setLoading(true);
         setMsg(true);
         const token = result?.data?.token;
         localStorage.setItem("token", token);
         setTimeout(() => {
-          navigate("/dashboard", { state: { data: result.data } });
-        
+          navigate("/dashboard");
         }, 1500);
       } catch (error) {
         setLoading(false);

@@ -1,5 +1,4 @@
-
-import {  Typography, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
@@ -19,7 +18,6 @@ const centerBox = {
   background: "#1887C9",
   height: "100vh",
   width: "100%",
- 
 };
 
 const text = {
@@ -55,8 +53,6 @@ const logoText = {
 };
 
 const Thankupage = () => {
- 
-
   return (
     <>
       <Grid container>
@@ -72,8 +68,9 @@ const Thankupage = () => {
       <Box sx={MainBox}>
         <Typography sx={text}>Thank you</Typography>
         <Box sx={centerBox}>
-          <Typography sx={pageNot}>Your code is  successfully submited</Typography>
-          
+          <Typography sx={pageNot}>
+            Your code is successfully submited
+          </Typography>
         </Box>
       </Box>
     </>

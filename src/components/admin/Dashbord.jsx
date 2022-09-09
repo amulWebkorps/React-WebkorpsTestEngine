@@ -204,13 +204,11 @@ const Dashbord = () => {
       navigate("/allavailable");
     }
   };
- 
 
-  function noBack() {
-    window.history.forward();
-    navigate("/dashboard");
-   
-  }
+  // function noBack() {
+  //   window.history.forward();
+  //   navigate("/dashboard");
+  // }
   const fetchContestData = async () => {
     const response = await getAllContestList();
     setContestDetails(response);
@@ -223,7 +221,7 @@ const Dashbord = () => {
   // console.log("---contest", contestDetails);
 
   return (
-    <div style={app} onLoad={noBack}>
+    <div style={app}>
       <Header />
 
       {showAvailq ? (
@@ -367,7 +365,6 @@ const Dashbord = () => {
 
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
-                     
                         </CardContent>
                       </CardActionArea>
                     </Card>
