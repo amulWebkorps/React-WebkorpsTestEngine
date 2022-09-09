@@ -62,16 +62,17 @@ const whiteContainer = {
 };
 
 const divSelect = {
-  width: "1000h",
-  height: "76px",
+  width: "100%",
+  height: "66px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
   marginLeft: "100px",
+  justifyContent:"space-between"
 };
 const delBtn = {
-  marginTop: "10px !important",
+  marginTop: "4px !important",
   width: "30px !important",
   fontSize: "smaller",
 
@@ -81,7 +82,7 @@ const delBtn = {
 };
 
 const divText = {
-  width: "515px",
+  width: "80%",
   height: "28px",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -90,11 +91,12 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   marginLeft: "20px",
-  marginTop: "25px",
+  marginTop: "20px",
 };
 
 const scrollDiv = {
   overflowY: "auto",
+  width:"80%"
 };
 
 const emailContainer = {
@@ -122,25 +124,24 @@ const EmailShow = () => {
 
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
-   if(emails.length<=0){
-    setUpload({
-      alert: true,
-      loader: false,
-    });
-    setMsg({
-      errMsg: "Please select participator...!",
-      color: "red",
-    });
-    setTimeout(() => {
+    if (emails.length <= 0) {
       setUpload({
-        alert: false,
+        alert: true,
         loader: false,
       });
-    }, 1200);
-   }else{
-    setOpen(true);
-   }
-   
+      setMsg({
+        errMsg: "Please select participator...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setUpload({
+          alert: false,
+          loader: false,
+        });
+      }, 1200);
+    } else {
+      setOpen(true);
+    }
   };
 
   const handleChange = (e) => {
@@ -153,7 +154,7 @@ const EmailShow = () => {
       });
     }
   };
-console.log('emailsss',emails.length)
+  console.log("emailsss", emails.length);
   const handleDelete = async (mail) => {
     setUpload({
       alert: true,
@@ -184,26 +185,24 @@ console.log('emailsss',emails.length)
     }
   };
 
-
   const handleSentMail = async () => {
     setSent(true);
     const result = await sentMail();
     setSentEmails(result);
     setOpen(true);
   };
-  useEffect(()=>{
+  useEffect(() => {
     getParticipatorData();
-  },[])
-  const getParticipatorData=async()=>{
+  }, []);
+  const getParticipatorData = async () => {
     try {
-      const res=await getParticipator();
-      setUploadEmail(res)
+      const res = await getParticipator();
+      setUploadEmail(res);
       setFilteredResults(res);
     } catch (error) {
-      console.log('-------->>>>>>errorroor',error?.response?.data)
+      console.log("-------->>>>>>errorroor", error?.response?.data);
     }
-   
-  }
+  };
 
   const handleFileSelect = (event) => {
     const { files } = event.target;
@@ -220,7 +219,7 @@ console.log('emailsss',emails.length)
           errMsg: "Participator Uploaded Successfully...!",
           color: "green",
         });
-        getParticipatorData()
+        getParticipatorData();
         if (response?.length === 0) {
           setMsg({
             errMsg: "Participator is already uploaded...!",
@@ -244,19 +243,21 @@ console.log('emailsss',emails.length)
   };
 
   const handleOnChange = (e) => {
-    setSearchString(e.target.value)
-        if (searchString !== '') {
-            const filteredData =  uploadEmail?.filter((item) => {     
-                return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
-            })
-            setFilteredResults(filteredData)
-        }
-        else{
-             setFilteredResults(uploadEmail)
-        }
+    setSearchString(e.target.value);
+    if (searchString !== "") {
+      const filteredData = uploadEmail?.filter((item) => {
+        return Object?.values(item)
+          ?.join("")
+          ?.toLowerCase()
+          ?.includes(searchString?.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(uploadEmail);
+    }
   };
 
-console.log('search--',uploadEmail?.length,filteredResults?.length)
+  console.log("search--", uploadEmail?.length, filteredResults?.length);
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -336,68 +337,67 @@ console.log('search--',uploadEmail?.length,filteredResults?.length)
             </Grid>
           </Grid>
           <Container sx={emailContainer}>
-            <Grid container sx={{display:"flex",justifyContent:"center"}}>
-          {uploadEmail?.length<=0||filteredResults?.length<=0?<h1>No data </h1>:
-          searchString?.length > 1 ? (
-                    filteredResults.map((val) => {
-                      return (
-                    <Grid container sx={divSelect}>
-                      <Grid item sm={9} sx={scrollDiv}>
-                        <Typography sx={divText}>{val}</Typography>
-                      </Grid>
-                      <Grid item sm={2} mt={2}>
-                        <Checkbox
-                          value={val}
-                          onChange={handleChange}
-                          icon={<RadioButtonUncheckedIcon />}
-                          checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30,marginLeft:"90px" } }}
-                        />
-                      </Grid>
-                      
-                      <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                      <IconButton
-                      aria-label="add"
-                      sx={delBtn}
-                      onClick={(e) =>  handleDelete(val)}
-                    >
-                      <CloseIcon fontSize="x-small" />
-                    </IconButton>
-                      </Grid>
-                    </Grid>
-                  );
-                    })
-                ) : (
-                uploadEmail?.map((val) => {
+            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+              {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
+                <h1>No data </h1>
+              ) : searchString?.length > 1 ? (
+                filteredResults.map((val) => {
                   return (
                     <Grid container sx={divSelect}>
-                      <Grid item sm={9} sx={scrollDiv}>
+                      <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
-                      <Grid item sm={2} mt={2}>
+                      <Grid item  mt={1}>
                         <Checkbox
                           value={val}
                           onChange={handleChange}
                           icon={<RadioButtonUncheckedIcon />}
                           checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30,marginLeft:"90px" } }}
+                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                         />
                       </Grid>
+
                       <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                      <IconButton
-                      aria-label="add"
-                      sx={delBtn}
-                      onClick={(e) =>  handleDelete(val)}
-                    >
-                      <CloseIcon fontSize="x-small" />
-                    </IconButton>
+                        <IconButton
+                          aria-label="add"
+                          sx={delBtn}
+                          onClick={(e) => handleDelete(val)}
+                        >
+                          <CloseIcon fontSize="x-small" />
+                        </IconButton>
                       </Grid>
                     </Grid>
                   );
                 })
-              )
-          }
-            
+              ) : (
+                uploadEmail?.map((val) => {
+                  return (
+                    <Grid container sx={divSelect}>
+                      <Grid item sm={10} sx={scrollDiv}>
+                        <Typography sx={divText}>{val}</Typography>
+                      </Grid>
+                      <Grid item   mt={1}>
+                        <Checkbox 
+                          value={val}
+                          onChange={handleChange}
+                          icon={<RadioButtonUncheckedIcon />}
+                          checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                        />
+                      </Grid>
+                      <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                        <IconButton
+                          aria-label="add"
+                          sx={delBtn}
+                          onClick={(e) => handleDelete(val)}
+                        >
+                          <CloseIcon fontSize="x-small" />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  );
+                })
+              )}
             </Grid>
           </Container>
           <Box
