@@ -1,20 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import { Container } from "@mui/system";
+import { Container, width } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import Header from "../UI/Header";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
-import 'ace-builds/src-noconflict/mode-c_cpp';
 import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
 import { runAndCompilerCode } from "../services/candidate";
-
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
+import Loader from "./base/Loader";
 // import screenfull from 'screenfull';
 
 const div1 = {
@@ -63,6 +66,7 @@ const testCaseText1 = {
   lineHeight: "35px",
   color: "#000000",
 };
+
 const testCaseText2 = {
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -70,7 +74,9 @@ const testCaseText2 = {
   fontSize: "25px",
   lineHeight: "35px",
   color: "#000000",
+  overflowY: "auto",
 };
+
 const inputLabel = {
   fontFamily: "Raleway",
   fontSize: "18px",
@@ -91,7 +97,7 @@ const inputField = {
   marginTop: "10px",
   height: "14vh",
   background: "#FFFFFF",
-  overflowY: "scroll",
+  overflowY: "auto",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
@@ -124,6 +130,7 @@ const testCaseData1 = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "end",
+  overflowY: "auto",
 };
 const testCaseData = {
   display: "flex",
@@ -138,46 +145,64 @@ const timerText = {
   fontWeight: "500",
   fontweight: "bold",
 };
-const intitalState = {
-  language: "",
-  questionId: "",
-  contestId: "",
-  studentId: "",
-  flag: "1",
-  code: "",
+
+const textTestCases = {
+  padding: "10px",
+  background: "#FFFFFF",
+  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
+  borderRadius: "14px",
+  margin: "10px",
+  width: "200px",
+  display: "flex",
+  justifyContent: "space-between",
 };
 
 const Compiler = () => {
   const location = useLocation();
-  const [defaultCode, setDefaultCode] = useState("");
+  const [error, setError] = useState(null);
   const [codeValue, setCodeValue] = useState();
   const [profile, setProfile] = useState(location?.state);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
-  const [codeArray, setCodeArray] = useState([]);
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
   const [counter, setCounter] = useState(0);
+  const [showCompilationError, setshowCompilationError] = useState();
   const [showError, setShowError] = useState(false);
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const navigate = useNavigate();
-  const [duration, setDuration] = useState(
-    location?.state?.participatorsContestDetails?.contestTime
-  );
-  // let exnum = ;
-  // exnum = exnum.join("");
-  const timerGet = duration.match(/\d/g).join("");
 
+  const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
+  const [duration, setDuration] = useState(
+    location?.state?.participatorsContestDetails?.contestTime?.contestTime
+  );
+  const timerGet = duration?.match(/\d/g)?.join("");
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
-  // console.log("looo", exnum);
+  const timeOut = true;
+
   useEffect(() => {
-    if (runCode?.complilationMessage === null) {
+    if (runCode?.successMessage === "Code Submitted Successfully") {
       setShowError(true);
     }
   }, [runCode]);
+
+  useEffect(() => {
+    if (runCode?.complilationMessage == null) {
+    } else {
+      setshowCompilationError(true);
+    }
+  }, [runCode]);
+
+  useEffect(() => {
+    let timeout;
+    if (showCompilationError) {
+      timeout = setTimeout(() => setshowCompilationError(false), 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showCompilationError]);
 
   useEffect(() => {
     let timeout;
@@ -188,7 +213,9 @@ const Compiler = () => {
   }, [showError]);
 
   const runCodes = async (flag) => {
+    setLoading(true);
     try {
+      // timeOut = false;
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
         questionId:
@@ -196,15 +223,26 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
+        // timeOut: false,
         code: `${codeValue}`,
       });
-      console.log(resultData, "runcode");
-      setRunCode(resultData.data);
+      if (resultData) {
+        setError(resultData?.data?.complilationMessage);
+        setLoading(false);
+      }
+      setRunCode(resultData?.data);
       setShowTestCase(true);
     } catch (error) {
+      setshowCompilationError(true);
+      setError(null);
+      setTimeout(() => {
+        setError(null);
+        setshowCompilationError(false);
+      }, 1200);
       console.log(error);
     }
   };
+  console.log("errrr", showTestCase, isLoading);
   useEffect(() => {
     {
       try {
@@ -218,14 +256,16 @@ const Compiler = () => {
             contestId: profile.participatorsContestDetails?.contestId,
             studentId: profile.participatorsContestDetails?.studentId,
             flag: "1",
+            timeOut: true,
             code: `${codeValue}`,
           }).then();
-          console.log(resultData.data, "runcode");
+
           setRunCode(resultData.data);
           setShowTestCase(true);
         }
-        // if (timer==="00:00:01")
-        // { navigate ('/thanku')}
+        if (timer === "00:00:01") {
+          navigate("/thanku");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -241,26 +281,20 @@ const Compiler = () => {
     setShowTestCase(false);
   };
 
-  console.log(profile, "profilesskjnhjb");
-  console.log(location, "newlocation");
-
   useEffect(() => {
-    if (runCode?.complilationMessage === null) {
+    if (runCode?.complilationMessage !== null) {
     } else if (
       count === profile.participatorsContestDetails?.QuestionList?.length
     ) {
-      console.log("------if part");
-      alert("final button");
-      // navigate('/thanku')
     } else {
     }
   }, [count]);
   const handleButton = () => {
     setCounter(counter + 1);
+    setCodeValue(profile?.participatorsContestDetails?.languageCode?.codeBase);
   };
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
-      console.log(prevCount, "===========");
       if (
         prevCount <= profile.participatorsContestDetails?.QuestionList?.length
       ) {
@@ -282,6 +316,10 @@ const Compiler = () => {
         return (prevCount = 0);
       }
     });
+  };
+
+  const handleNext = () => {
+    setCount(count + 1);
   };
 
   const getTimeRemaining = (e) => {
@@ -337,25 +375,29 @@ const Compiler = () => {
     deadline.setSeconds(deadline.getSeconds() + changeseconds);
     return deadline;
   };
+
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
-
   // setTimeout(function(){
   //   window.location.href ='/thanku';
   // }, finalGet);
+
   // useEffect(() => {
+
   //   const timer = setTimeout(() => {
+
   //     runCode("1")
   //   },finalGet );
+
   //   return () => clearTimeout(timer);
   // }, []);
+
   // if (performance.navigation.type === 1) {
   //   // page was just refreshed:
   //   // alert("warning do not refresh")
-  //   window.location.href = '/thanku';
+  //   window.location.href = "/thanku";
   // } else {
-
   //   // rest of your Javascript
   // }
 
@@ -363,8 +405,14 @@ const Compiler = () => {
     <Box>
       <Header />
       <Box className="background1">
+        {showCompilationError && (
+          <MsgBar
+            errMsg={error !== null ? error : "Please Contact to HR..!"}
+            color={"red"}
+          />
+        )}
         {showError && (
-          <MsgBar errMsg={"error while compile"} color={"orange"} />
+          <MsgBar errMsg={"successfully submitted code"} color={"green"} />
         )}
         <Grid container>
           <Grid item sm={6}>
@@ -489,7 +537,7 @@ const Compiler = () => {
                   </Box>
                   <>
                     <Typography sx={inputName}>
-                      {profile?.participatorData?.state?.data?.student?.name}
+                      {profile?.participatorData?.name}
                     </Typography>
                   </>
                 </Grid>
@@ -499,7 +547,7 @@ const Compiler = () => {
                   </Box>
                   <Box>
                     <Typography sx={inputName}>
-                      {profile?.participatorData?.state?.data?.student?.email}
+                      {profile?.participatorData?.email}
                     </Typography>
                   </Box>
                 </Grid>
@@ -515,10 +563,15 @@ const Compiler = () => {
               </Container>
               <Box>
                 <AceEditor
-                  mode="python"
-                  // theme="github"
+                  mode={
+                    location?.state?.language === "Java"
+                      ? "java"
+                      : location?.state?.language === "C" || "C++"
+                      ? "c_cpp"
+                      : "python"
+                  }
                   theme="monokai"
-                  name='ace-editor'
+                  name="code"
                   editorProps={{ $blockScrolling: true }}
                   height="60vh"
                   width="46.5vw"
@@ -547,6 +600,7 @@ const Compiler = () => {
                   onClick={() => {
                     runCodes("1");
                     handleButton();
+                    handleNext();
                   }}
                 >
                   {show ? "final submit" : "submit"}
@@ -560,45 +614,40 @@ const Compiler = () => {
                     Test Case
                   </Typography>
                 </Grid>
-                {showTestCase && (
-                  <Grid sx={testCaseData}>
-                    <Typography m={3} mt={2} sx={testCaseText2}>
-                      input
-                      {profile.participatorsContestDetails?.QuestionList[
-                        count
-                      ]?.testcases.map((val, index) => {
-                        return (
-                          <div key={index}>
-                            <p>{val.input}</p>
-                          </div>
-                        );
-                      })}
-                    </Typography>
-                    <Typography m={3} mt={2} sx={testCaseText2}>
-                      output
-                      <br />
-                      {profile.participatorsContestDetails?.QuestionList[
-                        count
-                      ]?.testcases.map((val, index) => {
-                        return (
-                          <div key={index}>
-                            <p>{val.output}</p>
-                          </div>
-                        );
-                      })}
-                    </Typography>
-                    <Typography m={3} mt={2} sx={testCaseText2}>
-                      {runCode?.complilationMessage}
-                    </Typography>
-                  </Grid>
-                )}
+                {showTestCase &&
+                  (isLoading ? (
+                    <Loader mt={8} />
+                  ) : (
+                    <Grid sx={testCaseData}>
+                      <Box m={3} mt={2} sx={testCaseText2}>
+                        {runCode?.testCasesSuccess?.map((val, index) => {
+                          return (
+                            <Box key={index} sx={textTestCases}>
+                              <span>TestCase{index + 1}</span>
+                              <Typography variant="h5">
+                                {val ? (
+                                  <DoneIcon
+                                    sx={{ color: "green", fontSize: 40 }}
+                                  />
+                                ) : (
+                                  <ClearIcon
+                                    sx={{ color: "red", fontSize: 40 }}
+                                  />
+                                )}
+                              </Typography>
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                    </Grid>
+                  ))}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Box>
-
-      {/* <button onClick={toggleFullScreen}>Toggle fullscreen</button> */}
+      {/*         
+        <button onClick={toggleFullScreen}>Toggle fullscreen</button> */}
     </Box>
   );
 };

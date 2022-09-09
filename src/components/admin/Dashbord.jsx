@@ -173,6 +173,7 @@ const Dashbord = () => {
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
+      setContestData(result?.data)
       navigate("/addQuestion", { state: { result } });
     } catch (error) {
       console.log("0-fsfffsdfasdff", error);
@@ -213,7 +214,7 @@ const Dashbord = () => {
   // }
   const fetchContestData = async () => {
     const response = await getAllContestList();
-    setContestDetails(response);
+    setContestDetails(response?.data);
   };
 
   useEffect(() => {

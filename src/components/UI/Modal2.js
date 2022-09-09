@@ -69,7 +69,7 @@ export default function Model2({
   const [contestDetails, setContestDetails]=useState(null);
   useEffect(() => {
    const response=getAllContestList().then((res)=>{
-    setContestDetails(res);
+    setContestDetails(res?.data);
    });
   
    
@@ -141,7 +141,7 @@ console.log('contest dataaaa',contestDetails)
                 {sentEmails?.length === 0 ? (
                   <h3>Sent emails is empty now...</h3>
                 ) : (
-                  sentEmails.map((val) => {
+                  sentEmails?.map((val) => {
                     return (
                       <Grid container sx={divSelect}>
                         <Grid item sm={9} sx={scrollDiv}>

@@ -197,10 +197,10 @@ const EmailShow = () => {
   const getParticipatorData = async () => {
     try {
       const res = await getParticipator();
-      setUploadEmail(res);
-      setFilteredResults(res);
+      setUploadEmail(res?.data);
+      setFilteredResults(res?.data);
     } catch (error) {
-      console.log("-------->>>>>>errorroor", error?.response?.data);
+      // console.log("-------->>>>>>errorroor", error?.response?.data);
     }
   };
 
@@ -213,14 +213,14 @@ const EmailShow = () => {
     try {
       const result = uploadParticipator(files[0]).then((res) => {
         const response = res;
-        console.log("responsesss", response.length);
-        setUploadEmail(response);
+        // console.log("responsesss", response.length);
+        setUploadEmail(response?.data);
         setMsg({
           errMsg: "Participator Uploaded Successfully...!",
           color: "green",
         });
         getParticipatorData();
-        if (response?.length === 0) {
+        if (response?.data?.length === 0) {
           setMsg({
             errMsg: "Participator is already uploaded...!",
             color: "#EE9A4D",

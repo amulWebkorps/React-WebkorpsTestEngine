@@ -12,12 +12,7 @@ const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
 const loginAdmin = (credential) => {
-  return axios.get(ADMIN_LOGIN_URL, {
-    params: {
-      email: credential?.email,
-      password: credential?.password,
-    },
-  });
+  return axios.post(ADMIN_LOGIN_URL,credential);
 };
 const registerAdmin = (credential) => {
   return axios.post(ADMIN_REGISTRATION_URL, {

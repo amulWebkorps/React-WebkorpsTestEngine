@@ -9,12 +9,12 @@ const RUN_AND_CODE_COMPILER=`${BASE_URL}/runAndCompilerCode`;
 
 const participatorLogin = (contestId, credential) => {
   console.log("-----", contestId);
-  return axios.get(PARTICIPATOR_LOGIN_URL, {
-    params: {
-      contestId: contestId,
-      email: credential?.email,
-      password: credential?.password,
-    },
+  const cred={
+    email: credential?.email,
+    password: credential?.password,
+  }
+  return axios.post(PARTICIPATOR_LOGIN_URL,cred,{
+    params:{contestId:contestId}
   });
 };
 const showAllLanguage = () => {
@@ -22,7 +22,7 @@ const showAllLanguage = () => {
 };
 
 const startContestPage = (language,participatorData) => {
-  return candidateApi.post(`${START_CONTEST_PAGE}?contestId=${participatorData?.state?.data?.student?.contestId}&language=${language}&studentId=${participatorData?.state?.data?.student?.id}` ,
+  return candidateApi.post(`${START_CONTEST_PAGE}?contestId=${participatorData?.contestId}&language=${language}&studentId=${participatorData?.id}` ,
  );
 }
 

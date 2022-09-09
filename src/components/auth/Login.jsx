@@ -156,7 +156,8 @@ const Login = () => {
         const result = await loginAdmin(credential);
         setLoading(true);
         setMsg(true);
-        const token = result?.data?.token;
+        const token = result?.data?.data;
+        console.log(result);
         localStorage.setItem("token", token);
         setTimeout(() => {
           navigate("/dashboard", { state: { data: result.data } });

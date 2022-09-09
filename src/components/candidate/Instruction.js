@@ -114,7 +114,7 @@ const Instruction = () => {
   const navigate = useNavigate();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
-  const [participatorData, setParticipator] = useState(location);
+  const [participatorData, setParticipator] = useState(location?.state?.data?.data?.student);
   const [languages,setLanguages]=useState()
   const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
   const [defaultCode, setDefaultCode] = useState();
@@ -130,7 +130,7 @@ const Instruction = () => {
       .then(function (response) {
         // handle success
         console.log(response.data, "showall");
-        setLanguages(response)
+        setLanguages(response?.data)
       })
       .catch(function (error) {
         // handle error
@@ -163,7 +163,7 @@ const Instruction = () => {
       language,
       participatorData
       )
-      setParticipatorsContestDetails(result,"result.data");
+      setParticipatorsContestDetails(result?.data,"result.data");
      
       
     } catch (error) {

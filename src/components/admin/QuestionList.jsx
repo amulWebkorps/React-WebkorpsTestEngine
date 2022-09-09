@@ -180,7 +180,7 @@ const QuestionList = () => {
   const location = useLocation();
   const classes = useStyles();
   const [contestData, setContestData] = useState(
-    location?.state?.result?.contest
+    location?.state?.result?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
@@ -361,11 +361,11 @@ const QuestionList = () => {
     console.log('ee',error)
    }
   }
-  console.log('--questions', contestQuestion)
+  console.log('--questions', contestData)
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId).then((res) => {
       console.log(res)
-      setContestQuestion(res?.contestQuestionDetail);
+      setContestQuestion(res?.data?.contestQuestionDetail);
     }).catch("dmndv");
   }, [showAlert]);
 
