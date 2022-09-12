@@ -238,6 +238,7 @@ const Compiler = () => {
       setTimeout(() => {
         setError(null);
         setshowCompilationError(false);
+        setLoading(false);
       }, 1200);
       console.log(error);
     }
@@ -646,8 +647,7 @@ const Compiler = () => {
           </Grid>
         </Grid>
       </Box>
-      {/*         
-        <button onClick={toggleFullScreen}>Toggle fullscreen</button> */}
+
     </Box>
   );
 };
