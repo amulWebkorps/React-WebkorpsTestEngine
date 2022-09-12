@@ -10,15 +10,24 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-monokai";
+import ReactRouterPrompt from "react-router-prompt";
+import {browserHistory} from 'react-router';
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
+
 import { runAndCompilerCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
-// import screenfull from 'screenfull';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const div1 = {
   height: "70vh",
@@ -75,6 +84,7 @@ const testCaseText2 = {
   lineHeight: "35px",
   color: "#000000",
   overflowY: "auto",
+  width:"100%"
 };
 
 const inputLabel = {
@@ -135,6 +145,8 @@ const testCaseData1 = {
 const testCaseData = {
   display: "flex",
   flexDirection: "row",
+  height:"200px",
+  width:"100%"
 };
 const inputName = {
   fontWeight: "600",
@@ -152,7 +164,7 @@ const textTestCases = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   margin: "10px",
-  width: "200px",
+  width: "90%",
   display: "flex",
   justifyContent: "space-between",
 };
@@ -172,7 +184,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-
+  const [state,setState]=useState(false);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [duration, setDuration] = useState(
@@ -212,7 +224,7 @@ const Compiler = () => {
     return () => clearTimeout(timeout);
   }, [showError]);
 
-  const runCodes = async (flag) => {
+  const runCodes = async (flag,state) => {
     setLoading(true);
     try {
       // timeOut = false;
@@ -223,15 +235,19 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        // timeOut: false,
+        timeOut: false,
         code: `${codeValue}`,
       });
       if (resultData) {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
+        if(profile.participatorsContestDetails?.QuestionList?.length<=1 && flag==="1"){
+          navigate('/thanku');
+        }
       }
       setRunCode(resultData?.data);
       setShowTestCase(true);
+     
     } catch (error) {
       setshowCompilationError(true);
       setError(null);
@@ -242,8 +258,13 @@ const Compiler = () => {
       }, 1200);
       console.log(error);
     }
+
   };
-  console.log("errrr", showTestCase, isLoading);
+  useEffect(()=>{
+    if(performance.navigation.type===2){
+      navigate('/thanku')
+    }
+  },[])
   useEffect(() => {
     {
       try {
@@ -267,6 +288,7 @@ const Compiler = () => {
         if (timer === "00:00:01") {
           navigate("/thanku");
         }
+
       } catch (error) {
         console.log(error);
       }
@@ -320,9 +342,15 @@ const Compiler = () => {
   };
 
   const handleNext = () => {
-    setCount(count + 1);
+    if(profile.participatorsContestDetails?.QuestionList?.length<=1){
+   console.log('if')
+    }else{
+      console.log('else')
+      setCount(count + 1);
+    }
+   
   };
-
+console.log('---------<<<>>',1<=1)
   const getTimeRemaining = (e) => {
     const total = Date.parse(e) - Date.parse(new Date());
     const seconds = Math.floor((total / 1000) % 60);
@@ -335,20 +363,6 @@ const Compiler = () => {
       seconds,
     };
   };
-
-  // useEffect(()=>{
-  //   if (screenfull.isEnabled) {
-  //     screenfull.on('change', () => {
-  //       console.log('Am I fullscreen?', screenfull.isFullscreen ? 'Yes' : 'No');
-  //     });
-  //   }
-  // },[screenfull])
-  //   // enabling fullscreen has to be done after some user input
-  // const  toggleFullScreen = () => {
-  //     if (screenfull.isEnabled) {
-  //       screenfull.toggle();
-  //     }
-  //   }
 
   const startTimer = (e) => {
     let { total, hours, minutes, seconds } = getTimeRemaining(e);
@@ -380,31 +394,60 @@ const Compiler = () => {
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
-  // setTimeout(function(){
-  //   window.location.href ='/thanku';
-  // }, finalGet);
+   
+useEffect(()=>{
+  if (performance.navigation.type === 1 ||performance.navigation.type===2 ) {
+    // runCodes("1");
+    setTimeout(()=>{
+      navigate('/thanku')
+    },[3000])
+    console.log('page is refreshed');
+  } else {
 
-  // useEffect(() => {
+  }
+},[])
 
-  //   const timer = setTimeout(() => {
-
-  //     runCode("1")
-  //   },finalGet );
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  // if (performance.navigation.type === 1) {
-  //   // page was just refreshed:
-  //   // alert("warning do not refresh")
-  //   window.location.href = "/thanku";
-  // } else {
-  //   // rest of your Javascript
-  // }
 
   return (
     <Box>
-      <Header />
+      <Header 
+        state={true}
+      />
+      {/* <ReactRouterPrompt when={true}>
+        {({ isActive, onConfirm, onCancel }) =>
+          isActive && (
+            <div>
+              <Dialog
+                open={true}
+                // onClose={onCancel}
+                onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            onCancel();
+          }
+        }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Alert"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                   If you leave this test your data would be lose and your code will be automatically submitted..!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button variant="contained" color="primary" onClick={onCancel}>Close</Button>
+                  <Button variant="contained"  color="warning" onClick={()=>{testSubmit()}}>
+                    Leave
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+          )
+        }
+      </ReactRouterPrompt> */}
+
       <Box className="background1">
         {showCompilationError && (
           <MsgBar
@@ -446,7 +489,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              profile.participatorsContestDetails?.QuestionList[
+                              profile?.participatorsContestDetails?.QuestionList[
                                 count
                               ]?.question
                             }
@@ -460,7 +503,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              profile.participatorsContestDetails?.QuestionList[
+                              profile?.participatorsContestDetails?.QuestionList[
                                 count
                               ]?.sampleTestCase[0]?.constraints
                             }
@@ -477,7 +520,7 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                profile.participatorsContestDetails
+                                profile?.participatorsContestDetails
                                   ?.QuestionList[count]?.sampleTestCase[0]
                                   ?.input
                               }
@@ -493,7 +536,7 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                profile.participatorsContestDetails
+                                profile?.participatorsContestDetails
                                   ?.QuestionList[count]?.sampleTestCase[0]
                                   ?.output
                               }
@@ -519,7 +562,7 @@ const Compiler = () => {
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
                   disabled={
-                    profile.participatorsContestDetails?.QuestionList?.length -
+                    profile?.participatorsContestDetails?.QuestionList?.length -
                       1 ===
                     count
                   }
@@ -624,7 +667,7 @@ const Compiler = () => {
                         {runCode?.testCasesSuccess?.map((val, index) => {
                           return (
                             <Box key={index} sx={textTestCases}>
-                              <span>TestCase{index + 1}</span>
+                              <span>TestCase {index + 1}</span>
                               <Typography variant="h5">
                                 {val ? (
                                   <DoneIcon
@@ -647,7 +690,6 @@ const Compiler = () => {
           </Grid>
         </Grid>
       </Box>
-
     </Box>
   );
 };

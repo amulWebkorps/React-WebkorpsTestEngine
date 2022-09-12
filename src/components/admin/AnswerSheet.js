@@ -30,7 +30,15 @@ const MainContainer = {
   // borderRadius: "17px",
   overflow: "auto",
 };
-
+const MainContainers = {
+  justifyContent:"space-between",
+  background: "#F9FAFC",
+  width: "70vw",
+  // height: "65vh",
+  boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
+  // borderRadius: "17px",
+  // overflow: "auto",
+};
 const Headers = {
   height: "14vh",
   background: "#FDFEFF",
@@ -87,14 +95,14 @@ const AnswerBox = {
 };
 
 const innerHeading = {
-  width: "70vw",
+  // width: "70vw",
   // height: "71vh",
   background: "#F9FAFC",
   borderRadius: " 17px 17px 0px 0px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  marginLeft: "125px",
+  marginLeft: "25px",
   // marginRight: "30px",
   paddingTop: "10px",
 };
@@ -102,7 +110,7 @@ const innerHeading = {
 const innerSearch = {
   display: "flex",
   height: "40px",
-  width: "212px",
+  // width: "50%",
 };
 
 const searchIcon = {
@@ -124,7 +132,7 @@ const searchField = {
 };
 
 const Answerheading = {
-  marginLeft: "30px",
+   width:"50%",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
@@ -213,8 +221,8 @@ const AnswerSheet = () => {
     (async () => {
       try {
         const participators = await getParticipatorOfContest(contestId);
-        setParticipator(participators);
-        setFilteredResults(participators);
+        setParticipator(participators?.data);
+        setFilteredResults(participators?.data);
       } catch (error) {
         console.log("--", error);
       }
@@ -269,7 +277,8 @@ const AnswerSheet = () => {
           </Box>
           <Box sx={AnswerBox}>Participators</Box>
         </Box>
-        <Container>
+        <Container sx={MainContainers}>
+       
           <Box sx={innerHeading}>
             <Typography sx={Answerheading}>Answer Sheets</Typography>
             <Box sx={innerSearch}>
@@ -283,6 +292,7 @@ const AnswerSheet = () => {
               />
             </Box>
           </Box>
+         
         </Container>
         <Container sx={MainContainer}>
           <Container>
@@ -293,14 +303,16 @@ const AnswerSheet = () => {
                 return (
                   <Grid sx={maindata}>
                     <Box sx={innerdata}>
-                      <Typography sx={UniqueId}> {index + 1}.</Typography>
+                      <Typography sx={UniqueId}> {index + 1}</Typography>
                       <Typography sx={UserName}>{val?.email}</Typography>
                     </Box>
                     <Box sx={innerdata}>
                       <Button>
                         {" "}
                         <Typography sx={ViewDetail}
-                         onClick={()=>navigate("/viewparticipator", {id:val?.email})}
+                         onClick={()=>navigate("/viewparticipator",{
+                            state: val?.id,
+                          })}
                         >View Details</Typography>
                       </Button>
 
@@ -320,12 +332,13 @@ const AnswerSheet = () => {
                 return (
                   <Grid sx={maindata}>
                     <Box sx={innerdata}>
-                      {/* <Typography sx={Sno}></Typography> */}
                       <Typography sx={UniqueId}>{index + 1}</Typography>
                       <Typography sx={UserName}>{val?.email}</Typography>
                     </Box>
                     <Box sx={innerdata}>
-                    <Button  sx={ViewDetail} onClick={()=>navigate("/viewparticipator")}>
+                    <Button  sx={ViewDetail} onClick={()=>navigate("/viewparticipator",{
+                            state: val?.id,
+                          })}>
                         {" "}
                         <Typography>View Details</Typography>
                       </Button>

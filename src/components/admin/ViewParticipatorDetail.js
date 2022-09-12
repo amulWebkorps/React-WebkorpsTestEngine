@@ -1,4 +1,4 @@
-import React, { useState, } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Container } from "@mui/system";
 import Box from "@mui/material/Box";
@@ -9,9 +9,9 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
+import { getparticipatordetail } from "../services/contest/contestServices";
 // import { getparticipatordetail } from "../services/adminServices";
 import { useLocation } from "react-router-dom";
-
 
 const div1 = {
   height: "70vh",
@@ -118,25 +118,25 @@ const buttonTest = {
 };
 
 const ViewParticipatorDetail = () => {
+  const [count, setCount] = useState(0);
+  const [count1, setCount1] = useState(1);
+  const location = useLocation();
+  const [participatorDetails, setParticipatorDetails] = useState();
+  const [studentId, setStudentId] = useState(location?.state);
 
-    const [count, setCount] = useState(0);
-    const [count1, setCount1] = useState(1);
-    const location = useLocation();
-    const [participatorDetails,setParticipatorDetails]=useState(location?.state);
-
-console.log('location-------',location)
-  function increment() {
+  console.log("location-------", location);
+  const nextQuestion = (e) => {
     setCount(function (prevCount) {
-      console.log(prevCount, "===========");
-      if (prevCount <= 2) {
+      if (prevCount <= participatorDetails?.questionSubmitedByStudent?.length) {
         return (prevCount += 1);
       } else {
-        return (prevCount = 2);
+        return (prevCount =
+          participatorDetails?.questionSubmitedByStudent?.length);
       }
     });
-  }
-  console.log(count1, "rtyg");
-  function decrement() {
+  };
+
+  const prevQuestion = (e) => {
     setCount(function (prevCount) {
       if (prevCount > 0) {
         return (prevCount -= 1);
@@ -144,17 +144,22 @@ console.log('location-------',location)
         return (prevCount = 0);
       }
     });
-  }
+  };
 
+  const getparticipatordetails = async () => {
+    try {
+      const res = await getparticipatordetail(studentId);
+      setParticipatorDetails(res?.data);
+    } catch (error) {
+      console.log("--", error);
+    }
+  };
 
-  // const HandleParticipatorDetail = async () => {
-  //     try {
-  //       const result =    getparticipatordetail().then();        
-  //       }
-  //       catch {
-  //       }
-  //   }
+  useEffect(() => {
+    getparticipatordetails();
+  }, []);
 
+  console.log("-", participatorDetails);
   return (
     <div>
       <Header />
@@ -171,7 +176,7 @@ console.log('location-------',location)
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Test Case
+                          Question no. {count+1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -179,7 +184,13 @@ console.log('location-------',location)
                       <Box>
                         <label style={inputLabel}>Problem statement</label>
                         <Box style={inputField} p={2}>
-                          <p></p>
+                          <p>
+                            {
+                              participatorDetails?.questionSubmitedByStudent[
+                                count
+                              ]?.question
+                            }
+                          </p>
                         </Box>
                       </Box>
                     </Grid>
@@ -187,9 +198,13 @@ console.log('location-------',location)
                       <Box>
                         <label style={inputLabel}>Constraints</label>
                         <Box style={inputField} p={2}>
-                          <p>
-                            
-                          </p>
+                          <Typography>
+                            {
+                              participatorDetails?.questionSubmitedByStudent[
+                                count
+                              ]?.sampleTestCase[0]?.constraints
+                            }
+                          </Typography>
                         </Box>
                       </Box>
                     </Grid>
@@ -198,9 +213,13 @@ console.log('location-------',location)
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
                           <Box style={inputField} p={2}>
-                            <p>
-                             
-                            </p>
+                            <Typography>
+                              {
+                                participatorDetails
+                                  ?.questionSubmitedByStudent?.[count]
+                                  ?.sampleTestCase[0]?.input
+                              }
+                            </Typography>
                           </Box>
                         </Box>
                       </Grid>
@@ -208,9 +227,13 @@ console.log('location-------',location)
                         <Box>
                           <label style={inputLabel}>Sample Output</label>
                           <Box style={inputField} p={2}>
-                            <p>
-                              
-                            </p>
+                            <Typography>
+                              {
+                                participatorDetails
+                                  ?.questionSubmitedByStudent?.[count]
+                                  ?.sampleTestCase[0]?.output
+                              }
+                            </Typography>
                           </Box>
                         </Box>
                       </Grid>
@@ -222,14 +245,20 @@ console.log('location-------',location)
                 <Button
                   variant="contained"
                   sx={buttonTest}
-                  onClick={() => decrement()}
+                  onClick={() => prevQuestion()}
+                  disabled={count === 0}
                 >
                   Prev
                 </Button>
                 <Button
                   variant="contained"
                   sx={buttonTest}
-                  onClick={() => increment()}
+                  onClick={() => nextQuestion()}
+                  disabled={
+                    participatorDetails?.questionSubmitedByStudent?.length -
+                      1 ===
+                    count
+                  }
                 >
                   Next
                 </Button>
@@ -241,22 +270,23 @@ console.log('location-------',location)
               <Grid container>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <label>
-                    <h3>Name:- </h3>
+                    <h3>Name {participatorDetails?.studentDetail?.name} </h3>
                   </label>
-                  <box>
-                    <h3></h3>
-                  </box>
+                 
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <label>
-                    <h3>Email:- </h3>
+                    <h3>Email {participatorDetails?.studentDetail?.email} </h3>
                   </label>
-                  <box>
-                    <h3></h3>
-                  </box>
+                 
                 </Grid>
+                <label>
+                    <h3>Phone {participatorDetails?.studentDetail?.mobileNumber} </h3>
+                  </label>
+               
               </Grid>
               <Container sx={rightDiv}>
+             
                 <Grid container>
                   <Grid item sm={12}>
                     <Typography mt={1.5}>
@@ -275,12 +305,12 @@ console.log('location-------',location)
                   width="47vw"
                   placeholder=""
                   value="trrrrrrrrrrrrr"
-                  onChange={onchange}
+                  // onChange={onchange}
                   fontSize="20px"
                   readOnly="true"
                 />
               </Box>
-              <Grid container sx={{ justifyContent: "end" }}>
+              {/* <Grid container sx={{ justifyContent: "end" }}>
                 <Button
                   variant="contained"
                   sx={buttonTest}
@@ -293,7 +323,7 @@ console.log('location-------',location)
                 <Button variant="contained" sx={buttonTest}>
                   Submit
                 </Button>
-              </Grid>
+              </Grid> */}
             </Box>
             <Grid>
               <Grid containner sx={testCase} m={3}>

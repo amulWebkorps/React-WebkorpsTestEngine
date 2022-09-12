@@ -188,7 +188,7 @@ const EmailShow = () => {
   const handleSentMail = async () => {
     setSent(true);
     const result = await sentMail();
-    setSentEmails(result);
+    setSentEmails(result?.data);
     setOpen(true);
   };
   useEffect(() => {

@@ -1,8 +1,9 @@
 
 import {  Typography, Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
+import { Navigate } from "react-router-dom";
 
 const MainBox = {
   display: "flex",
@@ -55,7 +56,19 @@ const logoText = {
 };
 
 const Thankupage = () => {
- 
+  useEffect(() => {
+    window.onbeforeunload = function() {
+      console.log('akkk')
+        return true;
+        
+    };
+
+    return () => {
+        window.onbeforeunload = null;
+        console.log('kkk')
+    };
+}, []);
+
 
   return (
     <>

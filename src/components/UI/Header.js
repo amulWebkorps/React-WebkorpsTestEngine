@@ -43,7 +43,7 @@ const headerc={
   
 }
 
-const Header = () => {
+const Header = ({state}) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -84,7 +84,7 @@ const Header = () => {
           <Box mt={2}>
             <Stack direction="row" spacing={2}>
               <div>
-                <Button
+              {state?<></>: <Button
                   ref={anchorRef}
                   id="composition-button"
                   aria-controls={open ? "composition-menu" : undefined}
@@ -93,7 +93,8 @@ const Header = () => {
                   onClick={handleToggle}
                 >
                   <MoreVertIcon />
-                </Button>
+                </Button>}
+               
                 <Popper
                   open={open}
                   anchorEl={anchorRef.current}
