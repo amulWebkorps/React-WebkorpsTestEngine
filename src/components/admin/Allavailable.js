@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography,IconButton } from "@mui/material";
-import { Container} from "@mui/system";
+import { Grid, Typography, IconButton } from "@mui/material";
+import { Container } from "@mui/system";
 import { Button } from "@mui/material";
 import "../../App.css";
 import MenuItem from "@mui/material/MenuItem";
@@ -113,63 +113,59 @@ const containerUpper = {
   justifyContent: "center",
 };
 
-const array = [1, 2, 3, 4, 5,6,4,4,45,5,5,1,22,5,5,4,5,6,];
+const array = [1, 2, 3, 4, 5, 6, 4, 4, 45, 5, 5, 1, 22, 5, 5, 4, 5, 6];
 
 const Allavailable = () => {
-  const [allAvailQues,setAllAvailQues]=useState([]);
-  const [filterValue,setFilterValue]=useState("All");
-  const [msg,setMsg]=useState({
-    state:false,
-    msg:"",
-    color:""
+  const [allAvailQues, setAllAvailQues] = useState([]);
+  const [filterValue, setFilterValue] = useState("All");
+  const [msg, setMsg] = useState({
+    state: false,
+    msg: "",
+    color: "",
   });
-  const handleChange=(e)=>{
-    setFilterValue(e.target.value)
-  }
+  const handleChange = (e) => {
+    setFilterValue(e.target.value);
+  };
 
-  const handleDelete=(id,quesId)=>{
-    const arr=[`questionForLevel`, quesId]
+  const handleDelete = (id, quesId) => {
+    const arr = [`questionForLevel`, quesId];
     setMsg({
-      state:true
-    })
-   console.log('----------',id,quesId)
-    setAllAvailQues((val)=>{
-      return val.filter((e,index)=>index!==id)
-    })
+      state: true,
+    });
+    console.log("----------", id, quesId);
+    setAllAvailQues((val) => {
+      return val.filter((e, index) => index !== id);
+    });
     try {
-      const result=deleteQuestion(arr).then((res)=>{
+      const result = deleteQuestion(arr).then((res) => {
         setMsg({
-          state:true,
-          msg:"Question delete succesfully",
-          color:"red"
-        })
+          state: true,
+          msg: "Question delete succesfully",
+          color: "red",
+        });
         setTimeout(() => {
           setMsg({
-            state:false,
-            msg:"",
-            color:""
-          })
+            state: false,
+            msg: "",
+            color: "",
+          });
         }, 1200);
       });
-      
-    } catch (error) {
-      
-    }
-  }
-console.log('------',allAvailQues)
-  useEffect(()=>{
-    const result = filterQuestion(filterValue).then((res)=>{
-      setAllAvailQues(res)
-    })
-  },[filterValue])
+    } catch (error) {}
+  };
+  console.log("------", allAvailQues);
+  useEffect(() => {
+    const result = filterQuestion(filterValue).then((res) => {
+      console.log("res", res);
+      setAllAvailQues(res.data);
+    });
+  }, [filterValue]);
 
   return (
     <div style={background1}>
-    {msg.state&& <MsgBar
-      errMsg={msg.msg} color={msg.color}
-    />}
-   
-      <Header/>
+      {msg.state && <MsgBar errMsg={msg.msg} color={msg.color} />}
+
+      <Header />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item mt={5}>
           <Box variant="contained" sx={buttonLevel}>
@@ -204,19 +200,16 @@ console.log('------',allAvailQues)
             </Button> */}
           </Grid>
         </Grid>
-        <Grid container sx={{maxHeight:"500px", overflow: 'auto'}}>
-          {allAvailQues?.map((val,index) => {
+        <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
+          {allAvailQues?.map((val, index) => {
             return (
               <Grid container sx={divSelect} key={index}>
                 <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>
-                   {val?.question}
-                  </Typography>
+                  <Typography sx={divText}>{val?.question}</Typography>
                 </Grid>
-                <Grid item sm={1} mt={1}>
-                </Grid>
+                <Grid item sm={1} mt={1}></Grid>
                 <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
-                <IconButton
+                  <IconButton
                     aria-label="add"
                     sx={delBtn}
                     onClick={() => handleDelete(index, val?.questionId)}

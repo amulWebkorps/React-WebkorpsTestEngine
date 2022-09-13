@@ -7,8 +7,8 @@ import {
   Typography,
   TextField,
   Stack,
-  InputAdornment,IconButton
-
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -20,7 +20,10 @@ import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
-import { filterQuestion, saveQuestion } from "../services/contest/contestServices";
+import {
+  filterQuestion,
+  saveQuestion,
+} from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
 import { uploadQuestions } from "../services/contest/contestServices";
@@ -205,11 +208,10 @@ const Level1 = () => {
   const [editQuestion, setEditQuestion] = useState(false);
   const [delFromContest, setDelFromContest] = useState({
     state: false,
-    }
-);
+  });
   const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
-  const [showValidation,setShowValidation]=useState(false);
+  const [showValidation, setShowValidation] = useState(false);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -257,18 +259,23 @@ const Level1 = () => {
   };
 
   const addQuestion = async (e) => {
-    if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
+    if (
+      problemStatement.question === "" ||
+      sampleTestCase.constraints === "" ||
+      sampleTestCase?.input === "" ||
+      sampleTestCase?.output === "" ||
+      testCaseList.length === 0
+    ) {
       // setAlert(true);
-      setShowValidation(true)
+      setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
-         setTimeout(() => {
-          setShowValidation(false);
-        }, 1200);
-    }
-    else{
+      setTimeout(() => {
+        setShowValidation(false);
+      }, 1200);
+    } else {
       setAlert(true);
       try {
         const result = await saveQuestion(question);
@@ -286,7 +293,7 @@ const Level1 = () => {
             errMsg: "Question edit successfully...!",
             color: "green",
           });
-         console.log('editquestion')
+          console.log("editquestion");
           setEditQuestion(false);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -299,7 +306,7 @@ const Level1 = () => {
             errMsg: "Question added successfully...!",
             color: "green",
           });
-          console.log('editquestion else')
+          console.log("editquestion else");
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -319,10 +326,10 @@ const Level1 = () => {
     });
   };
 
-  const editTestcase=(e,id)=>{
+  const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj,inn) => {
+      const newState = prevState.map((obj, inn) => {
         if (index === inn) {
           return { ...obj, [name]: value };
         }
@@ -330,36 +337,38 @@ const Level1 = () => {
       });
       return newState;
     });
-  }
-  const uploadQuestion=async(e)=>{
-    const {files}=e.target;
+  };
+  const uploadQuestion = async (e) => {
+    const { files } = e.target;
     setAlert(true);
     try {
-     const result=await uploadQuestions(files[0],"");
-     setContestQuestion([...contestQuestion,...result])
-     setMsg({
-       errMsg: "Question uploaded successfully...!",
-       color: "green",
-     });
-   setTimeout(() => {
-       setAlert(false);
-     }, 1200);
+      const result = await uploadQuestions(files[0], "");
+      setContestQuestion([...contestQuestion, ...result]);
+      setMsg({
+        errMsg: "Question uploaded successfully...!",
+        color: "green",
+      });
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
     } catch (error) {
-     setAlert(false);
-     console.log('ee',error)
+      setAlert(false);
+      console.log("ee", error);
     }
-   }
-   console.log('--questions', contestQuestion)
-   useEffect(() => {
-     const result = getContestDetail(contestData?.contestId).then((res) => {
-       console.log(res)
-       setContestQuestion(res?.contestQuestionDetail);
-     }).catch("dmndv");
-   }, [showAlert]);
+  };
+  console.log("--questions", contestQuestion);
+  useEffect(() => {
+    const result = getContestDetail(contestData?.contestId)
+      .then((res) => {
+        console.log(res);
+        setContestQuestion(res?.contestQuestionDetail);
+      })
+      .catch("dmndv");
+  }, [showAlert]);
 
   useEffect(() => {
     const result = filterQuestion("Level 1").then((res) => {
-      const response = res;
+      const response = res.data;
       setContestQuestion(response);
     });
   }, [showAlert]);
@@ -370,12 +379,16 @@ const Level1 = () => {
   //   setAvailableQuestions(response);
   // })
   // },[])
-console.log('test case list',testCaseList)
+  console.log("test case list", testCaseList);
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-        {showAlert || showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
+        {showAlert || showValidation ? (
+          <MsgBar errMsg={msg.errMsg} color={msg.color} />
+        ) : (
+          <></>
+        )}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
           <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
@@ -424,8 +437,8 @@ console.log('test case list',testCaseList)
                         mt={5}
                         sx={input}
                       />
-                      <br/>
-                      <br/>
+                      <br />
+                      <br />
                       <Typography sx={label} display="inline">
                         Constraints
                       </Typography>
@@ -448,8 +461,8 @@ console.log('test case list',testCaseList)
                           ),
                         }}
                       />
-                      <br/>
-                      <br/>
+                      <br />
+                      <br />
                       <Grid
                         container
                         direction="row"
@@ -595,7 +608,9 @@ console.log('test case list',testCaseList)
                           }}
                         >
                           {testCaseList?.map((val, index) => {
-                            {console.log('index from map',index)}
+                            {
+                              console.log("index from map", index);
+                            }
                             return (
                               <Box
                                 component="form"
@@ -611,7 +626,7 @@ console.log('test case list',testCaseList)
                                   placeholder="testcase input"
                                   multiline
                                   rows={1}
-                                  onChange={(e)=>editTestcase(e,index)}
+                                  onChange={(e) => editTestcase(e, index)}
                                   maxRows={10}
                                   color="primary"
                                   focused
@@ -619,7 +634,7 @@ console.log('test case list',testCaseList)
                                 <TextField
                                   name="output"
                                   value={val?.output}
-                                  onChange={(e)=>editTestcase(e,index)}
+                                  onChange={(e) => editTestcase(e, index)}
                                   placeholder="testcase output"
                                   multiline
                                   rows={1}
@@ -627,7 +642,7 @@ console.log('test case list',testCaseList)
                                   color="primary"
                                   focused
                                 />
-                                 <IconButton
+                                <IconButton
                                   aria-label="add"
                                   sx={delBtn}
                                   onClick={(e) => delTestCase(index)}

@@ -20,16 +20,17 @@ import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
-import { saveQuestion, uploadQuestions } from "../services/contest/contestServices";
+import {
+  saveQuestion,
+  uploadQuestions,
+} from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
-
 
 const useStyles = makeStyles({
   container: {
     height: "100%",
     minHeight: 180,
-    
   },
   containerTall: {
     minHeight: 250,
@@ -54,7 +55,6 @@ const questionList = {
         rgba(24, 135, 201, 0.4) 100%
       )`,
   overflow: "auto",
- 
 };
 
 const topButton = {
@@ -76,7 +76,7 @@ const QuestionBox = {
   width: "250px",
   height: "55px",
   background: "#0057FF !important",
-  color:"white",
+  color: "white",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -114,8 +114,7 @@ const delBtn = {
 const mainContainer = {
   marginTop: "20px",
   background: "white",
-  borderRadius: "18px"
- 
+  borderRadius: "18px",
 };
 
 const cardBody = {
@@ -216,12 +215,14 @@ const QuestionList = () => {
     location?.state?.data?.totalAvailableQuestion
   );
   const [showAlert, setAlert] = useState(false);
-  const [showValidation, setShowValidation]=useState(false);
+  const [showAlreadyQuestion, setShowAlreadyQuestion] = useState(false);
+  const [showSelectQuestion, setshowselectquestion] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
   });
-  const [files,setFiles]=useState(null);
+  const [files, setFiles] = useState(null);
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -263,7 +264,6 @@ const QuestionList = () => {
     setTestCaseList([...testCaseList, testCases]);
     setTestCases(testInitialFields);
   };
-
 
   const addQuestion = async (e) => {
     if (
@@ -342,41 +342,65 @@ const QuestionList = () => {
       return newState;
     });
   };
-  const uploadQuestion=async(e)=>{
-   const {files}=e.target;
-   setAlert(true);
-   try {
-    const result=await uploadQuestions(files[0],contestData?.contestId);
-    setContestQuestion([...contestQuestion,...result])
-    setMsg({
-      errMsg: "Question uploaded successfully...!",
-      color: "green",
-    });
-  setTimeout(() => {
+  const uploadQuestion = async (e) => {
+    const { files } = e.target;
+    setAlert(true);
+    try {
+      const result = await uploadQuestions(files[0], contestData?.contestId);
+      setContestQuestion([...contestQuestion, ...result]);
+      setMsg({
+        errMsg: "Question uploaded successfully...!",
+        color: "green",
+      });
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
+    } catch (error) {
       setAlert(false);
-    }, 1200);
-    
-   } catch (error) {
-    setAlert(false);
-    console.log('ee',error)
-   }
-  }
-  console.log('--questions', contestData)
+      console.log("ee", error);
+    }
+  };
+  console.log("--questions", contestData);
+  //   useEffect(() => {
+  //     const result = getContestDetail(contestData?.contestId).then((res) => {
+  //       console.log(res)
+  //       setContestQuestion(res?.data?.contestQuestionDetail);
+  //     }).catch("dmndv");
+  // =======
+  //       console.log("ee", error);
+  //     }
+
   useEffect(() => {
-    const result = getContestDetail(contestData?.contestId).then((res) => {
-      console.log(res)
-      setContestQuestion(res?.data?.contestQuestionDetail);
-    }).catch("dmndv");
+    const result = getContestDetail(contestData?.contestId)
+      .then((res) => {
+        setContestQuestion(res?.data?.contestQuestionDetail);
+      })
+      .catch("dmndv");
   }, [showAlert]);
 
   return (
     <div style={questionList}>
       <Header />
       <Container sx={topButton}>
-        {showAlert ||showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:<></>}
+        {showAlert ||
+        showValidation ||
+        showAlreadyQuestion ||
+        showSelectQuestion ? (
+          <MsgBar errMsg={msg.errMsg} color={msg.color} />
+        ) : (
+          <></>
+        )}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-          <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}>
+
+          {/* <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}> */}
+
+          <Box
+            sx={AnswerBox}
+            onClick={() =>
+              navigate("/participator ", { state: location?.state })
+            }
+          >
             Participators
           </Box>
         </Grid>
@@ -523,8 +547,7 @@ const QuestionList = () => {
                           startIcon={<NoteAddIcon />}
                         >
                           Upload File
-                          <input hidden accept="file/*" multiple type="file"
-                           />
+                          <input hidden accept="file/*" multiple type="file" />
                         </Button>
                       </Stack>
                     </Grid>
@@ -614,7 +637,6 @@ const QuestionList = () => {
                                   maxRows={10}
                                   color="primary"
                                   focused
-                                
                                 />
 
                                 <TextField
@@ -627,7 +649,6 @@ const QuestionList = () => {
                                   maxRows={10}
                                   color="primary"
                                   focused
-                                
                                 />
                                 <IconButton
                                   aria-label="add"
@@ -653,7 +674,6 @@ const QuestionList = () => {
                           >
                             Add
                           </Button>
-      
                         </Stack>
                       </Container>
                     </div>
@@ -682,7 +702,8 @@ const QuestionList = () => {
           setTestCaseList={setTestCaseList}
           setSampleTestCase={setSampleTestCase}
           setIndex={setIndex}
-         
+          setShowAlreadyQuestion={setShowAlreadyQuestion}
+          setshowselectquestion={setshowselectquestion}
         />
       </Container>
     </div>

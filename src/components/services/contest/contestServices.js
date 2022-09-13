@@ -3,7 +3,7 @@ import api from "../api";
 const SAVE_QUESTION = `${BASE_URL}/admin/saveQuestion`;
 const FILER_QUESTION = `${BASE_URL}/admin/filterQuestion`;
 const DELETE_QUESTION = `${BASE_URL}/admin/deleteQuestion`;
-const UPLOAD_QUESTION=`${BASE_URL}/admin/questionUpload`
+const UPLOAD_QUESTION = `${BASE_URL}/admin/questionUpload`;
 const ADD_SELECTIVE_QUE = `${BASE_URL}/admin/addSelectedAvailableQuestiontoContest`;
 const GET_CONTEST_PARTICIPATOR=`${BASE_URL}/admin/participatorOfContest?contestId=`
 const DELETE_STUDENT=`${BASE_URL}/admin/deleteStudent?emailId=`
@@ -21,14 +21,13 @@ const filterQuestion = (level) => {
 };
 
 const addSelectiveQuestion = (quesArray) => {
-  console.log('wusqrr',quesArray)
   return api.post(ADD_SELECTIVE_QUE, quesArray);
 };
 
 const deleteQuestion = (quesArray) => {
-  console.log("---array", quesArray);
-  return api.delete(DELETE_QUESTION, { data: quesArray });
+  return api.put(DELETE_QUESTION, quesArray);
 };
+
 
 const getParticipatorOfContest=(id)=>{
  return api.get(`${GET_CONTEST_PARTICIPATOR}${id}`)
@@ -48,3 +47,17 @@ const getparticipatordetail=(id)=>{
   return api.get(`${GET_PARTICIPATOR_DETAILS}${id}`)
 }
 export { saveQuestion, filterQuestion, deleteQuestion, addSelectiveQuestion, uploadQuestions,getParticipatorOfContest,deleteStudent,getparticipatordetail };
+// const uploadQuestions = (file, id) => {
+//   const formData = new FormData();
+//   formData.append("contestId", id);
+//   formData.append("file", file);
+//   return api.post(UPLOAD_QUESTION, formData);
+// };
+// export {
+//   saveQuestion,
+//   filterQuestion,
+//   deleteQuestion,
+//   addSelectiveQuestion,
+//   uploadQuestions,
+// };
+// >>>>>>> dc51dd10e82606d221a262dd7ec88868bc3b4dcb

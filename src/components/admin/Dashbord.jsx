@@ -173,10 +173,10 @@ const Dashbord = () => {
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
-      setContestData(result?.data)
+      setContestData(result?.data);
       navigate("/addQuestion", { state: { result } });
     } catch (error) {
-      console.log("0-fsfffsdfasdff", error);
+      console.log("error", error);
     }
   };
 
@@ -205,16 +205,24 @@ const Dashbord = () => {
       navigate("/allavailable");
     }
   };
- 
 
+  // <<<<<<< HEAD
   // function noBack() {
   //   // window.history.forward();
   //   navigate("/dashboard");
-   
+
   // }
+  //   const fetchContestData = async () => {
+  //     const response = await getAllContestList();
+  //     setContestDetails(response?.data);
+  // =======
+  function noBack() {
+    window.history.forward();
+    navigate("/dashboard");
+  }
   const fetchContestData = async () => {
     const response = await getAllContestList();
-    setContestDetails(response?.data);
+    setContestDetails(response.data);
   };
 
   useEffect(() => {
@@ -224,7 +232,7 @@ const Dashbord = () => {
   // console.log("---contest", contestDetails);
 
   return (
-    <div style={app}>
+    <div style={app} onLoad={noBack}>
       <Header />
 
       {showAvailq ? (
@@ -368,7 +376,6 @@ const Dashbord = () => {
 
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
-                     
                         </CardContent>
                       </CardActionArea>
                     </Card>

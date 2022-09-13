@@ -176,7 +176,7 @@ const ViewParticipatorDetail = () => {
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Question no. {count+1}
+                          Question no. {count + 1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -272,21 +272,19 @@ const ViewParticipatorDetail = () => {
                   <label>
                     <h3>Name {participatorDetails?.studentDetail?.name} </h3>
                   </label>
-                 
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <label>
                     <h3>Email {participatorDetails?.studentDetail?.email} </h3>
                   </label>
-                 
                 </Grid>
                 <label>
-                    <h3>Phone {participatorDetails?.studentDetail?.mobileNumber} </h3>
-                  </label>
-               
+                  <h3>
+                    Phone {participatorDetails?.studentDetail?.mobileNumber}{" "}
+                  </h3>
+                </label>
               </Grid>
               <Container sx={rightDiv}>
-             
                 <Grid container>
                   <Grid item sm={12}>
                     <Typography mt={1.5}>

@@ -114,23 +114,25 @@ const Instruction = () => {
   const navigate = useNavigate();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
-  const [participatorData, setParticipator] = useState(location?.state?.data?.data?.student);
-  const [languages,setLanguages]=useState()
-  const [participatorsContestDetails, setParticipatorsContestDetails] = useState();
+  const [participatorData, setParticipator] = useState(
+    location?.state?.data?.data?.student
+  );
+  const [languages, setLanguages] = useState();
+  const [participatorsContestDetails, setParticipatorsContestDetails] =
+    useState();
   const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
 
-
-  console.log(location,"location getjhbjb")
+  console.log(location, "location getjhbjb");
 
   useEffect(() => {
     showAllLanguage()
       .then(function (response) {
         // handle success
         console.log(response.data, "showall");
-        setLanguages(response?.data)
+        setLanguages(response?.data);
       })
       .catch(function (error) {
         // handle error
@@ -138,11 +140,9 @@ const Instruction = () => {
       });
   }, []);
 
-  console.log(location,"hugyf")
-  
-  const dataLan = languages?.filter(
-    (lan2) => lan2.language == language
-  );
+  console.log(location, "hugyf");
+
+  const dataLan = languages?.filter((lan2) => lan2.language == language);
   useEffect(() => {
     dataLan === undefined ? (
       <div></div>
@@ -153,35 +153,33 @@ const Instruction = () => {
     );
   }, [language]);
 
-  console.log ("defaultCode",defaultCode)
-  
-  console.log("participatorsss");
+  // console.log("defaultCode", defaultCode);
+
+  // console.log("participatorsss");
 
   const fetchStartContestData = async () => {
     try {
-      const result = await startContestPage(
-      language,
-      participatorData
-      )
-      setParticipatorsContestDetails(result?.data,"result.data");
-     
-      
+      const result = await startContestPage(language, participatorData);
+      console.log("result",result);
+      setParticipatorsContestDetails(result?.data, "result.data");
     } catch (error) {
       console.log("error");
     }
   };
 
-
- 
-  if (participatorsContestDetails){
-    setTimeout(()=>{
-      navigate("/user", { state: { language, participatorData,languages,defaultCode,participatorsContestDetails} });      
-  
-    },1000) 
-
+  if (participatorsContestDetails) {
+    setTimeout(() => {
+      navigate("/user", {
+        state: {
+          language,
+          participatorData,
+          languages,
+          defaultCode,
+          participatorsContestDetails,
+        },
+      });
+    }, 1000);
   }
-
-
 
   return (
     <div style={background1}>
@@ -241,7 +239,6 @@ const Instruction = () => {
             <Button
               variant="contained"
               onClick={() => {
-               
                 fetchStartContestData();
               }}
               sx={startContest}
@@ -259,5 +256,3 @@ const Instruction = () => {
 };
 
 export default Instruction;
-
-

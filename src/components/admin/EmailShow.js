@@ -69,7 +69,7 @@ const divSelect = {
   borderRadius: "14px",
   marginTop: "10px",
   marginLeft: "100px",
-  justifyContent:"space-between"
+  justifyContent: "space-between",
 };
 const delBtn = {
   marginTop: "4px !important",
@@ -96,7 +96,7 @@ const divText = {
 
 const scrollDiv = {
   overflowY: "auto",
-  width:"80%"
+  width: "80%",
 };
 
 const emailContainer = {
@@ -347,7 +347,7 @@ const EmailShow = () => {
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
-                      <Grid item  mt={1}>
+                      <Grid item mt={1}>
                         <Checkbox
                           value={val}
                           onChange={handleChange}
@@ -376,8 +376,8 @@ const EmailShow = () => {
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
-                      <Grid item   mt={1}>
-                        <Checkbox 
+                      <Grid item mt={1}>
+                        <Checkbox
                           value={val}
                           onChange={handleChange}
                           icon={<RadioButtonUncheckedIcon />}

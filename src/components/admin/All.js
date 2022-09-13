@@ -11,7 +11,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { addSelectiveQuestion, filterQuestion } from "../services/contest/contestServices";
+import {
+  addSelectiveQuestion,
+  filterQuestion,
+} from "../services/contest/contestServices";
 
 const background1 = {
   height: "100%",
@@ -105,7 +108,6 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "12px",
-  justifyContent:"space-between"
 };
 
 const containerUpper = {
@@ -114,66 +116,100 @@ const containerUpper = {
   justifyContent: "center",
 };
 
-const All = ({ availableQuestions, setAvailableQuestions,setContestQuestion, contestQuestion, setAlert, setMsg,contestId }) => {
-  const ref=useRef(null);
+const All = ({
+  setshowselectquestion,
+  setShowAlreadyQuestion,
+  availableQuestions,
+  setAvailableQuestions,
+  setContestQuestion,
+  contestQuestion,
+  setAlert,
+  setMsg,
+  contestId,
+}) => {
+  const ref = useRef(null);
   const [dropValue, setDropValue] = useState("All");
-  const [questionArr, setQuestionArr]=useState([]);
-  const [selectiveQuestion, setSelectiveQuestion]=useState({
-    questionsIds:"",
-    contestId:[]
-  })
-  const handleQuestion=(e)=>{
-    const {checked,value}=e.target
-   if(checked){
-      setQuestionArr([...questionArr,value])
-     
-   }else{
-      setQuestionArr((val)=>{
-        return val.filter((index)=>index!==value)
-      })
-   }
-   }
-console.log('que qrr',questionArr);
-  const handleFocus=()=>{
+  const [questionArr, setQuestionArr] = useState([]);
+  const [selectiveQuestion, setSelectiveQuestion] = useState({
+    questionsIds: "",
+    contestId: [],
+  });
+  const handleQuestion = (e) => {
+    const { checked, value } = e.target;
+    if (checked) {
+      setQuestionArr([...questionArr, value]);
+    } else {
+      setQuestionArr((val) => {
+        return val.filter((index) => index !== value);
+      });
+    }
+  };
+
+  const handleFocus = () => {
     setSelectiveQuestion({
-      questionsIds:questionArr,
-      contestId:[contestId]
-        })
-  }
+      questionsIds: questionArr,
+      contestId: [contestId],
+    });
+  };
 
   const handleChange = async (e) => {
     const { value } = e.target;
     setDropValue(value);
-   
   };
- 
-  const addSelectiveQuestions=async()=>{
-    setAlert(true);
-    try {
-      const result = await addSelectiveQuestion(selectiveQuestion);
+
+  const addSelectiveQuestions = async () => {
+    const questionsid = contestQuestion.map((v) => v.questionId);
+    //console.log("questionsid", JSON.stringify(questionsid));
+    if (
+      JSON.stringify(questionsid) ===
+      JSON.stringify(selectiveQuestion?.questionsIds)
+    ) {
+      setShowAlreadyQuestion(true);
       setMsg({
-        errMsg: "slected Question  added successfully...!",
-        color: "green",
+        errMsg: "selected Question is already present in contest...!",
+        color: "blue",
       });
       setTimeout(() => {
-        setAlert(false)
-      }, 1200);
-      setContestQuestion([...contestQuestion,...result])
-    } catch (error) {
-      console.log('question err',error)
+        setShowAlreadyQuestion(false);
+      }, 2000);
+    } else {
+      try {
+        const result = await addSelectiveQuestion(selectiveQuestion);
+        if (result?.data?.length === 0) {
+          setshowselectquestion(true);
+          setMsg({
+            errMsg: "Please select a question...!",
+            color: "blue",
+          });
+          setTimeout(() => {
+            setshowselectquestion(false);
+          }, 1200);
+        } else {
+          setMsg({
+            errMsg: "selected Question  added successfully...!",
+            color: "green",
+          });
+          setAlert(true);
+          setTimeout(() => {
+            setAlert(false);
+          }, 1200);
+          setContestQuestion([...contestQuestion, ...result.data]);
+        }
+      } catch (error) {
+        console.log("question err", error);
+      }
     }
-    
-  }
-  useEffect(()=>{
-    const result =  filterQuestion(dropValue).then((res) => {
-      setAvailableQuestions(res);
-    });   
-  },[dropValue])
+  };
+  useEffect(() => {
+    const result = filterQuestion(dropValue).then((res) => {
+      setAvailableQuestions(res.data);
+    });
+  }, [dropValue]);
 
-  useEffect(()=>{
-    ref.current?.scrollIntoView({behavior: 'smooth'});
-  },[])
-  console.log('cmldsmv',contestQuestion);
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   return (
     <div ref={ref}>
       <Grid container sx={{ justifyContent: "center" }}></Grid>
@@ -199,13 +235,18 @@ console.log('que qrr',questionArr);
             </FormControl>
           </Grid>
           <Grid item mt={2}>
-            <Button variant="contained" sx={buttonEmail} onMouseOver={handleFocus} onClick={()=> addSelectiveQuestions()}>
+            <Button
+              variant="contained"
+              sx={buttonEmail}
+              onMouseOver={handleFocus}
+              onClick={() => addSelectiveQuestions()}
+            >
               Add questions
             </Button>
           </Grid>
         </Grid>
-        <Grid container sx={{ maxHeight:"350px", overflowY: "auto" }}>
-          {availableQuestions?.map((val,index) => {
+        <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
+          {availableQuestions?.map((val, index) => {
             return (
               <Grid container sx={divSelect} key={index}>
                 <Grid item sm={10} sx={scrollDiv}>

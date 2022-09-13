@@ -10,8 +10,8 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-monokai";
-import ReactRouterPrompt from "react-router-prompt";
-import {browserHistory} from 'react-router';
+//import ReactRouterPrompt from "react-router-prompt";
+import { browserHistory } from "react-router";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
@@ -84,7 +84,7 @@ const testCaseText2 = {
   lineHeight: "35px",
   color: "#000000",
   overflowY: "auto",
-  width:"100%"
+  width: "100%",
 };
 
 const inputLabel = {
@@ -145,8 +145,8 @@ const testCaseData1 = {
 const testCaseData = {
   display: "flex",
   flexDirection: "row",
-  height:"200px",
-  width:"100%"
+  height: "200px",
+  width: "100%",
 };
 const inputName = {
   fontWeight: "600",
@@ -184,7 +184,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [state,setState]=useState(false);
+  const [state, setState] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [duration, setDuration] = useState(
@@ -224,8 +224,10 @@ const Compiler = () => {
     return () => clearTimeout(timeout);
   }, [showError]);
 
-  const runCodes = async (flag,state) => {
+  const runCodes = async (flag, state) => {
+    console.log("");
     setLoading(true);
+
     try {
       // timeOut = false;
       const resultData = await runAndCompilerCode({
@@ -238,16 +240,19 @@ const Compiler = () => {
         timeOut: false,
         code: `${codeValue}`,
       });
+      console.log("codeValue", codeValue);
       if (resultData) {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
-        if(profile.participatorsContestDetails?.QuestionList?.length<=1 && flag==="1"){
-          navigate('/thanku');
+        if (
+          profile.participatorsContestDetails?.QuestionList?.length <= 1 &&
+          flag === "1"
+        ) {
+          navigate("/thanku");
         }
       }
       setRunCode(resultData?.data);
       setShowTestCase(true);
-     
     } catch (error) {
       setshowCompilationError(true);
       setError(null);
@@ -258,13 +263,12 @@ const Compiler = () => {
       }, 1200);
       console.log(error);
     }
-
   };
-  useEffect(()=>{
-    if(performance.navigation.type===2){
-      navigate('/thanku')
+  useEffect(() => {
+    if (performance.navigation.type === 2) {
+      navigate("/thanku");
     }
-  },[])
+  }, []);
   useEffect(() => {
     {
       try {
@@ -288,7 +292,6 @@ const Compiler = () => {
         if (timer === "00:00:01") {
           navigate("/thanku");
         }
-
       } catch (error) {
         console.log(error);
       }
@@ -342,15 +345,14 @@ const Compiler = () => {
   };
 
   const handleNext = () => {
-    if(profile.participatorsContestDetails?.QuestionList?.length<=1){
-   console.log('if')
-    }else{
-      console.log('else')
+    if (profile.participatorsContestDetails?.QuestionList?.length <= 1) {
+      console.log("if");
+    } else {
+      console.log("else");
       setCount(count + 1);
     }
-   
   };
-console.log('---------<<<>>',1<=1)
+
   const getTimeRemaining = (e) => {
     const total = Date.parse(e) - Date.parse(new Date());
     const seconds = Math.floor((total / 1000) % 60);
@@ -394,25 +396,24 @@ console.log('---------<<<>>',1<=1)
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
-   
-useEffect(()=>{
-  if (performance.navigation.type === 1 ||performance.navigation.type===2 ) {
-    // runCodes("1");
-    setTimeout(()=>{
-      navigate('/thanku')
-    },[3000])
-    console.log('page is refreshed');
-  } else {
 
-  }
-},[])
-
+  useEffect(() => {
+    if (
+      performance.navigation.type === 1 ||
+      performance.navigation.type === 2
+    ) {
+      // runCodes("1");
+      setTimeout(() => {
+        navigate("/thanku");
+      }, [3000]);
+      console.log("page is refreshed");
+    } else {
+    }
+  }, []);
 
   return (
     <Box>
-      <Header 
-        state={true}
-      />
+      <Header state={true} />
       {/* <ReactRouterPrompt when={true}>
         {({ isActive, onConfirm, onCancel }) =>
           isActive && (
@@ -489,9 +490,8 @@ useEffect(()=>{
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              profile?.participatorsContestDetails?.QuestionList[
-                                count
-                              ]?.question
+                              profile?.participatorsContestDetails
+                                ?.QuestionList[count]?.question
                             }
                           </Typography>
                         </Box>
@@ -503,9 +503,9 @@ useEffect(()=>{
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              profile?.participatorsContestDetails?.QuestionList[
-                                count
-                              ]?.sampleTestCase[0]?.constraints
+                              profile?.participatorsContestDetails
+                                ?.QuestionList[count]?.sampleTestCase[0]
+                                ?.constraints
                             }
                           </Typography>
                         </Box>
