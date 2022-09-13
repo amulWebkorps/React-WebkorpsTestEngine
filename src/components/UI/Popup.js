@@ -27,7 +27,7 @@ export default function Popup({
   setContestDetails,
 }) {
   const handleDelete = async () => {
-    const result = await deleteContest(contest.contestId)
+    const result = await deleteContest(contest.contestId);
     console.log("ressss", result);
     setContestDetails((val) => {
       return val.filter((val, index) => {
@@ -43,7 +43,6 @@ export default function Popup({
   const handleClose = () => {
     setConfirm(false);
   };
-  console.log("contest id", opens);
   return (
     <div>
       <Dialog

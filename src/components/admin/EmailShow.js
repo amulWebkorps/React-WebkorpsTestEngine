@@ -164,14 +164,16 @@ const EmailShow = () => {
     setSentEmails(result);
     setOpen(true);
   };
-  useEffect(()=>{
+  useEffect(() => {
     getParticipatorData();
-  },[])
-  const getParticipatorData=()=>{
-    const res=getParticipator().then((res)=>{
-      setUploadEmail(res);
-    }).catch((err)=>console.log(err,'error'))
-  }
+  }, []);
+  const getParticipatorData = () => {
+    const res = getParticipator()
+      .then((res) => {
+        setUploadEmail(res.data);
+      })
+      .catch((err) => console.log(err, "error"));
+  };
 
   const handleFileSelect = (event) => {
     const { files } = event.target;
@@ -189,7 +191,7 @@ const EmailShow = () => {
           errMsg: "Participator Uploaded Successfully...!",
           color: "green",
         });
-        getParticipatorData()
+        getParticipatorData();
         if (response?.length === 0) {
           setMsg({
             errMsg: "Participator is already uploaded...!",
@@ -213,26 +215,22 @@ const EmailShow = () => {
   };
 
   const handleOnChange = (e) => {
-    setSearchString(e.target.value)
-        if (searchString !== '') {
-            const filteredData =  uploadEmail?.filter((item) => {
-              if (item.includes(searchString)) {
-                      return true;
-                    }
-                  
-                // return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
-            })
-            setFilteredResults(filteredData)
+    setSearchString(e.target.value);
+    if (searchString !== "") {
+      const filteredData = uploadEmail?.filter((item) => {
+        if (item.includes(searchString)) {
+          return true;
         }
-        else{
-             setFilteredResults(uploadEmail)
-        }
+
+        // return Object?.values(item)?.join('')?.toLowerCase()?.includes(searchString?.toLowerCase())
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(uploadEmail);
+    }
   };
 
   const handleSearch = () => {
-   
-
-
     // setUploadEmail((val) => {
     //   return val.filter((element) => {
     //     if (element.includes(searchString)) {
@@ -245,9 +243,8 @@ const EmailShow = () => {
     //     return true;
     //   }
     // });
-  
   };
-console.log('search--',uploadEmail?.length)
+  console.log("search--", uploadEmail?.length);
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -328,61 +325,58 @@ console.log('search--',uploadEmail?.length)
             </Grid>
           </Grid>
           <Container sx={emailContainer}>
-            <Grid container sx={{display:"flex",justifyContent:"center"}}>
-          
-            {searchString?.length > 1 ? (
-                    filteredResults.map((val) => {
-                      return (
-                    <Grid container sx={divSelect}>
-                      <Grid item sm={9} sx={scrollDiv}>
-                        <Typography sx={divText}>{val}</Typography>
+            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+              {searchString?.length > 1
+                ? filteredResults.map((val) => {
+                    return (
+                      <Grid container sx={divSelect}>
+                        <Grid item sm={9} sx={scrollDiv}>
+                          <Typography sx={divText}>{val}</Typography>
+                        </Grid>
+                        <Grid item sm={2} mt={1}>
+                          <Checkbox
+                            value={val}
+                            onChange={handleChange}
+                            icon={<RadioButtonUncheckedIcon />}
+                            checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                            sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                          />
+                        </Grid>
+                        <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                          <img
+                            onClick={() => handleDelete(val)}
+                            src={crossbtn}
+                            alt="cross"
+                          />
+                        </Grid>
                       </Grid>
-                      <Grid item sm={2} mt={1}>
-                        <Checkbox
-                          value={val}
-                          onChange={handleChange}
-                          icon={<RadioButtonUncheckedIcon />}
-                          checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                        />
+                    );
+                  })
+                : uploadEmail?.map((val) => {
+                    return (
+                      <Grid container sx={divSelect}>
+                        <Grid item sm={9} sx={scrollDiv}>
+                          <Typography sx={divText}>{val}</Typography>
+                        </Grid>
+                        <Grid item sm={2} mt={1}>
+                          <Checkbox
+                            value={val}
+                            onChange={handleChange}
+                            icon={<RadioButtonUncheckedIcon />}
+                            checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                            sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                          />
+                        </Grid>
+                        <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                          <img
+                            onClick={() => handleDelete(val)}
+                            src={crossbtn}
+                            alt="cross"
+                          />
+                        </Grid>
                       </Grid>
-                      <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                        <img
-                          onClick={() => handleDelete(val)}
-                          src={crossbtn}
-                          alt="cross"
-                        />
-                      </Grid>
-                    </Grid>
-                  );
-                    })
-                ) : (
-                uploadEmail?.map((val) => {
-                  return (
-                    <Grid container sx={divSelect}>
-                      <Grid item sm={9} sx={scrollDiv}>
-                        <Typography sx={divText}>{val}</Typography>
-                      </Grid>
-                      <Grid item sm={2} mt={1}>
-                        <Checkbox
-                          value={val}
-                          onChange={handleChange}
-                          icon={<RadioButtonUncheckedIcon />}
-                          checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                        />
-                      </Grid>
-                      <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                        <img
-                          onClick={() => handleDelete(val)}
-                          src={crossbtn}
-                          alt="cross"
-                        />
-                      </Grid>
-                    </Grid>
-                  );
-                })
-              )}
+                    );
+                  })}
             </Grid>
           </Container>
           <Box

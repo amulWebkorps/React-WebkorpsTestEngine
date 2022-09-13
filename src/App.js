@@ -111,7 +111,7 @@ function App() {
               path="/viewparticipator"
               element={<AdminRoutes Component={viewParticipatorDetail} />}
             ></Route>
-            
+
             <Route
               path="/level1"
               element={<AdminRoutes Component={Level1} />}
@@ -124,18 +124,9 @@ function App() {
               path="/all"
               element={<AdminRoutes Component={All} />}
             ></Route>
-            <Route
-              path="/allavailable"
-              element={<Allavailable/>}
-            ></Route>
-            <Route
-              path="/instruction"
-              element={<Instruction/>}
-            ></Route>
-            <Route
-              path="/thanku"
-              element={<Thankupage/>}
-            ></Route>
+            <Route path="/allavailable" element={<Allavailable />}></Route>
+            <Route path="/instruction" element={<Instruction />}></Route>
+            <Route path="/thanku" element={<Thankupage />}></Route>
           </Routes>
         </BrowserRouter>
       </div>
@@ -144,5 +135,3 @@ function App() {
 }
 
 export default App;
-
-

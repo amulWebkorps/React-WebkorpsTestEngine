@@ -87,6 +87,8 @@ const btn = {
 };
 
 const AddedQues = ({
+  setshowselectquestion,
+  setShowAlreadyQuestion,
   question,
   setMsg,
   setAlert,
@@ -108,7 +110,6 @@ const AddedQues = ({
 }) => {
   const [showq, setShowQ] = useState(false);
   const ref = useRef(null);
-console.log('level',level)
   const scrollBottom = () => {
     setShowQ(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -157,7 +158,6 @@ console.log('level',level)
       console.log("eroror", error);
     }
   };
-  console.log("-------question", question);
 
   return (
     <>
@@ -206,6 +206,8 @@ console.log('level',level)
       {showq && (
         <All
           ref={ref}
+          setshowselectquestion={setshowselectquestion}
+          setShowAlreadyQuestion={setShowAlreadyQuestion}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}
           setContestQuestion={setContestQuestion}

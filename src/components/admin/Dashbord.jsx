@@ -175,7 +175,7 @@ const Dashbord = () => {
       const result = await getContestDetail(id);
       navigate("/addQuestion", { state: { result } });
     } catch (error) {
-      console.log("0-fsfffsdfasdff", error);
+      console.log("error", error);
     }
   };
 
@@ -204,16 +204,14 @@ const Dashbord = () => {
       navigate("/allavailable");
     }
   };
- 
 
   function noBack() {
     window.history.forward();
     navigate("/dashboard");
-   
   }
   const fetchContestData = async () => {
     const response = await getAllContestList();
-    setContestDetails(response);
+    setContestDetails(response.data);
   };
 
   useEffect(() => {
@@ -367,7 +365,6 @@ const Dashbord = () => {
 
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
-                     
                         </CardContent>
                       </CardActionArea>
                     </Card>

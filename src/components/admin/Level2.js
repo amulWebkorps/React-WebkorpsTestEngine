@@ -352,7 +352,7 @@ const Level2 = () => {
 
   useEffect(() => {
     const result = filterQuestion("Level 2").then((res) => {
-      const response = res;
+      const response = res.data;
       setContestQuestion(response);
     });
   }, [showAlert]);
