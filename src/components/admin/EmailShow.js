@@ -101,7 +101,7 @@ const scrollDiv = {
 
 const emailContainer = {
   overflowY: "auto",
-  height: "450px",
+  height: "360px",
 };
 
 const EmailShow = () => {

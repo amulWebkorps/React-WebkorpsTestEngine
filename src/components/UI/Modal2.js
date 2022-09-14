@@ -84,7 +84,7 @@ export default function Model2({
     background: "#F9FAFC",
     boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
     borderRadius: "18px",
-    height: `${sent ? "50vh" : "30vh"}`,
+    height: `${sent ? "50vh" : ""}`,
     width: "70vh",
   };
   const handleMail = async () => {

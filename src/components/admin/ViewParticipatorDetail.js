@@ -47,6 +47,7 @@ const testCaseData = {
   flexDirection: "row",
   height: "200px",
   width: "100%",
+  overflowY:"auto"
 };
 
 const testCase = {
@@ -78,7 +79,8 @@ const testCaseText2 = {
   fontSize: "25px",
   lineHeight: "51px",
   color: "#000000",
-  width:'100%'
+  width:'100%',
+
 };
 
 const inputLabel = {
@@ -173,6 +175,7 @@ const ViewParticipatorDetail = () => {
   const getparticipatordetails = async () => {
     try {
       const res = await getparticipatordetail(studentId);
+      console.log('res',res?.data)
       setParticipatorDetails(res?.data);
       setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {

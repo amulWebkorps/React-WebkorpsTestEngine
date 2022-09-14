@@ -30,9 +30,14 @@ const runAndCompilerCode = (candidateCode) => {
   return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
 };
 
+const submitCode=(candidateCode)=>{
+  return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
+}
+
 export {
   participatorLogin,
   showAllLanguage,
   startContestPage,
   runAndCompilerCode,
+  submitCode
 };

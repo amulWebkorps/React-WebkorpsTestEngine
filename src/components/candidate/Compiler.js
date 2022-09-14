@@ -17,7 +17,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 
-import { runAndCompilerCode } from "../services/candidate";
+import { runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
@@ -28,6 +28,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+// import { response } from "express";
 
 const div1 = {
   height: "445px",
@@ -349,6 +350,28 @@ const Compiler = () => {
     });
   };
 
+  const submitCodes=async(flag)=>{
+    try {
+      const res= await submitCode({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        questionId:
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
+        flag: flag,
+        timeOut: false,
+        code: `${codeValue}`,
+      });
+      if(res){
+        setShowError(true);
+      }
+     
+      console.log("res",res);
+    } catch (error) {
+      
+    }
+  }
+
   const handleNext = () => {
     if (profile.participatorsContestDetails?.QuestionList?.length <= 1) {
       console.log("if");
@@ -415,7 +438,7 @@ const Compiler = () => {
     } else {
     }
   }, []);
-console.log('0---', profile?.participatorsContestDetails)
+
   return (
     <Box>
       <Header state={true} />
@@ -647,7 +670,8 @@ console.log('0---', profile?.participatorsContestDetails)
                   variant="contained"
                   sx={buttonTest}
                   onClick={() => {
-                    runCodes("1");
+                    submitCodes("1");
+                    // runCodes("1");
                     handleButton();
                     handleNext();
                   }}

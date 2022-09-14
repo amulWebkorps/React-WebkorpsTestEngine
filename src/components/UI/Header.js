@@ -72,7 +72,7 @@ const Header = ({state}) => {
 
   
   return (
-      <Grid container sx={headerc}>
+      <Grid container sx={Headers}>
         <Grid item sx={displayFlex1}>
           <Box ml={2} my={2} >
             <img src={logo} alt="logo" />

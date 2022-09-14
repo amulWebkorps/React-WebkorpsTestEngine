@@ -113,7 +113,7 @@ const containerUpper = {
   justifyContent: "center",
 };
 
-const array = [1, 2, 3, 4, 5, 6, 4, 4, 45, 5, 5, 1, 22, 5, 5, 4, 5, 6];
+
 
 const Allavailable = () => {
   const [allAvailQues, setAllAvailQues] = useState([]);
