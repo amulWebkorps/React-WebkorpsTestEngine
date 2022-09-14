@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-monokai";
 //import ReactRouterPrompt from "react-router-prompt";
-import { browserHistory } from "react-router";
+import TimerIcon from '@mui/icons-material/Timer';
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
@@ -30,7 +30,7 @@ import {
 } from "@mui/material";
 
 const div1 = {
-  height: "70vh",
+  height: "445px",
   marginTop: "30px",
   background: " #F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -39,7 +39,7 @@ const div1 = {
 
 const blue1 = {
   width: "10px",
-  height: "70vh",
+  height: "445px",
   marginLeft: "-24px",
   background: "#0057FF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -47,20 +47,23 @@ const blue1 = {
 };
 
 const rightDiv = {
-  height: "68.81px",
+  width:"45.7vw",
+  height: "50.81px",
   background: "white",
   borderRadius: "17px 17px 0px 0px",
   marginTop: "20px",
 };
 
 const testCase = {
-  height: "30vh",
+  // height: "30vh",
   background: "#F9FAFC",
+  minHeight:"250px",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
 
 const testCaseText = {
+  
   height: "69.23px",
   background: "#F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -105,7 +108,7 @@ const testCaseResult = {
 
 const inputField = {
   marginTop: "10px",
-  height: "14vh",
+  minHeight: "80px",
   background: "#FFFFFF",
   overflowY: "auto",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -113,7 +116,7 @@ const inputField = {
 };
 
 const CodeCompilerText1 = {
-  fontSize: "30px",
+  fontSize: "25px",
   fontWeight: "600",
   lineHeight: "35px",
   letterSpacing: "0em",
@@ -151,6 +154,7 @@ const testCaseData = {
 const inputName = {
   fontWeight: "600",
   fontweight: "bold",
+  // marginLeft:"-10px"
 };
 
 const timerText = {
@@ -190,7 +194,8 @@ const Compiler = () => {
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
-  const timerGet = duration?.match(/\d/g)?.join("");
+  const timerGet = 1000;
+  // duration?.match(/\d/g)?.join("");
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
@@ -410,7 +415,7 @@ const Compiler = () => {
     } else {
     }
   }, []);
-
+console.log('0---', profile?.participatorsContestDetails)
   return (
     <Box>
       <Header state={true} />
@@ -461,9 +466,9 @@ const Compiler = () => {
         )}
         <Grid container>
           <Grid item sm={6}>
-            <Box sx={testCaseData1} mx={5}>
-              <Typography>Remaining Time :-</Typography>
-              <Typography sx={timerText}>{timer}</Typography>
+            <Box sx={testCaseData1} mx={2}>
+            <TimerIcon fontSize="15px" sx={{backgroundColor:"white",marginTop:"3px"}}/>&nbsp;
+              <Typography sx={timerText}> {timer} Remaining</Typography>
             </Box>
 
             <Box mx={3}>
@@ -477,7 +482,7 @@ const Compiler = () => {
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Test Case
+                          Question {count+1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -575,9 +580,9 @@ const Compiler = () => {
           <Grid item sm={6}>
             <Box mx={3}>
               <Grid container>
-                <Grid item sm={6} sx={{ display: "flex" }}>
+                <Grid item sm={6} sx={{ display: "flex", marginLeft:"-10px" }}>
                   <Box>
-                    <Typography sx={inputName}>Name:- </Typography>
+                    <Typography sx={inputName}>Name:  </Typography>
                   </Box>
                   <>
                     <Typography sx={inputName}>
@@ -587,7 +592,7 @@ const Compiler = () => {
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <Box>
-                    <Typography sx={inputName}>Email:- </Typography>
+                    <Typography sx={inputName}>Email:  </Typography>
                   </Box>
                   <Box>
                     <Typography sx={inputName}>
@@ -617,8 +622,8 @@ const Compiler = () => {
                   theme="monokai"
                   name="code"
                   editorProps={{ $blockScrolling: true }}
-                  height="60vh"
-                  width="46.5vw"
+                  height="380px"
+                  width="45.7vw"
                   value={codeValue}
                   onChange={onChange}
                   defaultValue={

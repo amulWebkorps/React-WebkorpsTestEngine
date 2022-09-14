@@ -9,6 +9,11 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
 import { getparticipatordetail } from "../services/contest/contestServices";
 // import { getparticipatordetail } from "../services/adminServices";
 import { useLocation } from "react-router-dom";
@@ -35,6 +40,13 @@ const rightDiv = {
   background: "white",
   borderRadius: "17px 17px 0px 0px",
   marginTop: "20px",
+};
+
+const testCaseData = {
+  display: "flex",
+  flexDirection: "row",
+  height: "200px",
+  width: "100%",
 };
 
 const testCase = {
@@ -64,8 +76,9 @@ const testCaseText2 = {
   fontStyle: "normal",
   fontWeight: "500",
   fontSize: "25px",
-  lineHeight: "35px",
+  lineHeight: "51px",
   color: "#000000",
+  width:'100%'
 };
 
 const inputLabel = {
@@ -116,15 +129,26 @@ const buttonTest = {
   fontSize: "16px",
   lineHeight: "19px",
 };
+const textTestCases = {
+  padding: "10px",
+  background: "#FFFFFF",
+  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
+  borderRadius: "14px",
+  margin: "10px",
+  width: "90%",
+  // marginTop:"10px",
+  display: "flex",
+  justifyContent: "space-between",
+};
 
 const ViewParticipatorDetail = () => {
   const [count, setCount] = useState(0);
-  const [count1, setCount1] = useState(1);
+  const [testcases, setTestcase] = useState();
   const location = useLocation();
   const [participatorDetails, setParticipatorDetails] = useState();
   const [studentId, setStudentId] = useState(location?.state);
 
-  console.log("location-------", location);
+  console.log("location-------", testcases);
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (prevCount <= participatorDetails?.questionSubmitedByStudent?.length) {
@@ -150,6 +174,7 @@ const ViewParticipatorDetail = () => {
     try {
       const res = await getparticipatordetail(studentId);
       setParticipatorDetails(res?.data);
+      setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {
       console.log("--", error);
     }
@@ -159,7 +184,6 @@ const ViewParticipatorDetail = () => {
     getparticipatordetails();
   }, []);
 
-  console.log("-", participatorDetails);
   return (
     <div>
       <Header />
@@ -295,48 +319,56 @@ const ViewParticipatorDetail = () => {
               </Container>
               <Box>
                 <AceEditor
-                  mode=""
+                  mode="java"
                   theme="monokai"
                   name="code"
                   editorProps={{ $blockScrolling: true }}
                   height="60vh"
                   width="47vw"
                   placeholder=""
-                  value="trrrrrrrrrrrrr"
+                  value={
+                    participatorDetails?.studentDetail?.testCaseRecord[count]
+                      ?.fileName
+                  }
                   // onChange={onchange}
                   fontSize="20px"
                   readOnly="true"
                 />
               </Box>
-              {/* <Grid container sx={{ justifyContent: "end" }}>
-                <Button
-                  variant="contained"
-                  sx={buttonTest}
-                  onClick={() => {
-                   
-                  }}
-                >
-                  Run
-                </Button>
-                <Button variant="contained" sx={buttonTest}>
-                  Submit
-                </Button>
-              </Grid> */}
-            </Box>
-            <Grid>
-              <Grid containner sx={testCase} m={3}>
-                <Grid item sm={12} sx={testCaseResult}>
-                  <Typography m={3} mt={2} sx={testCaseText1}>
-                    Test Case
-                  </Typography>
-                </Grid>
-                <Grid>
-                  <Typography m={3} mt={2} sx={testCaseText2}>
-                    fail
-                  </Typography>
+              <Grid>
+                <Grid containner sx={testCase} m={3}>
+                  <Grid item sm={12} sx={testCaseResult}>
+                    <Typography m={3} mt={2} sx={testCaseText1}>
+                      Test Case
+                    </Typography>
+                  </Grid>
+                  <Grid sx={testCaseData}>
+                    <Box m={3} mt={2} sx={testCaseText2}>
+                      {testcases?.[count]?.["testCasesSuccess"]?.map(
+                        (val, index) => {
+                          return (
+                            <Box key={index} sx={textTestCases}>
+                              <p>TestCase {index + 1}</p>
+                              <Typography variant="h5">
+                                {val ? (
+                                  <DoneIcon
+                                    sx={{ color: "green", fontSize: 50 }}
+                                  />
+                                ) : (
+                                  <ClearIcon
+                                    sx={{ color: "red", fontSize: 50 }}
+                                  />
+                                )}
+                              </Typography>
+                            </Box>
+                          );
+                        }
+                      )}
+                    </Box>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Grid>
         </Grid>
       </div>

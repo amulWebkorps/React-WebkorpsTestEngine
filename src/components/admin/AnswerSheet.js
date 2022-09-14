@@ -141,7 +141,7 @@ const Answerheading = {
 
 const maindata = {
   height: "70px",
-  width: "63vw",
+  // width: "63vw",
   marginTop: "10px",
   // background: "red",
   background: "#FFFFFF",
@@ -209,7 +209,7 @@ const AnswerSheet = () => {
   const location = useLocation();
   const [searchString, setSearchString] = useState("");
   const [participator, setParticipator] = useState([]);
-  const [contestId, setContestId] = useState(location?.state);
+  const [contestId, setContestId] = useState(location?.state?.result?.data?.contest?.contestId);
   const [filteredResults, setFilteredResults] = useState([]);
   const [delMsg, setDelMsg] = useState({
     msg: "",
@@ -244,6 +244,7 @@ const AnswerSheet = () => {
       setFilteredResults(participator);
     }
   };
+  console.log('ccoo',contestId)
 
   const removeStudent = async (emailId) => {
     try {

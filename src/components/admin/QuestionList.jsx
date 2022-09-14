@@ -222,7 +222,7 @@ const QuestionList = () => {
     errMsg: "",
     color: "",
   });
-  const [files, setFiles] = useState(null);
+
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -273,7 +273,6 @@ const QuestionList = () => {
       sampleTestCase?.output === "" ||
       testCaseList.length === 0
     ) {
-      // setAlert(true);
       setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",

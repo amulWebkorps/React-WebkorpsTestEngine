@@ -25,7 +25,7 @@ import MsgBar from "../auth/base/MsgBar";
 
 const containerStyle = {
   overflowY: "auto",
-  height: "68vh",
+  height: "550px",
   background: "linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)",
   display: "flex",
   flexDirection: "row",
@@ -34,22 +34,23 @@ const containerStyle = {
 };
 
 const createContext = {
-  marginTop: "27px",
+  // marginTop: "27px",
   background: "#F9F9F9",
   borderRadius: "18px 18px 0px 0px",
   padding: "30px",
   position: "sticky",
   textAlign: "center",
-  height: "11vh",
+  height: "15px",
 };
 
 const text = {
-  margin: "-10px",
+  marginTop:"-20px",
+  // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "700",
-  fontSize: "48px",
-  lineHeight: "56px",
+  fontSize: "28px",
+  // lineHeight: "56px",
 };
 
 const app = {
