@@ -13,8 +13,6 @@ import Stack from "@mui/material/Stack";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate } from "react-router-dom";
 
-
-
 const Headers = {
   height: "13vh",
   background: "#FDFEFF",
@@ -31,29 +29,28 @@ const logoText = {
   fontSize: "45px",
   lineHeight: "52px",
   color: "#1887C9",
-  width:"85vw",
+  width: "85vw",
 };
 const displayFlex1 = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
 };
-const headerc={
-  display:"flex",
-  
-}
+const headerc = {
+  display: "flex",
+};
 
-const Header = ({state}) => {
+const Header = ({ state }) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleClose = (event) => {
+    navigate("/");
     localStorage.clear();
-    navigate('/');
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -70,21 +67,23 @@ const Header = ({state}) => {
     }
   }
 
-  
   return (
-      <Grid container sx={headerc}>
-        <Grid item sx={displayFlex1}>
-          <Box ml={2} my={2} >
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box mx={0.5} sx={logoText} my={3} >
-            Webkorps
-          </Box>
+    <Grid container sx={headerc}>
+      <Grid item sx={displayFlex1}>
+        <Box ml={2} my={2}>
+          <img src={logo} alt="logo" />
+        </Box>
+        <Box mx={0.5} sx={logoText} my={3}>
+          Webkorps
+        </Box>
 
-          <Box mt={2}>
-            <Stack direction="row" spacing={2}>
-              <div>
-              {state?<></>: <Button
+        <Box mt={2}>
+          <Stack direction="row" spacing={2}>
+            <div>
+              {state ? (
+                <></>
+              ) : (
+                <Button
                   ref={anchorRef}
                   id="composition-button"
                   aria-controls={open ? "composition-menu" : undefined}
@@ -93,48 +92,47 @@ const Header = ({state}) => {
                   onClick={handleToggle}
                 >
                   <MoreVertIcon />
-                </Button>}
-               
-                <Popper
-                  open={open}
-                  anchorEl={anchorRef.current}
-                  role={undefined}
-                  placement="bottom-start"
-                  transition
-                  disablePortal
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === "bottom-start"
-                            ? "left top"
-                            : "left bottom",
-                      }}
-                    >
-                      <Paper>
-                        <ClickAwayListener>
-                          <MenuList
-                            autoFocusItem={open}
-                            id="composition-menu"
-                            aria-labelledby="composition-button"
-                            onKeyDown={handleListKeyDown}
-                          >
-                            <MenuItem onClick={handleClose}>Logout</MenuItem>
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </div>
-            </Stack>
-          </Box>
-        </Grid>
-        
+                </Button>
+              )}
+
+              <Popper
+                open={open}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                placement="bottom-start"
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === "bottom-start"
+                          ? "left top"
+                          : "left bottom",
+                    }}
+                  >
+                    <Paper>
+                      <ClickAwayListener>
+                        <MenuList
+                          autoFocusItem={open}
+                          id="composition-menu"
+                          aria-labelledby="composition-button"
+                          onKeyDown={handleListKeyDown}
+                        >
+                          <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </div>
+          </Stack>
+        </Box>
       </Grid>
-    
+    </Grid>
   );
 };
 

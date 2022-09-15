@@ -44,7 +44,7 @@ const createContext = {
 };
 
 const text = {
-  marginTop:"-20px",
+  marginTop: "-20px",
   // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -207,16 +207,6 @@ const Dashbord = () => {
     }
   };
 
-  // <<<<<<< HEAD
-  // function noBack() {
-  //   // window.history.forward();
-  //   navigate("/dashboard");
-
-  // }
-  //   const fetchContestData = async () => {
-  //     const response = await getAllContestList();
-  //     setContestDetails(response?.data);
-  // =======
   function noBack() {
     window.history.forward();
     navigate("/dashboard");

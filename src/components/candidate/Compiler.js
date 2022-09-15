@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-monokai";
 //import ReactRouterPrompt from "react-router-prompt";
-import TimerIcon from '@mui/icons-material/Timer';
+import TimerIcon from "@mui/icons-material/Timer";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
@@ -47,7 +47,7 @@ const blue1 = {
 };
 
 const rightDiv = {
-  width:"45.7vw",
+  width: "45.7vw",
   height: "50.81px",
   background: "white",
   borderRadius: "17px 17px 0px 0px",
@@ -57,13 +57,12 @@ const rightDiv = {
 const testCase = {
   // height: "30vh",
   background: "#F9FAFC",
-  minHeight:"250px",
+  minHeight: "250px",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
 
 const testCaseText = {
-  
   height: "69.23px",
   background: "#F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -245,7 +244,7 @@ const Compiler = () => {
         timeOut: false,
         code: `${codeValue}`,
       });
-      console.log("codeValue", codeValue);
+      // console.log("codeValue", codeValue);
       if (resultData) {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
@@ -415,7 +414,7 @@ const Compiler = () => {
     } else {
     }
   }, []);
-console.log('0---', profile?.participatorsContestDetails)
+  // console.log("0---", profile?.participatorsContestDetails);
   return (
     <Box>
       <Header state={true} />
@@ -467,7 +466,11 @@ console.log('0---', profile?.participatorsContestDetails)
         <Grid container>
           <Grid item sm={6}>
             <Box sx={testCaseData1} mx={2}>
-            <TimerIcon fontSize="15px" sx={{backgroundColor:"white",marginTop:"3px"}}/>&nbsp;
+              <TimerIcon
+                fontSize="15px"
+                sx={{ backgroundColor: "white", marginTop: "3px" }}
+              />
+              &nbsp;
               <Typography sx={timerText}> {timer} Remaining</Typography>
             </Box>
 
@@ -482,7 +485,7 @@ console.log('0---', profile?.participatorsContestDetails)
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Question {count+1}
+                          Question {count + 1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -580,9 +583,9 @@ console.log('0---', profile?.participatorsContestDetails)
           <Grid item sm={6}>
             <Box mx={3}>
               <Grid container>
-                <Grid item sm={6} sx={{ display: "flex", marginLeft:"-10px" }}>
+                <Grid item sm={6} sx={{ display: "flex", marginLeft: "-10px" }}>
                   <Box>
-                    <Typography sx={inputName}>Name:  </Typography>
+                    <Typography sx={inputName}>Name: </Typography>
                   </Box>
                   <>
                     <Typography sx={inputName}>
@@ -592,7 +595,7 @@ console.log('0---', profile?.participatorsContestDetails)
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <Box>
-                    <Typography sx={inputName}>Email:  </Typography>
+                    <Typography sx={inputName}>Email: </Typography>
                   </Box>
                   <Box>
                     <Typography sx={inputName}>
