@@ -11,7 +11,7 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-monokai";
 //import ReactRouterPrompt from "react-router-prompt";
-import TimerIcon from '@mui/icons-material/Timer';
+import TimerIcon from "@mui/icons-material/Timer";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Navigate, useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
@@ -28,7 +28,6 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-// import { response } from "express";
 
 const div1 = {
   height: "445px",
@@ -48,7 +47,7 @@ const blue1 = {
 };
 
 const rightDiv = {
-  width:"45.7vw",
+  width: "45.7vw",
   height: "50.81px",
   background: "white",
   borderRadius: "17px 17px 0px 0px",
@@ -56,15 +55,13 @@ const rightDiv = {
 };
 
 const testCase = {
-  // height: "30vh",
   background: "#F9FAFC",
-  minHeight:"250px",
+  minHeight: "250px",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
 
 const testCaseText = {
-  
   height: "69.23px",
   background: "#F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -189,14 +186,14 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [state, setState] = useState(false);
+  const [submitted, setSubmitted] = useState(0);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
-  const timerGet = 1000;
-  // duration?.match(/\d/g)?.join("");
+  const timerGet =  duration?.match(/\d/g)?.join("");
+ 
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
@@ -233,7 +230,6 @@ const Compiler = () => {
   const runCodes = async (flag, state) => {
     console.log("");
     setLoading(true);
-
     try {
       // timeOut = false;
       const resultData = await runAndCompilerCode({
@@ -321,10 +317,10 @@ const Compiler = () => {
     } else {
     }
   }, [count]);
-  const handleButton = () => {
-    setCounter(counter + 1);
-    setCodeValue(profile?.participatorsContestDetails?.languageCode?.codeBase);
-  };
+  // const handleButton = () => {
+  //   setCounter(counter + 1);
+  //   setCodeValue(profile?.participatorsContestDetails?.languageCode?.codeBase);
+  // };
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (
@@ -350,9 +346,9 @@ const Compiler = () => {
     });
   };
 
-  const submitCodes=async(flag)=>{
+  const submitCodes = async (flag) => {
     try {
-      const res= await submitCode({
+      const res = await submitCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
         questionId:
           profile.participatorsContestDetails?.QuestionList[count]?.questionId,
@@ -362,18 +358,17 @@ const Compiler = () => {
         timeOut: false,
         code: `${codeValue}`,
       });
-      if(res){
+      if (res) {
         setShowError(true);
+        // handleButton();
+        handleNext();
       }
-     
-      console.log("res",res);
-    } catch (error) {
-      
-    }
-  }
+      console.log("res", res);
+    } catch (error) {}
+  };
 
   const handleNext = () => {
-    if (profile.participatorsContestDetails?.QuestionList?.length <= 1) {
+    if (profile.participatorsContestDetails?.QuestionList?.length-1 === count) {
       console.log("if");
     } else {
       console.log("else");
@@ -425,19 +420,19 @@ const Compiler = () => {
     clearTimer(getDeadTime());
   }, []);
 
-  useEffect(() => {
-    if (
-      performance.navigation.type === 1 ||
-      performance.navigation.type === 2
-    ) {
-      // runCodes("1");
-      setTimeout(() => {
-        navigate("/thanku");
-      }, [3000]);
-      console.log("page is refreshed");
-    } else {
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (
+  //     performance.navigation.type === 1 ||
+  //     performance.navigation.type === 2
+  //   ) {
+  //     // runCodes("1");
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //     }, [3000]);
+  //     console.log("page is refreshed");
+  //   } else {
+  //   }
+  // }, []);
 
   return (
     <Box>
@@ -490,7 +485,11 @@ const Compiler = () => {
         <Grid container>
           <Grid item sm={6}>
             <Box sx={testCaseData1} mx={2}>
-            <TimerIcon fontSize="15px" sx={{backgroundColor:"white",marginTop:"3px"}}/>&nbsp;
+              <TimerIcon
+                fontSize="15px"
+                sx={{ backgroundColor: "white", marginTop: "3px" }}
+              />
+              &nbsp;
               <Typography sx={timerText}> {timer} Remaining</Typography>
             </Box>
 
@@ -505,7 +504,7 @@ const Compiler = () => {
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} mx={2}>
-                          Question {count+1}
+                          Question {count + 1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -519,7 +518,7 @@ const Compiler = () => {
                           <Typography>
                             {
                               profile?.participatorsContestDetails
-                                ?.QuestionList[count]?.question
+                                ?.QuestionList?.[count]?.question
                             }
                           </Typography>
                         </Box>
@@ -532,7 +531,7 @@ const Compiler = () => {
                           <Typography>
                             {
                               profile?.participatorsContestDetails
-                                ?.QuestionList[count]?.sampleTestCase[0]
+                                ?.QuestionList?.[count]?.sampleTestCase[0]
                                 ?.constraints
                             }
                           </Typography>
@@ -549,7 +548,7 @@ const Compiler = () => {
                             <Typography>
                               {
                                 profile?.participatorsContestDetails
-                                  ?.QuestionList[count]?.sampleTestCase[0]
+                                  ?.QuestionList?.[count]?.sampleTestCase[0]
                                   ?.input
                               }
                             </Typography>
@@ -565,7 +564,7 @@ const Compiler = () => {
                             <Typography>
                               {
                                 profile?.participatorsContestDetails
-                                  ?.QuestionList[count]?.sampleTestCase[0]
+                                  ?.QuestionList?.[count]?.sampleTestCase[0]
                                   ?.output
                               }
                             </Typography>
@@ -603,9 +602,9 @@ const Compiler = () => {
           <Grid item sm={6}>
             <Box mx={3}>
               <Grid container>
-                <Grid item sm={6} sx={{ display: "flex", marginLeft:"-10px" }}>
+                <Grid item sm={6} sx={{ display: "flex", marginLeft: "-10px" }}>
                   <Box>
-                    <Typography sx={inputName}>Name:  </Typography>
+                    <Typography sx={inputName}>Name: </Typography>
                   </Box>
                   <>
                     <Typography sx={inputName}>
@@ -615,7 +614,7 @@ const Compiler = () => {
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <Box>
-                    <Typography sx={inputName}>Email:  </Typography>
+                    <Typography sx={inputName}>Email: </Typography>
                   </Box>
                   <Box>
                     <Typography sx={inputName}>
@@ -672,12 +671,23 @@ const Compiler = () => {
                   onClick={() => {
                     submitCodes("1");
                     // runCodes("1");
-                    handleButton();
-                    handleNext();
                   }}
                 >
-                  {show ? "final submit" : "submit"}
+                  {"submit"}
                 </Button>
+                {count ===
+                  profile?.participatorsContestDetails?.QuestionList?.length -
+                    1 && (
+                  <Button
+                    variant="contained"
+                    sx={buttonTest}
+                    onClick={() => {
+                      navigate("/thanku");
+                    }}
+                  >
+                    {"Final submit"}
+                  </Button>
+                )}
               </Grid>
             </Box>
             <Grid>
