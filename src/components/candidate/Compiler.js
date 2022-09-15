@@ -13,21 +13,14 @@ import "ace-builds/src-noconflict/theme-monokai";
 //import ReactRouterPrompt from "react-router-prompt";
 import TimerIcon from "@mui/icons-material/Timer";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { Navigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
-
 import { runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+
 
 const div1 = {
   height: "445px",
@@ -180,13 +173,12 @@ const Compiler = () => {
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
-  const [counter, setCounter] = useState(0);
   const [showCompilationError, setshowCompilationError] = useState();
   const [showError, setShowError] = useState(false);
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [submitted, setSubmitted] = useState(0);
+  const [submitted, setSubmitted] = useState([]);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [duration, setDuration] = useState(
@@ -228,8 +220,9 @@ const Compiler = () => {
   }, [showError]);
 
   const runCodes = async (flag, state) => {
-    console.log("");
+  
     setLoading(true);
+    setShowTestCase(true);
     try {
       // timeOut = false;
       const resultData = await runAndCompilerCode({
@@ -242,7 +235,7 @@ const Compiler = () => {
         timeOut: false,
         code: `${codeValue}`,
       });
-      console.log("codeValue", codeValue);
+     
       if (resultData) {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
@@ -317,10 +310,6 @@ const Compiler = () => {
     } else {
     }
   }, [count]);
-  // const handleButton = () => {
-  //   setCounter(counter + 1);
-  //   setCodeValue(profile?.participatorsContestDetails?.languageCode?.codeBase);
-  // };
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (
@@ -347,6 +336,7 @@ const Compiler = () => {
   };
 
   const submitCodes = async (flag) => {
+    setShow(true)
     try {
       const res = await submitCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
@@ -359,19 +349,22 @@ const Compiler = () => {
         code: `${codeValue}`,
       });
       if (res) {
+        setSubmitted([...submitted,profile.participatorsContestDetails?.QuestionList[count]?.questionId])
         setShowError(true);
-        // handleButton();
         handleNext();
+        setShow(false);
+        setCodeValue(profile?.participatorsContestDetails?.languageCode?.codeBase);
+        setShowTestCase(false);
       }
-      console.log("res", res);
-    } catch (error) {}
+      
+    } catch (error) {setLoading(false);}
   };
 
   const handleNext = () => {
     if (profile.participatorsContestDetails?.QuestionList?.length-1 === count) {
-      console.log("if");
+      
     } else {
-      console.log("else");
+     
       setCount(count + 1);
     }
   };
@@ -433,45 +426,11 @@ const Compiler = () => {
   //   } else {
   //   }
   // }, []);
-
+  console.log('dssdvfsdv',submitted)
   return (
     <Box>
       <Header state={true} />
-      {/* <ReactRouterPrompt when={true}>
-        {({ isActive, onConfirm, onCancel }) =>
-          isActive && (
-            <div>
-              <Dialog
-                open={true}
-                // onClose={onCancel}
-                onClose={(_, reason) => {
-          if (reason !== "backdropClick") {
-            onCancel();
-          }
-        }}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Alert"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                   If you leave this test your data would be lose and your code will be automatically submitted..!
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button variant="contained" color="primary" onClick={onCancel}>Close</Button>
-                  <Button variant="contained"  color="warning" onClick={()=>{testSubmit()}}>
-                    Leave
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-          )
-        }
-      </ReactRouterPrompt> */}
-
+     
       <Box className="background1">
         {showCompilationError && (
           <MsgBar
@@ -491,8 +450,8 @@ const Compiler = () => {
               />
               &nbsp;
               <Typography sx={timerText}> {timer} Remaining</Typography>
+              
             </Box>
-
             <Box mx={3}>
               <Container sx={div1}>
                 <Grid container>
@@ -665,6 +624,7 @@ const Compiler = () => {
                 >
                   Run
                 </Button>
+              {show&&<Loader mt={1.8}/>}  
                 <Button
                   variant="contained"
                   sx={buttonTest}
@@ -672,6 +632,7 @@ const Compiler = () => {
                     submitCodes("1");
                     // runCodes("1");
                   }}
+                  disabled={show}
                 >
                   {"submit"}
                 </Button>
