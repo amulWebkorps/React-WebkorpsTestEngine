@@ -47,7 +47,7 @@ const testCaseData = {
   flexDirection: "row",
   height: "200px",
   width: "100%",
-  overflowY:"auto"
+  overflowY: "auto",
 };
 
 const testCase = {
@@ -79,8 +79,7 @@ const testCaseText2 = {
   fontSize: "25px",
   lineHeight: "51px",
   color: "#000000",
-  width:'100%',
-
+  width: "100%",
 };
 
 const inputLabel = {
@@ -175,7 +174,7 @@ const ViewParticipatorDetail = () => {
   const getparticipatordetails = async () => {
     try {
       const res = await getparticipatordetail(studentId);
-      console.log('res',res?.data)
+      console.log("res", res?.data);
       setParticipatorDetails(res?.data);
       setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {
@@ -297,19 +296,21 @@ const ViewParticipatorDetail = () => {
               <Grid container>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <label>
-                    <h3>Name {participatorDetails?.studentDetail?.name} </h3>
+                    <h3>Name :- {participatorDetails?.studentDetail?.name} </h3>
                   </label>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
                   <label>
-                    <h3>Email {participatorDetails?.studentDetail?.email} </h3>
+                    <h3>
+                      Email :- {participatorDetails?.studentDetail?.email}{" "}
+                    </h3>
                   </label>
                 </Grid>
-                <label>
+                {/* <label>
                   <h3>
                     Phone {participatorDetails?.studentDetail?.mobileNumber}{" "}
                   </h3>
-                </label>
+                </label> */}
               </Grid>
               <Container sx={rightDiv}>
                 <Grid container>

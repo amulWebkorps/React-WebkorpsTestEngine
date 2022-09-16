@@ -151,6 +151,7 @@ const inputName = {
 const timerText = {
   fontWeight: "500",
   fontweight: "bold",
+  fontSize: "20px",
 };
 
 const textTestCases = {
@@ -445,7 +446,7 @@ const Compiler = () => {
           <Grid item sm={6}>
             <Box sx={testCaseData1} mx={2}>
               <TimerIcon
-                fontSize="15px"
+                fontSize="medium"
                 sx={{ backgroundColor: "white", marginTop: "3px" }}
               />
               &nbsp;

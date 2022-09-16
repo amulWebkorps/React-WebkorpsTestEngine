@@ -194,6 +194,7 @@ const EmailShow = () => {
   useEffect(() => {
     getParticipatorData();
   }, []);
+
   const getParticipatorData = async () => {
     try {
       const res = await getParticipator();

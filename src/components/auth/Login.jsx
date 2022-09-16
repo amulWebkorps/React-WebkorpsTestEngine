@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {Box,Container,Typography,Stack,FormControlLabel,Checkbox,Button,Grid} from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Stack,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Grid,
+} from "@mui/material";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
@@ -202,7 +211,7 @@ const Login = () => {
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
-            {loading && <Loader />}
+            {/* {loading && <Loader />} */}
 
             <Stack>
               <TextInput
