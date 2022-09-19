@@ -185,6 +185,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
+  const [paste, setPaste] = useState(false);
   const [submitted, setSubmitted] = useState([]);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
@@ -305,6 +306,10 @@ const Compiler = () => {
   };
 
   const onChange = (codeData) => {
+    if (paste) {
+      console.log(codeData, "NEW DATA");
+      // setCodeValue()
+    }
     setCodeValue(codeData);
     setShowTestCase(false);
   };
@@ -652,8 +657,18 @@ const Compiler = () => {
                   }
                   theme="monokai"
                   name="code"
+                  onPaste={(e) => {
+                    return false;
+                  }}
+                  onCopy={(e) => {
+                   
+                    return false;
+                  }}
                   editorProps={{ $blockScrolling: true }}
                   height="380px"
+                  setOptions={{
+                    dragEnabled: false,
+                  }}
                   width="45.7vw"
                   value={codeValue}
                   onChange={onChange}
@@ -713,29 +728,23 @@ const Compiler = () => {
                   (isLoading ? (
                     <Loader mt={8} />
                   ) : (
-                    <Grid sx={testCaseData}>
-                      <Box m={3} mt={2}>
-                        <AceEditor
-                          mode="java"
-                          fontSize={15}
-                          value={error}
-                          theme="terminal"
-                          name="code"
-                          editorProps={{ $blockScrolling: true }}
-                          height="180px"
-                          width="44vw"
-                         setOptions={{
-                          showLineNumbers:false
-                         }}
-                        />
-                        {/* <Typography sx={{color:"red"}}>
-                        {
-                             error
-                            }
-                          </Typography> */}
-                        {/* <p style={{color:"red"}}>{error}error</p> */}
-                      </Box>
-                    </Grid>
+                    <AceEditor
+                      readOnly
+                      style={{ borderRadius: "14px" }}
+                      showGutter={false}
+                      mode="java"
+                      fontSize={15}
+                      value={error}
+                      theme="monokai"
+                      name="al"
+                      editorProps={{ $blockScrolling: true }}
+                      height="200px"
+                      width="45.7vw"
+                      setOptions={{
+                        showLineNumbers: false,
+                        dragEnabled: false,
+                      }}
+                    />
                   ))}
               </Grid>
             </Grid>
