@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
 
-
 const div1 = {
   height: "445px",
   marginTop: "30px",
@@ -184,8 +183,8 @@ const Compiler = () => {
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
-  const timerGet =  duration?.match(/\d/g)?.join("");
- 
+  const timerGet = duration?.match(/\d/g)?.join("");
+
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
@@ -220,7 +219,6 @@ const Compiler = () => {
   }, [showError]);
 
   const runCodes = async (flag, state) => {
-  
     setLoading(true);
     setShowTestCase(true);
     try {
@@ -235,7 +233,7 @@ const Compiler = () => {
         timeOut: false,
         code: `${codeValue}`,
       });
-     
+
       if (resultData) {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
@@ -336,7 +334,7 @@ const Compiler = () => {
   };
 
   const submitCodes = async (flag) => {
-    setShow(true)
+    setShow(true);
     try {
       const res = await submitCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
@@ -349,22 +347,29 @@ const Compiler = () => {
         code: `${codeValue}`,
       });
       if (res) {
-        setSubmitted([...submitted,profile.participatorsContestDetails?.QuestionList[count]?.questionId])
+        setSubmitted([
+          ...submitted,
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        ]);
         setShowError(true);
         handleNext();
         setShow(false);
-        setCodeValue(profile?.participatorsContestDetails?.languageCode?.codeBase);
+        setCodeValue(
+          profile?.participatorsContestDetails?.languageCode?.codeBase
+        );
         setShowTestCase(false);
       }
-      
-    } catch (error) {setLoading(false);}
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const handleNext = () => {
-    if (profile.participatorsContestDetails?.QuestionList?.length-1 === count) {
-      
+    if (
+      profile.participatorsContestDetails?.QuestionList?.length - 1 ===
+      count
+    ) {
     } else {
-     
       setCount(count + 1);
     }
   };
@@ -426,11 +431,11 @@ const Compiler = () => {
   //   } else {
   //   }
   // }, []);
-  console.log('dssdvfsdv',submitted)
+  console.log("dssdvfsdv", submitted);
   return (
     <Box>
       <Header state={true} />
-     
+
       <Box className="background1">
         {showCompilationError && (
           <MsgBar
@@ -450,7 +455,6 @@ const Compiler = () => {
               />
               &nbsp;
               <Typography sx={timerText}> {timer} Remaining</Typography>
-              
             </Box>
             <Box mx={3}>
               <Container sx={div1}>
@@ -614,6 +618,7 @@ const Compiler = () => {
                 />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
+              {show && <Loader mt={1.8} />}
                 <Button
                   variant="contained"
                   sx={buttonTest}
@@ -624,7 +629,7 @@ const Compiler = () => {
                 >
                   Run
                 </Button>
-              {show&&<Loader mt={1.8}/>}  
+               
                 <Button
                   variant="contained"
                   sx={buttonTest}

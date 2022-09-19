@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const MainBox = {
   display: "flex",
@@ -56,6 +57,7 @@ const logoText = {
 };
 
 const Thankupage = () => {
+  const navigate=useNavigate();
   useEffect(() => {
     window.onbeforeunload = function() {
       console.log('akkk')
@@ -68,7 +70,12 @@ const Thankupage = () => {
         console.log('kkk')
     };
 }, []);
-
+useEffect(() => {
+  window.addEventListener("popstate", (event) => {
+    console.log("INSIDE!");
+    navigate('/thanku')
+  });
+}, [window, navigate]);
 
   return (
     <>

@@ -202,7 +202,7 @@ const Login = () => {
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
-            {loading && <Loader />}
+            {/* {loading && <Loader />} */}
 
             <Stack>
               <TextInput

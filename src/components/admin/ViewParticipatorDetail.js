@@ -305,11 +305,7 @@ const ViewParticipatorDetail = () => {
                     <h3>Email {participatorDetails?.studentDetail?.email} </h3>
                   </label>
                 </Grid>
-                <label>
-                  <h3>
-                    Phone {participatorDetails?.studentDetail?.mobileNumber}{" "}
-                  </h3>
-                </label>
+               
               </Grid>
               <Container sx={rightDiv}>
                 <Grid container>

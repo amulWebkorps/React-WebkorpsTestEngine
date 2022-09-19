@@ -153,10 +153,6 @@ const Instruction = () => {
     );
   }, [language]);
 
-  // console.log("defaultCode", defaultCode);
-
-  // console.log("participatorsss");
-
   const fetchStartContestData = async () => {
     try {
       const result = await startContestPage(language, participatorData);
