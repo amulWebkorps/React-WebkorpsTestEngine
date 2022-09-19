@@ -13,6 +13,7 @@ import { getParticipatorOfContest } from "../services/contest/contestServices";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import { CollectionsBookmarkRounded } from "@mui/icons-material";
 import MsgBar from "../auth/base/MsgBar";
+import BackButton from "../UI/BackButton";
 
 const BigContainer = {
   background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
@@ -270,6 +271,7 @@ const AnswerSheet = () => {
   return (
     <>
       <Header />
+      <BackButton/>
       {delMsg?.state && <MsgBar errMsg={delMsg?.msg} color={delMsg?.color} />}
       <Container sx={BigContainer}>
         <Box sx={MainBox}>

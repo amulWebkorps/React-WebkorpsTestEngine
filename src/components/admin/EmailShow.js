@@ -19,6 +19,7 @@ import { sentMail, uploadParticipator } from "../services/adminServices";
 import { getParticipator } from "../services/mail/particiaptiorMail";
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
+import BackButton from "../UI/BackButton";
 
 const background1 = {
   height: "100vh",
@@ -106,7 +107,6 @@ const emailContainer = {
 
 const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
-  const location = useLocation();
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -154,7 +154,7 @@ const EmailShow = () => {
       });
     }
   };
-  console.log("emailsss", emails.length);
+  console.log("emailsss", emails);
   const handleDelete = async (mail) => {
     setUpload({
       alert: true,
@@ -193,7 +193,7 @@ const EmailShow = () => {
   };
   useEffect(() => {
     getParticipatorData();
-  }, []);
+  }, [showAlert]);
   const getParticipatorData = async () => {
     try {
       const res = await getParticipator();
@@ -277,6 +277,7 @@ const EmailShow = () => {
         setOpen={setOpen}
         handleClickOpen={handleClickOpen}
         emails={emails}
+        setEmails={setEmails}
         sent={sent}
         setSent={setSent}
       />
@@ -288,6 +289,7 @@ const EmailShow = () => {
 
       <div style={background1}>
         <Header />
+        <BackButton/>
         <Container maxWidth="lg" sx={whiteContainer}>
           <Grid
             container
@@ -349,6 +351,7 @@ const EmailShow = () => {
                       </Grid>
                       <Grid item mt={1}>
                         <Checkbox
+                          // checked={true}
                           value={val}
                           onChange={handleChange}
                           icon={<RadioButtonUncheckedIcon />}

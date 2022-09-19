@@ -23,6 +23,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { filterQuestion, saveQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { uploadQuestions } from "../services/contest/contestServices";
+import BackButton from "../UI/BackButton";
 
 const useStyles = makeStyles({
   container: {
@@ -367,6 +368,7 @@ console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
       <Header />
+      <BackButton/>
       <Container sx={topButton}>
         {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>

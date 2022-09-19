@@ -27,6 +27,7 @@ import {
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
 import { uploadQuestions } from "../services/contest/contestServices";
+import BackButton from "../UI/BackButton";
 
 const useStyles = makeStyles({
   container: {
@@ -383,6 +384,7 @@ const Level1 = () => {
   return (
     <div style={questionList}>
       <Header />
+      <BackButton/>
       <Container sx={topButton}>
         {showAlert || showValidation ? (
           <MsgBar errMsg={msg.errMsg} color={msg.color} />

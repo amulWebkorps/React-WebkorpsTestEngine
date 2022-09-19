@@ -22,6 +22,7 @@ import { getAllContestList } from "../services/adminServices";
 import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
+import BackButton from "../UI/BackButton";
 
 const containerStyle = {
   overflowY: "auto",
@@ -207,20 +208,6 @@ const Dashbord = () => {
     }
   };
 
-  // <<<<<<< HEAD
-  // function noBack() {
-  //   // window.history.forward();
-  //   navigate("/dashboard");
-
-  // }
-  //   const fetchContestData = async () => {
-  //     const response = await getAllContestList();
-  //     setContestDetails(response?.data);
-  // =======
-  function noBack() {
-    window.history.forward();
-    navigate("/dashboard");
-  }
   const fetchContestData = async () => {
     const response = await getAllContestList();
     setContestDetails(response.data);
@@ -230,12 +217,17 @@ const Dashbord = () => {
     fetchContestData();
   }, []);
 
-  // console.log("---contest", contestDetails);
+  useEffect(() => {
+    window.addEventListener("popstate", (event) => {
+      console.log("INSIDE!");
+      navigate('/dashboard');
+    });
+  }, [window, navigate]);
 
   return (
-    <div style={app} onLoad={noBack}>
+    <div style={app}>
       <Header />
-
+<BackButton/>
       {showAvailq ? (
         <>
           <Modal
@@ -332,7 +324,7 @@ const Dashbord = () => {
                     </CardMedia>
                     <CardContent sx={cardBody}>
                       <br />
-                      <h4 style={contestText}>create contest</h4>
+                     <h4 style={contestText}>create contest</h4>
 
                       <p style={months}>add Description</p>
                     </CardContent>

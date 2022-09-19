@@ -26,6 +26,7 @@ import {
 } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
+import BackButton from "../UI/BackButton";
 
 const useStyles = makeStyles({
   container: {
@@ -380,6 +381,7 @@ const QuestionList = () => {
   return (
     <div style={questionList}>
       <Header />
+      <BackButton/>
       <Container sx={topButton}>
         {showAlert ||
         showValidation ||

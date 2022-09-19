@@ -17,6 +17,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { getparticipatordetail } from "../services/contest/contestServices";
 // import { getparticipatordetail } from "../services/adminServices";
 import { useLocation } from "react-router-dom";
+import BackButton from "../UI/BackButton";
 
 const div1 = {
   height: "70vh",
@@ -45,7 +46,7 @@ const rightDiv = {
 const testCaseData = {
   display: "flex",
   flexDirection: "row",
-  height: "200px",
+  height: "180px",
   width: "100%",
   overflowY:"auto"
 };
@@ -132,13 +133,15 @@ const buttonTest = {
   lineHeight: "19px",
 };
 const textTestCases = {
+  // height:"50px",
   padding: "10px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   margin: "10px",
   width: "90%",
-  // marginTop:"10px",
+  marginBottom:"5px",
+  marginTop:"10px",
   display: "flex",
   justifyContent: "space-between",
 };
@@ -190,6 +193,7 @@ const ViewParticipatorDetail = () => {
   return (
     <div>
       <Header />
+      <BackButton/>
       <div className="background1">
         <Grid container>
           <Grid item sm={6}>
@@ -342,20 +346,20 @@ const ViewParticipatorDetail = () => {
                     </Typography>
                   </Grid>
                   <Grid sx={testCaseData}>
-                    <Box m={3} mt={2} sx={testCaseText2}>
+                    <Box m={3} mt={1} sx={testCaseText2}>
                       {testcases?.[count]?.["testCasesSuccess"]?.map(
                         (val, index) => {
                           return (
                             <Box key={index} sx={textTestCases}>
-                              <p>TestCase {index + 1}</p>
-                              <Typography variant="h5">
+                              <Typography variant="span">TestCase {index + 1}</Typography>
+                              <Typography variant="h4">
                                 {val ? (
                                   <DoneIcon
-                                    sx={{ color: "green", fontSize: 50 }}
+                                    sx={{ color: "green", fontSize: 40 }}
                                   />
                                 ) : (
                                   <ClearIcon
-                                    sx={{ color: "red", fontSize: 50 }}
+                                    sx={{ color: "red", fontSize: 40 }}
                                   />
                                 )}
                               </Typography>

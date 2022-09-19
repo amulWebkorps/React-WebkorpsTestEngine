@@ -59,6 +59,7 @@ export default function Model2({
   setOpen,
   emails,
   sentEmails,
+  setEmails,
   sent,
   setSent,
   setMsg,
@@ -71,11 +72,7 @@ export default function Model2({
    const response=getAllContestList().then((res)=>{
     setContestDetails(res?.data);
    });
-  
-   
   }, [])
-  
-
   const handleClose = () => {
     setOpen(false);
     setSent(false);
@@ -92,6 +89,7 @@ export default function Model2({
     try {
       const result = await sendMail(contestId, emails);
       setAlert(true);
+      setEmails([]);
       setMsg({
         errMsg: "Mail send successfully...!",
         color: "green",

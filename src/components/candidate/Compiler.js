@@ -9,6 +9,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
+// import "ace-builds/src-noconflict/mode-term";
 import "ace-builds/src-noconflict/theme-monokai";
 //import ReactRouterPrompt from "react-router-prompt";
 import TimerIcon from "@mui/icons-material/Timer";
@@ -48,6 +49,13 @@ const rightDiv = {
 
 const testCase = {
   background: "#F9FAFC",
+  minHeight: "250px",
+  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
+  borderRadius: "17px",
+};
+const consoleArea = {
+  marginTop: "50px",
+  background: "black",
   minHeight: "250px",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
@@ -179,6 +187,7 @@ const Compiler = () => {
   const [timer, setTimer] = useState("00:00:00");
   const [submitted, setSubmitted] = useState([]);
   const navigate = useNavigate();
+  const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
@@ -334,34 +343,36 @@ const Compiler = () => {
   };
 
   const submitCodes = async (flag) => {
-    setShow(true);
-    try {
-      const res = await submitCode({
-        language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId:
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-        contestId: profile.participatorsContestDetails?.contestId,
-        studentId: profile.participatorsContestDetails?.studentId,
-        flag: flag,
-        timeOut: false,
-        code: `${codeValue}`,
-      });
-      if (res) {
-        setSubmitted([
-          ...submitted,
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-        ]);
-        setShowError(true);
-        handleNext();
-        setShow(false);
-        setCodeValue(
-          profile?.participatorsContestDetails?.languageCode?.codeBase
-        );
-        setShowTestCase(false);
-      }
-    } catch (error) {
-      setLoading(false);
-    }
+    // setShow(true);
+    window.localStorage.setItem("submit code", JSON.stringify(localData));
+    setLocalData([...localData, codeValue]);
+    // try {
+    //   const res = await submitCode({
+    //     language: profile.participatorsContestDetails?.languageCode?.language,
+    //     questionId:
+    //       profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+    //     contestId: profile.participatorsContestDetails?.contestId,
+    //     studentId: profile.participatorsContestDetails?.studentId,
+    //     flag: flag,
+    //     timeOut: false,
+    //     code: `${codeValue}`,
+    //   });
+    //   if (res) {
+    //     setSubmitted([
+    //       ...submitted,
+    //       profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+    //     ]);
+    //     setShowError(true);
+    //     handleNext();
+    //     setShow(false);
+    //     setCodeValue(
+    //       profile?.participatorsContestDetails?.languageCode?.codeBase
+    //     );
+    //     setShowTestCase(false);
+    //   }
+    // } catch (error) {
+    //   setLoading(false);
+    // }
   };
 
   const handleNext = () => {
@@ -431,11 +442,10 @@ const Compiler = () => {
   //   } else {
   //   }
   // }, []);
-  console.log("dssdvfsdv", submitted);
+  console.log("local storage---", localData);
   return (
     <Box>
       <Header state={true} />
-
       <Box className="background1">
         {showCompilationError && (
           <MsgBar
@@ -561,6 +571,42 @@ const Compiler = () => {
                 </Button>
               </Grid>
             </Box>
+            <Grid>
+              <Grid containner sx={testCase} m={3} ref={ref}>
+                <Grid item sm={12} sx={testCaseResult}>
+                  <Typography m={3} mt={2} sx={testCaseText1}>
+                    Test Cases
+                  </Typography>
+                </Grid>
+                {showTestCase &&
+                  (isLoading ? (
+                    <Loader mt={8} />
+                  ) : (
+                    <Grid sx={testCaseData}>
+                      <Box m={3} mt={2} sx={testCaseText2}>
+                        {runCode?.testCasesSuccess?.map((val, index) => {
+                          return (
+                            <Box key={index} sx={textTestCases}>
+                              <span>TestCase {index + 1}</span>
+                              <Typography variant="h5">
+                                {val ? (
+                                  <DoneIcon
+                                    sx={{ color: "green", fontSize: 40 }}
+                                  />
+                                ) : (
+                                  <ClearIcon
+                                    sx={{ color: "red", fontSize: 40 }}
+                                  />
+                                )}
+                              </Typography>
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                    </Grid>
+                  ))}
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item sm={6}>
             <Box mx={3}>
@@ -618,7 +664,7 @@ const Compiler = () => {
                 />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
-              {show && <Loader mt={1.8} />}
+                {show && <Loader mt={1.8} />}
                 <Button
                   variant="contained"
                   sx={buttonTest}
@@ -629,7 +675,7 @@ const Compiler = () => {
                 >
                   Run
                 </Button>
-               
+
                 <Button
                   variant="contained"
                   sx={buttonTest}
@@ -656,11 +702,11 @@ const Compiler = () => {
                 )}
               </Grid>
             </Box>
-            <Grid>
-              <Grid containner sx={testCase} m={3} ref={ref}>
+            <Grid mt={3}>
+              <Grid containner sx={consoleArea} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
                   <Typography m={3} mt={2} sx={testCaseText1}>
-                    Test Case
+                    Console
                   </Typography>
                 </Grid>
                 {showTestCase &&
@@ -668,25 +714,26 @@ const Compiler = () => {
                     <Loader mt={8} />
                   ) : (
                     <Grid sx={testCaseData}>
-                      <Box m={3} mt={2} sx={testCaseText2}>
-                        {runCode?.testCasesSuccess?.map((val, index) => {
-                          return (
-                            <Box key={index} sx={textTestCases}>
-                              <span>TestCase {index + 1}</span>
-                              <Typography variant="h5">
-                                {val ? (
-                                  <DoneIcon
-                                    sx={{ color: "green", fontSize: 40 }}
-                                  />
-                                ) : (
-                                  <ClearIcon
-                                    sx={{ color: "red", fontSize: 40 }}
-                                  />
-                                )}
-                              </Typography>
-                            </Box>
-                          );
-                        })}
+                      <Box m={3} mt={2}>
+                        <AceEditor
+                          mode="java"
+                          fontSize={15}
+                          value={error}
+                          theme="terminal"
+                          name="code"
+                          editorProps={{ $blockScrolling: true }}
+                          height="180px"
+                          width="44vw"
+                         setOptions={{
+                          showLineNumbers:false
+                         }}
+                        />
+                        {/* <Typography sx={{color:"red"}}>
+                        {
+                             error
+                            }
+                          </Typography> */}
+                        {/* <p style={{color:"red"}}>{error}error</p> */}
                       </Box>
                     </Grid>
                   ))}

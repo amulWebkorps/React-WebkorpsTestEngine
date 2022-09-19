@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { filterQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { deleteQuestion } from "../services/contest/contestServices";
+import BackButton from "../UI/BackButton";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -164,8 +165,8 @@ const Allavailable = () => {
   return (
     <div style={background1}>
       {msg.state && <MsgBar errMsg={msg.msg} color={msg.color} />}
-
       <Header />
+      <BackButton/>
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item mt={5}>
           <Box variant="contained" sx={buttonLevel}>
