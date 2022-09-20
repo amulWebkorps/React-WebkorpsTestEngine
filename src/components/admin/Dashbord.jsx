@@ -129,8 +129,8 @@ const delBtn1 = {
 
 const forwardIcon = {
   transform: " rotate(-90deg)",
-  position: "absolute",
-  top: `calc(50% - -78px)`,
+  position: "sticky",
+  top: `50%`,
   color: "white",
 };
 const backIcon = {

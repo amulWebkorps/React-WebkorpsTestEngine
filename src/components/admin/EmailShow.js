@@ -22,7 +22,7 @@ import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
 
 const background1 = {
-  height: "100vh",
+  height: "100%",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
@@ -289,7 +289,7 @@ const EmailShow = () => {
 
       <div style={background1}>
         <Header />
-        <BackButton/>
+        <BackButton />
         <Container maxWidth="lg" sx={whiteContainer}>
           <Grid
             container
@@ -343,9 +343,10 @@ const EmailShow = () => {
               {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
                 <h1>No data </h1>
               ) : searchString?.length > 1 ? (
-                filteredResults.map((val) => {
+                filteredResults.map((val, index) => {
                   return (
-                    <Grid container sx={divSelect}>
+                    <Grid key={`${index}-${val}`} container sx={divSelect}>
+                      {console.log(val, "---VAL----")}
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
@@ -373,9 +374,10 @@ const EmailShow = () => {
                   );
                 })
               ) : (
-                uploadEmail?.map((val) => {
+                uploadEmail?.map((val, index) => {
                   return (
-                    <Grid container sx={divSelect}>
+                    <Grid key={`${index}-${val}`} container sx={divSelect}>
+                      {console.log(val, "---VAL-2nd---")}
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>

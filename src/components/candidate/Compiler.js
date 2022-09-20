@@ -9,9 +9,8 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
-// import "ace-builds/src-noconflict/mode-term";
+import $ from "jquery";
 import "ace-builds/src-noconflict/theme-monokai";
-//import ReactRouterPrompt from "react-router-prompt";
 import TimerIcon from "@mui/icons-material/Timer";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useLocation } from "react-router-dom";
@@ -54,7 +53,7 @@ const testCase = {
   borderRadius: "17px",
 };
 const consoleArea = {
-  marginTop: "50px",
+  marginTop: "25px",
   background: "black",
   minHeight: "250px",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -156,7 +155,8 @@ const inputName = {
 };
 
 const timerText = {
-  fontWeight: "500",
+  fontWeight: "900",
+  fontSize: "18px",
   fontweight: "bold",
 };
 
@@ -185,19 +185,38 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [paste, setPaste] = useState(false);
   const [submitted, setSubmitted] = useState([]);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [defCode, setDefCode] = useState(null);
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
   const timerGet = duration?.match(/\d/g)?.join("");
-
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
+
+  $(document).ready(function () {
+    var ctrlDown = false,
+      ctrlKey = 17,
+      cmdKey = 91,
+      vKey = 86,
+      cKey = 67;
+
+    $(document)
+      .keydown(function (e) {
+        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+      })
+      .keyup(function (e) {
+        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+      });
+
+    $(".no-copy-pasteo").keydown(function (e) {
+      if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+    });
+  });
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -228,6 +247,20 @@ const Compiler = () => {
     return () => clearTimeout(timeout);
   }, [showError]);
 
+  const getDefaultCode = () => {
+    const len = profile?.participatorsContestDetails?.QuestionList?.length;
+    const newArray = [];
+    for (var i = 0; i < len; i++) {
+      var Object = {};
+      Object[i + 1] =profile?.participatorsContestDetails?.languageCode?.codeBase;
+      newArray.push(Object);
+    }
+    setDefCode(newArray)
+  };
+  useEffect(()=>{
+   getDefaultCode();
+  },[])
+  console.log('dsafs',defCode)
   const runCodes = async (flag, state) => {
     setLoading(true);
     setShowTestCase(true);
@@ -306,10 +339,6 @@ const Compiler = () => {
   };
 
   const onChange = (codeData) => {
-    if (paste) {
-      console.log(codeData, "NEW DATA");
-      // setCodeValue()
-    }
     setCodeValue(codeData);
     setShowTestCase(false);
   };
@@ -434,6 +463,25 @@ const Compiler = () => {
     clearTimer(getDeadTime());
   }, []);
 
+  useEffect(() => {
+    document.body.addEventListener(
+      "keydown",
+      function (ev) {
+        ev = ev || window.event;
+        var key = ev.which || ev.keyCode;
+
+        var ctrl = ev.ctrlKey ? ev.ctrlKey : key === 17 ? true : false;
+
+        if (key == 86 && ctrl) {
+          console.log("Ctrl+V is pressed.");
+        } else if (key == 67 && ctrl) {
+          console.log("Ctrl+C is pressed.");
+        }
+      },
+      false
+    );
+  }, [window]);
+
   // useEffect(() => {
   //   if (
   //     performance.navigation.type === 1 ||
@@ -447,17 +495,12 @@ const Compiler = () => {
   //   } else {
   //   }
   // }, []);
-  console.log("local storage---", localData);
+  // console.log("local storage---", codeValue);
   return (
     <Box>
       <Header state={true} />
+
       <Box className="background1">
-        {showCompilationError && (
-          <MsgBar
-            errMsg={error !== null ? error : "Please Contact to HR..!"}
-            color={"red"}
-          />
-        )}
         {showError && (
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
         )}
@@ -466,7 +509,7 @@ const Compiler = () => {
             <Box sx={testCaseData1} mx={2}>
               <TimerIcon
                 fontSize="15px"
-                sx={{ backgroundColor: "white", marginTop: "3px" }}
+                sx={{ backgroundColor: "white", marginTop: "6px" }}
               />
               &nbsp;
               <Typography sx={timerText}> {timer} Remaining</Typography>
@@ -481,7 +524,7 @@ const Compiler = () => {
                   <Grid item sm={11.5}>
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
-                        <Typography sx={testCaseText1} mx={2}>
+                        <Typography sx={testCaseText1} p={2}>
                           Question {count + 1}
                         </Typography>
                       </Box>
@@ -648,6 +691,7 @@ const Compiler = () => {
               </Container>
               <Box>
                 <AceEditor
+                  className="no-copy-paste"
                   mode={
                     location?.state?.language === "Java"
                       ? "java"
@@ -658,17 +702,18 @@ const Compiler = () => {
                   theme="monokai"
                   name="code"
                   onPaste={(e) => {
+                    e.preventDefault();
                     return false;
                   }}
                   onCopy={(e) => {
-                   
+                    e.preventDefault();
                     return false;
                   }}
                   editorProps={{ $blockScrolling: true }}
-                  height="380px"
-                  setOptions={{
-                    dragEnabled: false,
-                  }}
+                  height="405px"
+                  // setOptions={{
+                  //   dragEnabled: false,
+                  // }}
                   width="45.7vw"
                   value={codeValue}
                   onChange={onChange}
@@ -712,7 +757,7 @@ const Compiler = () => {
                       navigate("/thanku");
                     }}
                   >
-                    {"Final submit"}
+                    {"Finish"}
                   </Button>
                 )}
               </Grid>
@@ -721,7 +766,7 @@ const Compiler = () => {
               <Grid containner sx={consoleArea} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
                   <Typography m={3} mt={2} sx={testCaseText1}>
-                    Console
+                    {isLoading ? "Compiling......" : `Console`}
                   </Typography>
                 </Grid>
                 {showTestCase &&

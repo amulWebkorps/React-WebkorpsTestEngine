@@ -159,7 +159,6 @@ const All = ({
 console.log('----length-',selectiveQuestion?.questionsIds?.length)
   const addSelectiveQuestions = async () => {
     const questionsid = contestQuestion.map((v) => v.questionId);
-    //console.log("questionsid", JSON.stringify(questionsid));
     if (
       JSON.stringify(questionsid) ===
       JSON.stringify(selectiveQuestion?.questionsIds)
@@ -194,6 +193,7 @@ console.log('----length-',selectiveQuestion?.questionsIds?.length)
           setTimeout(() => {
             setAlert(false);
           }, 1200);
+          setQuestionArr([]);
           setContestQuestion([...contestQuestion, ...result.data]);
         }
       } catch (error) {
@@ -201,6 +201,7 @@ console.log('----length-',selectiveQuestion?.questionsIds?.length)
       }
     }
   };
+  console.log(questionArr,'dfsksmv   vvmmmsv')
   useEffect(() => {
     const result = filterQuestion(dropValue).then((res) => {
       setAvailableQuestions(res.data);
@@ -253,7 +254,7 @@ console.log('----length-',selectiveQuestion?.questionsIds?.length)
                 <Grid item sm={10} sx={scrollDiv}>
                   <Typography sx={divText}>{val?.question}</Typography>
                 </Grid>
-                <Grid item sm={1} mt={2}>
+                <Grid item sm={1} mt={2} key={`${index}%%$`}>
                   <Checkbox
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="#0057ff" />}
