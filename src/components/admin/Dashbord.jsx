@@ -23,6 +23,7 @@ import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
+import DashCard from "./DashCard";
 
 const containerStyle = {
   overflowY: "auto",
@@ -45,7 +46,7 @@ const createContext = {
 };
 
 const text = {
-  marginTop:"-20px",
+  marginTop: "-20px",
   // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -220,14 +221,14 @@ const Dashbord = () => {
   useEffect(() => {
     window.addEventListener("popstate", (event) => {
       console.log("INSIDE!");
-      navigate('/dashboard');
+      navigate("/dashboard");
     });
   }, [window, navigate]);
 
   return (
     <div style={app}>
       <Header />
-<BackButton/>
+      <BackButton />
       {showAvailq ? (
         <>
           <Modal
@@ -268,45 +269,18 @@ const Dashbord = () => {
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
                 return (
-                  <Grid item md={3} mt={5} key={index}>
-                    <Card sx={card}>
-                      <CardActionArea>
-                        <CardMedia
-                          onClick={() =>
-                            handleContest(contestDetails?.[index]?.contestId)
-                          }
-                          style={cardImg}
-                          component="img"
-                          height="140"
-                          image={contestImg}
-                          alt="green iguana"
-                        />
-                        <IconButton
-                          color="primary"
-                          aria-label="add"
-                          sx={delBtn1}
-                          onClick={() =>
-                            deleteContest(
-                              index,
-                              contestDetails?.[index]?.contestName,
-                              contestDetails?.[index]?.contestId
-                            )
-                          }
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                        <CardContent sx={cardBody}>
-                          <h6 style={contestText}>
-                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
-                            {contestDetails?.[index]?.contestLevel}
-                          </h6>
-                          <p style={months}>
-                            {contestDetails?.[index]?.contestDescription}
-                          </p>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
+                  <DashCard
+                    name={contestDetails?.[index]?.contestName}
+                    level={contestDetails?.[index]?.contestLevel}
+                    setDelContest={setDelContest}
+                    description={contestDetails?.[index]?.contestDescription}
+                    setConfirm={setConfirm}
+                    contestDetails={{
+                      index: index,
+                      id: contestDetails?.[index]?.contestId,
+                    }}
+                    setContestData={setContestData}
+                  />
                 );
               })}
               <Grid>
@@ -324,7 +298,7 @@ const Dashbord = () => {
                     </CardMedia>
                     <CardContent sx={cardBody}>
                       <br />
-                     <h4 style={contestText}>create contest</h4>
+                      <h4 style={contestText}>create contest</h4>
 
                       <p style={months}>add Description</p>
                     </CardContent>
@@ -366,7 +340,6 @@ const Dashbord = () => {
                           image={contestImg}
                           alt="green iguana"
                         />
-
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                         </CardContent>
