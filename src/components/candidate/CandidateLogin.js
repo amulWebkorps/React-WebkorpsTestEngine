@@ -105,12 +105,6 @@ const CandidateLogin = () => {
   const path = window?.location?.pathname;
   const { id } = useParams();
 
-  //   useEffect(() => {
-  //     let login = localStorage.getItem("login");
-  //     if (!login) {
-  //       navigate("/");
-  //     }
-  //   }, []);
   console.log("id", id);
   const handleLogin = async () => {
     setLoading(true);
@@ -122,13 +116,12 @@ const CandidateLogin = () => {
       }, 2000);
     } else {
       try {
-        const result = await participatorLogin(id, credential).then();
+        const result = await participatorLogin(id, credential);
         const token = result?.data?.data?.token;
         localStorage.setItem("token",token);
         setLoading(true);
         setMsg(true);
         localStorage.setItem("login", "true");
-        console.log('rr',result?.data?.data?.token)
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);

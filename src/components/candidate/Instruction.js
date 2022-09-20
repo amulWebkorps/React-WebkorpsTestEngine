@@ -140,7 +140,12 @@ const Instruction = () => {
       });
   }, []);
 
-  console.log(location, "hugyf");
+  useEffect(() => {
+    window.addEventListener("popstate", (event) => {
+      console.log("INSIDE!");
+      navigate('/instruction')
+    });
+  }, [window, navigate]);
 
   const dataLan = languages?.filter((lan2) => lan2.language == language);
   useEffect(() => {
