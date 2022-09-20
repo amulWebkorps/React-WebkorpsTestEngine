@@ -357,11 +357,9 @@ const Level1 = () => {
       console.log("ee", error);
     }
   };
-  console.log("--questions", contestQuestion);
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
       .then((res) => {
-        console.log(res);
         setContestQuestion(res?.contestQuestionDetail);
       })
       .catch("dmndv");
@@ -380,7 +378,7 @@ const Level1 = () => {
   //   setAvailableQuestions(response);
   // })
   // },[])
-  console.log("test case list", testCaseList);
+
   return (
     <div style={questionList}>
       <Header />

@@ -360,15 +360,6 @@ const QuestionList = () => {
       console.log("ee", error);
     }
   };
-  console.log("--questions", contestData);
-  //   useEffect(() => {
-  //     const result = getContestDetail(contestData?.contestId).then((res) => {
-  //       console.log(res)
-  //       setContestQuestion(res?.data?.contestQuestionDetail);
-  //     }).catch("dmndv");
-  // =======
-  //       console.log("ee", error);
-  //     }
 
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
@@ -381,7 +372,7 @@ const QuestionList = () => {
   return (
     <div style={questionList}>
       <Header />
-      <BackButton/>
+      <BackButton />
       <Container sx={topButton}>
         {showAlert ||
         showValidation ||

@@ -100,7 +100,7 @@ const AddedQues = ({
   contestQuestion,
   setContestQuestion,
   setEditQuestion,
-  setDeleteQ,
+  // setDeleteQ,
   setProblemStatement,
   setSampleTestCase,
   setTestCaseList,
@@ -143,7 +143,7 @@ const AddedQues = ({
           return index !== id;
         });
       });
-      const response = result?.data;
+      // const response = result?.data;
       setMsg({
         errMsg: "Question deleted successfully...!",
         color: "red",
@@ -151,9 +151,9 @@ const AddedQues = ({
       setTimeout(() => {
         setAlert(false);
       }, 1200);
-      if (response) {
-        setDeleteQ(true);
-      }
+      // if (response) {
+      //   // setDeleteQ(true);
+      // }
     } catch (error) {
       console.log("eroror", error);
     }

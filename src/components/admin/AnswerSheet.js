@@ -32,7 +32,7 @@ const MainContainer = {
   overflow: "auto",
 };
 const MainContainers = {
-  justifyContent:"space-between",
+  justifyContent: "space-between",
   background: "#F9FAFC",
   width: "70vw",
   // height: "65vh",
@@ -133,7 +133,7 @@ const searchField = {
 };
 
 const Answerheading = {
-   width:"50%",
+  width: "50%",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
@@ -210,7 +210,9 @@ const AnswerSheet = () => {
   const location = useLocation();
   const [searchString, setSearchString] = useState("");
   const [participator, setParticipator] = useState([]);
-  const [contestId, setContestId] = useState(location?.state?.result?.data?.contest?.contestId);
+  const [contestId, setContestId] = useState(
+    location?.state?.result?.data?.contest?.contestId
+  );
   const [filteredResults, setFilteredResults] = useState([]);
   const [delMsg, setDelMsg] = useState({
     msg: "",
@@ -245,7 +247,6 @@ const AnswerSheet = () => {
       setFilteredResults(participator);
     }
   };
-  console.log('ccoo',contestId)
 
   const removeStudent = async (emailId) => {
     try {
@@ -271,7 +272,7 @@ const AnswerSheet = () => {
   return (
     <>
       <Header />
-      <BackButton/>
+      <BackButton />
       {delMsg?.state && <MsgBar errMsg={delMsg?.msg} color={delMsg?.color} />}
       <Container sx={BigContainer}>
         <Box sx={MainBox}>
@@ -281,7 +282,6 @@ const AnswerSheet = () => {
           <Box sx={AnswerBox}>Participators</Box>
         </Box>
         <Container sx={MainContainers}>
-       
           <Box sx={innerHeading}>
             <Typography sx={Answerheading}>Answer Sheets</Typography>
             <Box sx={innerSearch}>
@@ -295,7 +295,6 @@ const AnswerSheet = () => {
               />
             </Box>
           </Box>
-         
         </Container>
         <Container sx={MainContainer}>
           <Container>
@@ -312,11 +311,16 @@ const AnswerSheet = () => {
                     <Box sx={innerdata}>
                       <Button>
                         {" "}
-                        <Typography sx={ViewDetail}
-                         onClick={()=>navigate("/viewparticipator",{
-                            state: val?.id,
-                          })}
-                        >View Details</Typography>
+                        <Typography
+                          sx={ViewDetail}
+                          onClick={() =>
+                            navigate("/viewparticipator", {
+                              state: val?.id,
+                            })
+                          }
+                        >
+                          View Details
+                        </Typography>
                       </Button>
 
                       <IconButton
@@ -339,9 +343,14 @@ const AnswerSheet = () => {
                       <Typography sx={UserName}>{val?.email}</Typography>
                     </Box>
                     <Box sx={innerdata}>
-                    <Button  sx={ViewDetail} onClick={()=>navigate("/viewparticipator",{
+                      <Button
+                        sx={ViewDetail}
+                        onClick={() =>
+                          navigate("/viewparticipator", {
                             state: val?.id,
-                          })}>
+                          })
+                        }
+                      >
                         {" "}
                         <Typography>View Details</Typography>
                       </Button>

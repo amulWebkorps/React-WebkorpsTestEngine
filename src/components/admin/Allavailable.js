@@ -154,10 +154,8 @@ const Allavailable = () => {
       });
     } catch (error) {}
   };
-  console.log("------", allAvailQues);
   useEffect(() => {
     const result = filterQuestion(filterValue).then((res) => {
-      console.log("res", res);
       setAllAvailQues(res.data);
     });
   }, [filterValue]);

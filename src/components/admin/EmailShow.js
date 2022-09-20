@@ -154,7 +154,6 @@ const EmailShow = () => {
       });
     }
   };
-  console.log("emailsss", emails);
   const handleDelete = async (mail) => {
     setUpload({
       alert: true,
@@ -181,7 +180,6 @@ const EmailShow = () => {
         alert: false,
         loader: false,
       });
-      console.log("error", error);
     }
   };
 
@@ -199,9 +197,7 @@ const EmailShow = () => {
       const res = await getParticipator();
       setUploadEmail(res?.data);
       setFilteredResults(res?.data);
-    } catch (error) {
-      // console.log("-------->>>>>>errorroor", error?.response?.data);
-    }
+    } catch (error) {}
   };
 
   const handleFileSelect = (event) => {
@@ -256,8 +252,6 @@ const EmailShow = () => {
       setFilteredResults(uploadEmail);
     }
   };
-
-  console.log("search--", uploadEmail?.length, filteredResults?.length);
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -289,7 +283,7 @@ const EmailShow = () => {
 
       <div style={background1}>
         <Header />
-        <BackButton/>
+        <BackButton />
         <Container maxWidth="lg" sx={whiteContainer}>
           <Grid
             container

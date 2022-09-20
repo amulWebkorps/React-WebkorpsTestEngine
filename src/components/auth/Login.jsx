@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {Box,Container,Typography,Stack,FormControlLabel,Checkbox,Button,Grid} from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Stack,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Grid,
+} from "@mui/material";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
@@ -130,12 +139,6 @@ const Login = () => {
   const [showMsg, setMsg] = useState(false);
   const [seenPassword, setSeenpassword] = useState(false);
 
-  // const token = localStorage.getItem("token");
-  // // if(token){
-  // //   console.log("token :-", token)
-  // //   navigate("/")
-  // // }
-
   const handleLogin = async () => {
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
@@ -233,11 +236,11 @@ const Login = () => {
                     fontSize="small"
                   />
                 ))}
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox size="10px" />}
                 label="Remember me"
                 sx={checkboxname}
-              />
+              /> */}
               <LoginButton name="Log in" onClick={handleLogin} />
               <>
                 <Typography sx={footerOne}>
@@ -246,7 +249,7 @@ const Login = () => {
                     <Button sx={RegisterButton}>Register</Button>
                   </NavLink>
                 </Typography>
-                <Typography sx={footerTwo}>Forgot Password?</Typography>
+                {/* <Typography sx={footerTwo}>Forgot Password?</Typography> */}
               </>
             </Stack>
           </Box>

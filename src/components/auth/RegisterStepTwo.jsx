@@ -174,6 +174,7 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
   const [showAlert, setAlert] = useState(false);
   const [fillalert, setfillalert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
+  const [conditionpassword, setconditionpassword] = useState(false);
   const [showemail, setshowemail] = useState(false);
   const [credential, setcredential] = useState({
     password: "",
@@ -188,31 +189,35 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
   const register = async () => {
     if (credential.password === "" || confirmPassword === "") {
       setalertpassword(true);
-      setAlert(false);
-      setfillalert(false);
+      setTimeout(() => {
+        setalertpassword(false);
+      }, 2000);
     } else if (credential.password !== confirmPassword) {
       setfillalert(true);
-      setalertpassword(false);
-      setAlert(false);
+      setTimeout(() => {
+        setfillalert(false);
+      }, 2000);
+    } else if (
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#@?&]{8,}$/.test(
+        credential.password
+      ) === false
+    ) {
+      setconditionpassword(true);
+      setTimeout(() => {
+        setconditionpassword(false);
+      }, 3000);
     } else if (credential.password === confirmPassword) {
       try {
         const response = await registerAdmin(registercredential);
         setAlert(true);
-        setalertpassword(false);
-        setfillalert(false);
         setTimeout(() => {
           navigate("/");
         }, 3500);
-        console.log("------awit-");
-        if (response) {
-          console.log("------if-");
-        }
       } catch (error) {
-        setfillalert(false);
-        setalertpassword(false);
-        setAlert(false);
         setshowemail(true);
-        console.log("erro", error);
+        setTimeout(() => {
+          setshowemail(false);
+        }, 2000);
       }
     } else {
       setalertpassword(true);
@@ -258,6 +263,14 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
       )}
       {showemail && (
         <MsgBar errMsg={"Email already registered."} color={"red"} />
+      )}
+      {conditionpassword && (
+        <MsgBar
+          errMsg={
+            "Minimum eight characters, at least one letter, one number and one special character."
+          }
+          color={"red"}
+        />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

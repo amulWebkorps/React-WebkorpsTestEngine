@@ -156,10 +156,8 @@ const All = ({
     const { value } = e.target;
     setDropValue(value);
   };
-console.log('----length-',selectiveQuestion?.questionsIds?.length)
   const addSelectiveQuestions = async () => {
     const questionsid = contestQuestion.map((v) => v.questionId);
-    //console.log("questionsid", JSON.stringify(questionsid));
     if (
       JSON.stringify(questionsid) ===
       JSON.stringify(selectiveQuestion?.questionsIds)
@@ -172,7 +170,6 @@ console.log('----length-',selectiveQuestion?.questionsIds?.length)
       setTimeout(() => {
         setShowAlreadyQuestion(false);
       }, 2000);
-   
     } else {
       try {
         const result = await addSelectiveQuestion(selectiveQuestion);

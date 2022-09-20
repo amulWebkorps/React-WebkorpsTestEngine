@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-//import Header from "../UI/Header";
 import { background } from "../assests/images";
 import { Ellips } from "../assests/images";
 import TextInput from "./base/TextInput";
@@ -12,8 +11,6 @@ import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
-import Validation from "./base/Validation";
 import MsgBar from "./base/MsgBar";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
