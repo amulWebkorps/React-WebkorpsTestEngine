@@ -64,42 +64,21 @@ const topButton = {
   justifyContent: "center",
 };
 
-const MainBox = {
-  height: "15vh",
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-};
-
-const QuestionBox = {
-  cursor: "pointer",
-  width: "250px",
-  height: "55px",
-  background: "#FDFEFF;",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  borderRadius: `18px 0px 0px 18px`,
-  fontWeight: 700,
-  fontSize: "20px",
-};
-
-const AnswerBox = {
-  cursor: "pointer",
-  width: "250px",
-  height: "55px",
-  background: "#0057FF",
-  color: "white",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  borderRadius: `0px 18px 18px 0px`,
-  fontWeight: 700,
-  fontSize: "20px",
+const buttonLevel = {
+  width: "260px",
+  height: "51px",
+  background: "#0057ff",
+  borderRadius: "18px 18px 18px 18px",
+  fontWeight: "700",
+  fontSize: "25px",
+  lineHeight: "19px",
+  textTransform: "none",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  paddingTop: "12px",
+  paddingLeft: "25px",
+  marginTop: "25px",
+  color: "#FFFFFF",
 };
 
 const delBtn = {
@@ -389,12 +368,13 @@ const Level1 = () => {
         ) : (
           <></>
         )}
-        <Grid container sx={{ justifyContent: "center" }} mt={3}>
-          <Box sx={QuestionBox}>Questions</Box>
-          <Box sx={AnswerBox} onClick={() => navigate("/participator")}>
-            Participators
+        <Grid container sx={{ justifyContent: "center" }}>
+        <Grid item>
+          <Box variant="contained" sx={buttonLevel}>
+            Level 1 Questions
           </Box>
         </Grid>
+      </Grid>
       </Container>
       <Container sx={mainContainer}>
         <Grid>
