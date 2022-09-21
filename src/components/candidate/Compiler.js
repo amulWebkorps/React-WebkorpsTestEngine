@@ -18,8 +18,10 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
+import { NearMeDisabledRounded } from "@mui/icons-material";
 
 const div1 = {
   height: "445px",
@@ -176,6 +178,8 @@ const Compiler = () => {
   const [error, setError] = useState(null);
   const [codeValue, setCodeValue] = useState();
   const [profile, setProfile] = useState(location?.state);
+  const [name, setName]=useState(localStorage?.getItem("name"));
+  const [email, setEmails]=useState(localStorage?.getItem("email"));
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
@@ -197,7 +201,7 @@ const Compiler = () => {
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
-
+  const {userInfo}=useSelector((state)=>state?.user);
   $(document).ready(function () {
     var ctrlDown = false,
       ctrlKey = 17,
@@ -252,7 +256,7 @@ const Compiler = () => {
     const newArray = [];
     for (var i = 0; i < len; i++) {
       var Object = {};
-      Object[i + 1] =profile?.participatorsContestDetails?.languageCode?.codeBase;
+      Object[i] =profile?.participatorsContestDetails?.languageCode?.codeBase;
       newArray.push(Object);
     }
     setDefCode(newArray)
@@ -341,6 +345,16 @@ const Compiler = () => {
   const onChange = (codeData) => {
     setCodeValue(codeData);
     setShowTestCase(false);
+    setDefCode(
+      defCode.map((item) => {
+        if (item.count === count) {
+          return { ...item, codeData };
+        } else {
+          return item;
+        }
+      })
+    );
+
   };
 
   useEffect(() => {
@@ -665,7 +679,7 @@ const Compiler = () => {
                   </Box>
                   <>
                     <Typography sx={inputName}>
-                      {profile?.participatorData?.name}
+                     {name}
                     </Typography>
                   </>
                 </Grid>
@@ -675,7 +689,7 @@ const Compiler = () => {
                   </Box>
                   <Box>
                     <Typography sx={inputName}>
-                      {profile?.participatorData?.email}
+                      {email}
                     </Typography>
                   </Box>
                 </Grid>

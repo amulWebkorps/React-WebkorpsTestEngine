@@ -12,11 +12,13 @@ import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
+import { useDispatch, useSelector } from 'react-redux'
 import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { TryRounded } from "@mui/icons-material";
+import userSlice, { ulogin } from "../store/slicers/userSlice";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -104,7 +106,9 @@ const CandidateLogin = () => {
   const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
-
+  const { userInfo } = useSelector((state) => state.user);
+  const dispatch=useDispatch();
+  console.log('userr',userInfo);
   const handleLogin = async () => {
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
@@ -115,7 +119,8 @@ const CandidateLogin = () => {
       }, 2000);
     } else {
       try {
-        const result = await participatorLogin(id, credential).then();
+        const result = await participatorLogin(id, credential);
+        dispatch(ulogin(result?.data?.data?.student))
         localStorage.setItem(
           "contestId",
           result?.data?.data?.student?.contestId

@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useSelector } from "react-redux";
 import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showAllLanguage } from "../services/candidate";
@@ -138,8 +139,10 @@ const Instruction = () => {
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
+  const{userInfo}=useSelector((state)=>state?.user);
 
-  console.log(location, "location getjhbjb");
+
+  console.log(userInfo, " getjhbjb");
 
   useEffect(() => {
     showAllLanguage()
