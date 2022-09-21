@@ -105,7 +105,6 @@ const CandidateLogin = () => {
   const path = window?.location?.pathname;
   const { id } = useParams();
 
-  console.log("id", id);
   const handleLogin = async () => {
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
@@ -116,18 +115,23 @@ const CandidateLogin = () => {
       }, 2000);
     } else {
       try {
-        const result = await participatorLogin(id, credential);
+        const result = await participatorLogin(id, credential).then();
+        localStorage.setItem(
+          "contestId",
+          result?.data?.data?.student?.contestId
+        );
+        localStorage.setItem("studentId", result?.data?.data?.student?.id);
         const token = result?.data?.data?.token;
-        localStorage.setItem("token",token);
+        localStorage.setItem("token", token);
         setLoading(true);
         setMsg(true);
         localStorage.setItem("login", "true");
         setTimeout(() => {
           navigate("/instruction", { state: { data: result.data } });
         }, 1500);
-        console.log(result.data,"result")
+        console.log(result.data, "result");
       } catch (error) {
-        console.log('err',error)
+        console.log("err", error);
         setLoading(false);
         setErrorMsg(true);
         setTimeout(() => {

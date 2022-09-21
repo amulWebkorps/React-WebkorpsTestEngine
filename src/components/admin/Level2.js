@@ -7,8 +7,8 @@ import {
   Typography,
   TextField,
   Stack,
-  InputAdornment,IconButton
-
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -20,7 +20,10 @@ import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
-import { filterQuestion, saveQuestion } from "../services/contest/contestServices";
+import {
+  filterQuestion,
+  saveQuestion,
+} from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { uploadQuestions } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
@@ -205,8 +208,7 @@ const Level2 = () => {
   const [editQuestion, setEditQuestion] = useState(false);
   const [delFromContest, setDelFromContest] = useState({
     state: false,
-    }
-);
+  });
   const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
   const [msg, setMsg] = useState({
@@ -256,21 +258,25 @@ const Level2 = () => {
   };
 
   const addQuestion = async (e) => {
-    if(problemStatement.question===""||sampleTestCase.constraints==="" || sampleTestCase?.input==="" || sampleTestCase?.output===""||testCaseList.length===0){
+    if (
+      problemStatement.question === "" ||
+      sampleTestCase.constraints === "" ||
+      sampleTestCase?.input === "" ||
+      sampleTestCase?.output === "" ||
+      testCaseList.length === 0
+    ) {
       setAlert(true);
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
-         setTimeout(() => {
-          setAlert(false);
-        }, 1200);
-    }
-    else{
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
+    } else {
       setAlert(true);
       try {
         const result = await saveQuestion(question);
-          // const response = res.data
         setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
@@ -285,7 +291,7 @@ const Level2 = () => {
             errMsg: "Question edit successfully...!",
             color: "green",
           });
-         console.log('editquestion')
+          console.log("editquestion");
           setEditQuestion(false);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -298,7 +304,7 @@ const Level2 = () => {
             errMsg: "Question added successfully...!",
             color: "green",
           });
-          console.log('editquestion else')
+          console.log("editquestion else");
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -312,24 +318,24 @@ const Level2 = () => {
     }
   };
 
-  const uploadQuestion=async(e)=>{
-    const {files}=e.target;
+  const uploadQuestion = async (e) => {
+    const { files } = e.target;
     setAlert(true);
     try {
-     const result=await uploadQuestions(files[0],"");
-     setContestQuestion([...contestQuestion,...result])
-     setMsg({
-       errMsg: "Question uploaded successfully...!",
-       color: "green",
-     });
-   setTimeout(() => {
-       setAlert(false);
-     }, 1200);
+      const result = await uploadQuestions(files[0], "");
+      setContestQuestion([...contestQuestion, ...result]);
+      setMsg({
+        errMsg: "Question uploaded successfully...!",
+        color: "green",
+      });
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
     } catch (error) {
-     setAlert(false);
-     console.log('ee',error)
+      setAlert(false);
+      console.log("ee", error);
     }
-   }
+  };
 
   const delTestCase = (id) => {
     setTestCaseList((val) => {
@@ -337,10 +343,10 @@ const Level2 = () => {
     });
   };
 
-  const editTestcase=(e,id)=>{
+  const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj,inn) => {
+      const newState = prevState.map((obj, inn) => {
         if (index === inn) {
           return { ...obj, [name]: value };
         }
@@ -348,8 +354,7 @@ const Level2 = () => {
       });
       return newState;
     });
-    
-  }
+  };
 
   useEffect(() => {
     const result = filterQuestion("Level 2").then((res) => {
@@ -364,11 +369,10 @@ const Level2 = () => {
   //   setAvailableQuestions(response);
   // })
   // },[])
-console.log('test case list',testCaseList)
   return (
     <div style={questionList}>
       <Header />
-      <BackButton/>
+      <BackButton />
       <Container sx={topButton}>
         {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
@@ -590,7 +594,9 @@ console.log('test case list',testCaseList)
                           }}
                         >
                           {testCaseList?.map((val, index) => {
-                            {console.log('index from map',index)}
+                            {
+                              console.log("index from map", index);
+                            }
                             return (
                               <Box
                                 component="form"
@@ -606,7 +612,7 @@ console.log('test case list',testCaseList)
                                   placeholder="testcase input"
                                   multiline
                                   rows={1}
-                                  onChange={(e)=>editTestcase(e,index)}
+                                  onChange={(e) => editTestcase(e, index)}
                                   maxRows={10}
                                   color="primary"
                                   focused
@@ -614,7 +620,7 @@ console.log('test case list',testCaseList)
                                 <TextField
                                   name="output"
                                   value={val?.output}
-                                  onChange={(e)=>editTestcase(e,index)}
+                                  onChange={(e) => editTestcase(e, index)}
                                   placeholder="testcase output"
                                   multiline
                                   rows={1}
@@ -622,7 +628,7 @@ console.log('test case list',testCaseList)
                                   color="primary"
                                   focused
                                 />
-                                 <IconButton
+                                <IconButton
                                   aria-label="add"
                                   sx={delBtn}
                                   onClick={(e) => delTestCase(index)}

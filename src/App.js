@@ -96,7 +96,6 @@ function App() {
               path="/all"
               element={<AdminRoutes Component={All} />}
             ></Route>
-
             <Route
               path="/allavailable"
               element={<AdminRoutes Component={Allavailable} />}
@@ -105,18 +104,11 @@ function App() {
               path="/instruction"
               element={<CandidateRoutes Component={Instruction} />}
             ></Route>
-            {/* <Route
-              path="/thanku"
-              element={<CandidateRoutes Component={Thankupage} />}
-            ></Route> */}
             <Route path="/login/:id" element={<CandidateLogin />}></Route>
             <Route
               path="/user"
               element={<CandidateRoutes Component={Compiler} />}
             ></Route>
-
-            {/* <Route path="/allavailable" element={<Allavailable />}></Route> */}
-            {/* <Route path="/instruction" element={<Instruction />}></Route> */}
             <Route path="/thanku" element={<Thankupage />}></Route>
           </Routes>
         </BrowserRouter>

@@ -45,7 +45,7 @@ const createContext = {
 };
 
 const text = {
-  marginTop:"-20px",
+  marginTop: "-20px",
   // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -217,17 +217,16 @@ const Dashbord = () => {
     fetchContestData();
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("popstate", (event) => {
-      console.log("INSIDE!");
-      navigate('/dashboard');
-    });
-  }, [window, navigate]);
+  // useEffect(() => {
+  //   window.addEventListener("popstate", (event) => {
+  //     navigate("/dashboard");
+  //   });
+  // }, [window, navigate]);
 
   return (
     <div style={app}>
       <Header />
-<BackButton/>
+      <BackButton />
       {showAvailq ? (
         <>
           <Modal
@@ -324,7 +323,7 @@ const Dashbord = () => {
                     </CardMedia>
                     <CardContent sx={cardBody}>
                       <br />
-                     <h4 style={contestText}>create contest</h4>
+                      <h4 style={contestText}>create contest</h4>
 
                       <p style={months}>add Description</p>
                     </CardContent>

@@ -100,7 +100,6 @@ export default function Model2({
       setOpen(false);
       setDisable(false);
     } catch (error) {
-      console.log("errorororr", error);
       setAlert(true);
       setMsg({
         errMsg: "Mail not send...!",
@@ -116,7 +115,6 @@ export default function Model2({
   const handleChange = (e) => {
     setContestId(e.target.value);
   };
-console.log('contest dataaaa',contestDetails)
   return (
     <div>
       <Dialog

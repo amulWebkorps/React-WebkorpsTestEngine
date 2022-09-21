@@ -23,9 +23,10 @@ const background1 = {
 
 const selectTechnology = {
   fontWeight: "600",
-  fontSize: "30px",
-  lineHeight: "35px",
+  fontSize: "25px",
+  lineHeight: "45px",
   color: "#000000",
+  marginLeft: "29px",
 };
 
 const whiteContainer = {
@@ -43,6 +44,7 @@ const levelText = {
   lineHeight: "40px",
   letterSpacing: "0em",
   textAlign: "left",
+  marginLeft: "29px",
 };
 
 const levelSubHeading = {
@@ -59,7 +61,7 @@ const containerUpper = {
 };
 
 const divSelect = {
-  height: "60px",
+  height: "50px",
   marginLeft: "30px",
 };
 
@@ -67,8 +69,18 @@ const divText = {
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "400",
-  fontSize: "30px",
-  lineHeight: "35px",
+  fontSize: "28px",
+  lineHeight: "60px",
+  color: "#000000",
+};
+const divTextmain = {
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "400",
+  fontSize: "25px",
+  marginLeft: "24px",
+  marginTop: "-46px",
+
   color: "#000000",
 };
 
@@ -79,34 +91,36 @@ const instructionSubHead = {
   fontSize: "25px",
   lineHeight: "39px",
   color: "#000000",
+  marginLeft: "29px",
 };
 const startContest = {
-  width: "280px",
-  height: "65px",
+  width: "200px",
+  height: "50px",
   bordeRadius: "15.0909px",
-  fontweight: "500",
-  fontSize: "23px",
+  fontweight: "700",
+  fontSize: "19px",
   lineHeight: "33px",
   color: "#FFFFFF",
   margin: "20px",
 };
 
 const cancelBtn = {
-  width: "180px",
-  height: "69px",
+  width: "150px",
+  height: "50px",
   fontWeight: "500",
-  fontSize: "25px",
+  fontSize: "22px",
   lineHeight: "33px",
   color: "#0057FF",
   margin: "20px",
 };
 
-const array1 = [
-  "Lörem ipsum tredidade vulkanresa megar sedil",
-  "Lörem ipsum tredidade vulkanresa megar sedil",
-  "Lörem ipsum tredidade vulkanresa megar sedil",
-  "Lörem ipsum tredidade vulkanresa megar sedil",
-  "Lörem ipsum tredidade vulkanresa megar sedil",
+const InstructionData = [
+  "Use command line argument for input.",
+  "If you change window or tab so test will be submited automatically.",
+  "Copy and Past would not work.",
+  "You select language once.",
+  "Program should be dynamic means your code can able to run for any possible test cases.",
+  "Once your test time is over code will be submitted automatically.",
 ];
 
 const Instruction = () => {
@@ -158,10 +172,16 @@ const Instruction = () => {
     );
   }, [language]);
 
+  useEffect(() => {
+    window.addEventListener("popstate", (event) => {
+      navigate("/instruction");
+    });
+  }, [window, navigate]);
+
   const fetchStartContestData = async () => {
     try {
-      const result = await startContestPage(language, participatorData);
-      console.log("result",result);
+      const result = await startContestPage(language);
+      console.log("result", result);
       setParticipatorsContestDetails(result?.data, "result.data");
     } catch (error) {
       console.log("error");
@@ -200,15 +220,15 @@ const Instruction = () => {
             </Typography>
           </Grid>
           <Grid item>
-            {array1.map((val, index) => {
+            {InstructionData.map((val, index) => {
               return (
                 <>
                   <Grid container sx={divSelect}>
                     <Grid item>
-                      <Typography sx={divText}>
-                        {`${index}.`}
-                        {val}
+                      <Typography sx={divText} variant="h1">
+                        {`${index + 1}. `}
                       </Typography>
+                      <Typography sx={divTextmain}>{`  ${val}`}</Typography>
                     </Grid>
                   </Grid>
                 </>
@@ -221,7 +241,7 @@ const Instruction = () => {
             </Typography>
 
             <Box sx={{ minWidth: 120 }}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <FormControl sx={{ m: 2, minWidth: 120 }}>
                 <Select
                   value={language}
                   onChange={handleChange}

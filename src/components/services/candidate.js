@@ -20,9 +20,11 @@ const showAllLanguage = () => {
   return candidateApi.get(SHOW_ALL_LANGUAGE);
 };
 
-const startContestPage = (language, participatorData) => {
+const startContestPage = (language) => {
   return candidateApi.post(
-    `${START_CONTEST_PAGE}?contestId=${participatorData?.contestId}&language=${language}&studentId=${participatorData?.id}`
+    `${START_CONTEST_PAGE}?contestId=${localStorage.getItem(
+      "contestId"
+    )}&language=${language}&studentId=${localStorage.getItem("studentId")}`
   );
 };
 
@@ -30,14 +32,14 @@ const runAndCompilerCode = (candidateCode) => {
   return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
 };
 
-const submitCode=(candidateCode)=>{
+const submitCode = (candidateCode) => {
   return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
-}
+};
 
 export {
   participatorLogin,
   showAllLanguage,
   startContestPage,
   runAndCompilerCode,
-  submitCode
+  submitCode,
 };
