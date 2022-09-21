@@ -121,6 +121,8 @@ const CandidateLogin = () => {
           result?.data?.data?.student?.contestId
         );
         localStorage.setItem("studentId", result?.data?.data?.student?.id);
+        localStorage.setItem("name", result?.data?.data?.student?.name);
+        localStorage.setItem("email", result?.data?.data?.student?.email);
         const token = result?.data?.data?.token;
         localStorage.setItem("token", token);
         setLoading(true);

@@ -335,19 +335,20 @@ const Level2 = () => {
     });
   };
 
+ const filtersQuestions=async()=>{
+  try {
+    const result = await filterQuestion("Level 2");
+  const response = result?.data;
+  setContestQuestion(response);
+  } catch (error) {
+    console.log(error);
+  }
+  
+ }
   useEffect(() => {
-    const result = filterQuestion("Level 2").then((res) => {
-      const response = res.data;
-      setContestQuestion(response);
-    });
+    filtersQuestions();
   }, [showAlert]);
 
-  // useEffect(()=>{
-  // const result= filterQuestion("All").then((res)=>{
-  //   const response=res.data
-  //   setAvailableQuestions(response);
-  // })
-  // },[])
   return (
     <div style={questionList}>
       <Header />

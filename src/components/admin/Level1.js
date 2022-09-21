@@ -336,20 +336,22 @@ const Level1 = () => {
       console.log("ee", error);
     }
   };
-  useEffect(() => {
-    const result = getContestDetail(contestData?.contestId)
-      .then((res) => {
-        setContestQuestion(res?.contestQuestionDetail);
-      })
-      .catch("dmndv");
-  }, [showAlert]);
 
   useEffect(() => {
-    const result = filterQuestion("Level 1").then((res) => {
+    filtersQuestions();
+   
+  }, [showAlert]);
+
+  const filtersQuestions = async() =>{
+    try {
+      const res = await filterQuestion("Level 1");
       const response = res.data;
       setContestQuestion(response);
-    });
-  }, [showAlert]);
+    } catch (error) {
+      console.log(error);
+    }
+   
+  }
 
   // useEffect(()=>{
   // const result= filterQuestion("All").then((res)=>{
@@ -359,9 +361,9 @@ const Level1 = () => {
   // },[])
 
   return (
-    <div style={questionList}>
+    <div id="body" style={questionList}>
       <Header />
-      <BackButton/>
+      <BackButton />
       <Container sx={topButton}>
         {showAlert || showValidation ? (
           <MsgBar errMsg={msg.errMsg} color={msg.color} />
@@ -369,12 +371,12 @@ const Level1 = () => {
           <></>
         )}
         <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item>
-          <Box variant="contained" sx={buttonLevel}>
-            Level 1 Questions
-          </Box>
+          <Grid item>
+            <Box variant="contained" sx={buttonLevel}>
+              Level 1 Questions
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
       </Container>
       <Container sx={mainContainer}>
         <Grid>

@@ -133,12 +133,6 @@ const EmailShow = () => {
         errMsg: "Please select participator...!",
         color: "red",
       });
-      setTimeout(() => {
-        setUpload({
-          alert: false,
-          loader: false,
-        });
-      }, 1200);
     } else {
       setOpen(true);
     }
@@ -165,12 +159,6 @@ const EmailShow = () => {
         errMsg: "Participator deleted Successfully...!",
         color: "red",
       });
-      setTimeout(() => {
-        setUpload({
-          alert: false,
-          loader: false,
-        });
-      }, 1200);
       getParticipatorData();
       setUploadEmail((val) => {
         return val.filter((id) => id !== mail);
@@ -200,16 +188,15 @@ const EmailShow = () => {
     } catch (error) {}
   };
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = async(event) => {
     const { files } = event.target;
     setUpload({
       alert: true,
       loader: true,
     });
     try {
-      const result = uploadParticipator(files[0]).then((res) => {
-        const response = res;
-        // console.log("responsesss", response.length);
+      const result =await  uploadParticipator(files[0]);
+        const response = result;
         setUploadEmail(response?.data);
         setMsg({
           errMsg: "Participator Uploaded Successfully...!",
@@ -222,13 +209,6 @@ const EmailShow = () => {
             color: "#EE9A4D",
           });
         }
-        setTimeout(() => {
-          setUpload({
-            alert: false,
-            loader: false,
-          });
-        }, 1500);
-      });
     } catch (error) {
       setUpload({
         alert: false,
@@ -237,6 +217,16 @@ const EmailShow = () => {
       console.log("---------", error);
     }
   };
+  useEffect(() => {
+    let timeout;
+    if (upload) {
+      timeout = setTimeout(() => setUpload({
+        alert: false,
+        loader: false,
+      }), 1500);
+    }
+    return () => clearTimeout(timeout);
+  }, [upload]);
 
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
