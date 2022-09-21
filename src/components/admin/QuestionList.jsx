@@ -375,7 +375,7 @@ const QuestionList = () => {
       .then((res) => {
         setContestQuestion(res?.data?.contestQuestionDetail);
       })
-      .catch("dmndv");
+      .catch("eror");
   }, [showAlert]);
 
   return (
@@ -393,9 +393,7 @@ const QuestionList = () => {
         )}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-
           {/* <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}> */}
-
           <Box
             sx={AnswerBox}
             onClick={() =>
@@ -526,7 +524,6 @@ const QuestionList = () => {
                         </Grid>
                       </Grid>
                       <hr style={{ marginTop: "20px" }} />
-
                       <Stack
                         spacing={2}
                         direction="row"

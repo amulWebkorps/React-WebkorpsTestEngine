@@ -1,29 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
-import { IconButton } from "@mui/material";
+import { Container, Grid, Fab,Card,CardContent,CardMedia,Typography,CardActionArea } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
-import { useSelector } from "react-redux";
 import { contestImg } from "../assests/images";
-import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
-import { increment } from "../store/slicers/adminSlice";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { getAllContestList } from "../services/adminServices";
-
-import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
 import DashCard from "./DashCard";
+import CreateContest from "../UI/CreateContest";
 
 const containerStyle = {
   overflowY: "auto",
@@ -96,14 +84,6 @@ const contestText = {
   lineHeight: "21px",
   color: "#3D3D3D",
 };
-const contestDate = {
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: 200,
-  fontSize: "10px",
-  lineHeight: "12px",
-};
-
 const createContest = {
   marginTop: "40px",
   width: "220px",
@@ -120,14 +100,6 @@ const addButton = {
   marginBottom: "13px",
   backgroundColor: "#2196F3",
 };
-
-const delBtn1 = {
-  position: "absolute",
-  top: "-0.5%",
-  right: "-2%",
-  color: "black",
-};
-
 const forwardIcon = {
   transform: " rotate(-90deg)",
   position: "sticky",
@@ -141,13 +113,7 @@ const backIcon = {
   justifyContent: "end",
   color: "white",
 };
-const months = {
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "400",
-  fontSize: "12px",
-  lineHeight: "14px",
-};
+
 const levels = ["Level 1", "Level 2", "ALL"];
 const contestInitialValues = {
   contestName: "",
@@ -172,25 +138,6 @@ const Dashbord = () => {
   const [open, setOpen] = useState(false);
   const [contestData, setContestData] = useState(null);
   const navigate = useNavigate();
-
-  const handleContest = async (id) => {
-    try {
-      const result = await getContestDetail(id);
-      setContestData(result?.data);
-      navigate("/addQuestion", { state: { result } });
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
-  const deleteContest = (id, Name, contestId) => {
-    setDelContest({
-      name: Name,
-      id: id,
-      contestId: contestId,
-    });
-    setConfirm(true);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -283,28 +230,9 @@ const Dashbord = () => {
                   />
                 );
               })}
-              <Grid>
-                <Card sx={createContest}>
-                  <CardActionArea>
-                    <CardMedia sx={{ paddingBottom: "16px" }}>
-                      <Fab
-                        color="primary"
-                        aria-label="add"
-                        sx={addButton}
-                        onClick={() => handleClickOpen()}
-                      >
-                        <AddIcon fontSize="large" />
-                      </Fab>
-                    </CardMedia>
-                    <CardContent sx={cardBody}>
-                      <br />
-                      <h4 style={contestText}>create contest</h4>
-
-                      <p style={months}>add Description</p>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
+              <CreateContest
+                handleClickOpen={handleClickOpen}
+              />
             </Grid>
             <Grid ml={-5} mt={5}>
               <ExpandCircleDownRoundedIcon
@@ -320,7 +248,6 @@ const Dashbord = () => {
           <Container sx={createContext}>
             <Typography sx={text}>Available Question</Typography>
           </Container>
-
           <Container sx={containerStyle}>
             <ExpandCircleDownRoundedIcon
               sx={backIcon}
@@ -382,5 +309,4 @@ const Dashbord = () => {
     </div>
   );
 };
-
 export default Dashbord;
