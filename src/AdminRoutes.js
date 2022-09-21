@@ -10,6 +10,8 @@ const AdminRoutes = (props) => {
     let token = localStorage.getItem("token");
     if (token == null) {
       navigate("/");
+    } else {
+      navigate("/dashboard");
     }
   }, []);
   return (

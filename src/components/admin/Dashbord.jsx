@@ -217,8 +217,6 @@ const Dashbord = () => {
     fetchContestData();
   }, []);
 
-   
-
   // useEffect(() => {
   //   window.addEventListener("popstate", (event) => {
   //     navigate("/dashboard");

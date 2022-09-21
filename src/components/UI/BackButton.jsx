@@ -4,8 +4,16 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 const BackButton = () => {
   const navigate = useNavigate();
+
+  const goback = () => {
+    if (window.location.pathname === "/dashboard") {
+      navigate("/dashboard");
+    } else {
+      navigate(-1);
+    }
+  };
   return (
-    <Button variant="text" onClick={() => navigate(-1)}>
+    <Button variant="text" onClick={goback}>
       <KeyboardBackspaceTwoToneIcon /> Back
     </Button>
   );
