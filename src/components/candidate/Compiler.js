@@ -409,7 +409,7 @@ const Compiler = () => {
     //     studentId: profile.participatorsContestDetails?.studentId,
     //     flag: flag,
     //     timeOut: false,
-    //     code: `${codeValue}`,
+    //     code: `${defCode[count]}`,
     //   });
     //   if (res) {
     //     setSubmitted([
