@@ -121,7 +121,6 @@ const EmailShow = () => {
     alert: false,
     loader: false,
   });
-
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     if (emails.length <= 0) {
@@ -209,7 +208,6 @@ const EmailShow = () => {
     try {
       const result = uploadParticipator(files[0]).then((res) => {
         const response = res;
-        // console.log("responsesss", response.length);
         setUploadEmail(response?.data);
         setMsg({
           errMsg: "Participator Uploaded Successfully...!",
@@ -238,6 +236,13 @@ const EmailShow = () => {
     }
   };
 
+  // useEffect(() => {
+  //   setUploadEmail((val) => {
+  //     console.log("pppp", val);
+  //     return val.filter((data) => data !== "");
+  //   });
+
+  // }, [uploadEmail]);
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
     if (searchString !== "") {
@@ -340,7 +345,7 @@ const EmailShow = () => {
                 filteredResults.map((val, index) => {
                   return (
                     <Grid key={`${index}-${val}`} container sx={divSelect}>
-                      {console.log(val, "---VAL----")}
+                      s
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
@@ -354,7 +359,6 @@ const EmailShow = () => {
                           sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                         />
                       </Grid>
-
                       <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
                         <IconButton
                           aria-label="add"
@@ -371,7 +375,6 @@ const EmailShow = () => {
                 uploadEmail?.map((val, index) => {
                   return (
                     <Grid key={`${index}-${val}`} container sx={divSelect}>
-                      {console.log(val, "---VAL-2nd---")}
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
