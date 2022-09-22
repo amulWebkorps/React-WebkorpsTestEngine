@@ -72,6 +72,10 @@ const divSelect = {
   marginLeft: "100px",
   justifyContent: "space-between",
 };
+const dataText={
+  display:"flex",
+  justifyContent:"center"
+}
 const delBtn = {
   marginTop: "4px !important",
   width: "30px !important",
@@ -183,21 +187,28 @@ const EmailShow = () => {
   const getParticipatorData = async () => {
     try {
       const res = await getParticipator();
-      setUploadEmail(res?.data);
-      setFilteredResults(res?.data);
+      const response = res?.data;
+      const arr=response.filter((val)=>{
+        return val.trim('')!='';
+    })
+      setUploadEmail(arr);
+      setFilteredResults(arr);
     } catch (error) {}
   };
 
   const handleFileSelect = async(event) => {
     const { files } = event.target;
-    setUpload({
-      alert: true,
-      loader: true,
-    });
     try {
       const result =await  uploadParticipator(files[0]);
-        const response = result;
-        setUploadEmail(response?.data);
+      setUpload({
+        alert: true,
+        loader: true,
+      });
+        const response = result?.data;
+        const arr=response.filter((val)=>{
+          return val.trim('')!='';
+      })
+        setUploadEmail(arr);
         setMsg({
           errMsg: "Participator Uploaded Successfully...!",
           color: "green",
@@ -249,7 +260,7 @@ const EmailShow = () => {
     marginLeft: "10px",
     borderRadius: "6px",
   };
-
+console.log(filteredResults)
   return (
     <>
       <Modal2
@@ -325,12 +336,12 @@ const EmailShow = () => {
           <Container sx={emailContainer}>
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
               {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
-                <h1>No data </h1>
+                <Typography  sx={dataText}>No data</Typography>
               ) : searchString?.length > 1 ? (
                 filteredResults.map((val, index) => {
                   return (
                     <Grid key={`${index}-${val}`} container sx={divSelect}>
-                      {console.log(val, "---VAL----")}
+                 
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>
@@ -361,7 +372,7 @@ const EmailShow = () => {
                 uploadEmail?.map((val, index) => {
                   return (
                     <Grid key={`${index}-${val}`} container sx={divSelect}>
-                      {console.log(val, "---VAL-2nd---")}
+                     
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>

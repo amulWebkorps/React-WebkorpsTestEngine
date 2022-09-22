@@ -182,6 +182,11 @@ const ViewDetail = {
   color: "#0057FF",
   textDecoration: "underline",
 };
+const dataText={
+  display:"flex",
+  justifyContent:"center",
+  fontSize:"20px"
+}
 
 const delBtn = {
   marginTop: "0px !important",
@@ -299,7 +304,7 @@ const AnswerSheet = () => {
         <Container sx={MainContainer}>
           <Container>
             {participator?.length <= 0 || filteredResults?.length <= 0 ? (
-              <h1>No data </h1>
+             <Typography sx={dataText}>No data</Typography>
             ) : searchString?.length > 1 ? (
               filteredResults?.map((val, index) => {
                 return (
