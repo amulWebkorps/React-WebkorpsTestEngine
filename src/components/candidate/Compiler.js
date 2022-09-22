@@ -400,33 +400,33 @@ const Compiler = () => {
     // setShow(true);
     window.localStorage.setItem("submit code", JSON.stringify(localData));
     setLocalData([...localData, codeValue]);
-    // try {
-    //   const res = await submitCode({
-    //     language: profile.participatorsContestDetails?.languageCode?.language,
-    //     questionId:
-    //       profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-    //     contestId: profile.participatorsContestDetails?.contestId,
-    //     studentId: profile.participatorsContestDetails?.studentId,
-    //     flag: flag,
-    //     timeOut: false,
-    //     code: `${codeValue}`,
-    //   });
-    //   if (res) {
-    //     setSubmitted([
-    //       ...submitted,
-    //       profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-    //     ]);
-    //     setShowError(true);
-    //     handleNext();
-    //     setShow(false);
-    //     setCodeValue(
-    //       profile?.participatorsContestDetails?.languageCode?.codeBase
-    //     );
-    //     setShowTestCase(false);
-    //   }
-    // } catch (error) {
-    //   setLoading(false);
-    // }
+    try {
+      const res = await submitCode({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        questionId:
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
+        flag: flag,
+        timeOut: false,
+        code: `${defCode[count]}`,
+      });
+      if (res) {
+        setSubmitted([
+          ...submitted,
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        ]);
+        setShowError(true);
+        handleNext();
+        setShow(false);
+        setCodeValue(
+          profile?.participatorsContestDetails?.languageCode?.codeBase
+        );
+        setShowTestCase(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const handleNext = () => {
