@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
-import { NearMeDisabledRounded } from "@mui/icons-material";
+import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
 
 const div1 = {
   height: "445px",
@@ -255,16 +255,15 @@ const Compiler = () => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
     const newArray = [];
     for (var i = 0; i < len; i++) {
-      var Object = {};
-      Object[i] =profile?.participatorsContestDetails?.languageCode?.codeBase;
-      newArray.push(Object);
+      const a =profile?.participatorsContestDetails?.languageCode?.codeBase;
+      newArray.push(a);
     }
     setDefCode(newArray)
   };
   useEffect(()=>{
    getDefaultCode();
   },[])
-  console.log('dsafs',defCode)
+ 
   const runCodes = async (flag, state) => {
     setLoading(true);
     setShowTestCase(true);
@@ -278,7 +277,7 @@ const Compiler = () => {
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
         timeOut: false,
-        code: `${codeValue}`,
+        code: `${defCode[count]}`,
       });
 
       if (resultData) {
@@ -345,15 +344,22 @@ const Compiler = () => {
   const onChange = (codeData) => {
     setCodeValue(codeData);
     setShowTestCase(false);
-    setDefCode(
-      defCode.map((item) => {
-        if (item.count === count) {
-          return { ...item, codeData };
-        } else {
-          return item;
-        }
-      })
-    );
+    const newState=defCode.map((val,index)=>{
+      if(index===count){
+        return codeData;
+      }
+      return val;
+    })
+    setDefCode(newState);
+    // setDefCode(
+    //   defCode.map((item) => {
+    //     if (item.count?.[count] === count) {
+    //       return { ...item, codeData };
+    //     } else {
+    //       return item;
+    //     }
+    //   })
+    // );
 
   };
 
@@ -509,7 +515,7 @@ const Compiler = () => {
   //   } else {
   //   }
   // }, []);
-  // console.log("local storage---", codeValue);
+  console.log("local storage---", defCode);
   return (
     <Box>
       <Header state={true} />
@@ -729,10 +735,9 @@ const Compiler = () => {
                   //   dragEnabled: false,
                   // }}
                   width="45.7vw"
-                  value={codeValue}
+                  value={defCode?.[count]}
                   onChange={onChange}
-                  defaultValue={
-                    profile?.participatorsContestDetails?.languageCode?.codeBase
+                  defaultValue={defCode?.[count]
                   }
                   fontSize="20px"
                 />
