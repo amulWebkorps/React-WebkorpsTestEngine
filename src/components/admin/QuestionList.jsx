@@ -346,7 +346,7 @@ const QuestionList = () => {
     const { files } = e.target;
     setAlert(true);
     try {
-      const result = await uploadQuestions(files[0], contestData?.contestId);
+      const result = await uploadQuestions(files[0], contestData?.contestId,"");
       setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",

@@ -301,7 +301,7 @@ const Level2 = () => {
     const { files } = e.target;
     setAlert(true);
     try {
-      const result = await uploadQuestions(files[0], "");
+      const result = await uploadQuestions(files[0],"","Level 2");
       setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
@@ -343,7 +343,6 @@ const Level2 = () => {
   } catch (error) {
     console.log(error);
   }
-  
  }
   useEffect(() => {
     filtersQuestions();

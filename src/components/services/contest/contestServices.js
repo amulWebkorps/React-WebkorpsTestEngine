@@ -8,6 +8,7 @@ const ADD_SELECTIVE_QUE = `${BASE_URL}/admin/addSelectedAvailableQuestiontoConte
 const GET_CONTEST_PARTICIPATOR=`${BASE_URL}/admin/participatorOfContest?contestId=`
 const DELETE_STUDENT=`${BASE_URL}/admin/deleteStudent?emailId=`
 const GET_PARTICIPATOR_DETAILS=`${BASE_URL}/admin/getParticipatorDetail?studentId=`
+
 const saveQuestion = (question) => {
   return api.post(SAVE_QUESTION, question);
 };
@@ -36,9 +37,11 @@ const getParticipatorOfContest=(id)=>{
 const deleteStudent=(emailId)=>{
   return api.delete(`${DELETE_STUDENT}${emailId}`)
 }
-const uploadQuestions=(file,id)=>{
+const uploadQuestions=(file,id,level)=>{
+  console.log('form datqa',id,level);
   const formData = new FormData();
    formData.append("contestId",id)
+   formData.append("contestLevel",level)
    formData.append("file",file)
   return api.post(UPLOAD_QUESTION,formData);
 }
