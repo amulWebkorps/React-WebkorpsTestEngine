@@ -348,7 +348,7 @@ const QuestionList = () => {
     setAlert(true);
     try {
       const result = await uploadQuestions(files[0], contestData?.contestId,"");
-      setContestQuestion([...contestQuestion, ...result]);
+      // setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
         color: "green",
@@ -361,6 +361,7 @@ const QuestionList = () => {
       console.log("ee", error);
     }
   };
+
 
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)

@@ -299,10 +299,11 @@ const Level2 = () => {
 
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    setAlert(true);
+   
     try {
       const result = await uploadQuestions(files[0],"","Level 2");
-      setContestQuestion([...contestQuestion, ...result]);
+      setAlert(true);
+      // setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
         color: "green",

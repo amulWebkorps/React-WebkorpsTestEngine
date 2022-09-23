@@ -323,7 +323,7 @@ const Level1 = () => {
     setAlert(true);
     try {
       const result = await uploadQuestions(files[0],"","Level 1");
-      setContestQuestion([...contestQuestion, ...result]);
+      // setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
         color: "green",
