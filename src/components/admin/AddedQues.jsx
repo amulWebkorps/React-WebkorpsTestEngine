@@ -87,6 +87,7 @@ const btn = {
 };
 
 const AddedQues = ({
+  showAlert,
   setshowselectquestion,
   setShowAlreadyQuestion,
   question,
@@ -205,6 +206,7 @@ const AddedQues = ({
       <div ref={ref}></div>
       {showq && (
         <All
+        showAlert={showAlert}
           ref={ref}
           setshowselectquestion={setshowselectquestion}
           setShowAlreadyQuestion={setShowAlreadyQuestion}

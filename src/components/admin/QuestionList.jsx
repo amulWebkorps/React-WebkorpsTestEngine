@@ -677,6 +677,7 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
+        showAlert={showAlert}
           contestId={contestData?.contestId}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
