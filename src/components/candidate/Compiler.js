@@ -201,7 +201,9 @@ const Compiler = () => {
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
-  const {userInfo}=useSelector((state)=>state?.user);
+ 
+
+
   $(document).ready(function () {
     var ctrlDown = false,
       ctrlKey = 17,
@@ -258,7 +260,8 @@ const Compiler = () => {
       const a =profile?.participatorsContestDetails?.languageCode?.codeBase;
       newArray.push(a);
     }
-    setDefCode(newArray)
+    setDefCode(newArray);
+    setLocalData(defCode)
   };
   useEffect(()=>{
    getDefaultCode();
@@ -268,7 +271,6 @@ const Compiler = () => {
     setLoading(true);
     setShowTestCase(true);
     try {
-      // timeOut = false;
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
         questionId:
@@ -303,11 +305,15 @@ const Compiler = () => {
       console.log(error);
     }
   };
+
+
   useEffect(() => {
     if (performance.navigation.type === 2) {
       navigate("/thanku");
     }
   }, []);
+
+
   useEffect(() => {
     {
       try {
@@ -489,9 +495,7 @@ const Compiler = () => {
       function (ev) {
         ev = ev || window.event;
         var key = ev.which || ev.keyCode;
-
         var ctrl = ev.ctrlKey ? ev.ctrlKey : key === 17 ? true : false;
-
         if (key == 86 && ctrl) {
           console.log("Ctrl+V is pressed.");
         } else if (key == 67 && ctrl) {
@@ -517,9 +521,9 @@ const Compiler = () => {
   // }, []);
   console.log("local storage---", defCode);
   return (
+    
     <Box>
       <Header state={true} />
-
       <Box className="background1">
         {showError && (
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
@@ -816,6 +820,7 @@ const Compiler = () => {
         </Grid>
       </Box>
     </Box>
+   
   );
 };
 
