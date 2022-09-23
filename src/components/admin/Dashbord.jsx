@@ -74,17 +74,14 @@ const card = {
 const cardImg = {
   padding: "10px",
 };
-
+const cardBodyx={
+  height: "120vh",
+  backgroundColor:"#F8F7F7",
+  overflow:"auto",
+}
 const cardBody = {
   height: "120vh",
-  background: `linear-gradient(
-    180deg,
-    rgba(24, 135, 201, 0) 0%,
-    rgba(24, 135, 201, 0.224167) 40.42%,
-    rgba(24, 135, 201, 0.4) 100%
-  )`,
-  overflow: "auto",
-  backgroundColor: "#F8F7F7",
+  backgroundColor:"#F8F7F7",
 };
 
 const contestText = {
@@ -294,14 +291,16 @@ const Dashbord = () => {
                         >
                           <CancelIcon />
                         </IconButton>
-                        <CardContent sx={cardBody}>
+                        <CardContent  sx={cardBody}>
+                          <div>
                           <h6 style={contestText}>
                             {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
                             {contestDetails?.[index]?.contestLevel}
                           </h6>
                           <p style={months}>
-                            {contestDetails?.[index]?.contestDescription}
+                           {contestDetails?.[index]?.date} ~ {contestDetails?.[index]?.contestDescription}
                           </p>
+                          </div>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -311,7 +310,7 @@ const Dashbord = () => {
               <Grid>
                 <Card sx={createContest}>
                   <CardActionArea>
-                    <CardMedia sx={{ paddingBottom: "16px" }}>
+                    <CardMedia sx={{ paddingBottom: "6px" }}>
                       <Fab
                         color="primary"
                         aria-label="add"
@@ -321,10 +320,9 @@ const Dashbord = () => {
                         <AddIcon fontSize="large" />
                       </Fab>
                     </CardMedia>
-                    <CardContent sx={cardBody}>
-                      <br />
+                    <CardContent sx={cardBodyx}>
+                      {/* <br /> */}
                       <h4 style={contestText}>create contest</h4>
-
                       <p style={months}>add Description</p>
                     </CardContent>
                   </CardActionArea>
