@@ -344,6 +344,7 @@ const QuestionList = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
+    console.log(files)
     setAlert(true);
     try {
       const result = await uploadQuestions(files[0], contestData?.contestId,"");

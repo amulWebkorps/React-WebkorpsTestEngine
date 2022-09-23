@@ -163,6 +163,7 @@ const Modal = ({
 
   const handleOnChange = (e) => {
     e.preventDefault();
+    setshowMessage(false);
     const { name, value } = e?.target;
     setInputData({
       ...inputData,
@@ -181,7 +182,7 @@ const Modal = ({
     } else {
       try {
         const response = await addContest(inputData);
-        setContestDetails([...contestDetails, inputData]);
+        // setContestDetails([...contestDetails, inputData]);
         fetchContestData();
         if (response) {
           handleClose();
