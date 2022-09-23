@@ -501,6 +501,7 @@ const Level2 = () => {
                           variant="outlined"
                           component="label"
                           onChange={uploadQuestion}
+                          onClick={(e)=>e.target.value=null}
                           startIcon={<NoteAddIcon />}
                         >
                           Upload File

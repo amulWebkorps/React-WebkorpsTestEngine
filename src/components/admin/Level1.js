@@ -518,6 +518,7 @@ const Level1 = () => {
                           component="label"
                           startIcon={<NoteAddIcon />}
                           onChange={uploadQuestion}
+                          onClick={(e)=>e.target.value=null}
                         >
                           Upload File
                           <input hidden accept="file/*" multiple type="file" />

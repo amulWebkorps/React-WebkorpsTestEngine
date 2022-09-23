@@ -536,6 +536,7 @@ const QuestionList = () => {
                         <Button
                           variant="outlined"
                           component="label"
+                          onClick={(e)=>e.target.value=null}
                           onChange={uploadQuestion}
                           startIcon={<NoteAddIcon />}
                         >
