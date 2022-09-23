@@ -197,12 +197,11 @@ const Compiler = () => {
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
-  const timerGet = duration?.match(/\d/g)?.join("");
+  const timerGet = 10000;
+  // duration?.match(/\d/g)?.join("");
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
- 
-
 
   $(document).ready(function () {
     var ctrlDown = false,
@@ -210,16 +209,14 @@ const Compiler = () => {
       cmdKey = 91,
       vKey = 86,
       cKey = 67;
-
-    $(document)
+      $(document)
       .keydown(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
       })
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-
-    $(".no-copy-pasteo").keydown(function (e) {
+    $(".no-copy-paste").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -236,6 +233,9 @@ const Compiler = () => {
       setshowCompilationError(true);
     }
   }, [runCode]);
+  useEffect(()=>{
+    getDefaultCode();
+   },[])
 
   useEffect(() => {
     let timeout;
@@ -252,6 +252,50 @@ const Compiler = () => {
     }
     return () => clearTimeout(timeout);
   }, [showError]);
+  
+  useEffect(() => {
+    if (runCode?.complilationMessage !== null) {
+    } else if (
+      count === profile.participatorsContestDetails?.QuestionList?.length
+    ) {
+    } else {
+    }
+  }, [count]);
+
+  useEffect(() => {
+    {
+      try {
+        if (timer === "00:00:01") {
+          const resultData = runAndCompilerCode({
+            language:
+              profile.participatorsContestDetails?.languageCode?.language,
+            questionId:
+              profile.participatorsContestDetails?.QuestionList[count]
+                ?.questionId,
+            contestId: profile.participatorsContestDetails?.contestId,
+            studentId: profile.participatorsContestDetails?.studentId,
+            flag: "1",
+            timeOut: true,
+            code: `${codeValue}`,
+          }).then();
+          setRunCode(resultData.data);
+          setShowTestCase(true);
+        }
+        if (timer === "00:00:01") {
+          navigate("/thanku");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [timer]);
+  useEffect(() => {
+    clearTimer(getDeadTime());
+  }, []);
+
+  useEffect(() => {
+    document.oncontextmenu = document.body.oncontextmenu = function() {return false;}
+  }, [window]);
 
   const getDefaultCode = () => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
@@ -263,9 +307,7 @@ const Compiler = () => {
     setDefCode(newArray);
     setLocalData(defCode)
   };
-  useEffect(()=>{
-   getDefaultCode();
-  },[])
+
  
   const runCodes = async (flag, state) => {
     setLoading(true);
@@ -307,42 +349,6 @@ const Compiler = () => {
   };
 
 
-  useEffect(() => {
-    if (performance.navigation.type === 2) {
-      navigate("/thanku");
-    }
-  }, []);
-
-
-  useEffect(() => {
-    {
-      try {
-        if (timer === "00:00:01") {
-          const resultData = runAndCompilerCode({
-            language:
-              profile.participatorsContestDetails?.languageCode?.language,
-            questionId:
-              profile.participatorsContestDetails?.QuestionList[count]
-                ?.questionId,
-            contestId: profile.participatorsContestDetails?.contestId,
-            studentId: profile.participatorsContestDetails?.studentId,
-            flag: "1",
-            timeOut: true,
-            code: `${codeValue}`,
-          }).then();
-
-          setRunCode(resultData.data);
-          setShowTestCase(true);
-        }
-        if (timer === "00:00:01") {
-          navigate("/thanku");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [timer]);
-
   const handleScroll = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -357,26 +363,9 @@ const Compiler = () => {
       return val;
     })
     setDefCode(newState);
-    // setDefCode(
-    //   defCode.map((item) => {
-    //     if (item.count?.[count] === count) {
-    //       return { ...item, codeData };
-    //     } else {
-    //       return item;
-    //     }
-    //   })
-    // );
-
   };
 
-  useEffect(() => {
-    if (runCode?.complilationMessage !== null) {
-    } else if (
-      count === profile.participatorsContestDetails?.QuestionList?.length
-    ) {
-    } else {
-    }
-  }, [count]);
+
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (
@@ -485,26 +474,7 @@ const Compiler = () => {
     return deadline;
   };
 
-  useEffect(() => {
-    clearTimer(getDeadTime());
-  }, []);
 
-  useEffect(() => {
-    document.body.addEventListener(
-      "keydown",
-      function (ev) {
-        ev = ev || window.event;
-        var key = ev.which || ev.keyCode;
-        var ctrl = ev.ctrlKey ? ev.ctrlKey : key === 17 ? true : false;
-        if (key == 86 && ctrl) {
-          console.log("Ctrl+V is pressed.");
-        } else if (key == 67 && ctrl) {
-          console.log("Ctrl+C is pressed.");
-        }
-      },
-      false
-    );
-  }, [window]);
 
   // useEffect(() => {
   //   if (
@@ -520,6 +490,14 @@ const Compiler = () => {
   //   }
   // }, []);
   console.log("local storage---", defCode);
+
+
+  useEffect(() => {
+    setTimer(window.localStorage.getItem('time'));
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem('time',timer);
+  }, [timer]);
   return (
     
     <Box>
@@ -714,15 +692,10 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Box>
+              {console.log(location?.state?.language)}
                 <AceEditor
                   className="no-copy-paste"
-                  mode={
-                    location?.state?.language === "Java"
-                      ? "java"
-                      : location?.state?.language === "C" || "C++"
-                      ? "c_cpp"
-                      : "python"
-                  }
+                  mode={(location?.state?.language == "Java") ? "java" : (location?.state?.language ==='Python') ? "python" :"c_cpp"}
                   theme="monokai"
                   name="code"
                   onPaste={(e) => {

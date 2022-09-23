@@ -32,7 +32,7 @@ const selectTechnology = {
 
 const whiteContainer = {
   marginTop: "50px",
-  height: "1000px",
+  height: "100%",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -174,7 +174,7 @@ const Instruction = () => {
       })
     );
   }, [language]);
-
+console.log(language)
   useEffect(() => {
     window.addEventListener("popstate", (event) => {
       navigate("/instruction");
@@ -190,7 +190,6 @@ const Instruction = () => {
       console.log("error");
     }
   };
-
   if (participatorsContestDetails) {
     setTimeout(() => {
       navigate("/user", {
@@ -251,8 +250,8 @@ const Instruction = () => {
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
                 >
-                  <MenuItem value="C">C</MenuItem>
-                  <MenuItem value={"C++"}>C++</MenuItem>
+                  <MenuItem value={"C"}>C</MenuItem>
+                  <MenuItem value={`CPP`}>C++</MenuItem>
                   <MenuItem value={"Java"}>Java</MenuItem>
                   <MenuItem value={"Python"}>Python</MenuItem>
                 </Select>
