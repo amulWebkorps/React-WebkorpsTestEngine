@@ -189,7 +189,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [submitted, setSubmitted] = useState([]);
+  const [submitted, setSubmitted] = useState(0);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -489,15 +489,7 @@ const Compiler = () => {
   //   } else {
   //   }
   // }, []);
-  console.log("local storage---", defCode);
 
-
-  useEffect(() => {
-    setTimer(window.localStorage.getItem('time'));
-  }, []);
-  useEffect(() => {
-    window.localStorage.setItem('time',timer);
-  }, [timer]);
   return (
     
     <Box>
@@ -692,7 +684,7 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Box>
-              {console.log(location?.state?.language)}
+            
                 <AceEditor
                   className="no-copy-paste"
                   mode={(location?.state?.language == "Java") ? "java" : (location?.state?.language ==='Python') ? "python" :"c_cpp"}

@@ -7,7 +7,6 @@ const START_CONTEST_PAGE = `${BASE_URL}/startContestPage`;
 const RUN_AND_CODE_COMPILER = `${BASE_URL}/runAndCompilerCode`;
 
 const participatorLogin = (contestId, credential) => {
-  console.log("-----", contestId);
   const cred = {
     email: credential?.email,
     password: credential?.password,

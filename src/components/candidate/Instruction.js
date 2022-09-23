@@ -117,7 +117,7 @@ const cancelBtn = {
 
 const InstructionData = [
   "Use command line argument for input.",
-  "If you change window or tab so test will be submited automatically.",
+  "If you change window or tab or reload the page so test will be submited automatically.",
   "Copy and Past would not work.",
   "You select language once.",
   "Program should be dynamic means your code can able to run for any possible test cases.",
