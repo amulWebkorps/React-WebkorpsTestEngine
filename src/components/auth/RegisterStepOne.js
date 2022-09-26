@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import MsgBar from "./base/MsgBar";
+import Header from "../UI/Header";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -172,13 +173,20 @@ const RegisterStepOne = ({ setregistercredential }) => {
     setregistercredential({ ...credential, [name]: value });
   };
   const handleClick = () => {
-    if (credential.hName === "") {
+    if (
+      credential.hName == "" ||
+      credential.email == "" ||
+      credential.hNumber == ""
+    ) {
       setAlert(true);
-      setshownumber(false);
+      setTimeout(() => {
+        setAlert(false);
+      }, 2000);
     } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email) === true) {
-      setAlert(false);
-      setshownumber(false);
       setshowemail(true);
+      setTimeout(() => {
+        setshowemail(false);
+      }, 2000);
     } else if (
       credential.hNumber === Number("credential.hNumber") ||
       credential.hNumber === "" ||
@@ -186,9 +194,10 @@ const RegisterStepOne = ({ setregistercredential }) => {
       credential.hNumber.length > 10 ||
       credential.hNumber.length < 10
     ) {
-      setAlert(false);
       setshownumber(true);
-      setshowemail(false);
+      setTimeout(() => {
+        setshownumber(false);
+      }, 2000);
     } else {
       navigate("/password");
     }
@@ -196,14 +205,7 @@ const RegisterStepOne = ({ setregistercredential }) => {
   return (
     <>
       <Grid container>
-        <Grid item sx={Headers}>
-          <Box ml={2} my={2}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box sx={logoText} my={3}>
-            WEBKORPS
-          </Box>
-        </Grid>
+        <Header setColor={true} />
       </Grid>
       {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
       {showNumber && (

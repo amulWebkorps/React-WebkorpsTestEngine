@@ -17,6 +17,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { TryRounded } from "@mui/icons-material";
+import Header from "../UI/Header";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -160,14 +161,7 @@ const CandidateLogin = () => {
   return (
     <>
       <Grid container>
-        <Grid item sx={Headers}>
-          <Box ml={2} my={2}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box sx={logoText} my={3}>
-            WEBKORPS
-          </Box>
-        </Grid>
+        <Header setColor={true} />
         {showAlert && (
           <MsgBar
             empty={"Please fill all Details"}

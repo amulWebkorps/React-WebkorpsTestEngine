@@ -371,7 +371,7 @@ const QuestionList = () => {
 
   return (
     <div style={questionList}>
-      <Header />
+      <Header/>
       <BackButton />
       <Container sx={topButton}>
         {showAlert ||
