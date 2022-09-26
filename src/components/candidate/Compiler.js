@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Grid from "@mui/material/Grid";
+import ReactRouterPrompt from "react-router-prompt";
 import { Container, width } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
@@ -21,6 +22,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
 
 const div1 = {
@@ -178,8 +186,9 @@ const Compiler = () => {
   const [error, setError] = useState(null);
   const [codeValue, setCodeValue] = useState();
   const [profile, setProfile] = useState(location?.state);
-  const [name, setName]=useState(localStorage?.getItem("name"));
-  const [email, setEmails]=useState(localStorage?.getItem("email"));
+  const [name, setName] = useState(localStorage?.getItem("name"));
+  const [email, setEmails] = useState(localStorage?.getItem("email"));
+  const [exit, setExit]=useState(true);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
@@ -189,7 +198,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [submitted, setSubmitted] = useState([]);
+  const [submitted, setSubmitted] = useState(0);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -201,14 +210,13 @@ const Compiler = () => {
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
-  const {userInfo}=useSelector((state)=>state?.user);
+
   $(document).ready(function () {
     var ctrlDown = false,
       ctrlKey = 17,
       cmdKey = 91,
       vKey = 86,
       cKey = 67;
-
     $(document)
       .keydown(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
@@ -216,8 +224,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-
-    $(".no-copy-pasteo").keydown(function (e) {
+    $(".no-copy-paste").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -234,6 +241,9 @@ const Compiler = () => {
       setshowCompilationError(true);
     }
   }, [runCode]);
+  useEffect(() => {
+    getDefaultCode();
+  }, []);
 
   useEffect(() => {
     let timeout;
@@ -251,24 +261,67 @@ const Compiler = () => {
     return () => clearTimeout(timeout);
   }, [showError]);
 
+  useEffect(() => {
+    if (runCode?.complilationMessage !== null) {
+    } else if (
+      count === profile.participatorsContestDetails?.QuestionList?.length
+    ) {
+    } else {
+    }
+  }, [count]);
+
+  useEffect(() => {
+    {
+      try {
+        if (timer === "00:00:01") {
+          const resultData = runAndCompilerCode({
+            language:
+              profile.participatorsContestDetails?.languageCode?.language,
+            questionId:
+              profile.participatorsContestDetails?.QuestionList[count]
+                ?.questionId,
+            contestId: profile.participatorsContestDetails?.contestId,
+            studentId: profile.participatorsContestDetails?.studentId,
+            flag: "1",
+            timeOut: true,
+            code: `${codeValue}`,
+          }).then();
+          setRunCode(resultData.data);
+          setShowTestCase(true);
+        }
+        if (timer === "00:00:01") {
+          navigate("/thanku");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [timer]);
+  useEffect(() => {
+    clearTimer(getDeadTime());
+  }, []);
+
+  useEffect(() => {
+    document.oncontextmenu = document.body.oncontextmenu = function () {
+      return false;
+    };
+  }, [window]);
+
   const getDefaultCode = () => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
     const newArray = [];
     for (var i = 0; i < len; i++) {
-      const a =profile?.participatorsContestDetails?.languageCode?.codeBase;
+      const a = profile?.participatorsContestDetails?.languageCode?.codeBase;
       newArray.push(a);
     }
-    setDefCode(newArray)
+    setDefCode(newArray);
+    setLocalData(defCode);
   };
-  useEffect(()=>{
-   getDefaultCode();
-  },[])
- 
+
   const runCodes = async (flag, state) => {
     setLoading(true);
     setShowTestCase(true);
     try {
-      // timeOut = false;
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
         questionId:
@@ -303,39 +356,6 @@ const Compiler = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    if (performance.navigation.type === 2) {
-      navigate("/thanku");
-    }
-  }, []);
-  useEffect(() => {
-    {
-      try {
-        if (timer === "00:00:01") {
-          const resultData = runAndCompilerCode({
-            language:
-              profile.participatorsContestDetails?.languageCode?.language,
-            questionId:
-              profile.participatorsContestDetails?.QuestionList[count]
-                ?.questionId,
-            contestId: profile.participatorsContestDetails?.contestId,
-            studentId: profile.participatorsContestDetails?.studentId,
-            flag: "1",
-            timeOut: true,
-            code: `${codeValue}`,
-          }).then();
-
-          setRunCode(resultData.data);
-          setShowTestCase(true);
-        }
-        if (timer === "00:00:01") {
-          navigate("/thanku");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [timer]);
 
   const handleScroll = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -344,33 +364,15 @@ const Compiler = () => {
   const onChange = (codeData) => {
     setCodeValue(codeData);
     setShowTestCase(false);
-    const newState=defCode.map((val,index)=>{
-      if(index===count){
+    const newState = defCode.map((val, index) => {
+      if (index === count) {
         return codeData;
       }
       return val;
-    })
+    });
     setDefCode(newState);
-    // setDefCode(
-    //   defCode.map((item) => {
-    //     if (item.count?.[count] === count) {
-    //       return { ...item, codeData };
-    //     } else {
-    //       return item;
-    //     }
-    //   })
-    // );
-
   };
 
-  useEffect(() => {
-    if (runCode?.complilationMessage !== null) {
-    } else if (
-      count === profile.participatorsContestDetails?.QuestionList?.length
-    ) {
-    } else {
-    }
-  }, [count]);
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (
@@ -480,50 +482,61 @@ const Compiler = () => {
   };
 
   useEffect(() => {
-    clearTimer(getDeadTime());
+    if (
+      performance.navigation.type === 1
+    ) {
+      setExit(false);
+      // runCodes("1");
+      setTimeout(() => {
+        navigate("/thanku");
+      }, [3000]);
+      console.log("page is refreshed");
+    } else {
+    }
   }, []);
 
-  useEffect(() => {
-    document.body.addEventListener(
-      "keydown",
-      function (ev) {
-        ev = ev || window.event;
-        var key = ev.which || ev.keyCode;
-
-        var ctrl = ev.ctrlKey ? ev.ctrlKey : key === 17 ? true : false;
-
-        if (key == 86 && ctrl) {
-          console.log("Ctrl+V is pressed.");
-        } else if (key == 67 && ctrl) {
-          console.log("Ctrl+C is pressed.");
-        }
-      },
-      false
-    );
-  }, [window]);
-
-  // useEffect(() => {
-  //   if (
-  //     performance.navigation.type === 1 ||
-  //     performance.navigation.type === 2
-  //   ) {
-  //     // runCodes("1");
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //     }, [3000]);
-  //     console.log("page is refreshed");
-  //   } else {
-  //   }
-  // }, []);
-  console.log("local storage---", defCode);
   return (
     <Box>
       <Header state={true} />
-
       <Box className="background1">
         {showError && (
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
         )}
+        <ReactRouterPrompt when={exit}>
+          {({ isActive, onConfirm, onCancel }) =>
+            isActive && (
+              <div>
+                <Dialog
+                  open={true}
+                  // onClose={onCancel}
+                  onClose={(_, reason) => {
+                    if (reason !== "backdropClick") {
+                      onCancel();
+                    }
+                  }}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">{"Alert"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      There is no way to go back. Press the close button and continue your test..!!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={onCancel}
+                    >
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            )
+          }
+        </ReactRouterPrompt>
         <Grid container>
           <Grid item sm={6}>
             <Box sx={testCaseData1} mx={2}>
@@ -684,9 +697,7 @@ const Compiler = () => {
                     <Typography sx={inputName}>Name: </Typography>
                   </Box>
                   <>
-                    <Typography sx={inputName}>
-                     {name}
-                    </Typography>
+                    <Typography sx={inputName}>{name}</Typography>
                   </>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
@@ -694,9 +705,7 @@ const Compiler = () => {
                     <Typography sx={inputName}>Email: </Typography>
                   </Box>
                   <Box>
-                    <Typography sx={inputName}>
-                      {email}
-                    </Typography>
+                    <Typography sx={inputName}>{email}</Typography>
                   </Box>
                 </Grid>
               </Grid>
@@ -713,11 +722,11 @@ const Compiler = () => {
                 <AceEditor
                   className="no-copy-paste"
                   mode={
-                    location?.state?.language === "Java"
+                    location?.state?.language == "Java"
                       ? "java"
-                      : location?.state?.language === "C" || "C++"
-                      ? "c_cpp"
-                      : "python"
+                      : location?.state?.language === "Python"
+                      ? "python"
+                      : "c_cpp"
                   }
                   theme="monokai"
                   name="code"
@@ -737,8 +746,7 @@ const Compiler = () => {
                   width="45.7vw"
                   value={defCode?.[count]}
                   onChange={onChange}
-                  defaultValue={defCode?.[count]
-                  }
+                  defaultValue={defCode?.[count]}
                   fontSize="20px"
                 />
               </Box>

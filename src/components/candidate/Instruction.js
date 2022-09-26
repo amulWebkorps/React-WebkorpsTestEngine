@@ -12,6 +12,7 @@ import Header from "../UI/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import { showAllLanguage } from "../services/candidate";
 import { startContestPage } from "../services/candidate";
+import Loader from "./base/Loader";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -32,7 +33,7 @@ const selectTechnology = {
 
 const whiteContainer = {
   marginTop: "50px",
-  height: "1000px",
+  height: "100%",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -74,15 +75,15 @@ const divText = {
   lineHeight: "60px",
   color: "#000000",
 };
-const divTextmain = {
+const instructions = {
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "400",
   fontSize: "25px",
   marginLeft: "24px",
   marginTop: "-46px",
-
   color: "#000000",
+  
 };
 
 const instructionSubHead = {
@@ -115,9 +116,14 @@ const cancelBtn = {
   margin: "20px",
 };
 
+const loader={
+  marginTop:'-30px',
+  marginLeft:"200px",
+  width:"80vh"
+}
 const InstructionData = [
   "Use command line argument for input.",
-  "If you change window or tab so test will be submited automatically.",
+  "If you change window or tab or reload the page so test will be submited automatically.",
   "Copy and Past would not work.",
   "You select language once.",
   "Program should be dynamic means your code can able to run for any possible test cases.",
@@ -125,7 +131,6 @@ const InstructionData = [
 ];
 
 const Instruction = () => {
-  const axios = require("axios").default;
   const navigate = useNavigate();
   const [language, setLanguage] = React.useState("");
   const location = useLocation();
@@ -133,8 +138,8 @@ const Instruction = () => {
     location?.state?.data?.data?.student
   );
   const [languages, setLanguages] = useState();
-  const [participatorsContestDetails, setParticipatorsContestDetails] =
-    useState();
+  const [showLoader, setLoader]=useState(false);
+  const [participatorsContestDetails, setParticipatorsContestDetails] =useState();
   const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
@@ -147,12 +152,10 @@ const Instruction = () => {
   useEffect(() => {
     showAllLanguage()
       .then(function (response) {
-        // handle success
         console.log(response.data, "showall");
         setLanguages(response?.data);
       })
       .catch(function (error) {
-        // handle error
         console.log(error);
       });
   }, []);
@@ -174,7 +177,7 @@ const Instruction = () => {
       })
     );
   }, [language]);
-
+console.log(language)
   useEffect(() => {
     window.addEventListener("popstate", (event) => {
       navigate("/instruction");
@@ -183,14 +186,14 @@ const Instruction = () => {
 
   const fetchStartContestData = async () => {
     try {
+      setLoader(true);
       const result = await startContestPage(language);
-      console.log("result", result);
       setParticipatorsContestDetails(result?.data, "result.data");
     } catch (error) {
+      setLoader(false);
       console.log("error");
     }
   };
-
   if (participatorsContestDetails) {
     setTimeout(() => {
       navigate("/user", {
@@ -207,7 +210,7 @@ const Instruction = () => {
 
   return (
     <div style={background1}>
-      <Header />
+      <Header  setShow={true} />
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
@@ -221,6 +224,7 @@ const Instruction = () => {
             <Typography sx={instructionSubHead}>
               Please follow the instructions while giving the test.
             </Typography>
+           
           </Grid>
           <Grid item>
             {InstructionData.map((val, index) => {
@@ -231,13 +235,14 @@ const Instruction = () => {
                       <Typography sx={divText} variant="h1">
                         {`${index + 1}. `}
                       </Typography>
-                      <Typography sx={divTextmain}>{`  ${val}`}</Typography>
+                 <Typography sx={instructions}>{`  ${val}`}</Typography>
                     </Grid>
                   </Grid>
                 </>
               );
             })}
           </Grid>
+        
           <Grid container>
             <Typography mt={2} sx={selectTechnology}>
               Select Technology:
@@ -251,8 +256,8 @@ const Instruction = () => {
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
                 >
-                  <MenuItem value="C">C</MenuItem>
-                  <MenuItem value={"C++"}>C++</MenuItem>
+                  <MenuItem value={"C"}>C</MenuItem>
+                  <MenuItem value={`CPP`}>C++</MenuItem>
                   <MenuItem value={"Java"}>Java</MenuItem>
                   <MenuItem value={"Python"}>Python</MenuItem>
                 </Select>
@@ -260,12 +265,14 @@ const Instruction = () => {
             </Box>
           </Grid>
           <Grid container>
+          {showLoader&&<Loader mt={3}/>}
             <Button
               variant="contained"
               onClick={() => {
                 fetchStartContestData();
               }}
               sx={startContest}
+              disabled={showLoader}
             >
               Start Contest
             </Button>
