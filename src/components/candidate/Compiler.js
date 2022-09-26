@@ -486,9 +486,9 @@ const Compiler = () => {
       performance.navigation.type === 1
     ) {
       setExit(false);
-      // runCodes("1");
       setTimeout(() => {
         navigate("/thanku");
+        localStorage.clear();
       }, [3000]);
       console.log("page is refreshed");
     } else {
@@ -497,7 +497,7 @@ const Compiler = () => {
 
   return (
     <Box>
-      <Header state={true} />
+      <Header setShow={true} />
       <Box className="background1">
         {showError && (
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
