@@ -183,7 +183,7 @@ const EmailShow = () => {
   };
   useEffect(() => {
     getParticipatorData();
-  }, [showAlert]);
+  }, [showAlert,upload.alert]);
   const getParticipatorData = async () => {
     try {
       const res = await getParticipator();
@@ -209,10 +209,13 @@ const EmailShow = () => {
           return val.trim('')!='';
       })
         setUploadEmail(arr);
-        setMsg({
-          errMsg: "Participator is already uploaded...!",
-          color: "#EE9A4D",
-        });
+        if(response.length===0){
+          setMsg({
+            errMsg: "Participator is already uploaded...!",
+            color: "#EE9A4D",
+          });
+        }
+        
       }
     catch (error) {
       setUpload({
@@ -320,6 +323,7 @@ console.log(filteredResults)
                         component="label"
                         sx={buttonEmail}
                         onChange={handleFileSelect}
+                        onClick={(e)=>e.target.value=null}
                         disabled={upload?.loader}
                       >
                         Upload File
