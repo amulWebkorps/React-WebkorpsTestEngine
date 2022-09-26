@@ -144,7 +144,7 @@ const months = {
   fontSize: "12px",
   lineHeight: "14px",
   height:"20px",
-  
+  'overflow-wrap':'break-word'
 };
 const levels = ["Level 1", "Level 2", "ALL"];
 const contestInitialValues = {
