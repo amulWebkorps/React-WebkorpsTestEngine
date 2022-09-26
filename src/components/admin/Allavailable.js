@@ -163,7 +163,7 @@ const Allavailable = () => {
   return (
     <div style={background1}>
       {msg.state && <MsgBar errMsg={msg.msg} color={msg.color} />}
-      <Header />
+      <Header/>
       <BackButton/>
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item mt={5}>

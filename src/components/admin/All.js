@@ -117,6 +117,7 @@ const containerUpper = {
 };
 
 const All = ({
+  showAlert,
   setshowselectquestion,
   setShowAlreadyQuestion,
   availableQuestions,
@@ -155,13 +156,22 @@ const All = ({
   const handleChange = async (e) => {
     const { value } = e.target;
     setDropValue(value);
+    setAvailableQuestions([]);
   };
   const addSelectiveQuestions = async () => {
     const questionsid = contestQuestion.map((v) => v.questionId);
-    if (
-      JSON.stringify(questionsid) ===
-      JSON.stringify(selectiveQuestion?.questionsIds)
-    ) {
+    const selectId = selectiveQuestion.questionsIds.map((v) => v);
+    let data = selectId.filter((arr) => !questionsid.includes(arr));
+    if (data.length === 0 && questionArr.length == 0) {
+      setshowselectquestion(true);
+      setMsg({
+        errMsg: "Please select a question...!",
+        color: "blue",
+      });
+      setTimeout(() => {
+        setshowselectquestion(false);
+      }, 1200);
+    } else if (data.length === 0 && questionArr.length != 0) {
       setShowAlreadyQuestion(true);
       setMsg({
         errMsg: "selected Question is already present in contest...!",
@@ -173,38 +183,27 @@ const All = ({
     } else {
       try {
         const result = await addSelectiveQuestion(selectiveQuestion);
-        if (result?.data?.length === 0) {
-          setshowselectquestion(true);
-          setMsg({
-            errMsg: "Please select a question...!",
-            color: "blue",
-          });
-          setTimeout(() => {
-            setshowselectquestion(false);
-          }, 1200);
-        } else {
-          setMsg({
-            errMsg: "selected Question  added successfully...!",
-            color: "green",
-          });
-          setAlert(true);
-          setTimeout(() => {
-            setAlert(false);
-          }, 1200);
-          setQuestionArr([]);
-          setContestQuestion([...contestQuestion, ...result.data]);
-        }
+        setMsg({
+          errMsg: "selected Question  added successfully...!",
+          color: "green",
+        });
+        setAlert(true);
+        setTimeout(() => {
+          setAlert(false);
+        }, 1200);
+        setAvailableQuestions([]);
+        setQuestionArr([]);
+        setContestQuestion([...contestQuestion, ...result.data]);
       } catch (error) {
         console.log("question err", error);
       }
     }
   };
-  console.log(questionArr,'dfsksmv   vvmmmsv')
   useEffect(() => {
     const result = filterQuestion(dropValue).then((res) => {
       setAvailableQuestions(res.data);
     });
-  }, [dropValue]);
+  }, [dropValue, showAlert]);
 
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });

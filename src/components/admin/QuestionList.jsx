@@ -373,7 +373,7 @@ const QuestionList = () => {
 
   return (
     <div style={questionList}>
-      <Header />
+      <Header/>
       <BackButton />
       <Container sx={topButton}>
         {showAlert ||
@@ -680,6 +680,7 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
+        showAlert={showAlert}
           contestId={contestData?.contestId}
           setMsg={setMsg}
           availableQuestions={availableQuestions}

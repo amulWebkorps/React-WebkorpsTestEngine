@@ -20,12 +20,13 @@ import Loader from "./base/Loader";
 import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Header from "../UI/Header";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
   backgroundSize: "cover",
   position: "relative",
-  height: "86vh",
+  height: "87vh",
   width: "100%",
   display: "flex",
   justifyContent: "center",
@@ -184,14 +185,7 @@ const Login = () => {
   return (
     <>
       <Grid container>
-        <Grid item sx={Headers}>
-          <Box ml={2} my={2}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box sx={logoText} my={3}>
-            WEBKORPS
-          </Box>
-        </Grid>
+        <Header setColor={true} setShow={true}/>
         {showAlert && (
           <MsgBar empty={"Please fill all Details"} color={"Red"} />
         )}

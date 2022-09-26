@@ -362,7 +362,7 @@ const Level1 = () => {
 
   return (
     <div id="body" style={questionList}>
-      <Header />
+      <Header/>
       <BackButton />
       <Container sx={topButton}>
         {showAlert || showValidation ? (

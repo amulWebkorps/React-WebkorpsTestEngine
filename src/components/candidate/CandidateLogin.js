@@ -18,7 +18,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { TryRounded } from "@mui/icons-material";
-import userSlice, { ulogin } from "../store/slicers/userSlice";
+import Header from "../UI/Header";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -106,9 +106,6 @@ const CandidateLogin = () => {
   const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
-  const { userInfo } = useSelector((state) => state.user);
-  const dispatch=useDispatch();
-  console.log('userr',userInfo);
   const handleLogin = async () => {
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
@@ -120,7 +117,7 @@ const CandidateLogin = () => {
     } else {
       try {
         const result = await participatorLogin(id, credential);
-        dispatch(ulogin(result?.data?.data?.student))
+        // dispatch(ulogin(result?.data?.data?.student))
         localStorage.setItem(
           "contestId",
           result?.data?.data?.student?.contestId
@@ -160,19 +157,13 @@ const CandidateLogin = () => {
   }, [credential]);
 
   const handleChange = (e) => {
-    setCredential({ ...credential, [e.target.name]: e.target.value });
+    const{name,value} =e.target;
+    setCredential({ ...credential, [name]: value });
   };
   return (
     <>
       <Grid container>
-        <Grid item sx={Headers}>
-          <Box ml={2} my={2}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box sx={logoText} my={3}>
-            WEBKORPS
-          </Box>
-        </Grid>
+        <Header setColor={true} />
         {showAlert && (
           <MsgBar
             empty={"Please fill all Details"}

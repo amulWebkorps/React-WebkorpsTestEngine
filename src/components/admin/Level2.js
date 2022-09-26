@@ -351,7 +351,7 @@ const Level2 = () => {
 
   return (
     <div style={questionList}>
-      <Header />
+      <Header/>
       <BackButton />
       <Container sx={topButton}>
         {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}

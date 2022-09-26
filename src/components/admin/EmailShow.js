@@ -196,7 +196,7 @@ const EmailShow = () => {
     } catch (error) {}
   };
 
-  const handleFileSelect = async(event) => {
+  const handleFileSelect = async (event) => {
     const { files } = event.target;
     try {
       const result =await  uploadParticipator(files[0]);
@@ -210,17 +210,11 @@ const EmailShow = () => {
       })
         setUploadEmail(arr);
         setMsg({
-          errMsg: "Participator Uploaded Successfully...!",
-          color: "green",
+          errMsg: "Participator is already uploaded...!",
+          color: "#EE9A4D",
         });
-        getParticipatorData();
-        if (response?.data?.length === 0) {
-          setMsg({
-            errMsg: "Participator is already uploaded...!",
-            color: "#EE9A4D",
-          });
-        }
-    } catch (error) {
+      }
+    catch (error) {
       setUpload({
         alert: false,
         loader: false,
@@ -231,10 +225,14 @@ const EmailShow = () => {
   useEffect(() => {
     let timeout;
     if (upload) {
-      timeout = setTimeout(() => setUpload({
-        alert: false,
-        loader: false,
-      }), 1500);
+      timeout = setTimeout(
+        () =>
+          setUpload({
+            alert: false,
+            loader: false,
+          }),
+        1500
+      );
     }
     return () => clearTimeout(timeout);
   }, [upload]);
@@ -283,7 +281,7 @@ console.log(filteredResults)
       )}
 
       <div style={background1}>
-        <Header />
+        <Header/>
         <BackButton />
         <Container maxWidth="lg" sx={whiteContainer}>
           <Grid

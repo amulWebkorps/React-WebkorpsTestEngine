@@ -193,7 +193,7 @@ const ViewParticipatorDetail = () => {
 
   return (
     <div>
-      <Header />
+      <Header setShow={true} />
       <BackButton/>
       <div className="background1">
         <Grid container>
