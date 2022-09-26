@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Grid from "@mui/material/Grid";
+import ReactRouterPrompt from "react-router-prompt";
 import { Container, width } from "@mui/system";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
@@ -21,6 +22,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
 
 const div1 = {
@@ -178,8 +186,8 @@ const Compiler = () => {
   const [error, setError] = useState(null);
   const [codeValue, setCodeValue] = useState();
   const [profile, setProfile] = useState(location?.state);
-  const [name, setName]=useState(localStorage?.getItem("name"));
-  const [email, setEmails]=useState(localStorage?.getItem("email"));
+  const [name, setName] = useState(localStorage?.getItem("name"));
+  const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
@@ -197,8 +205,7 @@ const Compiler = () => {
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
-  const timerGet = 10000;
-  // duration?.match(/\d/g)?.join("");
+  const timerGet = duration?.match(/\d/g)?.join("");
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
@@ -209,7 +216,7 @@ const Compiler = () => {
       cmdKey = 91,
       vKey = 86,
       cKey = 67;
-      $(document)
+    $(document)
       .keydown(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
       })
@@ -233,9 +240,9 @@ const Compiler = () => {
       setshowCompilationError(true);
     }
   }, [runCode]);
-  useEffect(()=>{
+  useEffect(() => {
     getDefaultCode();
-   },[])
+  }, []);
 
   useEffect(() => {
     let timeout;
@@ -252,7 +259,7 @@ const Compiler = () => {
     }
     return () => clearTimeout(timeout);
   }, [showError]);
-  
+
   useEffect(() => {
     if (runCode?.complilationMessage !== null) {
     } else if (
@@ -294,21 +301,22 @@ const Compiler = () => {
   }, []);
 
   useEffect(() => {
-    document.oncontextmenu = document.body.oncontextmenu = function() {return false;}
+    document.oncontextmenu = document.body.oncontextmenu = function () {
+      return false;
+    };
   }, [window]);
 
   const getDefaultCode = () => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
     const newArray = [];
     for (var i = 0; i < len; i++) {
-      const a =profile?.participatorsContestDetails?.languageCode?.codeBase;
+      const a = profile?.participatorsContestDetails?.languageCode?.codeBase;
       newArray.push(a);
     }
     setDefCode(newArray);
-    setLocalData(defCode)
+    setLocalData(defCode);
   };
 
- 
   const runCodes = async (flag, state) => {
     setLoading(true);
     setShowTestCase(true);
@@ -348,7 +356,6 @@ const Compiler = () => {
     }
   };
 
-
   const handleScroll = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -356,15 +363,14 @@ const Compiler = () => {
   const onChange = (codeData) => {
     setCodeValue(codeData);
     setShowTestCase(false);
-    const newState=defCode.map((val,index)=>{
-      if(index===count){
+    const newState = defCode.map((val, index) => {
+      if (index === count) {
         return codeData;
       }
       return val;
-    })
+    });
     setDefCode(newState);
   };
-
 
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
@@ -395,33 +401,33 @@ const Compiler = () => {
     // setShow(true);
     window.localStorage.setItem("submit code", JSON.stringify(localData));
     setLocalData([...localData, codeValue]);
-    // try {
-    //   const res = await submitCode({
-    //     language: profile.participatorsContestDetails?.languageCode?.language,
-    //     questionId:
-    //       profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-    //     contestId: profile.participatorsContestDetails?.contestId,
-    //     studentId: profile.participatorsContestDetails?.studentId,
-    //     flag: flag,
-    //     timeOut: false,
-    //     code: `${defCode[count]}`,
-    //   });
-    //   if (res) {
-    //     setSubmitted([
-    //       ...submitted,
-    //       profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-    //     ]);
-    //     setShowError(true);
-    //     handleNext();
-    //     setShow(false);
-    //     setCodeValue(
-    //       profile?.participatorsContestDetails?.languageCode?.codeBase
-    //     );
-    //     setShowTestCase(false);
-    //   }
-    // } catch (error) {
-    //   setLoading(false);
-    // }
+    try {
+      const res = await submitCode({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        questionId:
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
+        flag: flag,
+        timeOut: false,
+        code: `${defCode[count]}`,
+      });
+      if (res) {
+        setSubmitted([
+          ...submitted,
+          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        ]);
+        setShowError(true);
+        handleNext();
+        setShow(false);
+        setCodeValue(
+          profile?.participatorsContestDetails?.languageCode?.codeBase
+        );
+        setShowTestCase(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const handleNext = () => {
@@ -474,30 +480,61 @@ const Compiler = () => {
     return deadline;
   };
 
-
-
-  // useEffect(() => {
-  //   if (
-  //     performance.navigation.type === 1 ||
-  //     performance.navigation.type === 2
-  //   ) {
-  //     // runCodes("1");
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //     }, [3000]);
-  //     console.log("page is refreshed");
-  //   } else {
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (
+      performance.navigation.type === 1
+    ) {
+      // runCodes("1");
+      setTimeout(() => {
+        navigate("/thanku");
+      }, [3000]);
+      console.log("page is refreshed");
+    } else {
+    }
+  }, []);
 
   return (
-    
     <Box>
       <Header state={true} />
       <Box className="background1">
         {showError && (
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
         )}
+        <ReactRouterPrompt when={true}>
+          {({ isActive, onConfirm, onCancel }) =>
+            isActive && (
+              <div>
+                <Dialog
+                  open={true}
+                  // onClose={onCancel}
+                  onClose={(_, reason) => {
+                    if (reason !== "backdropClick") {
+                      onCancel();
+                    }
+                  }}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">{"Alert"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      There is no way to go back. Press the close button and continue your test..!!
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={onCancel}
+                    >
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            )
+          }
+        </ReactRouterPrompt>
         <Grid container>
           <Grid item sm={6}>
             <Box sx={testCaseData1} mx={2}>
@@ -658,9 +695,7 @@ const Compiler = () => {
                     <Typography sx={inputName}>Name: </Typography>
                   </Box>
                   <>
-                    <Typography sx={inputName}>
-                     {name}
-                    </Typography>
+                    <Typography sx={inputName}>{name}</Typography>
                   </>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
@@ -668,9 +703,7 @@ const Compiler = () => {
                     <Typography sx={inputName}>Email: </Typography>
                   </Box>
                   <Box>
-                    <Typography sx={inputName}>
-                      {email}
-                    </Typography>
+                    <Typography sx={inputName}>{email}</Typography>
                   </Box>
                 </Grid>
               </Grid>
@@ -684,10 +717,15 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Box>
-            
                 <AceEditor
                   className="no-copy-paste"
-                  mode={(location?.state?.language == "Java") ? "java" : (location?.state?.language ==='Python') ? "python" :"c_cpp"}
+                  mode={
+                    location?.state?.language == "Java"
+                      ? "java"
+                      : location?.state?.language === "Python"
+                      ? "python"
+                      : "c_cpp"
+                  }
                   theme="monokai"
                   name="code"
                   onPaste={(e) => {
@@ -706,8 +744,7 @@ const Compiler = () => {
                   width="45.7vw"
                   value={defCode?.[count]}
                   onChange={onChange}
-                  defaultValue={defCode?.[count]
-                  }
+                  defaultValue={defCode?.[count]}
                   fontSize="20px"
                 />
               </Box>
@@ -785,7 +822,6 @@ const Compiler = () => {
         </Grid>
       </Box>
     </Box>
-   
   );
 };
 
