@@ -143,7 +143,8 @@ const months = {
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
-  height:"20px",
+  height:"29px",
+  overflowX:'auto',
   'overflow-wrap':'break-word'
 };
 const levels = ["Level 1", "Level 2", "ALL"];
@@ -294,7 +295,7 @@ const Dashbord = () => {
                           <CancelIcon />
                         </IconButton>
                         <CardContent  sx={cardBody}>
-                          <div style={{overflowX:"auto"}}>
+                          <div>
                           <h6 style={contestText}>
                             {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
                             {contestDetails?.[index]?.contestLevel}

@@ -162,6 +162,7 @@ const Level1 = () => {
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
+  const [editRef, setEditRef]=useState(null);
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
@@ -378,10 +379,10 @@ const Level1 = () => {
           </Grid>
         </Grid>
       </Container>
-      <Container sx={mainContainer}>
+      <Container sx={mainContainer} ref={editRef}>
         <Grid>
           <Card sx={cardBody}>
-            <CardContent>
+            <CardContent >
               <Grid container direction="row" spacing={0}>
                 <Grid item xs={0.3}>
                   <div className={classes.container} style={sideColumn}></div>
@@ -664,6 +665,7 @@ const Level1 = () => {
         </Grid>
         <AddedQues
           setMsg={setMsg}
+          setEditRef={setEditRef}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}
           question={question}

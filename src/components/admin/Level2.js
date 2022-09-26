@@ -160,6 +160,7 @@ const Level2 = () => {
     location?.state?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
+  const [editRef, setEditRef]=useState(null);
   const [index, setIndex] = useState(null);
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
@@ -363,7 +364,7 @@ const Level2 = () => {
           </Grid>
         </Grid>
       </Container>
-      <Container sx={mainContainer}>
+      <Container sx={mainContainer} ref={editRef}>
         <Grid>
           <Card sx={cardBody}>
             <CardContent>
@@ -648,6 +649,7 @@ const Level2 = () => {
           </Card>
         </Grid>
         <AddedQues
+          setEditRef={setEditRef}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}
