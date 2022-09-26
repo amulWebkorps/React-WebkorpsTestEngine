@@ -90,7 +90,7 @@ const AddedQues = ({
   showAlert,
   setshowselectquestion,
   setShowAlreadyQuestion,
-  question,
+  setEditRef,
   setMsg,
   setAlert,
   delFromContest,
@@ -111,12 +111,17 @@ const AddedQues = ({
 }) => {
   const [showq, setShowQ] = useState(false);
   const ref = useRef(null);
+  const refs = useRef(null);
+  setEditRef(refs);
   const scrollBottom = () => {
     setShowQ(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
-
+  const scrollTop = () => {
+    setEditRef(refs.current?.scrollIntoView({ behavior: "smooth" }));
+  };
   const editQuestion = (id, questionID) => {
+    scrollTop();
     setEditQuestion(true);
     setQuesId(questionID);
     setIndex(id);

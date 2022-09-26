@@ -38,7 +38,7 @@ const MenuPropsfortime = {
 };
 const names = ["Level 1", "Level 2"];
 
-const times = ["30 min.", "60 min.", "90 min.", "120 min."];
+const times = ["30 min", "60 min", "90 min", "120 min"];
 
 function getStyles(name, level, theme) {
   return {

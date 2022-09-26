@@ -179,6 +179,7 @@ const QuestionList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const classes = useStyles();
+  const [editRef, setEditRef]=useState(null);
   const [contestData, setContestData] = useState(
     location?.state?.result?.data?.contest
   );
@@ -344,10 +345,14 @@ const QuestionList = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    console.log(files)
+    console.log(files);
     setAlert(true);
     try {
-      const result = await uploadQuestions(files[0], contestData?.contestId,"");
+      const result = await uploadQuestions(
+        files[0],
+        contestData?.contestId,
+        ""
+      );
       // setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
@@ -363,6 +368,8 @@ const QuestionList = () => {
   };
 
 
+ 
+
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
       .then((res) => {
@@ -370,10 +377,10 @@ const QuestionList = () => {
       })
       .catch("dmndv");
   }, [showAlert]);
-
+  console.log(editRef,"snsdnvdsn")
   return (
     <div style={questionList}>
-      <Header/>
+      <Header />
       <BackButton />
       <Container sx={topButton}>
         {showAlert ||
@@ -399,7 +406,7 @@ const QuestionList = () => {
           </Box>
         </Grid>
       </Container>
-      <Container sx={mainContainer}>
+      <Container sx={mainContainer} ref={editRef}>
         <Grid>
           <Card sx={cardBody}>
             <CardContent>
@@ -537,7 +544,7 @@ const QuestionList = () => {
                         <Button
                           variant="outlined"
                           component="label"
-                          onClick={(e)=>e.target.value=null}
+                          onClick={(e) => (e.target.value = null)}
                           onChange={uploadQuestion}
                           startIcon={<NoteAddIcon />}
                         >
@@ -680,7 +687,8 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
-        showAlert={showAlert}
+      setEditRef={setEditRef}
+          showAlert={showAlert}
           contestId={contestData?.contestId}
           setMsg={setMsg}
           availableQuestions={availableQuestions}

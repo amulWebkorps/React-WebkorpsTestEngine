@@ -65,7 +65,7 @@ export default function Popup({
         <DialogTitle>Contest Name ~ {contest?.name}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Are You Sure To Delete These Contest
+            Do you want to delete this contest?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
