@@ -23,7 +23,7 @@ const InputField = {
     background: "#C4C4C4",
     color: "black",
     "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
-      webkitAppearance: "none",
+      "-webkit-appearance": "none",
     },
   },
 };

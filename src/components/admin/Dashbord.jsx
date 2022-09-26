@@ -75,12 +75,12 @@ const cardImg = {
   padding: "10px",
 };
 const cardBodyx={
-  height: "120vh",
+  height: "220px",
   backgroundColor:"#F8F7F7",
   overflow:"auto",
 }
 const cardBody = {
-  height: "120vh",
+  height: "220px",
   backgroundColor:"#F8F7F7",
 };
 
@@ -143,6 +143,8 @@ const months = {
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
+  height:"20px",
+  
 };
 const levels = ["Level 1", "Level 2", "ALL"];
 const contestInitialValues = {
@@ -292,7 +294,7 @@ const Dashbord = () => {
                           <CancelIcon />
                         </IconButton>
                         <CardContent  sx={cardBody}>
-                          <div>
+                          <div style={{overflowX:"auto"}}>
                           <h6 style={contestText}>
                             {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
                             {contestDetails?.[index]?.contestLevel}

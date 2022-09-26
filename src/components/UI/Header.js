@@ -6,7 +6,7 @@ import { borderRadius } from "@mui/system";
 import { Button } from "@mui/material";
 
 const Headers = {
-  height: "13vh",
+  height: "100px",
   // background: setColor ? "#FDFEFF" : "#121419",
   width: "100%",
   display: "flex",
