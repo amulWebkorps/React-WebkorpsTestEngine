@@ -92,7 +92,7 @@ useEffect(() => {
       <Box sx={MainBox}>
         <Typography sx={text}>Thank you</Typography>
         <Box sx={centerBox}>
-          <Typography sx={pageNot}>Your code is  successfully submited</Typography>
+          <Typography sx={pageNot}>Your code is  successfully submitted</Typography>
           
         </Box>
       </Box>
