@@ -154,7 +154,7 @@ const ViewParticipatorDetail = () => {
   const [participatorDetails, setParticipatorDetails] = useState();
   const [studentId, setStudentId] = useState(location?.state);
 
-  console.log("location-------", testcases);
+ 
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (prevCount <= participatorDetails?.questionSubmitedByStudent?.length) {
@@ -190,7 +190,6 @@ const ViewParticipatorDetail = () => {
   useEffect(() => {
     getparticipatordetails();
   }, []);
-
   return (
     <div>
       <Header setShow={true} />
