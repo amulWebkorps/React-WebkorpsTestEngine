@@ -189,6 +189,7 @@ const Compiler = () => {
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [exit, setExit]=useState(true);
+  const [testRecord, setTestRecord]=useState([]);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
@@ -198,7 +199,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [submitted, setSubmitted] = useState(0);
+  const [submitted, setSubmitted] = useState([]);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -224,7 +225,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-    $(".no-copy-paste").keydown(function (e) {
+    $(".no-copy-pastee").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -275,11 +276,8 @@ const Compiler = () => {
       try {
         if (timer === "00:00:01") {
           const resultData = runAndCompilerCode({
-            language:
-              profile.participatorsContestDetails?.languageCode?.language,
-            questionId:
-              profile.participatorsContestDetails?.QuestionList[count]
-                ?.questionId,
+            language:profile.participatorsContestDetails?.languageCode?.language,
+            questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,
             contestId: profile.participatorsContestDetails?.contestId,
             studentId: profile.participatorsContestDetails?.studentId,
             flag: "1",
@@ -314,6 +312,13 @@ const Compiler = () => {
       const a = profile?.participatorsContestDetails?.languageCode?.codeBase;
       newArray.push(a);
     }
+    const length = profile?.participatorsContestDetails?.QuestionList?.length;
+    const testArray = [];
+    for (var i = 0; i < length; i++) {
+      const a = [];
+      testArray.push(a);
+    }
+    setTestRecord(testArray)
     setDefCode(newArray);
     setLocalData(defCode);
   };
@@ -324,13 +329,11 @@ const Compiler = () => {
     try {
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId:
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        // questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        timeOut: false,
-        code: `${defCode[count]}`,
+        questionsAndCode: [{questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,code:defCode[count]}],
       });
 
       if (resultData) {
@@ -343,6 +346,13 @@ const Compiler = () => {
           navigate("/thanku");
         }
       }
+      const newState = testRecord.map((val, index) => {
+        if (index === count) {
+          return resultData?.data?.testCasesSuccess;
+        }
+        return val;
+      });
+      setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
     } catch (error) {
@@ -363,7 +373,7 @@ const Compiler = () => {
 
   const onChange = (codeData) => {
     setCodeValue(codeData);
-    setShowTestCase(false);
+    // setShowTestCase(false);
     const newState = defCode.map((val, index) => {
       if (index === count) {
         return codeData;
@@ -385,7 +395,7 @@ const Compiler = () => {
       }
     });
     setCodeValue(location?.state?.defaultCode);
-    setShowTestCase(false);
+    // setShowTestCase(false);
   };
 
   const prevQuestion = (e) => {
@@ -399,21 +409,19 @@ const Compiler = () => {
   };
 
   const submitCodes = async (flag) => {
-    // setShow(true);
-    window.localStorage.setItem("submit code", JSON.stringify(localData));
-    setLocalData([...localData, codeValue]);
+    setShow(true);
     try {
       const res = await submitCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId:
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        timeOut: false,
-        code: `${defCode[count]}`,
+        questionsAndCode: [{questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,code:defCode[count]}]
       });
-      if (res) {
+      
+      if (res?.data) {
+        setTestRecord(res.data?.testCasesSuccess);
+        setShow(false);
         setSubmitted([
           ...submitted,
           profile.participatorsContestDetails?.QuestionList[count]?.questionId,
@@ -481,20 +489,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  useEffect(() => {
-    if (
-      performance.navigation.type === 1
-    ) {
-      setExit(false);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [3000]);
-      console.log("page is refreshed");
-    } else {
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   if (
+  //     performance.navigation.type === 1
+  //   ) {
+  //     setExit(false);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [3000]);
+  //     console.log("page is refreshed");
+  //   } else {
+  //   }
+  // }, []);
+console.log(testRecord)
   return (
     <Box>
       <Header setShow={true} />
@@ -665,7 +673,9 @@ const Compiler = () => {
                   ) : (
                     <Grid sx={testCaseData}>
                       <Box m={3} mt={2} sx={testCaseText2}>
-                        {runCode?.testCasesSuccess?.map((val, index) => {
+                      {/* runCode?.testCasesSuccess? */}
+                        {testRecord?.[count]?.map((val, index) => {
+                          {/* {console} */}
                           return (
                             <Box key={index} sx={textTestCases}>
                               <span>TestCase {index + 1}</span>
