@@ -13,6 +13,7 @@ import { filterQuestion } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { deleteQuestion } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
+import Loader from "../candidate/base/Loader";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -114,8 +115,6 @@ const containerUpper = {
   justifyContent: "center",
 };
 
-
-
 const Allavailable = () => {
   const [allAvailQues, setAllAvailQues] = useState([]);
   const [filterValue, setFilterValue] = useState("All");
@@ -124,15 +123,17 @@ const Allavailable = () => {
     msg: "",
     color: "",
   });
+  const [loader, setloader] = useState(true);
   const handleChange = (e) => {
     setFilterValue(e.target.value);
+    setAllAvailQues([]);
   };
 
   const handleDelete = (id, quesId) => {
     const arr = [`questionForLevel`, quesId];
-    setMsg({
-      state: true,
-    });
+    // setMsg({
+    //   state: true,
+    // });
     console.log("----------", id, quesId);
     setAllAvailQues((val) => {
       return val.filter((e, index) => index !== id);
@@ -155,7 +156,12 @@ const Allavailable = () => {
     } catch (error) {}
   };
   useEffect(() => {
+    setloader(true)
     const result = filterQuestion(filterValue).then((res) => {
+     
+      if (res.message == "success" && res.status == "200") {
+        setloader(false);
+      }
       setAllAvailQues(res.data);
     });
   }, [filterValue]);
@@ -163,8 +169,8 @@ const Allavailable = () => {
   return (
     <div style={background1}>
       {msg.state && <MsgBar errMsg={msg.msg} color={msg.color} />}
-      <Header/>
-      <BackButton/>
+      <Header />
+      <BackButton />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item mt={5}>
           <Box variant="contained" sx={buttonLevel}>
@@ -199,6 +205,7 @@ const Allavailable = () => {
             </Button> */}
           </Grid>
         </Grid>
+        <Grid>{loader && <Loader />}</Grid>
         <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
           {allAvailQues?.map((val, index) => {
             return (

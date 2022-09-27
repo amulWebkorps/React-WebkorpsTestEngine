@@ -181,7 +181,7 @@ const QuestionList = () => {
   const classes = useStyles();
   const [contestData, setContestData] = useState(
     location?.state?.result?.data?.contest
-  );
+  );  
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
   const defaulValues = {
@@ -219,6 +219,7 @@ const QuestionList = () => {
   const [showAlreadyQuestion, setShowAlreadyQuestion] = useState(false);
   const [showSelectQuestion, setshowselectquestion] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
+  const [loader , setloader] = useState(true)
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -364,9 +365,12 @@ const QuestionList = () => {
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
       .then((res) => {
+        if(res.message=="success" && res.status=="200"){
+          setloader(false)
+        }
         setContestQuestion(res?.data?.contestQuestionDetail);
       })
-      .catch("dmndv");
+      .catch("dmndv");  
   }, [showAlert]);
 
   return (
@@ -677,6 +681,7 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
+        loader= {loader}
         showAlert={showAlert}
           contestId={contestData?.contestId}
           setMsg={setMsg}

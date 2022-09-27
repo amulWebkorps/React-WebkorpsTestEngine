@@ -196,6 +196,8 @@ const Level1 = () => {
     errMsg: "",
     color: "",
   });
+  const [loader , setloader] = useState(true);
+  const [error, setError] = useState(false);
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -346,8 +348,16 @@ const Level1 = () => {
     try {
       const res = await filterQuestion("Level 1");
       const response = res.data;
+     if(res.message=="success" && res.status=="200"){
+      setloader(false);
+     }
       setContestQuestion(response);
     } catch (error) {
+      setloader(false);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
       console.log(error);
     }
    
@@ -370,6 +380,9 @@ const Level1 = () => {
         ) : (
           <></>
         )}
+        {error && (
+            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+          )}
         <Grid container sx={{ justifyContent: "center" }}>
           <Grid item>
             <Box variant="contained" sx={buttonLevel}>
@@ -662,6 +675,7 @@ const Level1 = () => {
           </Card>
         </Grid>
         <AddedQues
+        loader={loader}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}

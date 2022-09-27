@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import All from "./All";
 import React, { useRef, useState, useEffect } from "react";
 import { deleteQuestion } from "../services/contest/contestServices";
-
+import Loader from "../candidate/base/Loader";
 const heading = {
   height: "89px",
   background: "#F9FAFC",
@@ -108,6 +108,7 @@ const AddedQues = ({
   quesId,
   contestId,
   level,
+  loader,
 }) => {
   const [showq, setShowQ] = useState(false);
   const ref = useRef(null);
@@ -178,6 +179,7 @@ const AddedQues = ({
       </Paper>
       <CardContent sx={card}>
         <Grid container direction="row" flexDirection={"column"}>
+          <Grid>{loader && <Loader />}</Grid>
           {contestQuestion?.map?.((val, index) => {
             return (
               <Grid item mt={2} key={index}>
@@ -206,7 +208,7 @@ const AddedQues = ({
       <div ref={ref}></div>
       {showq && (
         <All
-        showAlert={showAlert}
+          showAlert={showAlert}
           ref={ref}
           setshowselectquestion={setshowselectquestion}
           setShowAlreadyQuestion={setShowAlreadyQuestion}

@@ -194,6 +194,8 @@ const Level2 = () => {
     errMsg: "",
     color: "",
   });
+  const [loader, setloader] = useState(true);
+  const [error, setError] = useState(false);
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -335,26 +337,36 @@ const Level2 = () => {
     });
   };
 
- const filtersQuestions=async()=>{
-  try {
-    const result = await filterQuestion("Level 2");
-  const response = result?.data;
-  setContestQuestion(response);
-  } catch (error) {
-    console.log(error);
-  }
-  
- }
+  const filtersQuestions = async () => {
+    try {
+      const result = await filterQuestion("Level 2");
+      if (result.message == "success" && result.status == "200") {
+        setloader(false);
+      }
+      const response = result?.data;
+      setContestQuestion(response);
+    } catch (error) {
+      setloader(false);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+      console.log(error);
+    }
+  };
   useEffect(() => {
     filtersQuestions();
   }, [showAlert]);
 
   return (
     <div style={questionList}>
-      <Header/>
+      <Header />
       <BackButton />
       <Container sx={topButton}>
         {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
+        {error && (
+            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+          )}
         <Grid container sx={{ justifyContent: "center" }}>
           <Grid item>
             <Box variant="contained" sx={buttonLevel}>
@@ -647,6 +659,7 @@ const Level2 = () => {
           </Card>
         </Grid>
         <AddedQues
+          loader={loader}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}
