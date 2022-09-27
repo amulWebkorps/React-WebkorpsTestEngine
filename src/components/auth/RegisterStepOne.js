@@ -155,44 +155,44 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterStepOne = ({ setregistercredential }) => {
+const RegisterStepOne = ({ setregistercredential , registercredential}) => {
   const [showAlert, setAlert] = useState(false);
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
   const navigate = useNavigate();
 
-  const [credential, setcredential] = useState({
-    hName: "",
-    email: "",
-    hNumber: "",
-  });
+  // const [credential, setcredential] = useState({
+  //   hName: "",
+  //   email: "",
+  //   hNumber: "",
+  // });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setcredential({ ...credential, [name]: value });
-    setregistercredential({ ...credential, [name]: value });
+   // setcredential({ ...credential, [name]: value });
+    setregistercredential({ ...registercredential, [name]: value });
   };
   const handleClick = () => {
     if (
-      credential.hName == "" ||
-      credential.email == "" ||
-      credential.hNumber == ""
+      registercredential.hName == "" ||
+      registercredential.email == "" ||
+      registercredential.hNumber == ""
     ) {
       setAlert(true);
       setTimeout(() => {
         setAlert(false);
       }, 2000);
-    } else if (!/.+@.+\.[A-Za-z]+$/.test(credential.email) === true) {
+    } else if (!/.+@.+\.[A-Za-z]+$/.test(registercredential.email) === true) {
       setshowemail(true);
       setTimeout(() => {
         setshowemail(false);
       }, 2000);
     } else if (
-      credential.hNumber === Number("credential.hNumber") ||
-      credential.hNumber === "" ||
-      credential.hNumber[0] === "-" ||
-      credential.hNumber.length > 10 ||
-      credential.hNumber.length < 10
+      registercredential.hNumber === Number("credential.hNumber") ||
+      registercredential.hNumber === "" ||
+      registercredential.hNumber[0] === "-" ||
+      registercredential.hNumber.length > 10 ||
+      registercredential.hNumber.length < 10
     ) {
       setshownumber(true);
       setTimeout(() => {
@@ -205,7 +205,7 @@ const RegisterStepOne = ({ setregistercredential }) => {
   return (
     <>
       <Grid container>
-        <Header setColor={true} />
+        <Header setColor={true} setShow={true}/>
       </Grid>
       {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
       {showNumber && (
@@ -233,7 +233,7 @@ const RegisterStepOne = ({ setregistercredential }) => {
                 label="Full Name"
                 star={"*"}
                 onChange={handleChange}
-                value={credential.hName}
+                value={registercredential.hName}
                 name="hName"
                 type="text"
               />
@@ -241,7 +241,7 @@ const RegisterStepOne = ({ setregistercredential }) => {
                 label="Email Address"
                 star={"*"}
                 onChange={handleChange}
-                value={credential.email}
+                value={registercredential.email}
                 name="email"
                 type="email"
               />
@@ -249,7 +249,7 @@ const RegisterStepOne = ({ setregistercredential }) => {
                 label="Phone Number"
                 star={"*"}
                 onChange={handleChange}
-                value={credential.hNumber}
+                value={registercredential.hNumber}
                 type="number"
                 name="hNumber"
               />
