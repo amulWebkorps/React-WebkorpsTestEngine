@@ -346,7 +346,7 @@ const ViewParticipatorDetail = () => {
                     </Typography>
                   </Grid>
                   <Grid sx={testCaseData}>
-                    <Box m={3} mt={1} sx={testCaseText2}>
+                    <Box m={3} mt={0} sx={testCaseText2}>
                       {testcases?.[count]?.["testCasesSuccess"]?.map(
                         (val, index) => {
                           return (
