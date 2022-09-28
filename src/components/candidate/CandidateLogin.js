@@ -24,7 +24,7 @@ const ContainerStyle = {
   backgroundRepeat: "noRepeat",
   backgroundSize: "cover",
   position: "relative",
-  height: "86vh",
+  height: "86.8vh",
   width: "100%",
   display: "flex",
   justifyContent: "center",

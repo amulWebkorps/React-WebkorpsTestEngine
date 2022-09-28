@@ -200,6 +200,10 @@ const EmailShow = () => {
     const { files } = event.target;
     try {
       const result =await  uploadParticipator(files[0]);
+      setMsg({
+        errMsg: "Participator uploaded succesfully...!",
+        color: "green",
+      });
       setUpload({
         alert: true,
         loader: true,

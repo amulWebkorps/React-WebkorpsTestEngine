@@ -17,7 +17,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import { useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
-import { runAndCompilerCode, submitCode } from "../services/candidate";
+import { finish, runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
@@ -185,10 +185,15 @@ const Compiler = () => {
   const location = useLocation();
   const [error, setError] = useState(null);
   const [codeValue, setCodeValue] = useState();
+  const [finishCodes, setFinishCodes] = useState([]);
+  const [quesIds, setQuesIds] = useState(
+    location?.state?.participatorData?.questionId
+  );
   const [profile, setProfile] = useState(location?.state);
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
-  const [exit, setExit]=useState(true);
+  const [exit, setExit] = useState(true);
+  const [testRecord, setTestRecord] = useState([]);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
@@ -198,7 +203,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [submitted, setSubmitted] = useState(0);
+  const [submitted, setSubmitted] = useState([]);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -224,7 +229,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-    $(".no-copy-paste").keydown(function (e) {
+    $(".no-copy-pastee").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -243,6 +248,7 @@ const Compiler = () => {
   }, [runCode]);
   useEffect(() => {
     getDefaultCode();
+    handleQuestionAndCode();
   }, []);
 
   useEffect(() => {
@@ -274,22 +280,13 @@ const Compiler = () => {
     {
       try {
         if (timer === "00:00:01") {
-          const resultData = runAndCompilerCode({
-            language:
-              profile.participatorsContestDetails?.languageCode?.language,
-            questionId:
-              profile.participatorsContestDetails?.QuestionList[count]
-                ?.questionId,
-            contestId: profile.participatorsContestDetails?.contestId,
-            studentId: profile.participatorsContestDetails?.studentId,
-            flag: "1",
-            timeOut: true,
-            code: `${codeValue}`,
-          }).then();
-          setRunCode(resultData.data);
+          setExit(false);
+          finishTest();
+          // setRunCode(resultData.data);
           setShowTestCase(true);
         }
         if (timer === "00:00:01") {
+          setExit(false);
           navigate("/thanku");
         }
       } catch (error) {
@@ -314,25 +311,63 @@ const Compiler = () => {
       const a = profile?.participatorsContestDetails?.languageCode?.codeBase;
       newArray.push(a);
     }
+    const length = profile?.participatorsContestDetails?.QuestionList?.length;
+    const testArray = [];
+    for (var i = 0; i < length; i++) {
+      const a = [];
+      testArray.push(a);
+    }
+    setTestRecord(testArray);
     setDefCode(newArray);
     setLocalData(defCode);
   };
 
-  const runCodes = async (flag, state) => {
+  const handleQuestionAndCode = () => {
+    const len = profile?.participatorsContestDetails?.QuestionList?.length;
+    var newArray = [];
+    for (var i = 0; i < len; i++) {
+      var Object = {};
+      Object["questiondId"] = quesIds?.[i];
+      Object["code"] = defCode?.[i];
+      newArray.push(Object);
+    }
+    setFinishCodes(newArray);
+    return finishCodes
+  };
+
+  const finishTest = async () => {
+    try {
+      const res = await finish({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
+        flag: "1",
+        questionsAndCode: JSON.parse(localStorage.getItem("code")),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const runCodes = async (flag) => {
     setLoading(true);
     setShowTestCase(true);
     try {
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId:
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+        // questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        timeOut: false,
-        code: `${defCode[count]}`,
+        questionsAndCode: [
+          {
+            questionId:
+              profile.participatorsContestDetails?.QuestionList[count]
+                ?.questionId,
+            code: defCode[count],
+          },
+        ],
       });
-
       if (resultData) {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
@@ -343,6 +378,13 @@ const Compiler = () => {
           navigate("/thanku");
         }
       }
+      const newState = testRecord.map((val, index) => {
+        if (index === count) {
+          return resultData?.data?.testCasesSuccess;
+        }
+        return val;
+      });
+      setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
     } catch (error) {
@@ -363,7 +405,9 @@ const Compiler = () => {
 
   const onChange = (codeData) => {
     setCodeValue(codeData);
-    setShowTestCase(false);
+    handleQuestionAndCode();
+    localStorage.setItem("code", JSON.stringify(finishCodes));
+    // setShowTestCase(false);
     const newState = defCode.map((val, index) => {
       if (index === count) {
         return codeData;
@@ -385,7 +429,7 @@ const Compiler = () => {
       }
     });
     setCodeValue(location?.state?.defaultCode);
-    setShowTestCase(false);
+    // setShowTestCase(false);
   };
 
   const prevQuestion = (e) => {
@@ -399,21 +443,25 @@ const Compiler = () => {
   };
 
   const submitCodes = async (flag) => {
-    // setShow(true);
-    window.localStorage.setItem("submit code", JSON.stringify(localData));
-    setLocalData([...localData, codeValue]);
+    setShow(true);
     try {
       const res = await submitCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
-        questionId:
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        timeOut: false,
-        code: `${defCode[count]}`,
+        questionsAndCode: [
+          {
+            questionId:
+              profile.participatorsContestDetails?.QuestionList[count]
+                ?.questionId,
+            code: defCode[count],
+          },
+        ],
       });
-      if (res) {
+      if (res?.data) {
+        setTestRecord(res.data?.testCasesSuccess);
+        setShow(false);
         setSubmitted([
           ...submitted,
           profile.participatorsContestDetails?.QuestionList[count]?.questionId,
@@ -481,20 +529,41 @@ const Compiler = () => {
     return deadline;
   };
 
+  const isRefreshed = sessionStorage.getItem("isRefreshed");
   useEffect(() => {
-    if (
-      performance.navigation.type === 1
-    ) {
+    if (isRefreshed) {
       setExit(false);
+      finishTest();
       setTimeout(() => {
         navigate("/thanku");
         localStorage.clear();
-      }, [3000]);
-      console.log("page is refreshed");
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
     } else {
+      sessionStorage.setItem("isRefreshed", true);
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (performance.navigation.type === 1 && !exit) {
+  //     setExit(false);
+  //     finishTest();
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [2000]);
+  //     console.log("page is refreshed");
+  //   } else {
+  //   }
+  // }, []);
+  const handleFinish = () => {
+    setExit(false);
+    finishTest();
+    setTimeout(() => {
+      navigate("/thanku");
+      localStorage.clear();
+    }, [100]);
+  };
   return (
     <Box>
       <Header setShow={true} />
@@ -520,7 +589,8 @@ const Compiler = () => {
                   <DialogTitle id="alert-dialog-title">{"Alert"}</DialogTitle>
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                      There is no way to go back. Press the close button and continue your test..!!
+                      There is no way to go back. Press the close button and
+                      continue your test..!!
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
@@ -553,7 +623,6 @@ const Compiler = () => {
                   <Grid item sm={0.5} sx={blue1}>
                     <box></box>
                   </Grid>
-
                   <Grid item sm={11.5}>
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
@@ -562,7 +631,6 @@ const Compiler = () => {
                         </Typography>
                       </Box>
                     </Grid>
-
                     <Grid item sm={12}>
                       <Box>
                         <Typography style={inputLabel}>
@@ -665,7 +733,7 @@ const Compiler = () => {
                   ) : (
                     <Grid sx={testCaseData}>
                       <Box m={3} mt={2} sx={testCaseText2}>
-                        {runCode?.testCasesSuccess?.map((val, index) => {
+                        {testRecord?.[count]?.map((val, index) => {  
                           return (
                             <Box key={index} sx={textTestCases}>
                               <span>TestCase {index + 1}</span>
@@ -740,9 +808,6 @@ const Compiler = () => {
                   }}
                   editorProps={{ $blockScrolling: true }}
                   height="405px"
-                  // setOptions={{
-                  //   dragEnabled: false,
-                  // }}
                   width="45.7vw"
                   value={defCode?.[count]}
                   onChange={onChange}
@@ -768,7 +833,6 @@ const Compiler = () => {
                   sx={buttonTest}
                   onClick={() => {
                     submitCodes("1");
-                    // runCodes("1");
                   }}
                   disabled={show}
                 >
@@ -780,9 +844,7 @@ const Compiler = () => {
                   <Button
                     variant="contained"
                     sx={buttonTest}
-                    onClick={() => {
-                      navigate("/thanku");
-                    }}
+                    onClick={handleFinish}
                   >
                     {"Finish"}
                   </Button>
