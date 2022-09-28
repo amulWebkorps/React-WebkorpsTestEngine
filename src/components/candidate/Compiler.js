@@ -186,7 +186,10 @@ const Compiler = () => {
   const location = useLocation();
   const [error, setError] = useState(null);
   const [codeValue, setCodeValue] = useState();
-  const [finishCodes, setFinishCodes] = useState([]);
+  const [finishCodes, setFinishCodes] = useState([{
+    questionId:"",
+    code:""
+  }]);
   const [quesIds, setQuesIds] = useState(
     location?.state?.participatorData?.questionId
   );
@@ -333,17 +336,19 @@ const Compiler = () => {
     setLocalData(defCode);
   };
 
-  const handleQuestionAndCode = () => {
+  const handleQuestionAndCode = async(codeData) => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
+    console.log(quesIds);
     var newArray = [];
     for (var i = 0; i < len; i++) {
       var Object = {};
       Object["questiondId"] = quesIds?.[i];
-      Object["code"] = defCode?.[i];
+      Object["code"] = codeData?.[i];
       newArray.push(Object);
     }
-    setFinishCodes(newArray);
-    return finishCodes
+   await setFinishCodes(newArray);
+   localStorage.setItem("code", JSON.stringify(newArray));
+    
   };
 
   const finishTest = async (timeOut) => {
@@ -416,9 +421,10 @@ const Compiler = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const onChange = (codeData) => {
-    handleQuestionAndCode();
-    setCodeValue(codeData);
+  const onChange = async(codeData) => {
+    console.log(codeData)
+    
+     setCodeValue(codeData);
     // setShowTestCase(false);
     const newState = defCode.map((val, index) => {
       if (index === count) {
@@ -426,8 +432,8 @@ const Compiler = () => {
       }
       return val;
     });
-    setDefCode(newState);
-    localStorage.setItem("code", JSON.stringify(finishCodes));
+   await setDefCode(newState);
+   handleQuestionAndCode(newState);
     return finishCodes,defCode;
   };
 
@@ -492,7 +498,7 @@ const Compiler = () => {
 
   const handleNext = () => {
     if (
-      profile.participatorsContestDetails?.QuestionList?.length - 1 ===
+      profile?.participatorsContestDetails?.QuestionList?.length - 1 ===
       count
     ) {
     } else {
@@ -540,20 +546,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = async() => {
     setExit(false);
@@ -814,6 +820,9 @@ const Compiler = () => {
               </Container>
               <Box>
                 <AceEditor
+                  onLoad={(e)=>{let s =e?._eventRegistry?.focus;
+                  s=true;
+                  }}
                   className="no-copy-paste"
                   mode={
                     location?.state?.language == "Java"
@@ -836,6 +845,7 @@ const Compiler = () => {
                   height="405px"
                   width="45.7vw"
                   value={defCode?.[count]}
+                  
                   onChange={onChange}
                   defaultValue={defCode?.[count]}
                   fontSize="20px"
