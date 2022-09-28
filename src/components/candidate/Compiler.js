@@ -555,9 +555,20 @@ const Compiler = () => {
     }
   }, []);
 
-  const handleFinish = () => {
+  const handleFinish = async() => {
     setExit(false);
-    finishTest(false);
+    try {
+      const res = await finish({
+        language: profile.participatorsContestDetails?.languageCode?.language,
+        contestId: profile.participatorsContestDetails?.contestId,
+        studentId: profile.participatorsContestDetails?.studentId,
+        flag: "1",
+        timeOut:true,
+        questionsAndCode: JSON.parse(localStorage.getItem("code")),
+      });
+    } catch (error) {
+      console.log(error);
+    }
     setTimeout(() => {
       navigate("/thanku");
       localStorage.clear();
