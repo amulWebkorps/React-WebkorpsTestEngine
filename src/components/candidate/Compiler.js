@@ -415,9 +415,8 @@ const Compiler = () => {
   };
 
   const onChange = (codeData) => {
-    setCodeValue(codeData);
     handleQuestionAndCode();
-    localStorage.setItem("code", JSON.stringify(finishCodes));
+    setCodeValue(codeData);
     // setShowTestCase(false);
     const newState = defCode.map((val, index) => {
       if (index === count) {
@@ -426,6 +425,8 @@ const Compiler = () => {
       return val;
     });
     setDefCode(newState);
+    localStorage.setItem("code", JSON.stringify(finishCodes));
+    return finishCodes,defCode;
   };
 
   const nextQuestion = (e) => {
@@ -574,9 +575,9 @@ const Compiler = () => {
       <TabAlert
       setExit={setExit}
       warning={warning}
-        open={open}
-        setOpen={setOpen  }
-        finalSubmit={finishTest}
+      open={open}
+      setOpen={setOpen  }
+      finalSubmit={finishTest}
       />
       <Box className="background1">
         {showError && (
