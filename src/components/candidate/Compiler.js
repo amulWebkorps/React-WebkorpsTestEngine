@@ -331,7 +331,8 @@ const Compiler = () => {
       Object["code"] = defCode?.[i];
       newArray.push(Object);
     }
-    return setFinishCodes(newArray);
+    setFinishCodes(newArray);
+    return finishCodes
   };
 
   const finishTest = async () => {

@@ -106,6 +106,8 @@ const CandidateLogin = () => {
   const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
+  const date=new Date();
+  const year=date.getFullYear();
   const handleLogin = async () => {
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
@@ -213,7 +215,7 @@ const CandidateLogin = () => {
             </Stack>
           </Box>
         </Box>
-        <Typography sx={copyright}>Copyright@webkorps2021</Typography>
+        <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
       </Container>
     </>
   );
