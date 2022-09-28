@@ -109,7 +109,7 @@ function App() {
               path="/user"
               element={<CandidateRoutes Component={Compiler} />}
             ></Route>
-            <Route path="/thanku" element={<Thankupage />}></Route>
+            <Route path="/thanku" element={<CandidateRoutes Component={Thankupage} />}></Route>
           </Routes>
         </BrowserRouter>
       </div>
