@@ -559,6 +559,16 @@ const Compiler = () => {
       localStorage.clear();
     }, [100]);
   };
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+  console.log('----------',token);
+  if (token === null) {
+    setExit(false);
+    setTimeout(()=>{
+      navigate(`/login/:id`);
+    },[200])
+  }
+}, []);
   return (
     <Box>
       <Header setShow={true} />

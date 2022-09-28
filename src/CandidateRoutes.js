@@ -7,9 +7,10 @@ const CandidateRoutes = (props) => {
   const { Component } = props;
   const navigate = useNavigate();
   useEffect(() => {
-    const login = localStorage.getItem("login");
-    if (!login) {
-      navigate("/login/:id");
+    const token = localStorage.getItem("token");
+    console.log('----------',token);
+    if (token === null) {
+      navigate(`/login/:id`);
     }
   }, []);
   return (

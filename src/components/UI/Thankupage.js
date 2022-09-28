@@ -70,6 +70,7 @@ const Thankupage = () => {
         console.log('kkk')
     };
 }, []);
+
 useEffect(() => {
   window.addEventListener("popstate", (event) => {
     navigate("/thanku");
