@@ -292,7 +292,7 @@ const Compiler = () => {
       try {
         if (timer === "00:00:01") {
           setExit(false);
-          finishTest();
+          finishTest(true);
           // setRunCode(resultData.data);
           setShowTestCase(true);
         }
@@ -346,13 +346,14 @@ const Compiler = () => {
     return finishCodes
   };
 
-  const finishTest = async () => {
+  const finishTest = async (timeOut) => {
     try {
       const res = await finish({
         language: profile.participatorsContestDetails?.languageCode?.language,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: "1",
+        timeOut:timeOut,
         questionsAndCode: JSON.parse(localStorage.getItem("code")),
       });
     } catch (error) {
@@ -370,6 +371,7 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
+        timeOut:false,
         questionsAndCode: [
           {
             questionId:
@@ -462,6 +464,7 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
+        timeOut:false,
         questionsAndCode: [
           {
             questionId:
@@ -537,24 +540,24 @@ const Compiler = () => {
     return deadline;
   };
 
-  // const isRefreshed = sessionStorage.getItem("isRefreshed");
-  // useEffect(() => {
-  //   if (isRefreshed) {
-  //     setExit(false);
-  //     finishTest();
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [1000]);
-  //     sessionStorage.removeItem("isRefreshed");
-  //   } else {
-  //     sessionStorage.setItem("isRefreshed", true);
-  //   }
-  // }, []);
+  const isRefreshed = sessionStorage.getItem("isRefreshed");
+  useEffect(() => {
+    if (isRefreshed) {
+      setExit(false);
+      finishTest(true);
+      setTimeout(() => {
+        navigate("/thanku");
+        localStorage.clear();
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
+    } else {
+      sessionStorage.setItem("isRefreshed", true);
+    }
+  }, []);
 
   const handleFinish = () => {
     setExit(false);
-    finishTest();
+    finishTest(false);
     setTimeout(() => {
       navigate("/thanku");
       localStorage.clear();

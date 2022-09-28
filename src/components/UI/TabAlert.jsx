@@ -30,7 +30,7 @@ export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit }
   useEffect(() => {
     if (warning === 4) {
         setExit(false);
-        finalSubmit();
+        finalSubmit(true);
         setTimeout(()=>{
            navigate('/thanku') 
         },[1000])

@@ -160,7 +160,8 @@ const RegisterStepOne = ({ setregistercredential }) => {
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
   const navigate = useNavigate();
-
+  const date=new Date();
+  const year=date.getFullYear();
   const [credential, setcredential] = useState({
     hName: "",
     email: "",
@@ -266,7 +267,7 @@ const RegisterStepOne = ({ setregistercredential }) => {
             </Stack>
           </Box>
         </Box>
-        <Typography sx={copyright}>Copyright@webkorps2021</Typography>
+        <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
       </Container>
     </>
   );

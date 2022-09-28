@@ -1,11 +1,10 @@
-
-import {  Typography, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import "../../styles/thank.css";
 const MainBox = {
   display: "flex",
   justifyContent: "center",
@@ -21,7 +20,6 @@ const centerBox = {
   background: "#1887C9",
   height: "100vh",
   width: "100%",
- 
 };
 
 const text = {
@@ -55,19 +53,30 @@ const logoText = {
   lineHeight: "52px",
   color: "#1887C9",
 };
+const copyright = {
+  color: "white",
+  textAlign: "center",
+  fontSize: "15px",
+  fontWeight: "600",
+  position: "absolute",
+  bottom: "0",
+  transform: `translate(-50%, -50%)`,
+  left: "50%",
+};
 
 const Thankupage = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const date=new Date();
+  const year=date.getFullYear();
   useEffect(() => {
-    window.onbeforeunload = function() {
-      console.log('akkk')
-        return true;
-        
+    window.onbeforeunload = function () {
+      console.log("akkk");
+      return true;
     };
 
     return () => {
-        window.onbeforeunload = null;
-        console.log('kkk')
+      window.onbeforeunload = null;
+      console.log("kkk");
     };
 }, []);
 
@@ -84,7 +93,16 @@ useEffect(() => {
 
   return (
     <>
-      <Grid container>
+      <div className="box">
+        <h1 className="thank">Thank You</h1>
+        <p className="textt">Your Assessment has been submitted successfully..!</p>
+        <div className="pyro">
+          <div className="before"></div>
+          <div className="after"></div>
+        </div>
+      </div>
+      <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
+      {/* <Grid container>
         <Grid item sx={Headers}>
           <Box ml={2} my={2}>
             <img src={logo} alt="logo" />
@@ -100,7 +118,7 @@ useEffect(() => {
           <Typography sx={pageNot}>Your code is  successfully submitted</Typography>
           
         </Box>
-      </Box>
+      </Box> */}
     </>
   );
 };

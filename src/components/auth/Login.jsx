@@ -139,7 +139,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showMsg, setMsg] = useState(false);
   const [seenPassword, setSeenpassword] = useState(false);
-
+  const date=new Date();
+  const year=date.getFullYear();
   const handleLogin = async () => {
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
@@ -248,7 +249,7 @@ const Login = () => {
             </Stack>
           </Box>
         </Box>
-        <Typography sx={copyright}>Copyright@webkorps2021</Typography>
+        <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
       </Container>
     </>
   );

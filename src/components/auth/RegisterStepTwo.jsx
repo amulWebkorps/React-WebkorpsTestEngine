@@ -179,7 +179,8 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
   const [credential, setcredential] = useState({
     password: "",
   });
-
+  const date=new Date();
+  const year=date.getFullYear();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setcredential({ ...credential, [name]: value });
@@ -333,7 +334,7 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
             </Stack>
           </Box>
         </Box>
-        <Typography sx={copyright}>Copyright@webkorps2021</Typography>
+        <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
       </Container>
     </>
   );
