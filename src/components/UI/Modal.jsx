@@ -16,7 +16,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { addContest } from "../services/adminServices";
-
+import { getAllContestList } from "../services/adminServices";
+import MsgBar from "../auth/base/MsgBar";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -27,14 +28,21 @@ const MenuProps = {
     },
   },
 };
+const MenuPropsfortime = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 100,
+    },
+  },
+};
 const names = ["Level 1", "Level 2"];
+
+const times = ["30 min", "60 min", "90 min", "120 min"];
 
 function getStyles(name, level, theme) {
   return {
-    // fontWeight:
-    //    level.indexOf(name) === -1
-    //     ? theme.typography.fontWeightRegular
-    //     : theme.typography.fontWeightMedium,
+    
   };
 }
 
@@ -113,7 +121,6 @@ const crebtn = {
   fontWeight: "500",
   fontSize: "18px",
   lineHeight: "21px",
-
   color: "#FFFFFF",
 };
 const notbtn = {
@@ -130,24 +137,33 @@ const notbtn = {
   color: "#0057FF",
 };
 const Modal = ({
-  handleClickOpen,
+  setAlert,
   open,
   setOpen,
   setContestDetails,
   contestDetails,
+  fetchContestData,
 }) => {
+  const [showMessage, setshowMessage] = useState(false);
   const [inputData, setInputData] = useState({
     contestName: "",
     contestDescription: "",
     contestLevel: "",
+    contestTime: "",
   });
   const handleClose = () => {
+    setshowMessage(false);
     setOpen(false);
+    inputData.contestName = "";
+    inputData.contestDescription = "";
+    inputData.contestLevel = "";
+    inputData.contestTime = "";
   };
   const theme = useTheme();
 
   const handleOnChange = (e) => {
     e.preventDefault();
+    setshowMessage(false);
     const { name, value } = e?.target;
     setInputData({
       ...inputData,
@@ -156,19 +172,35 @@ const Modal = ({
   };
 
   const createContest = async () => {
-    setContestDetails([...contestDetails, inputData]);
-    try {
-      const response = addContest(inputData).then();
-      if(response){
-        handleClose()
+    if (
+      inputData.contestName === "" ||
+      inputData.contestDescription === "" ||
+      inputData.contestLevel === "" ||
+      inputData.contestTime === ""
+    ) {
+      setshowMessage(true);
+    } else {
+      try {
+        const response = await addContest(inputData);
+        // setContestDetails([...contestDetails, inputData]);
+        fetchContestData();
+        if (response) {
+          handleClose();
+          setAlert(true);
+          setTimeout(() => {
+            setAlert(false);
+          }, 2000);
+        }
+      } catch (error) {
+        alert(error.response.data);
       }
-    } catch (error) {
-      alert(error.response.data)
     }
   };
-
   return (
     <div>
+      {showMessage && (
+        <MsgBar errMsg={"Please fill all details"} color={"red"} />
+      )}
       <Dialog
         open={open}
         onClose={(_, reason) => {
@@ -222,7 +254,6 @@ const Modal = ({
                   }}
                   //   sx={{description}}
                 />
-
                 <FormControl sx={{ width: 300, mt: 2 }}>
                   <label style={label}>Level</label>
                   <Select
@@ -243,6 +274,37 @@ const Modal = ({
                   >
                     <MenuItem disabled value=""></MenuItem>
                     {names.map((name) => (
+                      <MenuItem
+                        key={name}
+                        value={name}
+                        style={getStyles(name, theme)}
+                      >
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
+                  <label style={label}>Time</label>
+                  <Select
+                    displayEmpty
+                    name="contestTime"
+                    value={contestDetails?.contestTime}
+                    onChange={handleOnChange}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => {
+                      if (selected?.length === 0) {
+                        return <em style={secLevel}>Select Time</em>;
+                      }
+                      return selected;
+                    }}
+                    MenuProps={MenuPropsfortime}
+                    sx={level}
+                    inputProps={{ "aria-label": "Without label" }}
+                  >
+                    <MenuItem disabled value=""></MenuItem>
+                    {times.map((name) => (
                       <MenuItem
                         key={name}
                         value={name}

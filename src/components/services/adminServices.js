@@ -1,41 +1,79 @@
 import axios from "axios";
-const ADMIN_LOGIN_URL = `http://localhost:8085/doSignInForAdmin`;
-const ADMIN_REGISTRATION_URL = `http://localhost:8085/adminRegistration`;
-const CREATE_CONTEST = `http://localhost:8085/createContest`;
-const SEND_MAIL = `http:8080/sendMail`;
-const ADD_CONTEST = `http:8080/addContest`;
+import { BASE_URL } from "./base";
+import api from "./api";
+//const BASE_URL = `http://localhost:8085`;
+const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
+const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
+const CREATE_CONTEST = `${BASE_URL}/admin/createContest`;
+const SEND_MAIL = `${BASE_URL}/admin/sendMail`;
+const GET_ALL_CONTEST_LIST = `${BASE_URL}/admin/getAllContestList`;
+const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
+const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
+const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
+const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
 const loginAdmin = (credential) => {
-  return axios.get(ADMIN_LOGIN_URL, {
-    params: {
-      email: credential?.email,
-      password: credential?.password,
-    },
-  });
+
+  return axios.post(ADMIN_LOGIN_URL,credential);
+
+//   return axios.post(ADMIN_LOGIN_URL, credential);
+// >>>>>>> dc51dd10e82606d221a262dd7ec88868bc3b4dcb
 };
 const registerAdmin = (credential) => {
   return axios.post(ADMIN_REGISTRATION_URL, {
     email: credential?.email,
-    hId: "string",
+    hId: "",
     hName: credential?.hName,
     hNumber: credential?.hNumber,
     password: credential?.password,
   });
 };
 
+const getContestDetail = (id) => {
+  return api.get(`${CONTEST_URL}?contestId=${id}`);
+};
+
+const deleteContest = (id) => {
+  return api.delete(`${DELETE_CONTEST}?contestId=${id}`);
+};
+
 const addContest = (contestDetails) => {
-  // axios.post(`http://localhost:8085/createContest`, {
-  //       "contestName": "fresher",
-  //       "contestDescription":"for 1 to 2 year experience",
-  //      "contestLevel": "Level 2"
-  //   })
-  return axios.post(CREATE_CONTEST, {
+  return api.post(CREATE_CONTEST, {
     contestName: contestDetails?.contestName,
     contestDescription: contestDetails?.contestDescription,
     contestLevel: contestDetails?.contestLevel,
+    contestTime: contestDetails?.contestTime,
   });
 };
-const sendMail = (mailAddress) => {
-  return axios.post(SEND_MAIL);
+const sendMail = (Id, mail) => {
+  return api.post(SEND_MAIL, {
+    studentEmails: mail,
+    contestId: [Id],
+  });
 };
 
-export { loginAdmin, registerAdmin, sendMail, addContest };
+const sentMail = () => {
+  return api.get(SENT_MAIL);
+};
+const uploadParticipator = (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  return api.post(UPLOAD_PARTICIAPTOR, formData);
+};
+
+const getAllContestList = () => {
+  return api.get(GET_ALL_CONTEST_LIST);
+};
+
+export {
+  loginAdmin,
+  registerAdmin,
+  sendMail,
+  addContest,
+  getContestDetail,
+  getAllContestList,
+  deleteContest,
+  sentMail,
+  uploadParticipator,
+};
+
+// export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail,viewParticipatorOfContest};

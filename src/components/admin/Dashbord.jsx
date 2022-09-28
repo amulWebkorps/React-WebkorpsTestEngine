@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { Container, Grid, Fab,} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,20 +7,26 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { contestImg,} from "../assests/images";
+import { useSelector } from "react-redux";
+import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
-
 import Modal from "../UI/Modal";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { increment } from "../store/slicers/adminSlice";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import { getAllContestList } from "../services/adminServices";
 
-
+import { getContestDetail } from "../services/adminServices";
+import Popup from "../UI/Popup";
+import MsgBar from "../auth/base/MsgBar";
+import BackButton from "../UI/BackButton";
 
 const containerStyle = {
   overflowY: "auto",
-  height: "68vh",
+  height: "550px",
   background: "linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)",
   display: "flex",
   flexDirection: "row",
@@ -29,22 +35,23 @@ const containerStyle = {
 };
 
 const createContext = {
-  marginTop: "27px",
+  // marginTop: "27px",
   background: "#F9F9F9",
   borderRadius: "18px 18px 0px 0px",
   padding: "30px",
   position: "sticky",
   textAlign: "center",
-  height: "11vh",
+  height: "15px",
 };
 
 const text = {
-  margin: "-10px",
+  marginTop: "-20px",
+  // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "700",
-  fontSize: "48px",
-  lineHeight: "56px",
+  fontSize: "28px",
+  // lineHeight: "56px",
 };
 
 const app = {
@@ -60,24 +67,21 @@ const app = {
 
 const card = {
   width: "220px",
-  maxHeight: "27vh",
+  maxHeight: "211px",
   borderRadius: "11px",
 };
 
 const cardImg = {
   padding: "10px",
 };
-
+const cardBodyx={
+  height: "220px",
+  backgroundColor:"#F8F7F7",
+  overflow:"auto",
+}
 const cardBody = {
-  height: "120vh",
-  background: `linear-gradient(
-    180deg,
-    rgba(24, 135, 201, 0) 0%,
-    rgba(24, 135, 201, 0.224167) 40.42%,
-    rgba(24, 135, 201, 0.4) 100%
-  )`,
-  overflow: "auto",
-  backgroundColor: "#F8F7F7",
+  height: "220px",
+  backgroundColor:"#F8F7F7",
 };
 
 const contestText = {
@@ -99,7 +103,7 @@ const contestDate = {
 const createContest = {
   marginTop: "40px",
   width: "220px",
-  maxHeight: "27vh",
+  maxHeight: "211px",
   borderRadius: "11px",
 };
 
@@ -122,8 +126,8 @@ const delBtn1 = {
 
 const forwardIcon = {
   transform: " rotate(-90deg)",
-  position: "absolute",
-  top: `calc(50% - -78px)`,
+  position: "sticky",
+  top: `50%`,
   color: "white",
 };
 const backIcon = {
@@ -139,80 +143,90 @@ const months = {
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
+  height:"29px",
+  overflowX:'auto',
+  'overflow-wrap':'break-word'
 };
-
-const array = [1, 1, 1];
 const levels = ["Level 1", "Level 2", "ALL"];
-const today = new Date();
-const date =
-  (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()) +
-  "/" +
-  (today.getMonth() + 1 < 10
-    ? "0" + (today.getMonth() + 1)
-    : today.getMonth() + 1) +
-  "/" +
-  today.getFullYear();
-const contestInitialValues={
-  contestName:"",
-  contestDescription:"",
-  contestLevel:""
-}
+const contestInitialValues = {
+  contestName: "",
+  contestDescription: "",
+  contestLevel: "",
+};
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  const location =useLocation();
-  const [presentContestData, setPresentContes]=useState(location?.state?.data?.presentContest)
-  // const [contestDetails, setContestDetails] = useState([{
-  //   contestName:presentContestData?.[0]?.contestName,
-  // contestDescription:presentContestData?.[0]?.contestDescription,
-  // contestLevel:presentContestData?.[0]?.contestLevel}
-  // ]);
-  const [contestDetails, setContestDetails] = useState(
-    presentContestData
-  );
 
-  
-useEffect(() => {
- setPresentContes(location?.state?.data?.presentContest)
-}, [location])
+  const location = useLocation();
 
+  const [showAlert, setAlert] = useState(false);
+  const [bar, setBar] = useState(false);
+  const [delContest, setDelContest] = useState({
+    name: "",
+    id: "",
+    contestId: "",
+  });
+
+  const [confirm, setConfirm] = useState(false);
+  const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
+  const [contestData, setContestData] = useState(null);
   const navigate = useNavigate();
-  const handleContest = () => {
-    navigate("/addQuestion");
+
+  const handleContest = async (id) => {
+    try {
+      const result = await getContestDetail(id);
+      setContestData(result?.data);
+      navigate("/addQuestion", { state: { result } });
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
-  const deleteContest = (id) => {
-    setContestDetails((val) => {
-      return val.filter((val, index) => {
-        return index !== id;
-      });
+  const deleteContest = (id, Name, contestId) => {
+    setDelContest({
+      name: Name,
+      id: id,
+      contestId: contestId,
     });
+    setConfirm(true);
   };
-  console.log("--dashbord----",location);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const handlePop = () => {
+    setConfirm(true);
+  };
 
-  const handleCheck=(index)=>{
-    
-    if (index===0){
+  const handleCheck = (index) => {
+    if (index === 0) {
       navigate("/level1");
-
-    }
-    else if (index===1){
+    } else if (index === 1) {
       navigate("/level2");
-
-    }
-    else if (index===2){
+    } else if (index === 2) {
       navigate("/allavailable");
     }
-    
-    
-  }
+  };
+
+  const fetchContestData = async () => {
+    const response = await getAllContestList();
+    setContestDetails(response.data);
+  };
+
+  useEffect(() => {
+    fetchContestData();
+  }, []);
+
+  // useEffect(() => {
+  //   window.addEventListener("popstate", (event) => {
+  //     navigate("/dashboard");
+  //   });
+  // }, [window, navigate]);
+
   return (
     <div style={app}>
       <Header />
+      <BackButton />
       {showAvailq ? (
         <>
           <Modal
@@ -221,7 +235,31 @@ useEffect(() => {
             handleClickOpen={handleClickOpen}
             setContestDetails={setContestDetails}
             contestDetails={contestDetails}
+            setAlert={setAlert}
+            fetchContestData={fetchContestData}
           />
+          <Popup
+            contestDetails={contestDetails}
+            setContestDetails={setContestDetails}
+            contest={delContest}
+            opens={confirm}
+            setConfirm={setConfirm}
+            setOpen={setOpen}
+            handleClickOpen={handlePop}
+            setBar={setBar}
+          />
+          {bar || showAlert ? (
+            <MsgBar
+              errMsg={
+                bar
+                  ? "Contest Delete Successfully...!"
+                  : "Contest Created Successfully...!"
+              }
+              color={bar ? "blue" : "green"}
+            />
+          ) : (
+            <></>
+          )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
@@ -229,11 +267,13 @@ useEffect(() => {
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
                 return (
-                  <Grid item md={3} mt={5}>
+                  <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
-                          onClick={() => handleContest()}
+                          onClick={() =>
+                            handleContest(contestDetails?.[index]?.contestId)
+                          }
                           style={cardImg}
                           component="img"
                           height="140"
@@ -244,17 +284,26 @@ useEffect(() => {
                           color="primary"
                           aria-label="add"
                           sx={delBtn1}
+                          onClick={() =>
+                            deleteContest(
+                              index,
+                              contestDetails?.[index]?.contestName,
+                              contestDetails?.[index]?.contestId
+                            )
+                          }
                         >
-                          <CancelIcon onClick={() => deleteContest(index)} />
+                          <CancelIcon />
                         </IconButton>
-                        <CardContent sx={cardBody}>
+                        <CardContent  sx={cardBody}>
+                          <div>
                           <h6 style={contestText}>
-                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;{contestDetails?.[index]?.contestLevel}
+                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
+                            {contestDetails?.[index]?.contestLevel}
                           </h6>
                           <p style={months}>
-                            {contestDetails?.[index]?.contestDescription}
+                           {contestDetails?.[index]?.date} ~ {contestDetails?.[index]?.contestDescription}
                           </p>
-                          <p style={contestDate}>Last Changes {date}</p>
+                          </div>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -264,7 +313,7 @@ useEffect(() => {
               <Grid>
                 <Card sx={createContest}>
                   <CardActionArea>
-                    <CardMedia sx={{ paddingBottom: "16px" }}>
+                    <CardMedia sx={{ paddingBottom: "6px" }}>
                       <Fab
                         color="primary"
                         aria-label="add"
@@ -274,17 +323,16 @@ useEffect(() => {
                         <AddIcon fontSize="large" />
                       </Fab>
                     </CardMedia>
-                    <CardContent sx={cardBody}>
-                      <br />
+                    <CardContent sx={cardBodyx}>
+                      {/* <br /> */}
                       <h4 style={contestText}>create contest</h4>
-
                       <p style={months}>add Description</p>
                     </CardContent>
                   </CardActionArea>
                 </Card>
               </Grid>
             </Grid>
-            <Grid ml={-5} mt={5}>
+            <Grid ml={-5} mt={6}>
               <ExpandCircleDownRoundedIcon
                 sx={forwardIcon}
                 fontSize="large"
@@ -307,26 +355,26 @@ useEffect(() => {
             ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
               {levels.map((val, index) => {
-                  
                 return (
-                  <Grid item md={3} mt={5}>
+                  <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
-                      <CardActionArea
-                       onClick={() => handleCheck(index)}>
+                      <CardActionArea onClick={() => handleCheck(index)}>
                         <CardMedia
                           style={cardImg}
                           component="img"
                           height="140"
                           image={contestImg}
                           alt="green iguana"
-                         
                         />
+<<<<<<< HEAD
                        
                         <CardContent sx={cardBody}
                         >
+=======
+
+                        <CardContent sx={cardBody}>
+>>>>>>> newCompiler
                           <h4 style={contestText}>{levels[index]}</h4>
-                          <p style={months}>00 months to 06 months</p>
-                          <p style={contestDate}>Last Changes {date}</p>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -341,7 +389,11 @@ useEffect(() => {
                         color="primary"
                         aria-label="add"
                         sx={addButton}
-                        onClick={() => navigate("/email")}
+                        onClick={() =>
+                          navigate("/email", {
+                            state: { data: contestDetails },
+                          })
+                        }
                       >
                         <AddIcon fontSize="large" />
                       </Fab>

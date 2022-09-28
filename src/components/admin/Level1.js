@@ -1,28 +1,24 @@
 import {
   Grid,
-  Paper,
   Button,
   Card,
+  CardActions,
   CardContent,
   Typography,
   TextField,
   Stack,
   InputAdornment,
-  OutlinedInput,
-  FormControl,
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { FixedSizeList } from "react-window";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
+<<<<<<< HEAD
 import { crossbtn } from "../assests/images";
 function renderRow(props) {
   const { index, style } = props;
@@ -82,14 +78,26 @@ function renderRow(props) {
     </ListItem>
   );
 }
+=======
+import AddedQues from "./AddedQues";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  filterQuestion,
+  saveQuestion,
+} from "../services/contest/contestServices";
+import MsgBar from "../auth/base/MsgBar";
+import { getContestDetail } from "../services/adminServices";
+import { uploadQuestions } from "../services/contest/contestServices";
+import BackButton from "../UI/BackButton";
+>>>>>>> newCompiler
 
 const useStyles = makeStyles({
   container: {
-    height: "100%", // So that grids 1 & 4 go all the way down
-    minHeight: 180, // Give minimum height to a div
+    height: "100%",
+    minHeight: 180,
   },
   containerTall: {
-    minHeight: 250, // This div has higher minimum height
+    minHeight: 250,
   },
   noBorder: {
     border: "none",
@@ -101,6 +109,7 @@ const sideColumn = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: " 18px 0px 0px 18px",
 };
+
 const questionList = {
   height: "100vh",
   background: `linear-gradient(
@@ -112,47 +121,9 @@ const questionList = {
   overflow: "auto",
 };
 
-const delBtn = {
-  position: "absolute",
-  marginTop: "8px",
-  right: "8%",
-  backgroundColor: "#E5E5E5",
-  color: "black",
-  borderRadius: "50%",
-};
-
-const mainContainer = {
-  marginTop: "20px",
-  background: "white",
-  paddingBottom: "20px",
-};
-
-const cardBody = {
-  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
-  borderRadius: "17px",
-};
-
-const addQues = {
-  background: "#F9FAFC",
-};
-const input = {
-  borderColor: "none",
-  background: "#FFFFFF",
-  fontStyle: "normal",
-  fontWeight: 300,
-  fontSize: "18px",
-  lineHeight: "21px",
-};
-
-const testCol = {
-  background: "#F9FAFC",
-};
-const label = {
-  fontFamily: "railway",
-  fontStyle: "normal",
-  fontWeight: "600",
-  fontSize: "18px",
-  lineHeight: "21px",
+const topButton = {
+  display: "flex",
+  justifyContent: "center",
 };
 
 const buttonLevel = {
@@ -172,13 +143,49 @@ const buttonLevel = {
   color: "#FFFFFF",
 };
 
-const levelText = {
-  fontFamily: "Raleway",
-  fontSize: "34px",
+const delBtn = {
+  marginTop: "20px !important",
+  width: "30px !important",
+  fontSize: "smaller",
+
+  backgroundColor: "#E5E5E5",
+  color: "black",
+  borderRadius: "50%",
+};
+
+const mainContainer = {
+  marginTop: "20px",
+  background: "white",
+};
+
+const cardBody = {
+  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
+  borderRadius: "17px",
+};
+
+const addQues = {
+  background: "#F9FAFC",
+};
+
+const input = {
+  borderColor: "none",
+  background: "#FFFFFF",
+  fontStyle: "normal",
+  fontWeight: 300,
+  fontSize: "18px",
+  lineHeight: "21px",
+};
+
+const testCol = {
+  background: "#F9FAFC",
+};
+
+const label = {
+  fontFamily: "railway",
+  fontStyle: "normal",
   fontWeight: "600",
-  lineHeight: "40px",
-  letterSpacing: "0em",
-  textAlign: "left",
+  fontSize: "18px",
+  lineHeight: "21px",
 };
 
 const btn = {
@@ -186,22 +193,21 @@ const btn = {
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
-  
+  width: "160px",
 };
-const btnAdd = {
+
+const Addbtn = {
   fontSize: "8",
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
-  width: "150px",
 };
 
-const levelSubHeading = {
-  width: "100%",
-  height: "89px",
-  background: "#F9FAFC",
-  borderRadius: "17px 17px 0px 0px",
+const testInitialFields = {
+  input: "",
+  output: "",
 };
+<<<<<<< HEAD
 
 const divText = {
   width: "515px",
@@ -213,64 +219,246 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   margin: "20px",
+=======
+const sampleTestInitialFields = {
+  constraints: "",
+  input: "",
+  output: "",
+>>>>>>> newCompiler
 };
-
-const scrollDiv = {
-  overflowY: "auto",
+const problemStatementIntialVal = {
+  question: "",
 };
-
-const divSelect = {
-  width: "1120px",
-  height: "76px",
-  background: "#FFFFFF",
-  boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
-  borderRadius: "14px",
-  marginTop: "10px",
-};
-
-const containerUpper = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-};
-
-const editQuestion = {
-  width: "147px",
-  height: "28px",
-
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "300",
-  fontSize: "20px",
-  lineHeight: "28px",
-  textDecorationLine: "underline",
-  paddingTop: "15px",
-  color: "#0057ff",
-};
-
-const array = [1, 2, 3, 4, 5, 6, 4, 4, 45, 5, 5, 1, 22, 5, 5, 4, 5, 6];
-
 const Level1 = () => {
-  const [showq, setShowQ] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const classes = useStyles();
-  const handleOnchange = (e) => {
-    console.log(e.target.value);
+  const [contestData, setContestData] = useState(
+    location?.state?.data?.contest
+  );
+  const [quesId, setQuesId] = useState(null);
+  const [index, setIndex] = useState(null);
+  const [editRef, setEditRef]=useState(null);
+  const defaulValues = {
+    questionId: quesId === null ? "" : quesId,
+    questionStatus: "true",
+    contestLevel: `Level 1`,
   };
-  return (
-    <div style={questionList}>
-      <Header />
-      <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item>
-          <Box variant="contained" sx={buttonLevel}>
-            Level1 Questions
-          </Box>
-        </Grid>
-      </Grid>
 
-      <Container sx={mainContainer}>
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
+  };
+
+  const [question, setQuestion] = useState(quesIntialField);
+  const [problemStatement, setProblemStatement] = useState(
+    problemStatementIntialVal
+  );
+  const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
+  const [testCases, setTestCases] = useState(testInitialFields);
+  const [testCaseList, setTestCaseList] = useState([]);
+  const [contestQuestion, setContestQuestion] = useState(null);
+  const [editQuestion, setEditQuestion] = useState(false);
+  const [delFromContest, setDelFromContest] = useState({
+    state: false,
+  });
+  const [availableQuestions, setAvailableQuestions] = useState();
+  const [showAlert, setAlert] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
+  const [msg, setMsg] = useState({
+    errMsg: "",
+    color: "",
+  });
+  const handleConstraintChange = (e) => {
+    const { name, value } = e.target;
+    setSampleTestCase({
+      ...sampleTestCase,
+      [name]: value,
+    });
+  };
+
+  const handleTestChange = (e) => {
+    const { name, value } = e.target;
+
+    setTestCases({
+      ...testCases,
+      [name]: value,
+    });
+  };
+
+  const handelQuestionChange = (e) => {
+    const { name, value } = e.target;
+    setProblemStatement({
+      ...problemStatement,
+      [name]: value,
+    });
+  };
+
+  const handleFocus = () => {
+    setQuestion({
+      ...question,
+      questionId: defaulValues?.questionId,
+      question: problemStatement?.question,
+      contestLevel: defaulValues?.contestLevel,
+      questionStatus: defaulValues?.questionStatus,
+      sampleTestCase: [sampleTestCase],
+      testcases: testCaseList,
+    });
+  };
+
+  const addTest = () => {
+    setTestCaseList([...testCaseList, testCases]);
+    setTestCases(testInitialFields);
+  };
+
+  const addQuestion = async (e) => {
+    if (
+      problemStatement.question === "" ||
+      sampleTestCase.constraints === "" ||
+      sampleTestCase?.input === "" ||
+      sampleTestCase?.output === "" ||
+      testCaseList.length === 0
+    ) {
+      // setAlert(true);
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Please fill details...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+      }, 1200);
+    } else {
+      setAlert(true);
+      try {
+        const result = await saveQuestion(question);
+        setQuesId(null);
+        setQuestion(quesIntialField);
+        setProblemStatement(problemStatementIntialVal);
+        setTestCases(sampleTestInitialFields);
+        setSampleTestCase(sampleTestInitialFields);
+        setTestCaseList([]);
+        setTimeout(() => {
+          setAlert(false);
+        }, 1200);
+        if (editQuestion) {
+          setMsg({
+            errMsg: "Question edit successfully...!",
+            color: "green",
+          });
+          console.log("editquestion");
+          setEditQuestion(false);
+          setQuestion(quesIntialField);
+          setProblemStatement(problemStatementIntialVal);
+          setTestCases(sampleTestInitialFields);
+          setSampleTestCase(sampleTestInitialFields);
+          setTestCaseList([]);
+          return (contestQuestion[index] = question);
+        } else {
+          setMsg({
+            errMsg: "Question added successfully...!",
+            color: "green",
+          });
+          console.log("editquestion else");
+          setContestQuestion([...contestQuestion, question]);
+          setQuestion(quesIntialField);
+          setProblemStatement(problemStatementIntialVal);
+          setTestCases(sampleTestInitialFields);
+          setSampleTestCase(sampleTestInitialFields);
+          setTestCaseList([]);
+        }
+      } catch (error) {
+        console.log("error");
+      }
+    }
+  };
+
+  const delTestCase = (id) => {
+    setTestCaseList((val) => {
+      return val.filter((a, index) => index !== id);
+    });
+  };
+
+  const editTestcase = (e, id) => {
+    const { name, value } = e.target;
+    setTestCaseList((prevState) => {
+      const newState = prevState.map((obj, inn) => {
+        if (index === inn) {
+          return { ...obj, [name]: value };
+        }
+        return obj;
+      });
+      return newState;
+    });
+  };
+  const uploadQuestion = async (e) => {
+    const { files } = e.target;
+    setAlert(true);
+    try {
+      const result = await uploadQuestions(files[0],"","Level 1");
+      // setContestQuestion([...contestQuestion, ...result]);
+      setMsg({
+        errMsg: "Question uploaded successfully...!",
+        color: "green",
+      });
+      setTimeout(() => {
+        setAlert(false);
+      }, 1200);
+    } catch (error) {
+      setAlert(false);
+      console.log("ee", error);
+    }
+  };
+
+  useEffect(() => {
+    filtersQuestions();
+   
+  }, [showAlert]);
+
+  const filtersQuestions = async() =>{
+    try {
+      const res = await filterQuestion("Level 1");
+      const response = res.data;
+      setContestQuestion(response);
+    } catch (error) {
+      console.log(error);
+    }
+   
+  }
+
+  // useEffect(()=>{
+  // const result= filterQuestion("All").then((res)=>{
+  //   const response=res.data
+  //   setAvailableQuestions(response);
+  // })
+  // },[])
+
+  return (
+    <div id="body" style={questionList}>
+      <Header/>
+      <BackButton />
+      <Container sx={topButton}>
+        {showAlert || showValidation ? (
+          <MsgBar errMsg={msg.errMsg} color={msg.color} />
+        ) : (
+          <></>
+        )}
+        <Grid container sx={{ justifyContent: "center" }}>
+          <Grid item>
+            <Box variant="contained" sx={buttonLevel}>
+              Level 1 Questions
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+      <Container sx={mainContainer} ref={editRef}>
         <Grid>
           <Card sx={cardBody}>
-            <CardContent>
+            <CardContent >
               <Grid container direction="row" spacing={0}>
                 <Grid item xs={0.3}>
                   <div className={classes.container} style={sideColumn}></div>
@@ -287,11 +475,14 @@ const Level1 = () => {
                       <Typography sx={label} display="inline">
                         Write Problem statement
                       </Typography>
-                      {/* <label style={label}>Write Problem statement</label> */}
+
                       <TextField
                         multiline
                         rows={3}
                         maxRows={10}
+                        onChange={handelQuestionChange}
+                        name="question"
+                        value={problemStatement?.question}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
@@ -299,26 +490,26 @@ const Level1 = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={handleOnchange}
                         fullWidth
                         id="fullWidth"
                         placeholder="Write Problem statement here"
                         mt={5}
                         sx={input}
-                        x
                       />
                       <br />
                       <br />
                       <Typography sx={label} display="inline">
                         Constraints
                       </Typography>
-                      {/* <label style={label}>Constraints</label> */}
                       <TextField
                         multiline
                         rows={3}
                         maxRows={10}
                         sx={input}
                         fullWidth
+                        onChange={handleConstraintChange}
+                        name="constraints"
+                        value={sampleTestCase?.constraints}
                         id="fullWidth"
                         placeholder="Write Constraints here"
                         InputProps={{
@@ -343,6 +534,9 @@ const Level1 = () => {
                           <TextField
                             id="fullWidth"
                             placeholder="Input here"
+                            onChange={handleConstraintChange}
+                            name="input"
+                            value={sampleTestCase?.input}
                             multiline
                             rows={3}
                             maxRows={10}
@@ -364,6 +558,9 @@ const Level1 = () => {
                             multiline
                             rows={3}
                             maxRows={10}
+                            onChange={handleConstraintChange}
+                            name="output"
+                            value={sampleTestCase?.output}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
@@ -385,8 +582,23 @@ const Level1 = () => {
                         justifyContent={"flex-end"}
                         mt={2}
                       >
-                        <Button variant="contained" sx={btnAdd}>
-                          Add Question
+                        <Button
+                          variant="contained"
+                          sx={btn}
+                          onMouseOver={handleFocus}
+                          onClick={addQuestion}
+                        >
+                          {editQuestion ? `Edit Question` : `Add Question`}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          startIcon={<NoteAddIcon />}
+                          onChange={uploadQuestion}
+                          onClick={(e)=>e.target.value=null}
+                        >
+                          Upload File
+                          <input hidden accept="file/*" multiple type="file" />
                         </Button>
                       </Stack>
                     </Grid>
@@ -417,6 +629,9 @@ const Level1 = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Input here"
+                              onChange={handleTestChange}
+                              name="input"
+                              value={testCases?.input}
                             />
                           </Grid>
                           <Grid item xs={5}>
@@ -427,6 +642,9 @@ const Level1 = () => {
                               sx={input}
                               id="fullWidth"
                               placeholder="Output here"
+                              onChange={handleTestChange}
+                              name="output"
+                              value={testCases?.output}
                             />
                           </Grid>
                         </Grid>
@@ -446,16 +664,54 @@ const Level1 = () => {
                             width: "100%",
                             height: 180,
                             bgcolor: "white",
+                            overflowY: "overlay",
                           }}
                         >
-                          <FixedSizeList
-                            height={180}
-                            itemSize={80}
-                            itemCount={4}
-                            overscanCount={5}
-                          >
-                            {renderRow}
-                          </FixedSizeList>
+                          {testCaseList?.map((val, index) => {
+                            {
+                              console.log("index from map", index);
+                            }
+                            return (
+                              <Box
+                                component="form"
+                                sx={{
+                                  "& > :not(style)": { m: 1, width: "15ch" },
+                                }}
+                                noValidate
+                                autoComplete="off"
+                              >
+                                <TextField
+                                  name="input"
+                                  value={val?.input}
+                                  placeholder="testcase input"
+                                  multiline
+                                  rows={1}
+                                  onChange={(e) => editTestcase(e, index)}
+                                  maxRows={10}
+                                  color="primary"
+                                  focused
+                                />
+                                <TextField
+                                  name="output"
+                                  value={val?.output}
+                                  onChange={(e) => editTestcase(e, index)}
+                                  placeholder="testcase output"
+                                  multiline
+                                  rows={1}
+                                  maxRows={10}
+                                  color="primary"
+                                  focused
+                                />
+                                <IconButton
+                                  aria-label="add"
+                                  sx={delBtn}
+                                  onClick={(e) => delTestCase(index)}
+                                >
+                                  <CloseIcon fontSize="x-small" />
+                                </IconButton>
+                              </Box>
+                            );
+                          })}
                         </Grid>
                         <Stack
                           spacing={2}
@@ -463,8 +719,16 @@ const Level1 = () => {
                           justifyContent={"flex-end"}
                           mt={2}
                         >
-                          <Button variant="contained" sx={btn}>Add</Button>
-                          <Button variant="contained" sx={btn}>Close</Button>
+                          <Button
+                            variant="contained"
+                            sx={Addbtn}
+                            onClick={addTest}
+                          >
+                            Add
+                          </Button>
+                          <Button variant="contained" sx={Addbtn}>
+                            Close
+                          </Button>
                         </Stack>
                       </Container>
                     </div>
@@ -472,8 +736,10 @@ const Level1 = () => {
                 </Grid>
               </Grid>
             </CardContent>
+            <CardActions></CardActions>
           </Card>
         </Grid>
+<<<<<<< HEAD
         <Grid sx={containerUpper} mt={3}>
           <Grid item sx={levelSubHeading}>
             <Typography sx={levelText} m={2}>
@@ -500,6 +766,28 @@ const Level1 = () => {
             );
           })}
         </Grid>
+=======
+        <AddedQues
+          setMsg={setMsg}
+          setEditRef={setEditRef}
+          availableQuestions={availableQuestions}
+          setAvailableQuestions={setAvailableQuestions}
+          question={question}
+          setQuestion={setQuestion}
+          setContestQuestion={setContestQuestion}
+          contestQuestion={contestQuestion}
+          setEditQuestion={setEditQuestion}
+          setQuesId={setQuesId}
+          quesId={quesId}
+          setAlert={setAlert}
+          delFromContest={delFromContest}
+          setProblemStatement={setProblemStatement}
+          setTestCaseList={setTestCaseList}
+          setSampleTestCase={setSampleTestCase}
+          setIndex={setIndex}
+          level={true}
+        />
+>>>>>>> newCompiler
       </Container>
     </div>
   );
