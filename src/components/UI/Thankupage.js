@@ -72,9 +72,13 @@ const Thankupage = () => {
 }, []);
 useEffect(() => {
   window.addEventListener("popstate", (event) => {
-    console.log("INSIDE!");
-    navigate('/thanku')
+    navigate("/thanku");
   });
+  if (window.location.pathname === "/thanku") {
+    navigate("/thanku");
+  } else {
+    navigate("/thanku");
+  }
 }, [window, navigate]);
 
   return (

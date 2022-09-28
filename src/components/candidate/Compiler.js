@@ -215,6 +215,15 @@ const Compiler = () => {
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
+ useEffect(()=>{
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState==='hidden'){
+      console.log('you changed tab');
+    }
+  
+ })
+ },[])
+  
 
   $(document).ready(function () {
     var ctrlDown = false,
@@ -542,18 +551,6 @@ const Compiler = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (performance.navigation.type === 1 && !exit) {
-  //     setExit(false);
-  //     finishTest();
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [2000]);
-  //     console.log("page is refreshed");
-  //   } else {
-  //   }
-  // }, []);
   const handleFinish = () => {
     setExit(false);
     finishTest();
