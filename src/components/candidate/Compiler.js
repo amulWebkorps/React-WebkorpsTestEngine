@@ -30,6 +30,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
+import TabAlert from "../UI/TabAlert";
 
 const div1 = {
   height: "445px",
@@ -203,7 +204,7 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const [submitted, setSubmitted] = useState([]);
+  const[warning, setWarning]=useState(0);
   const navigate = useNavigate();
   const [localData, setLocalData] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -211,6 +212,7 @@ const Compiler = () => {
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
+  const[open,setOpen]=useState(false);
   const timerGet = duration?.match(/\d/g)?.join("");
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
@@ -218,13 +220,13 @@ const Compiler = () => {
  useEffect(()=>{
   document.addEventListener('visibilitychange', function(){
     if(document.visibilityState==='hidden'){
-      console.log('you changed tab');
-    }
-  
- })
- },[])
-  
+      setWarning(warning+1)
+     setOpen(true);
 
+    }
+ })
+ },[warning])
+  console.log(warning)
   $(document).ready(function () {
     var ctrlDown = false,
       ctrlKey = 17,
@@ -471,10 +473,6 @@ const Compiler = () => {
       if (res?.data) {
         setTestRecord(res.data?.testCasesSuccess);
         setShow(false);
-        setSubmitted([
-          ...submitted,
-          profile.participatorsContestDetails?.QuestionList[count]?.questionId,
-        ]);
         setShowError(true);
         handleNext();
         setShow(false);
@@ -538,20 +536,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest();
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest();
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = () => {
     setExit(false);
@@ -563,7 +561,6 @@ const Compiler = () => {
   };
   const token = localStorage.getItem("token");
   useEffect(() => {
-  console.log('----------',token);
   if (token === null) {
     setExit(false);
     setTimeout(()=>{
@@ -574,6 +571,13 @@ const Compiler = () => {
   return (
     <Box>
       <Header setShow={true} />
+      <TabAlert
+      setExit={setExit}
+      warning={warning}
+        open={open}
+        setOpen={setOpen  }
+        finalSubmit={finishTest}
+      />
       <Box className="background1">
         {showError && (
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
