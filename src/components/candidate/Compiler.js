@@ -229,7 +229,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-    $(".no-copy-paste").keydown(function (e) {
+    $(".no-copy-pastee").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -331,7 +331,8 @@ const Compiler = () => {
       Object["code"] = defCode?.[i];
       newArray.push(Object);
     }
-    return setFinishCodes(newArray);
+    setFinishCodes(newArray);
+    return finishCodes
   };
 
   const finishTest = async () => {
@@ -348,7 +349,7 @@ const Compiler = () => {
     }
   };
 
-  const runCodes = async (flag, state) => {
+  const runCodes = async (flag) => {
     setLoading(true);
     setShowTestCase(true);
     try {
@@ -527,6 +528,7 @@ const Compiler = () => {
     deadline.setSeconds(deadline.getSeconds() + changeseconds);
     return deadline;
   };
+
   const isRefreshed = sessionStorage.getItem("isRefreshed");
   useEffect(() => {
     if (isRefreshed) {
@@ -731,11 +733,7 @@ const Compiler = () => {
                   ) : (
                     <Grid sx={testCaseData}>
                       <Box m={3} mt={2} sx={testCaseText2}>
-                        {/* runCode?.testCasesSuccess? */}
-                        {testRecord?.[count]?.map((val, index) => {
-                          {
-                            /* {console} */
-                          }
+                        {testRecord?.[count]?.map((val, index) => {  
                           return (
                             <Box key={index} sx={textTestCases}>
                               <span>TestCase {index + 1}</span>
@@ -835,7 +833,6 @@ const Compiler = () => {
                   sx={buttonTest}
                   onClick={() => {
                     submitCodes("1");
-                    // runCodes("1");
                   }}
                   disabled={show}
                 >
