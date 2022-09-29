@@ -230,24 +230,17 @@ const Dashbord = () => {
       }
       setContestDetails(response.data);
     } catch (error) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 3000);
+      console.log(error);
+      // setError(true);
+      // setTimeout(() => {
+      //   setError(false);
+      // }, 3000);
       setloader(false);
     }
   };
-
   useEffect(() => {
     fetchContestData();
   }, []);
-
-  // useEffect(() => {
-  //   window.addEventListener("popstate", (event) => {
-  //     navigate("/dashboard");
-  //   });
-  // }, [window, navigate]);
-
   return (
     <div style={app}>
       <Header />

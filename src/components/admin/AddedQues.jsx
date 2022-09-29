@@ -138,25 +138,29 @@ const AddedQues = ({
   };
 
   const delQuestion = async (id, quesId) => {
-    setAlert(true);
+    
     const arr = [
       delFromContest.state ? delFromContest.contestId : `questionForLevel`,
       quesId,
     ];
     try {
       const result = await deleteQuestion(arr);
-      setContestQuestion((val) => {
-        return val.filter((val, index) => {
-          return index !== id;
-        });
-      });
-      // const response = result?.data;
+      setAlert(true);
+      // setContestQuestion((val) => {
+      //   return val.filter((val, index) => {
+      //     return index !== id;
+      //   });
+      // });
       setMsg({
         errMsg: "Question deleted successfully...!",
         color: "red",
       });
       setTimeout(() => {
         setAlert(false);
+        setMsg({
+          errMsg:"",
+          color:""
+        });
       }, 1200);
       // if (response) {
       //   // setDeleteQ(true);

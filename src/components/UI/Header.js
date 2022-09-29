@@ -50,8 +50,8 @@ const Header = ({ setShow, setColor }) => {
         </Box>
         {!setShow && (
           <>
-            <Box mt={4} sx={logoutButton} onClick={handleClose}>
-           <Button variant="link">Logout</Button>   
+            <Box mt={4} sx={logoutButton} >
+           <Button variant="link" onClick={handleClose}>Logout</Button>   
             </Box>
           </>
         )}

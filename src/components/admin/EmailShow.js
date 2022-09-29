@@ -158,8 +158,13 @@ const EmailShow = () => {
       alert: true,
       loader: false,
     });
+    setMsg({
+      errMsg: "Participator deleted Successfully...!",
+      color: "red",
+    });
     try {
       const result = await deletestudent(mail);
+      
       setMsg({
         errMsg: "Participator deleted Successfully...!",
         color: "red",
@@ -350,12 +355,12 @@ console.log(filteredResults)
           
           <Grid container sx={{ display: "flex", justifyContent: "center" }}>
               {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
-                <Typography  sx={dataText}>No data</Typography>
+               <> <Typography  sx={dataText}>No data</Typography><br/>
+                </>
               ) : searchString?.length > 1 ? (
                 filteredResults.map((val, index) => {
                   return (
                     <Grid key={`${index}-${val}`} container sx={divSelect}>
-                 
                       <Grid item sm={10} sx={scrollDiv}>
                         <Typography sx={divText}>{val}</Typography>
                       </Grid>

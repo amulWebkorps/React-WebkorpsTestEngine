@@ -183,6 +183,12 @@ const Login = () => {
   const handleChange = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
   };
+  const tokens=localStorage.getItem('token');
+  useEffect(()=>{
+    if(tokens!=null){
+      navigate('/dashboard')
+    }
+  },[])
   return (
     <>
       <Grid container>

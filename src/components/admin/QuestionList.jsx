@@ -283,10 +283,15 @@ const QuestionList = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
+        setMsg({
+          errMsg:"",
+          color:""
+        });
       }, 1200);
     } else {
-      setAlert(true);
+      
       try {
+        setAlert(true);
         const result = await saveQuestion(question);
         setQuesId(null);
         setQuestion(quesIntialField);
@@ -354,7 +359,6 @@ const QuestionList = () => {
         contestData?.contestId,
         ""
       );
-      // setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
         color: "green",
