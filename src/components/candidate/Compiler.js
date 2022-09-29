@@ -185,11 +185,12 @@ const textTestCases = {
 const Compiler = () => {
   const location = useLocation();
   const [error, setError] = useState(null);
-  const [codeValue, setCodeValue] = useState();
-  const [finishCodes, setFinishCodes] = useState([{
-    questionId:"",
-    code:""
-  }]);
+  const [finishCodes, setFinishCodes] = useState([
+    {
+      questionId: "",
+      code: "",
+    },
+  ]);
   const [quesIds, setQuesIds] = useState(
     location?.state?.participatorData?.questionId
   );
@@ -204,32 +205,29 @@ const Compiler = () => {
   const [showTestCase, setShowTestCase] = useState(false);
   const [showCompilationError, setshowCompilationError] = useState();
   const [showError, setShowError] = useState(false);
-  const Ref = useRef(null);
-  const ref = useRef(null);
   const [timer, setTimer] = useState("00:00:00");
-  const[warning, setWarning]=useState(0);
-  const navigate = useNavigate();
-  const [localData, setLocalData] = useState([]);
+  const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
-  const [duration, setDuration] = useState(
-    location?.state?.participatorsContestDetails?.contestTime?.contestTime
-  );
-  const[open,setOpen]=useState(false);
+  const [duration, setDuration] = useState(location?.state?.participatorsContestDetails?.contestTime?.contestTime);
+  const [open, setOpen] = useState(false);
   const timerGet = duration?.match(/\d/g)?.join("");
+  const Ref = useRef(null);
+  const ref = useRef(null);
+  const navigate = useNavigate();
   const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
   const timeOut = true;
- useEffect(()=>{
-  document.addEventListener('visibilitychange', function(){
-    if(document.visibilityState==='hidden'){
-      setWarning(warning+1)
-     setOpen(true);
 
-    }
- })
- },[warning])
-  console.log(warning)
+  useEffect(() => {
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        setWarning(warning + 1);
+        setOpen(true);
+      }
+    });
+  }, [warning]);
+
   $(document).ready(function () {
     var ctrlDown = false,
       ctrlKey = 17,
@@ -260,6 +258,7 @@ const Compiler = () => {
       setshowCompilationError(true);
     }
   }, [runCode]);
+
   useEffect(() => {
     getDefaultCode();
     handleQuestionAndCode();
@@ -296,7 +295,6 @@ const Compiler = () => {
         if (timer === "00:00:01") {
           setExit(false);
           finishTest(true);
-          // setRunCode(resultData.data);
           setShowTestCase(true);
         }
         if (timer === "00:00:01") {
@@ -308,6 +306,8 @@ const Compiler = () => {
       }
     }
   }, [timer]);
+
+
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
@@ -333,10 +333,9 @@ const Compiler = () => {
     }
     setTestRecord(testArray);
     setDefCode(newArray);
-    setLocalData(defCode);
   };
 
-  const handleQuestionAndCode = async(codeData) => {
+  const handleQuestionAndCode = async (codeData) => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
     console.log(quesIds);
     var newArray = [];
@@ -346,9 +345,8 @@ const Compiler = () => {
       Object["code"] = codeData?.[i];
       newArray.push(Object);
     }
-   await setFinishCodes(newArray);
-   localStorage.setItem("code", JSON.stringify(newArray));
-    
+    await setFinishCodes(newArray);
+    localStorage.setItem("code", JSON.stringify(newArray));
   };
 
   const finishTest = async (timeOut) => {
@@ -358,7 +356,7 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: "1",
-        timeOut:timeOut,
+        timeOut: timeOut,
         questionsAndCode: JSON.parse(localStorage.getItem("code")),
       });
     } catch (error) {
@@ -372,11 +370,10 @@ const Compiler = () => {
     try {
       const resultData = await runAndCompilerCode({
         language: profile.participatorsContestDetails?.languageCode?.language,
-        // questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        timeOut:false,
+        timeOut: false,
         questionsAndCode: [
           {
             questionId:
@@ -421,20 +418,17 @@ const Compiler = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const onChange = async(codeData) => {
-    console.log(codeData)
-    
-     setCodeValue(codeData);
-    // setShowTestCase(false);
+  const handleChange = async (codeData) => {
+    console.log(codeData);
     const newState = defCode.map((val, index) => {
       if (index === count) {
         return codeData;
       }
       return val;
     });
-   await setDefCode(newState);
-   handleQuestionAndCode(newState);
-    return finishCodes,defCode;
+    await setDefCode(newState);
+    handleQuestionAndCode(newState);
+    return finishCodes, defCode;
   };
 
   const nextQuestion = (e) => {
@@ -448,8 +442,6 @@ const Compiler = () => {
           profile.participatorsContestDetails?.QuestionList?.length);
       }
     });
-    setCodeValue(location?.state?.defaultCode);
-    // setShowTestCase(false);
   };
 
   const prevQuestion = (e) => {
@@ -470,12 +462,9 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: flag,
-        timeOut:false,
+        timeOut: false,
         questionsAndCode: [
-          {
-            questionId:
-              profile.participatorsContestDetails?.QuestionList[count]
-                ?.questionId,
+          {questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,
             code: defCode[count],
           },
         ],
@@ -486,9 +475,6 @@ const Compiler = () => {
         setShowError(true);
         handleNext();
         setShow(false);
-        setCodeValue(
-          profile?.participatorsContestDetails?.languageCode?.codeBase
-        );
         setShowTestCase(false);
       }
     } catch (error) {
@@ -498,8 +484,7 @@ const Compiler = () => {
 
   const handleNext = () => {
     if (
-      profile?.participatorsContestDetails?.QuestionList?.length - 1 ===
-      count
+      profile?.participatorsContestDetails?.QuestionList?.length - 1 ===count
     ) {
     } else {
       setCount(count + 1);
@@ -561,7 +546,7 @@ const Compiler = () => {
   //   }
   // }, []);
 
-  const handleFinish = async() => {
+  const handleFinish = async () => {
     setExit(false);
     try {
       const res = await finish({
@@ -569,7 +554,7 @@ const Compiler = () => {
         contestId: profile.participatorsContestDetails?.contestId,
         studentId: profile.participatorsContestDetails?.studentId,
         flag: "1",
-        timeOut:true,
+        timeOut: true,
         questionsAndCode: JSON.parse(localStorage.getItem("code")),
       });
     } catch (error) {
@@ -580,24 +565,26 @@ const Compiler = () => {
       localStorage.clear();
     }, [100]);
   };
+
   const token = localStorage.getItem("token");
   useEffect(() => {
-  if (token === null) {
-    setExit(false);
-    setTimeout(()=>{
-      navigate(`/login/:id`);
-    },[200])
-  }
-}, []);
+    if (token === null) {
+      setExit(false);
+      setTimeout(() => {
+        navigate(`/login/:id`);
+      }, [200]);
+    }
+  }, []);
+
   return (
     <Box>
       <Header setShow={true} />
       <TabAlert
-      setExit={setExit}
-      warning={warning}
-      open={open}
-      setOpen={setOpen  }
-      finalSubmit={finishTest}
+        setExit={setExit}
+        warning={warning}
+        open={open}
+        setOpen={setOpen}
+        finalSubmit={finishTest}
       />
       <Box className="background1">
         {showError && (
@@ -765,7 +752,7 @@ const Compiler = () => {
                   ) : (
                     <Grid sx={testCaseData}>
                       <Box m={3} mt={2} sx={testCaseText2}>
-                        {testRecord?.[count]?.map((val, index) => {  
+                        {testRecord?.[count]?.map((val, index) => {
                           return (
                             <Box key={index} sx={textTestCases}>
                               <span>TestCase {index + 1}</span>
@@ -820,9 +807,6 @@ const Compiler = () => {
               </Container>
               <Box>
                 <AceEditor
-                  onLoad={(e)=>{let s =e?._eventRegistry?.focus;
-                  s=true;
-                  }}
                   className="no-copy-paste"
                   mode={
                     location?.state?.language == "Java"
@@ -845,8 +829,7 @@ const Compiler = () => {
                   height="405px"
                   width="45.7vw"
                   value={defCode?.[count]}
-                  
-                  onChange={onChange}
+                  onChange={handleChange}
                   defaultValue={defCode?.[count]}
                   fontSize="20px"
                 />
@@ -863,7 +846,6 @@ const Compiler = () => {
                 >
                   Run
                 </Button>
-
                 <Button
                   variant="contained"
                   sx={buttonTest}
