@@ -241,7 +241,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-    $(".no-copy-pastee").keydown(function (e) {
+    $(".no-copy-paste").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -531,20 +531,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  // const isRefreshed = sessionStorage.getItem("isRefreshed");
-  // useEffect(() => {
-  //   if (isRefreshed) {
-  //     setExit(false);
-  //     finishTest(true);
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [1000]);
-  //     sessionStorage.removeItem("isRefreshed");
-  //   } else {
-  //     sessionStorage.setItem("isRefreshed", true);
-  //   }
-  // }, []);
+  const isRefreshed = sessionStorage.getItem("isRefreshed");
+  useEffect(() => {
+    if (isRefreshed) {
+      setExit(false);
+      finishTest(true);
+      setTimeout(() => {
+        navigate("/thanku");
+        localStorage.clear();
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
+    } else {
+      sessionStorage.setItem("isRefreshed", true);
+    }
+  }, []);
 
   const handleFinish = async () => {
     setExit(false);
