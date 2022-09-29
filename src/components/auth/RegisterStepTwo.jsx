@@ -25,7 +25,7 @@ const ContainerStyle = {
   backgroundRepeat: "noRepeat",
   backgroundSize: "cover",
   position: "relative",
-  height: "86vh",
+  height: "86.8vh",
   width: "100%",
   display: "flex",
   justifyContent: "center",
@@ -176,53 +176,57 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
   const [showalertpassword, setalertpassword] = useState(false);
   const [conditionpassword, setconditionpassword] = useState(false);
   const [showemail, setshowemail] = useState(false);
-  const [credential, setcredential] = useState({
-    password: "",
-  });
   const date=new Date();
   const year=date.getFullYear();
+  // const [credential, setcredential] = useState({
+  //   password: "",
+  // });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setcredential({ ...credential, [name]: value });
+    // setcredential({ ...credential, [name]: value });
     setregistercredential({ ...registercredential, [name]: value });
   };
 
   const register = async () => {
-    if (credential.password === "" || confirmPassword === "") {
+    if (registercredential.password === "" || confirmPassword === "") {
       setalertpassword(true);
       setTimeout(() => {
         setalertpassword(false);
       }, 2000);
-    } else if (credential.password !== confirmPassword) {
+    } else if (registercredential.password !== confirmPassword) {
       setfillalert(true);
       setTimeout(() => {
         setfillalert(false);
       }, 2000);
     } else if (
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#@?&]{8,}$/.test(
-        credential.password
+        registercredential.password
       ) === false
     ) {
       setconditionpassword(true);
       setTimeout(() => {
         setconditionpassword(false);
       }, 3000);
-    } else if (credential.password === confirmPassword) {
+    } else if (registercredential.password === confirmPassword) {
       try {
         const response = await registerAdmin(registercredential);
         setAlert(true);
         setTimeout(() => {
+          setregistercredential([{
+            hName: "",
+            email: "",
+            hNumber: "",
+            password: "",
+          }])
           navigate("/");
-        }, 3500);
+        }, 2000);
       } catch (error) {
         setshowemail(true);
         setTimeout(() => {
           setshowemail(false);
         }, 2000);
       }
-    } else {
-      setalertpassword(true);
-      setAlert(false);
     }
   };
 
@@ -243,7 +247,7 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
   return (
     <>
       <Grid container>
-        <Header setColor={true} />
+        <Header setColor={true} setShow={true}/>
       </Grid>
 
       {showAlert && (
@@ -285,10 +289,10 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
                 star={"*"}
                 type={seenPassword ? "text" : "password"}
                 onChange={handleChange}
-                value={credential.password}
+                value={registercredential.password}
                 name="password"
               />
-              {credential?.password !== "" &&
+              {registercredential?.password !== "" &&
                 (seenPassword ? (
                   <VisibilityIcon
                     sx={showIcon}

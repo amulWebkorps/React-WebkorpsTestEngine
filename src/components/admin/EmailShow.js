@@ -118,6 +118,7 @@ const EmailShow = () => {
   const [emails, setEmails] = useState([]);
   const [sentEmails, setSentEmails] = useState([]);
   const [uploadEmail, setUploadEmail] = useState([]);
+  const [isLoading, setLoading]=useState(false);
   const [searchString, setSearchString] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [sent, setSent] = useState(false);
@@ -185,15 +186,19 @@ const EmailShow = () => {
     getParticipatorData();
   }, [showAlert,upload.alert]);
   const getParticipatorData = async () => {
+    setLoading(true);
     try {
       const res = await getParticipator();
+      setLoading(false);
       const response = res?.data;
       const arr=response.filter((val)=>{
         return val.trim('')!='';
     })
       setUploadEmail(arr);
       setFilteredResults(arr);
-    } catch (error) {}
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const handleFileSelect = async (event) => {
@@ -307,6 +312,7 @@ console.log(filteredResults)
             <Grid item>
               <Grid container>
                 <Grid item justifyContent="center" flexDirection="column">
+                
                   <Box sx={innerSearch}>
                     <IconButton type="submit" sx={searchIcon}>
                       <SearchIcon disabled />
@@ -340,7 +346,9 @@ console.log(filteredResults)
             </Grid>
           </Grid>
           <Container sx={emailContainer}>
-            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+          {isLoading?<Loader mt={5}/>:
+          
+          <Grid container sx={{ display: "flex", justifyContent: "center" }}>
               {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
                 <Typography  sx={dataText}>No data</Typography>
               ) : searchString?.length > 1 ? (
@@ -405,6 +413,8 @@ console.log(filteredResults)
                 })
               )}
             </Grid>
+          }
+            
           </Container>
           <Box
             display="flex"

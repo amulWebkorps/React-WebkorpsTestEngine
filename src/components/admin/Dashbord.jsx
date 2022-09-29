@@ -16,13 +16,12 @@ import Modal from "../UI/Modal";
 import { increment } from "../store/slicers/adminSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { getAllContestList } from "../services/adminServices";
-
 import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
+import Loader from "../auth/base/Loader";
 
 const containerStyle = {
   overflowY: "auto",
@@ -147,6 +146,19 @@ const months = {
   overflowX:'auto',
   'overflow-wrap':'break-word'
 };
+
+const loaderStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItem: "center",
+  ".css-1hf2oir ": {
+    position: "absolute",
+    top: "50%",
+  },
+  ".css-l4f0tx-MuiCircularProgress-root ": {
+    color: "white",
+  },
+};
 const levels = ["Level 1", "Level 2", "ALL"];
 const contestInitialValues = {
   contestName: "",
@@ -170,6 +182,8 @@ const Dashbord = () => {
   const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
   const [contestData, setContestData] = useState(null);
+  const [loader, setloader] = useState(true);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const handleContest = async (id) => {
@@ -209,8 +223,19 @@ const Dashbord = () => {
   };
 
   const fetchContestData = async () => {
-    const response = await getAllContestList();
-    setContestDetails(response.data);
+    try {
+      const response = await getAllContestList();
+      if (response.message == "success" && response.status == "200") {
+        setloader(false);
+      }
+      setContestDetails(response.data);
+    } catch (error) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+      setloader(false);
+    }
   };
 
   useEffect(() => {
@@ -260,9 +285,13 @@ const Dashbord = () => {
           ) : (
             <></>
           )}
+          {error && (
+            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+          )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
+          <Grid sx={loaderStyle}>{loader && <Loader />}</Grid>
           <Container sx={containerStyle}>
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
@@ -311,25 +340,28 @@ const Dashbord = () => {
                 );
               })}
               <Grid>
-                <Card sx={createContest}>
-                  <CardActionArea>
-                    <CardMedia sx={{ paddingBottom: "6px" }}>
-                      <Fab
-                        color="primary"
-                        aria-label="add"
-                        sx={addButton}
-                        onClick={() => handleClickOpen()}
-                      >
-                        <AddIcon fontSize="large" />
-                      </Fab>
-                    </CardMedia>
-                    <CardContent sx={cardBodyx}>
-                      {/* <br /> */}
-                      <h4 style={contestText}>create contest</h4>
-                      <p style={months}>add Description</p>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                {loader || (
+                  <Card sx={createContest}>
+                    <CardActionArea>
+                      <CardMedia sx={{ paddingBottom: "16px" }}>
+                        <Fab
+                          color="primary"
+                          aria-label="add"
+                          sx={addButton}
+                          onClick={() => handleClickOpen()}
+                        >
+                          <AddIcon fontSize="large" />
+                        </Fab>
+                      </CardMedia>
+                      <CardContent sx={cardBody}>
+                        <br />
+                        <h4 style={contestText}>create contest</h4>
+
+                        <p style={months}>add Description</p>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                )}
               </Grid>
             </Grid>
             <Grid ml={-5} mt={6}>

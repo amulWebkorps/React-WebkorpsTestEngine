@@ -15,7 +15,7 @@ import {
   addSelectiveQuestion,
   filterQuestion,
 } from "../services/contest/contestServices";
-
+import Loader from "../auth/base/Loader";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -115,7 +115,11 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-
+const loaderStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItem: "center",
+};
 const All = ({
   showAlert,
   setshowselectquestion,
@@ -131,6 +135,7 @@ const All = ({
   const ref = useRef(null);
   const [dropValue, setDropValue] = useState("All");
   const [questionArr, setQuestionArr] = useState([]);
+  const [loader, setloader] = useState(true);
   const [selectiveQuestion, setSelectiveQuestion] = useState({
     questionsIds: "",
     contestId: [],
@@ -200,7 +205,11 @@ const All = ({
     }
   };
   useEffect(() => {
+    setloader(true)
     const result = filterQuestion(dropValue).then((res) => {
+      if (res.message == "success" && res.status == "200") {
+        setloader(false);
+      }
       setAvailableQuestions(res.data);
     });
   }, [dropValue, showAlert]);
@@ -244,6 +253,7 @@ const All = ({
             </Button>
           </Grid>
         </Grid>
+        <Grid>{loader && <Loader />}</Grid>
         <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
           {availableQuestions?.map((val, index) => {
             return (
