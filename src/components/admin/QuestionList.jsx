@@ -179,10 +179,10 @@ const QuestionList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const classes = useStyles();
-  const [editRef, setEditRef]=useState(null);
+  const [editRef, setEditRef] = useState(null);
   const [contestData, setContestData] = useState(
     location?.state?.result?.data?.contest
-  );  
+  );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
   const defaulValues = {
@@ -220,7 +220,7 @@ const QuestionList = () => {
   const [showAlreadyQuestion, setShowAlreadyQuestion] = useState(false);
   const [showSelectQuestion, setshowselectquestion] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
-  const [loader , setloader] = useState(true)
+  const [loader, setloader] = useState(true);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
@@ -284,8 +284,8 @@ const QuestionList = () => {
       setTimeout(() => {
         setShowValidation(false);
         setMsg({
-          errMsg:"",
-          color:""
+          errMsg: "",
+          color: "",
         });
       }, 1200);
     } else {
@@ -301,9 +301,9 @@ const QuestionList = () => {
         setTimeout(() => {
           setAlert(false);
           setMsg({
-            errMsg:"",
-            color:""
-          })
+            errMsg: "",
+            color: "",
+          });
         }, 1200);
         if (editQuestion) {
           setMsg({
@@ -375,20 +375,17 @@ const QuestionList = () => {
     }
   };
 
-
- 
-
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
       .then((res) => {
-        if(res.message=="success" && res.status=="200"){
-          setloader(false)
+        if (res.message == "success" && res.status == "200") {
+          setloader(false);
         }
         setContestQuestion(res?.data?.contestQuestionDetail);
       })
-      .catch("dmndv");  
+      .catch("dmndv");
   }, [showAlert]);
-  console.log(editRef,"snsdnvdsn")
+  console.log("useeffect");
   return (
     <div style={questionList}>
       <Header />
@@ -698,9 +695,9 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
-       setEditRef={setEditRef}
-        loader= {loader}
-        showAlert={showAlert}
+          setEditRef={setEditRef}
+          loader={loader}
+          showAlert={showAlert}
           contestId={contestData?.contestId}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
