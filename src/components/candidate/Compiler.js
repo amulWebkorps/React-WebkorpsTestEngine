@@ -192,7 +192,9 @@ const Compiler = () => {
     },
   ]);
   const [quesIds, setQuesIds] = useState(
-    location?.state?.participatorData?.questionId
+   location?.state?.participatorsContestDetails?.QuestionList?.map((val)=>{
+      return val?.['questionId']
+    })
   );
   const [profile, setProfile] = useState(location?.state);
   const [name, setName] = useState(localStorage?.getItem("name"));
@@ -413,7 +415,7 @@ const Compiler = () => {
       console.log(error);
     }
   };
-console.log(error,'eroror');
+console.log(quesIds,"mdfksdk");
   const handleScroll = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -531,20 +533,20 @@ console.log(error,'eroror');
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = async () => {
     setExit(false);
