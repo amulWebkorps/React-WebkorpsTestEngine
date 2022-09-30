@@ -256,9 +256,10 @@ const Level2 = () => {
         setAlert(false);
       }, 1200);
     } else {
-      setAlert(true);
+   
       try {
         const result = await saveQuestion(question);
+        setAlert(true);
         setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
@@ -266,6 +267,10 @@ const Level2 = () => {
         setSampleTestCase(sampleTestInitialFields);
         setTestCaseList([]);
         setTimeout(() => {
+          setMsg({
+            errMsg:"",
+            color:""
+          })
           setAlert(false);
         }, 1200);
         if (editQuestion) {
@@ -286,7 +291,6 @@ const Level2 = () => {
             errMsg: "Question added successfully...!",
             color: "green",
           });
-          console.log("editquestion else");
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -295,6 +299,10 @@ const Level2 = () => {
           setTestCaseList([]);
         }
       } catch (error) {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 1200);
         console.log("error");
       }
     }
@@ -312,10 +320,18 @@ const Level2 = () => {
         color: "green",
       });
       setTimeout(() => {
+        setMsg({
+          errMsg:"",
+          color:""
+        })
         setAlert(false);
       }, 1200);
     } catch (error) {
       setAlert(false);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 1200);
       console.log("ee", error);
     }
   };
@@ -663,6 +679,7 @@ const Level2 = () => {
         </Grid>
         <AddedQues
           loader={loader}
+          setEditRef={setEditRef}
           setMsg={setMsg}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}

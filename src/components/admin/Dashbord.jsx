@@ -241,6 +241,7 @@ const Dashbord = () => {
   useEffect(() => {
     fetchContestData();
   }, []);
+  console.log('--->>')
   return (
     <div style={app}>
       <Header />

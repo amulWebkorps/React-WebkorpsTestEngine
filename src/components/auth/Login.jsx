@@ -155,6 +155,7 @@ const Login = () => {
         setMsg(true);
         const token = result?.data?.data;
         localStorage.setItem("token", token);
+        localStorage.setItem("role","admin");
         setTimeout(() => {
           navigate("/dashboard", { state: { data: result.data } });
         }, 1500);
@@ -184,9 +185,13 @@ const Login = () => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
   };
   const tokens=localStorage.getItem('token');
+  const role=localStorage.getItem('role');
   useEffect(()=>{
-    if(tokens!=null){
+    if(tokens!=null &&role!="student"){
       navigate('/dashboard')
+    }
+    else if(role==="student"){
+      navigate('/')
     }
   },[])
   return (
