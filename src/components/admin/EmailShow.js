@@ -105,6 +105,7 @@ const scrollDiv = {
 };
 
 const emailContainer = {
+  marginTop:"17px",
   overflowY: "auto",
   height: "360px",
 };
@@ -189,9 +190,15 @@ const EmailShow = () => {
 
   const handleSentMail = async () => {
     setSent(true);
-    const result = await sentMail();
-    setSentEmails(result?.data);
-    setOpen(true);
+    try {
+      const result = await sentMail();
+      setSentEmails(result?.data);
+      setOpen(true);
+    } catch (error) {
+      console.log(error);
+    }
+   
+    
   };
 
   useEffect(() => {
@@ -216,7 +223,7 @@ const EmailShow = () => {
   const handleFileSelect = async (event) => {
     const { files } = event.target;
     setUpload({
-      alert: true,
+      alert: false,
       loader: true,
     });
     try {
