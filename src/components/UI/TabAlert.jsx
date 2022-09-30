@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit }) {
+export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit,winCount }) {
   const navigate=useNavigate();
   const handleClose = () => {
     setOpen(false);
@@ -32,10 +32,19 @@ export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit }
         setExit(false);
         finalSubmit(true);
         setTimeout(()=>{
+            localStorage.clear();
            navigate('/thanku') 
         },[1000])
     }
-  }, [warning]);
+    if(winCount===4){
+        setExit(false);
+        finalSubmit(true);
+        setTimeout(()=>{
+            localStorage.clear();
+           navigate('/thanku') 
+        },[1000])
+    }
+  }, [warning,winCount]);
   return (
     <div>
       <Dialog
@@ -43,6 +52,7 @@ export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit }
         TransitionComponent={Transition}
         keepMounted
         aria-describedby="alert-dialog-slide-description"
+        
         PaperProps={{
           style: { borderRadius: "10px" },
         }}
@@ -53,7 +63,10 @@ export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit }
         <DialogTitle sx={title}>Warning</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Your are suspected to switch tab {warning} Time..
+            Your are suspected to switch tab {warning} / 3 Time..
+          </DialogContentText>
+          <DialogContentText id="alert-dialog-slide-description">
+            Your are suspected to switch to new  tab {winCount} / 3 Time..
           </DialogContentText>
         </DialogContent>
         <DialogActions>

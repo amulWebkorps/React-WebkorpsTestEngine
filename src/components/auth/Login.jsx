@@ -136,7 +136,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [showWarning, setShowwarning] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [showMsg, setMsg] = useState(false);
   const [seenPassword, setSeenpassword] = useState(false);
   const date=new Date();
@@ -247,7 +247,7 @@ const Login = () => {
                 label="Remember me"
                 sx={checkboxname}
               /> */}
-              <LoginButton name="Log in" onClick={handleLogin} />
+              <LoginButton name="Log in" onClick={handleLogin} isLoading={isLoading} />
               <>
                 <Typography sx={footerOne}>
                   Don't have account?

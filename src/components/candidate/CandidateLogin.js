@@ -102,15 +102,17 @@ const CandidateLogin = () => {
   const [showMsg, setMsg] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState(false);
   const [response, setResponse] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
   const date=new Date();
   const year=date.getFullYear();
   const handleLogin = async () => {
+    const role=localStorage?.getItem("role");
     setLoading(true);
-    if (credential.email === "" || credential.password === "") {
+    if (credential.email === "" || credential.password === ""||role==="student") {
+    
       setAlert(true);
       setLoading(false);
       setTimeout(() => {
@@ -211,7 +213,7 @@ const CandidateLogin = () => {
                     fontSize="small"
                   />
                 ))}
-              <LoginButton name="Log in" onClick={handleLogin} />
+              <LoginButton name="Log in" onClick={handleLogin}  isLoading={isLoading}/>
             </Stack>
           </Box>
         </Box>

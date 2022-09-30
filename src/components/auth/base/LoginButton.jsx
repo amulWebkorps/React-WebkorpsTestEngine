@@ -16,10 +16,10 @@ const button = {
   borderRadius: "6px",
 };
 
-const MainButton = ({ name,onClick }) => {
+const MainButton = ({ name,onClick, isLoading }) => {
   return (
     <>
-      <Button variant="contained" onClick={onClick} sx={button}>
+      <Button variant="contained" onClick={onClick} sx={button} disabled={isLoading}>
         {name}
       </Button>
     </>

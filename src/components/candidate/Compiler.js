@@ -200,6 +200,7 @@ const Compiler = () => {
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [exit, setExit] = useState(true);
+  const [winCount, setWinCount]=useState(0);
   const [testRecord, setTestRecord] = useState([]);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
@@ -217,18 +218,25 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const navigate = useNavigate();
-  const finalGet = timerGet * 60000;
+  // const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
-  const timeOut = true;
+  // const timeOut = true;
 
   useEffect(() => {
+    window.addEventListener('blur', function(){
+      console.log('window change',window)
+      setWinCount(winCount+1)
+      setOpen(true);
+   });
+   window.addEventListener('focus', function(){
+   });
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
         setWarning(warning + 1);
         setOpen(true);
       }
     });
-  }, [warning]);
+  }, [warning,winCount]);
 
   $(document).ready(function () {
     var ctrlDown = false,
@@ -298,10 +306,10 @@ const Compiler = () => {
           setExit(false);
           finishTest(true);
           setShowTestCase(true);
-        }
-        if (timer === "00:00:01") {
-          setExit(false);
-          navigate("/thanku");
+          setTimeout(() => {
+            localStorage.clear();
+            navigate("/thanku");
+          }, 1500); 
         }
       } catch (error) {
         console.log(error);
@@ -339,7 +347,7 @@ const Compiler = () => {
 
   const handleQuestionAndCode = async (codeData) => {
     const len = profile?.participatorsContestDetails?.QuestionList?.length;
-    console.log(quesIds);
+   
     var newArray = [];
     for (var i = 0; i < len; i++) {
       var Object = {};
@@ -395,6 +403,7 @@ const Compiler = () => {
           navigate("/thanku");
         }
       }
+
       const newState = testRecord.map((val, index) => {
         if (index === count) {
           return resultData?.data?.testCasesSuccess;
@@ -404,7 +413,7 @@ const Compiler = () => {
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
-    } catch (error) {
+    }catch (error) {
       setshowCompilationError(true);
       setError(null);
       setTimeout(() => {
@@ -415,7 +424,7 @@ const Compiler = () => {
       console.log(error);
     }
   };
-console.log(quesIds,"mdfksdk");
+
   const handleScroll = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -533,20 +542,20 @@ console.log(quesIds,"mdfksdk");
     return deadline;
   };
 
-  // const isRefreshed = sessionStorage.getItem("isRefreshed");
-  // useEffect(() => {
-  //   if (isRefreshed) {
-  //     setExit(false);
-  //     finishTest(true);
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [1000]);
-  //     sessionStorage.removeItem("isRefreshed");
-  //   } else {
-  //     sessionStorage.setItem("isRefreshed", true);
-  //   }
-  // }, []);
+  const isRefreshed = sessionStorage.getItem("isRefreshed");
+  useEffect(() => {
+    if (isRefreshed) {
+      setExit(false);
+      finishTest(true);
+      setTimeout(() => {
+        navigate("/thanku");
+        localStorage.clear();
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
+    } else {
+      sessionStorage.setItem("isRefreshed", true);
+    }
+  }, []);
 
   const handleFinish = async () => {
     setExit(false);
@@ -587,6 +596,7 @@ console.log(quesIds,"mdfksdk");
         open={open}
         setOpen={setOpen}
         finalSubmit={finishTest}
+        winCount={winCount}
       />
       <Box className="background1">
         {showError && (
