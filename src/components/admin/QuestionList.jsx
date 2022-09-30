@@ -289,10 +289,9 @@ const QuestionList = () => {
         });
       }, 1200);
     } else {
-      
       try {
-        setAlert(true);
         const result = await saveQuestion(question);
+        setAlert(true);
         setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
@@ -301,6 +300,10 @@ const QuestionList = () => {
         setTestCaseList([]);
         setTimeout(() => {
           setAlert(false);
+          setMsg({
+            errMsg:"",
+            color:""
+          })
         }, 1200);
         if (editQuestion) {
           setMsg({

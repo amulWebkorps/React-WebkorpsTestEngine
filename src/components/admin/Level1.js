@@ -259,9 +259,9 @@ const Level1 = () => {
         setShowValidation(false);
       }, 1200);
     } else {
-      setAlert(true);
       try {
         const result = await saveQuestion(question);
+        setAlert(true);
         setQuesId(null);
         setQuestion(quesIntialField);
         setProblemStatement(problemStatementIntialVal);
@@ -270,6 +270,10 @@ const Level1 = () => {
         setTestCaseList([]);
         setTimeout(() => {
           setAlert(false);
+          setMsg({
+            errMsg:"",
+            color:""
+          })
         }, 1200);
         if (editQuestion) {
           setMsg({
@@ -289,7 +293,6 @@ const Level1 = () => {
             errMsg: "Question added successfully...!",
             color: "green",
           });
-          console.log("editquestion else");
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -298,6 +301,11 @@ const Level1 = () => {
           setTestCaseList([]);
         }
       } catch (error) {
+        setAlert(true);
+        setError(true);
+        setTimeout(() => {
+          setError(false)
+        }, 2000);
         console.log("error");
       }
     }
@@ -323,19 +331,27 @@ const Level1 = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    setAlert(true);
     try {
       const result = await uploadQuestions(files[0],"","Level 1");
+      setAlert(true);
       // setContestQuestion([...contestQuestion, ...result]);
       setMsg({
         errMsg: "Question uploaded successfully...!",
         color: "green",
       });
       setTimeout(() => {
+        setMsg({
+          errMsg:"",
+          color:""
+        })
         setAlert(false);
       }, 1200);
     } catch (error) {
       setAlert(false);
+      setMsg({
+        errMsg:"",
+        color:""
+      })
       console.log("ee", error);
     }
   };

@@ -413,7 +413,7 @@ const Compiler = () => {
       console.log(error);
     }
   };
-
+console.log(error,'eroror');
   const handleScroll = () => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };

@@ -8,19 +8,26 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../UI/Header";
-import { useSelect } from "@mui/base";
 import { getParticipatorOfContest } from "../services/contest/contestServices";
 import { deletestudent } from "../services/mail/particiaptiorMail";
-import { CollectionsBookmarkRounded } from "@mui/icons-material";
 import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
+import Loader from "../candidate/base/Loader";
 
 const BigContainer = {
-  background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
-  height: "88vh",
+  // background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
+  // height: "88vh",
   minWidth: "100vw",
-  position: "relative",
-  opacity: 0.8,
+  // position: "relative",
+  height: "100vh",
+  background: `linear-gradient(
+        180deg,
+        rgba(24, 135, 201, 0) 0%,
+        rgba(24, 135, 201, 0.224167) 40.42%,
+        rgba(24, 135, 201, 0.4) 100%
+      )`,
+  overflow: "auto",
+  // opacity: 0.8,
 };
 
 const MainContainer = {
@@ -197,24 +204,14 @@ const delBtn = {
   color: "black",
   borderRadius: "50%",
 };
-const person = [
-  "Ramesh Malhotra",
-  "Ram Malhotra",
-  "Raju Malhotra",
-  "Rajkumari Malhotra",
-  "rajesh",
-  "nitesh",
-  "akshay",
-  "swad",
-  "sohan",
-  "salve",
-];
+
 
 const AnswerSheet = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchString, setSearchString] = useState("");
   const [participator, setParticipator] = useState([]);
+  const [isLoading, setIsLoading]=useState(false);
   const [contestId, setContestId] = useState(
     location?.state?.result?.data?.contest?.contestId
   );
@@ -228,10 +225,15 @@ const AnswerSheet = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const participators = await getParticipatorOfContest(contestId);
+        if(participator){
+          setIsLoading(false);
+        }
         setParticipator(participators?.data);
         setFilteredResults(participators?.data);
       } catch (error) {
+        setIsLoading(false);
         console.log("--", error);
       }
     })();
@@ -303,7 +305,8 @@ const AnswerSheet = () => {
         </Container>
         <Container sx={MainContainer}>
           <Container>
-            {participator?.length <= 0 || filteredResults?.length <= 0 ? (
+          {isLoading?<Loader mt={5}/>:
+          participator?.length <= 0 || filteredResults?.length <= 0 ? (
              <Typography sx={dataText}>No data</Typography>
             ) : searchString?.length > 1 ? (
               filteredResults?.map((val, index) => {
@@ -371,7 +374,8 @@ const AnswerSheet = () => {
                   </Grid>
                 );
               })
-            )}
+            )
+          } 
           </Container>
         </Container>
       </Container>
