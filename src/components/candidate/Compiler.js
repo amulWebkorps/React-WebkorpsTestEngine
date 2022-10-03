@@ -191,12 +191,8 @@ const Compiler = () => {
       code: "",
     },
   ]);
-  const [quesIds, setQuesIds] = useState(
-   location?.state?.participatorsContestDetails?.QuestionList?.map((val)=>{
-      return val?.['questionId']
-    })
-  );
-  const [profile, setProfile] = useState(location?.state);
+  const [quesIds, setQuesIds] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(val=>val?.['questionId']));
+  const [profile, setProfile] = useState(location?.state?.participatorsContestDetails);
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [exit, setExit] = useState(true);
@@ -222,21 +218,21 @@ const Compiler = () => {
   const changeseconds = timerGet * 60;
   // const timeOut = true;
 
-  useEffect(() => {
-    window.addEventListener('blur', function(){
-      console.log('window change',window)
-      setWinCount(winCount+1)
-      setOpen(true);
-   }); 
-   window.addEventListener('focus', function(){
-   });
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState === "hidden") {
-        setWarning(warning + 1);
-        setOpen(true);
-      }
-    });
-  }, [warning,winCount]);
+  // useEffect(() => {
+  //   window.addEventListener('blur', function(){
+  //     console.log('window change',window)
+  //     setWinCount(winCount+1)
+  //     setOpen(true);
+  //  }); 
+  //  window.addEventListener('focus', function(){
+  //  });
+  //   document.addEventListener("visibilitychange", function () {
+  //     if (document.visibilityState === "hidden") {
+  //       setWarning(warning + 1);
+  //       setOpen(true);
+  //     }
+  //   });
+  // }, [warning,winCount]);
 
   $(document).ready(function () {
     var ctrlDown = false,
@@ -251,7 +247,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-    $(".no-copy-paste").keydown(function (e) {
+    $(".no-copy-pastee").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -293,7 +289,7 @@ const Compiler = () => {
   useEffect(() => {
     if (runCode?.complilationMessage !== null) {
     } else if (
-      count === profile.participatorsContestDetails?.QuestionList?.length
+      count === profile?.QuestionList?.length
     ) {
     } else {
     }
@@ -329,13 +325,13 @@ const Compiler = () => {
   }, [window]);
 
   const getDefaultCode = () => {
-    const len = profile?.participatorsContestDetails?.QuestionList?.length;
+    const len = profile?.QuestionList?.length;
     const newArray = [];
     for (var i = 0; i < len; i++) {
-      const a = profile?.participatorsContestDetails?.languageCode?.codeBase;
+      const a = profile?.languageCode?.codeBase;
       newArray.push(a);
     }
-    const length = profile?.participatorsContestDetails?.QuestionList?.length;
+    const length = profile?.QuestionList?.length;
     const testArray = [];
     for (var i = 0; i < length; i++) {
       const a = [];
@@ -346,8 +342,7 @@ const Compiler = () => {
   };
 
   const handleQuestionAndCode = async (codeData) => {
-    const len = profile?.participatorsContestDetails?.QuestionList?.length;
-   
+    const len = profile?.QuestionList?.length;
     var newArray = [];
     for (var i = 0; i < len; i++) {
       var Object = {};
@@ -362,9 +357,9 @@ const Compiler = () => {
   const finishTest = async (timeOut) => {
     try {
       const res = await finish({
-        language: profile.participatorsContestDetails?.languageCode?.language,
-        contestId: profile.participatorsContestDetails?.contestId,
-        studentId: profile.participatorsContestDetails?.studentId,
+        language: profile?.languageCode?.language,
+        contestId: profile?.contestId,
+        studentId: profile?.studentId,
         flag: "1",
         timeOut: timeOut,
         questionsAndCode: JSON.parse(localStorage.getItem("code")),
@@ -379,15 +374,15 @@ const Compiler = () => {
     setShowTestCase(true);
     try {
       const resultData = await runAndCompilerCode({
-        language: profile.participatorsContestDetails?.languageCode?.language,
-        contestId: profile.participatorsContestDetails?.contestId,
-        studentId: profile.participatorsContestDetails?.studentId,
+        language: profile?.languageCode?.language,
+        contestId: profile?.contestId,
+        studentId: profile?.studentId,
         flag: flag,
         timeOut: false,
         questionsAndCode: [
           {
             questionId:
-              profile.participatorsContestDetails?.QuestionList[count]
+              profile?.QuestionList[count]
                 ?.questionId,
             code: defCode[count],
           },
@@ -397,7 +392,7 @@ const Compiler = () => {
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
         if (
-          profile.participatorsContestDetails?.QuestionList?.length <= 1 &&
+          profile?.QuestionList?.length <= 1 &&
           flag === "1"
         ) {
           navigate("/thanku");
@@ -430,7 +425,6 @@ const Compiler = () => {
   };
 
   const handleChange = async (codeData) => {
-    console.log(codeData);
     const newState = defCode.map((val, index) => {
       if (index === count) {
         return codeData;
@@ -445,12 +439,12 @@ const Compiler = () => {
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (
-        prevCount <= profile.participatorsContestDetails?.QuestionList?.length
+        prevCount <= profile?.QuestionList?.length
       ) {
         return (prevCount += 1);
       } else {
         return (prevCount =
-          profile.participatorsContestDetails?.QuestionList?.length);
+          profile?.QuestionList?.length);
       }
     });
   };
@@ -469,13 +463,13 @@ const Compiler = () => {
     setShow(true);
     try {
       const res = await submitCode({
-        language: profile.participatorsContestDetails?.languageCode?.language,
-        contestId: profile.participatorsContestDetails?.contestId,
-        studentId: profile.participatorsContestDetails?.studentId,
+        language: profile?.languageCode?.language,
+        contestId: profile?.contestId,
+        studentId: profile?.studentId,
         flag: flag,
         timeOut: false,
         questionsAndCode: [
-          {questionId:profile.participatorsContestDetails?.QuestionList[count]?.questionId,
+          {questionId:profile?.QuestionList[count]?.questionId,
             code: defCode[count],
           },
         ],
@@ -495,7 +489,7 @@ const Compiler = () => {
 
   const handleNext = () => {
     if (
-      profile?.participatorsContestDetails?.QuestionList?.length - 1 ===count
+      profile?.QuestionList?.length - 1 ===count
     ) {
     } else {
       setCount(count + 1);
@@ -542,28 +536,28 @@ const Compiler = () => {
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = async () => {
     setExit(false);
     try {
       const res = await finish({
-        language: profile.participatorsContestDetails?.languageCode?.language,
-        contestId: profile.participatorsContestDetails?.contestId,
-        studentId: profile.participatorsContestDetails?.studentId,
+        language: profile?.languageCode?.language,
+        contestId: profile?.contestId,
+        studentId: profile?.studentId,
         flag: "1",
         timeOut: true,
         questionsAndCode: JSON.parse(localStorage.getItem("code")),
@@ -670,7 +664,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              profile?.participatorsContestDetails
+                              profile
                                 ?.QuestionList?.[count]?.question
                             }
                           </Typography>
@@ -683,7 +677,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography>
                             {
-                              profile?.participatorsContestDetails
+                              profile
                                 ?.QuestionList?.[count]?.sampleTestCase[0]
                                 ?.constraints
                             }
@@ -700,7 +694,7 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                profile?.participatorsContestDetails
+                                profile
                                   ?.QuestionList?.[count]?.sampleTestCase[0]
                                   ?.input
                               }
@@ -716,7 +710,7 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography>
                               {
-                                profile?.participatorsContestDetails
+                                profile
                                   ?.QuestionList?.[count]?.sampleTestCase[0]
                                   ?.output
                               }
@@ -742,7 +736,7 @@ const Compiler = () => {
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
                   disabled={
-                    profile?.participatorsContestDetails?.QuestionList?.length -
+                    profile?.QuestionList?.length -
                       1 ===
                     count
                   }
@@ -869,7 +863,7 @@ const Compiler = () => {
                   {"submit"}
                 </Button>
                 {count ===
-                  profile?.participatorsContestDetails?.QuestionList?.length -
+                  profile?.QuestionList?.length -
                     1 && (
                   <Button
                     variant="contained"
