@@ -203,7 +203,8 @@ const EmailShow = () => {
 
   useEffect(() => {
     getParticipatorData();
-  }, [showAlert, upload.alert]);
+  }, [showAlert,]);
+
   const getParticipatorData = async () => {
     setLoading(true);
     try {

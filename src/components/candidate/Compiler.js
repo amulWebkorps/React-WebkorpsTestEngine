@@ -227,7 +227,7 @@ const Compiler = () => {
       console.log('window change',window)
       setWinCount(winCount+1)
       setOpen(true);
-   });
+   }); 
    window.addEventListener('focus', function(){
    });
     document.addEventListener("visibilitychange", function () {

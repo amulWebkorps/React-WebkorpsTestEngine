@@ -66,7 +66,7 @@ export default function TabAlert({ warning, open, setOpen, finalSubmit,setExit,w
             Your are suspected to switch tab {warning} / 3 Time..
           </DialogContentText>
           <DialogContentText id="alert-dialog-slide-description">
-            Your are suspected to switch to new  tab {winCount} / 3 Time..
+            Your are suspected to switch to new Window  {winCount} / 3 Time..
           </DialogContentText>
         </DialogContent>
         <DialogActions>
