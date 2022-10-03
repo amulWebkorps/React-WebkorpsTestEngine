@@ -111,13 +111,16 @@ const CandidateLogin = () => {
   const handleLogin = async () => {
     const role=localStorage?.getItem("role");
     setLoading(true);
-    if (credential.email === "" || credential.password === ""||role==="student") {
+    if (credential.email === "" || credential.password === "") {
       setAlert(true);
       setLoading(false);
       setTimeout(() => {
         setAlert(false);
       }, 2000);
-    } else {
+    }else if(role==="student"){setErrorMsg(true); setTimeout(() => {
+      setErrorMsg(false)
+    }, 1200);}
+     else {
       try {
         const result = await participatorLogin(id, credential);
         localStorage.setItem(
