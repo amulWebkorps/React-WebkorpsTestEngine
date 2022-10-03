@@ -102,12 +102,13 @@ const scrollDiv = {
 };
 
 const divSelect = {
-  width: "1120px",
+  width: "1060px",
   height: "76px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "12px",
+  justifyContent:'space-between'
 };
 
 const containerUpper = {
