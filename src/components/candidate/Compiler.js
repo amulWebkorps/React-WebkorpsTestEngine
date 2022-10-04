@@ -218,21 +218,21 @@ const Compiler = () => {
   const changeseconds = timerGet * 60;
   // const timeOut = true;
 
-  // useEffect(() => {
-  //   window.addEventListener('blur', function(){
-  //     console.log('window change',window)
-  //     setWinCount(winCount+1)
-  //     setOpen(true);
-  //  }); 
-  //  window.addEventListener('focus', function(){
-  //  });
-  //   document.addEventListener("visibilitychange", function () {
-  //     if (document.visibilityState === "hidden") {
-  //       setWarning(warning + 1);
-  //       setOpen(true);
-  //     }
-  //   });
-  // }, [warning,winCount]);
+  useEffect(() => {
+    window.addEventListener('blur', function(){
+      console.log('window change',window)
+      setWinCount(winCount+1)
+      setOpen(true);
+   }); 
+   window.addEventListener('focus', function(){
+   });
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        setWarning(warning + 1);
+        setOpen(true);
+      }
+    });
+  }, [warning,winCount]);
 
   $(document).ready(function () {
     var ctrlDown = false,
@@ -247,7 +247,7 @@ const Compiler = () => {
       .keyup(function (e) {
         if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
       });
-    $(".no-copy-pastee").keydown(function (e) {
+    $(".no-copy-paste").keydown(function (e) {
       if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
     });
   });
@@ -536,20 +536,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  // const isRefreshed = sessionStorage.getItem("isRefreshed");
-  // useEffect(() => {
-  //   if (isRefreshed) {
-  //     setExit(false);
-  //     finishTest(true);
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [1000]);
-  //     sessionStorage.removeItem("isRefreshed");
-  //   } else {
-  //     sessionStorage.setItem("isRefreshed", true);
-  //   }
-  // }, []);
+  const isRefreshed = sessionStorage.getItem("isRefreshed");
+  useEffect(() => {
+    if (isRefreshed) {
+      setExit(false);
+      finishTest(true);
+      setTimeout(() => {
+        navigate("/thanku");
+        localStorage.clear();
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
+    } else {
+      sessionStorage.setItem("isRefreshed", true);
+    }
+  }, []);
 
   const handleFinish = async () => {
     setExit(false);
