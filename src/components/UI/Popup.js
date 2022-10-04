@@ -62,7 +62,7 @@ export default function Popup({
         <IconButton color="primary" aria-label="add" sx={delBtn1}>
           <CancelIcon onClick={() => handleClose()} />
         </IconButton>
-        <DialogTitle>Contest Name ~ {contest?.name}</DialogTitle>
+        <DialogTitle mt={1}>Contest Name ~ {contest?.name}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Do you want to delete this contest?

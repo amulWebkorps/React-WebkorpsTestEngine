@@ -424,7 +424,7 @@ const Level2 = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "#0057FF" }} />
+                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
                             </InputAdornment>
                           ),
                         }}
@@ -453,7 +453,7 @@ const Level2 = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "#0057FF" }} />
+                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
                             </InputAdornment>
                           ),
                         }}
@@ -482,7 +482,7 @@ const Level2 = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "#0057FF" }} />
+                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
                                 </InputAdornment>
                               ),
                             }}
@@ -502,7 +502,7 @@ const Level2 = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "#0057FF" }} />
+                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
                                 </InputAdornment>
                               ),
                             }}
