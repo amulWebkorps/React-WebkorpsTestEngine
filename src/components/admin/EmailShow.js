@@ -134,12 +134,12 @@ const EmailShow = () => {
     if (emails.length <= 0) {
     setIsAlert(true);
       setMsg({
-        errMsg: "Please select participator...!",
+        errMsg: "Please select Participant...!",
         color: "red",
       });
       setTimeout(() => {
        setIsAlert(false);
-      },1200);
+      },1400);
     } else {
       setOpen(true);
     }

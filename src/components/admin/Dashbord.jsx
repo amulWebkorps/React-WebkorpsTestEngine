@@ -41,6 +41,7 @@ const createContext = {
   position: "sticky",
   textAlign: "center",
   height: "15px",
+  marginTop:"20px"
 };
 
 const text = {
@@ -245,7 +246,7 @@ const Dashbord = () => {
   return (
     <div style={app}>
       <Header />
-      <BackButton />
+      {/* <BackButton /> */}
       {showAvailq ? (
         <>
           <Modal
@@ -420,7 +421,7 @@ const Dashbord = () => {
                     </CardMedia>
                     <CardContent sx={cardBody}>
                       <h4 style={contestText}>
-                        <h4>Upload A New Participatior</h4>
+                        <h4>Upload New Participants</h4>
                       </h4>
                       <p></p>
                     </CardContent>
