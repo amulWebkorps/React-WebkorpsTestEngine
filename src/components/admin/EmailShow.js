@@ -224,7 +224,7 @@ const EmailShow = () => {
   const handleFileSelect = async (event) => {
     const { files } = event.target;
     console.log(files[0]?.type,'------')
-    if(files[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
       setIsAlert(true);
       setMsg({
         errMsg:"Please select excel file...!",
