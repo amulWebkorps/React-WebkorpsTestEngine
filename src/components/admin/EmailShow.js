@@ -223,46 +223,64 @@ const EmailShow = () => {
 
   const handleFileSelect = async (event) => {
     const { files } = event.target;
-    setUpload({
-      alert: false,
-      loader: true,
-    });
-    try {
-      const result = await uploadParticipator(files[0]);
-      if (result?.data) {
-        setUpload({
-          alert: true,
-          loader: false,
-        });
-      }
+    console.log(files[0]?.type,'------')
+    if(files[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+      setIsAlert(true);
       setMsg({
-        errMsg: "Participator uploaded succesfully...!",
-        color: "green",
-      });
-      const response = result?.data;
-      const arr = response.filter((val) => {
-        return val.trim("") != "";
-      });
-      setUploadEmail(arr);
-      if (response.length === 0) {
-        setMsg({
-          errMsg: "Participator is already uploaded...!",
-          color: "#EE9A4D",
-        });
-      }
+        errMsg:"Please select excel file...!",
+        color:"red"
+      })
       setTimeout(() => {
+        setIsAlert(false);
+      }, 1500);
+    }
+    else{
+      setUpload({
+        alert: false,
+        loader: true,
+      });
+      try {
+        const result = await uploadParticipator(files[0]);
+        if (result?.data) {
+          setUpload({
+            alert: true,
+            loader: false,
+          });
+        }
+        setMsg({
+          errMsg: "Participator uploaded succesfully...!",
+          color: "green",
+        });
+        const response = result?.data;
+        const arr = response.filter((val) => {
+          return val.trim("") != "";
+        });
+        setUploadEmail(arr);
+        if (response.length === 0) {
+          setMsg({
+            errMsg: "Participator is already uploaded...!",
+            color: "#EE9A4D",
+          });
+        }
+        setTimeout(() => {
+          setUpload({
+            alert: false,
+            loader: false,
+          });
+          setMsg({
+            errMsg: "",
+            color: "",
+          });
+        }, 1200);
+      } catch (error) {
         setUpload({
           alert: false,
           loader: false,
         });
-      }, 1200);
-    } catch (error) {
-      setUpload({
-        alert: false,
-        loader: false,
-      });
-      console.log("---------", error);
+        console.log("---------", error);
+      }
     }
+    
   };
 
   const handleOnChange = (e) => {
@@ -294,7 +312,7 @@ const EmailShow = () => {
     marginTop: '47px',
     marginLeft: '27px'
   }
-  console.log(filteredResults);
+ 
   return (
     <>
       <Modal2
