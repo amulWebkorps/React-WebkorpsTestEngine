@@ -354,25 +354,40 @@ const QuestionList = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    console.log(files);
-    setAlert(true);
-    try {
-      const result = await uploadQuestions(
-        files[0],
-        contestData?.contestId,
-        ""
-      );
+    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+      setShowValidation(true);
       setMsg({
-        errMsg: "Question uploaded successfully...!",
-        color: "green",
-      });
+        errMsg:"Please select excel file...!",
+        color:"red"
+      })
       setTimeout(() => {
-        setAlert(false);
-      }, 1200);
-    } catch (error) {
-      setAlert(false);
-      console.log("ee", error);
-    }
+        setShowValidation(false);
+      setMsg({
+        errMsg:"",
+        color:""
+      })
+      }, 1500);}
+      else{
+        setAlert(true);
+        try {
+          const result = await uploadQuestions(
+            files[0],
+            contestData?.contestId,
+            ""
+          );
+          setMsg({
+            errMsg: "Question uploaded successfully...!",
+            color: "green",
+          });
+          setTimeout(() => {
+            setAlert(false);
+          }, 1200);
+        } catch (error) {
+          setAlert(false);
+          console.log("ee", error);
+        }
+      }
+
   };
 
   useEffect(() => {

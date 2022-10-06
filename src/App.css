@@ -47,3 +47,6 @@ body{
 
 };
 
+::-ms-reveal {
+  display: none !important
+}

@@ -162,7 +162,7 @@ const Level1 = () => {
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
-  const [editRef, setEditRef]=useState(null);
+  const [editRef, setEditRef] = useState(null);
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
@@ -197,7 +197,7 @@ const Level1 = () => {
     errMsg: "",
     color: "",
   });
-  const [loader , setloader] = useState(true);
+  const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
@@ -271,9 +271,9 @@ const Level1 = () => {
         setTimeout(() => {
           setAlert(false);
           setMsg({
-            errMsg:"",
-            color:""
-          })
+            errMsg: "",
+            color: "",
+          });
         }, 1200);
         if (editQuestion) {
           setMsg({
@@ -304,7 +304,7 @@ const Level1 = () => {
         setAlert(true);
         setError(true);
         setTimeout(() => {
-          setError(false)
+          setError(false);
         }, 2000);
         console.log("error");
       }
@@ -331,43 +331,60 @@ const Level1 = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    try {
-      const result = await uploadQuestions(files[0],"","Level 1");
-      setAlert(true);
-      // setContestQuestion([...contestQuestion, ...result]);
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setShowValidation(true);
       setMsg({
-        errMsg: "Question uploaded successfully...!",
-        color: "green",
+        errMsg: "Please select excel file...!",
+        color: "red",
       });
       setTimeout(() => {
+        setShowValidation(false);
         setMsg({
-          errMsg:"",
-          color:""
-        })
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);
+    } else {
+      try {
+        const result = await uploadQuestions(files[0], "", "Level 1");
+        setAlert(true);
+        // setContestQuestion([...contestQuestion, ...result]);
+        setMsg({
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
+          setMsg({
+            errMsg: "",
+            color: "",
+          });
+          setAlert(false);
+        }, 1200);
+      } catch (error) {
         setAlert(false);
-      }, 1200);
-    } catch (error) {
-      setAlert(false);
-      setMsg({
-        errMsg:"",
-        color:""
-      })
-      console.log("ee", error);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+        console.log("ee", error);
+      }
     }
   };
 
   useEffect(() => {
     filtersQuestions();
-   
   }, [showAlert]);
 
-  const filtersQuestions = async() =>{
+  const filtersQuestions = async () => {
     try {
       const res = await filterQuestion("Level 1");
       const response = res.data;
-     if(res.message=="success" && res.status=="200"){
-      setloader(false);
-     }
+      if (res.message == "success" && res.status == "200") {
+        setloader(false);
+      }
       setContestQuestion(response);
     } catch (error) {
       setloader(false);
@@ -377,8 +394,7 @@ const Level1 = () => {
       }, 3000);
       console.log(error);
     }
-   
-  }
+  };
 
   // useEffect(()=>{
   // const result= filterQuestion("All").then((res)=>{
@@ -389,7 +405,7 @@ const Level1 = () => {
 
   return (
     <div id="body" style={questionList}>
-      <Header/>
+      <Header />
       <BackButton />
       <Container sx={topButton}>
         {showAlert || showValidation ? (
@@ -398,8 +414,8 @@ const Level1 = () => {
           <></>
         )}
         {error && (
-            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
-          )}
+          <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+        )}
         <Grid container sx={{ justifyContent: "center" }}>
           <Grid item>
             <Box variant="contained" sx={buttonLevel}>
@@ -411,7 +427,7 @@ const Level1 = () => {
       <Container sx={mainContainer} ref={editRef}>
         <Grid>
           <Card sx={cardBody}>
-            <CardContent >
+            <CardContent>
               <Grid container direction="row" spacing={0}>
                 <Grid item xs={0.3}>
                   <div className={classes.container} style={sideColumn}></div>
@@ -439,7 +455,9 @@ const Level1 = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -468,7 +486,9 @@ const Level1 = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -497,7 +517,9 @@ const Level1 = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -517,7 +539,9 @@ const Level1 = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -548,7 +572,7 @@ const Level1 = () => {
                           component="label"
                           startIcon={<NoteAddIcon />}
                           onChange={uploadQuestion}
-                          onClick={(e)=>e.target.value=null}
+                          onClick={(e) => (e.target.value = null)}
                         >
                           Upload File
                           <input hidden accept="file/*" multiple type="file" />
@@ -693,7 +717,7 @@ const Level1 = () => {
           </Card>
         </Grid>
         <AddedQues
-        loader={loader}
+          loader={loader}
           setMsg={setMsg}
           setEditRef={setEditRef}
           availableQuestions={availableQuestions}

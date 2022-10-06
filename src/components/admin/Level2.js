@@ -186,6 +186,7 @@ const Level2 = () => {
   const [testCaseList, setTestCaseList] = useState([]);
   const [contestQuestion, setContestQuestion] = useState(null);
   const [editQuestion, setEditQuestion] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
   const [delFromContest, setDelFromContest] = useState({
     state: false,
   });
@@ -247,13 +248,17 @@ const Level2 = () => {
       sampleTestCase?.output === "" ||
       testCaseList.length === 0
     ) {
-      setAlert(true);
+      setShowValidation(true)
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
       setTimeout(() => {
-        setAlert(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+        setShowValidation(false)
       }, 1200);
     } else {
    
@@ -310,30 +315,48 @@ const Level2 = () => {
 
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-   
-    try {
-      const result = await uploadQuestions(files[0],"","Level 2");
-      setAlert(true);
-      // setContestQuestion([...contestQuestion, ...result]);
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setShowValidation(true);
       setMsg({
-        errMsg: "Question uploaded successfully...!",
-        color: "green",
+        errMsg: "Please select excel file...!",
+        color: "red",
       });
       setTimeout(() => {
+        setShowValidation(false);
         setMsg({
-          errMsg:"",
-          color:""
-        })
-        setAlert(false);
-      }, 1200);
-    } catch (error) {
-      setAlert(false);
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 1200);
-      console.log("ee", error);
-    }
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);}
+      else{
+        try {
+          const result = await uploadQuestions(files[0], "", "Level 1");
+          setAlert(true);
+          // setContestQuestion([...contestQuestion, ...result]);
+          setMsg({
+            errMsg: "Question uploaded successfully...!",
+            color: "green",
+          });
+          setTimeout(() => {
+            setMsg({
+              errMsg: "",
+              color: "",
+            });
+            setAlert(false);
+          }, 1200);
+        } catch (error) {
+          setAlert(false);
+          setMsg({
+            errMsg: "",
+            color: "",
+          });
+          console.log("ee", error);
+        }
+      }
+
   };
 
   const delTestCase = (id) => {
@@ -381,7 +404,7 @@ const Level2 = () => {
       <Header />
       <BackButton />
       <Container sx={topButton}>
-        {showAlert && <MsgBar errMsg={msg.errMsg} color={msg.color} />}
+        {showAlert ||showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:""}
         {error && (
             <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
           )}

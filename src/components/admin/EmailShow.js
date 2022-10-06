@@ -69,7 +69,7 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  marginLeft: "100px",
+  // marginLeft: "100px",
   justifyContent: "space-between",
 };
 const dataText = {
@@ -223,46 +223,64 @@ const EmailShow = () => {
 
   const handleFileSelect = async (event) => {
     const { files } = event.target;
-    setUpload({
-      alert: false,
-      loader: true,
-    });
-    try {
-      const result = await uploadParticipator(files[0]);
-      if (result?.data) {
-        setUpload({
-          alert: true,
-          loader: false,
-        });
-      }
+    console.log(files[0]?.type,'------')
+    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+      setIsAlert(true);
       setMsg({
-        errMsg: "Participator uploaded succesfully...!",
-        color: "green",
-      });
-      const response = result?.data;
-      const arr = response.filter((val) => {
-        return val.trim("") != "";
-      });
-      setUploadEmail(arr);
-      if (response.length === 0) {
-        setMsg({
-          errMsg: "Participator is already uploaded...!",
-          color: "#EE9A4D",
-        });
-      }
+        errMsg:"Please select excel file...!",
+        color:"red"
+      })
       setTimeout(() => {
+        setIsAlert(false);
+      }, 1500);
+    }
+    else{
+      setUpload({
+        alert: false,
+        loader: true,
+      });
+      try {
+        const result = await uploadParticipator(files[0]);
+        if (result?.data) {
+          setUpload({
+            alert: true,
+            loader: false,
+          });
+        }
+        setMsg({
+          errMsg: "Participator uploaded succesfully...!",
+          color: "green",
+        });
+        const response = result?.data;
+        const arr = response.filter((val) => {
+          return val.trim("") != "";
+        });
+        setUploadEmail(arr);
+        if (response.length === 0) {
+          setMsg({
+            errMsg: "Participator is already uploaded...!",
+            color: "#EE9A4D",
+          });
+        }
+        setTimeout(() => {
+          setUpload({
+            alert: false,
+            loader: false,
+          });
+          setMsg({
+            errMsg: "",
+            color: "",
+          });
+        }, 1200);
+      } catch (error) {
         setUpload({
           alert: false,
           loader: false,
         });
-      }, 1200);
-    } catch (error) {
-      setUpload({
-        alert: false,
-        loader: false,
-      });
-      console.log("---------", error);
+        console.log("---------", error);
+      }
     }
+    
   };
 
   const handleOnChange = (e) => {
@@ -283,10 +301,18 @@ const EmailShow = () => {
     fontSize: "8",
     fontWeight: "600",
     color: "white",
-    marginLeft: "10px",
     borderRadius: "6px",
+    marginLeft: "10px",
   };
-  console.log(filteredResults);
+  const sentMails={
+    fontSize: "8",
+    fontWeight: "600",
+    color: "white",
+    borderRadius: "6px",
+    marginTop: '47px',
+    marginLeft: '27px'
+  }
+ 
   return (
     <>
       <Modal2
@@ -319,7 +345,7 @@ const EmailShow = () => {
             <Grid item>
               <Button
                 variant="contained"
-                sx={buttonEmail}
+                sx={sentMails}
                 onClick={handleSentMail}
               >
                 Sent Email
