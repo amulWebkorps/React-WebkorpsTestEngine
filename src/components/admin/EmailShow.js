@@ -69,7 +69,7 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  marginLeft: "100px",
+  // marginLeft: "100px",
   justifyContent: "space-between",
 };
 const dataText = {
@@ -283,9 +283,17 @@ const EmailShow = () => {
     fontSize: "8",
     fontWeight: "600",
     color: "white",
-    marginLeft: "10px",
     borderRadius: "6px",
+    marginLeft: "10px",
   };
+  const sentMails={
+    fontSize: "8",
+    fontWeight: "600",
+    color: "white",
+    borderRadius: "6px",
+    marginTop: '47px',
+    marginLeft: '27px'
+  }
   console.log(filteredResults);
   return (
     <>
@@ -319,7 +327,7 @@ const EmailShow = () => {
             <Grid item>
               <Button
                 variant="contained"
-                sx={buttonEmail}
+                sx={sentMails}
                 onClick={handleSentMail}
               >
                 Sent Email
