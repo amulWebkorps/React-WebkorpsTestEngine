@@ -43,7 +43,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<AdminRoutes Component={Login} />}></Route>
+            <Route path="/" element={<AdminRoutes Component={Login} setregistercredential={setregistercredential}  />}></Route>
             <Route
               path="/email"
               element={<AdminRoutes Component={EmailShow} />}

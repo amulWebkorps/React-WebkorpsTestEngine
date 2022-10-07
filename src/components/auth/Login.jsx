@@ -128,7 +128,7 @@ const hideIcon = {
   margin: "126px 0px 0px 290px",
 };
 
-const Login = () => {
+const Login = ({setregistercredential}) => {
   const [credential, setCredential] = useState({
     email: "",
     password: "",
@@ -187,6 +187,12 @@ const Login = () => {
   const tokens=localStorage.getItem('token');
   const role=localStorage.getItem('role');
   useEffect(()=>{
+    setregistercredential({
+      hName: "",
+      email: "",
+      hNumber: "",
+      password: "",
+    })
     if(tokens!=null &&role!="student"){
       navigate('/dashboard')
     }
@@ -194,6 +200,7 @@ const Login = () => {
       navigate('/')
     }
   },[])
+  console.log('---dd',setregistercredential);
   return (
     <>
       <Grid container>
