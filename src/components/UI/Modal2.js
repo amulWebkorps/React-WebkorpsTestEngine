@@ -44,7 +44,7 @@ const divSelect = {
 };
 const emailContainer = {
   overflowY: "auto",
-  height: "340px",
+  maxHeight: "340px",
 };
 
 const btn = {
@@ -75,7 +75,10 @@ export default function Model2({
   }, [])
   const handleClose = () => {
     setOpen(false);
-    setSent(false);
+    setTimeout(() => {
+      setSent(false);
+    },500);
+ 
   };
   const modalBody = {
     background: "#F9FAFC",

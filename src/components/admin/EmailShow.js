@@ -141,6 +141,7 @@ const EmailShow = () => {
        setIsAlert(false);
       },1400);
     } else {
+      setSent(false);
       setOpen(true);
     }
   };
@@ -313,7 +314,7 @@ const EmailShow = () => {
     marginTop: '47px',
     marginLeft: '27px'
   }
- 
+ console.log(sent,'------sent')
   return (
     <>
       <Modal2
