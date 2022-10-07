@@ -251,6 +251,7 @@ const EmailShow = () => {
           errMsg: "Participator uploaded succesfully...!",
           color: "green",
         });
+        getParticipatorData();
         const response = result?.data;
         const arr = response.filter((val) => {
           return val.trim("") != "";
