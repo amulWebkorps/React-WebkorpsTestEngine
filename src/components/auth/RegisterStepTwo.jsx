@@ -166,7 +166,7 @@ const hideIconConfirm = {
   margin: "200px 0px 0px 290px",
 };
 
-const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
+const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
   const [seenPassword, setSeenpassword] = useState(false);
   const [seenConfirmPassword, setSeenConfirmpassword] = useState(false);
@@ -185,35 +185,35 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     // setcredential({ ...credential, [name]: value });
-    setregistercredential({ ...registercredential, [name]: value });
+    setRegisterCredential({ ...registerCredential, [name]: value });
   };
 
   const register = async () => {
-    if (registercredential.password === "" || confirmPassword === "") {
+    if (registerCredential.password === "" || confirmPassword === "") {
       setalertpassword(true);
       setTimeout(() => {
         setalertpassword(false);
       }, 2000);
-    } else if (registercredential.password !== confirmPassword) {
+    } else if (registerCredential.password !== confirmPassword) {
       setfillalert(true);
       setTimeout(() => {
         setfillalert(false);
       }, 2000);
     } else if (
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#@?&]{8,}$/.test(
-        registercredential.password
+        registerCredential.password
       ) === false
     ) {
       setconditionpassword(true);
       setTimeout(() => {
         setconditionpassword(false);
       }, 3000);
-    } else if (registercredential.password === confirmPassword) {
+    } else if (registerCredential.password === confirmPassword) {
       try {
-        const response = await registerAdmin(registercredential);
+        const response = await registerAdmin(registerCredential);
         setAlert(true);
         setTimeout(() => {
-          setregistercredential([{
+          setRegisterCredential([{
             hName: "",
             email: "",
             hNumber: "",
@@ -289,10 +289,10 @@ const RegisterStepTwo = ({ registercredential, setregistercredential }) => {
                 star={"*"}
                 type={seenPassword ? "text" : "password"}
                 onChange={handleChange}
-                value={registercredential.password}
+                value={registerCredential.password}
                 name="password"
               />
-              {registercredential?.password !== "" &&
+              {registerCredential?.password !== "" &&
                 (seenPassword ? (
                   <VisibilityIcon
                     sx={showIcon}

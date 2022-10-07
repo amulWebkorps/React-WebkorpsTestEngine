@@ -31,7 +31,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const [registercredential, setregistercredential] = useState({
+  const [registerCredential, setRegisterCredential] = useState({
     hName: "",
     email: "",
     hNumber: "",
@@ -43,7 +43,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<AdminRoutes Component={Login} setregistercredential={setregistercredential}  />}></Route>
+            <Route path="/" element={<AdminRoutes Component={Login} setRegisterCredential={setRegisterCredential}  />}></Route>
             <Route
               path="/email"
               element={<AdminRoutes Component={EmailShow} />}
@@ -52,8 +52,8 @@ function App() {
               path="/register"
               element={
                 <RegisterStepOne
-                  registercredential={registercredential}
-                  setregistercredential={setregistercredential}
+                  registerCredential={registerCredential}
+                  setRegisterCredential={setRegisterCredential}
                 />
               }
             ></Route>
@@ -61,8 +61,8 @@ function App() {
               path="/password"
               element={
                 <RegisterStepTwo
-                  registercredential={registercredential}
-                  setregistercredential={setregistercredential}
+                  registerCredential={registerCredential}
+                  setRegisterCredential={setRegisterCredential}
                 />
               }
             ></Route>

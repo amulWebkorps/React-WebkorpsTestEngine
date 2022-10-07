@@ -128,7 +128,7 @@ const hideIcon = {
   margin: "126px 0px 0px 290px",
 };
 
-const Login = ({setregistercredential}) => {
+const Login = ({setRegisterCredential}) => {
   const [credential, setCredential] = useState({
     email: "",
     password: "",
@@ -187,7 +187,7 @@ const Login = ({setregistercredential}) => {
   const tokens=localStorage.getItem('token');
   const role=localStorage.getItem('role');
   useEffect(()=>{
-    setregistercredential({
+    setRegisterCredential({
       hName: "",
       email: "",
       hNumber: "",
@@ -200,7 +200,7 @@ const Login = ({setregistercredential}) => {
       navigate('/')
     }
   },[])
-  console.log('---dd',setregistercredential);
+  
   return (
     <>
       <Grid container>
