@@ -276,9 +276,9 @@ console.log(language)
             >
               Start Contest
             </Button>
-            <Button variant="outlined" sx={cancelBtn}>
+            {/* <Button variant="outlined" sx={cancelBtn}>
               Cancel
-            </Button>
+            </Button> */}
           </Grid>
         </Grid>
       </Container>
