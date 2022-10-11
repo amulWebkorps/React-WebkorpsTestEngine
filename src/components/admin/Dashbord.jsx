@@ -168,9 +168,7 @@ const contestInitialValues = {
 };
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-
   const location = useLocation();
-
   const [showAlert, setAlert] = useState(false);
   const [bar, setBar] = useState(false);
   const [delContest, setDelContest] = useState({
@@ -178,7 +176,6 @@ const Dashbord = () => {
     id: "",
     contestId: "",
   });
-
   const [confirm, setConfirm] = useState(false);
   const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
@@ -186,7 +183,7 @@ const Dashbord = () => {
   const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-
+  const adminToken=localStorage.getItem("token");
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
@@ -239,10 +236,15 @@ const Dashbord = () => {
       setloader(false);
     }
   };
+  useEffect(()=>{
+    if(adminToken===null || adminToken===undefined){
+      navigate('/')
+    }
+  },[])
   useEffect(() => {
     fetchContestData();
   }, []);
-  console.log('--->>')
+ 
   return (
     <div style={app}>
       <Header />
