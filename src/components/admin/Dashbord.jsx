@@ -7,20 +7,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { useSelector } from "react-redux";
 import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
-import { increment } from "../store/slicers/adminSlice";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAllContestList } from "../services/adminServices";
 import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
-import BackButton from "../UI/BackButton";
 import Loader from "../auth/base/Loader";
 
 const containerStyle = {
@@ -34,7 +30,6 @@ const containerStyle = {
 };
 
 const createContext = {
-  // marginTop: "27px",
   background: "#F9F9F9",
   borderRadius: "18px 18px 0px 0px",
   padding: "30px",
@@ -46,12 +41,10 @@ const createContext = {
 
 const text = {
   marginTop: "-20px",
-  // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "700",
   fontSize: "28px",
-  // lineHeight: "56px",
 };
 
 const app = {
@@ -229,22 +222,17 @@ const Dashbord = () => {
       setContestDetails(response.data);
     } catch (error) {
       console.log(error);
-      // setError(true);
-      // setTimeout(() => {
-      //   setError(false);
-      // }, 3000);
       setloader(false);
     }
   };
-  useEffect(()=>{
+  
+  useEffect(() => {
     if(adminToken===null || adminToken===undefined){
       navigate('/')
+    }else{
+      fetchContestData();
     }
-  },[])
-  useEffect(() => {
-    fetchContestData();
-  }, []);
- 
+  }, []); 
   return (
     <div style={app}>
       <Header />
