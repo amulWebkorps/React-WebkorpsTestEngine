@@ -43,7 +43,7 @@ const divSelect = {
   // marginLeft: "100px",
 };
 const emailContainer = {
-  overflowY: "auto",
+  overflow: "hidden",
   maxHeight: "340px",
 };
 
@@ -54,6 +54,8 @@ const btn = {
 };
 
 export default function Model2({
+  setIsAlert,
+  isAlert,
   setAlert,
   open,
   setOpen,
@@ -88,36 +90,51 @@ export default function Model2({
     width: "70vh",
   };
   const handleMail = async () => {
-    setDisable(true);
-    try {
-      const result = await sendMail(contestId, emails);
-      setAlert(true);
-      setEmails([]);
+    if(contestId===undefined || contestId===null){
+      setIsAlert(true);
       setMsg({
-        errMsg: "Mail send successfully...!",
-        color: "green",
-      });
-      setTimeout(() => {
-        setAlert(false);
-      }, 1100);
-      setOpen(false);
-      setDisable(false);
-    } catch (error) {
-      setAlert(true);
-      setMsg({
-        errMsg: "Mail not send...!",
-        color: "red",
-      });
-      setTimeout(() => {
-        setAlert(false);
-      }, 1100);
-      setOpen(false);
-      setDisable(false);
+        errMsg:"Please select contest",
+        color:"red"
+      })
+    }else{
+      setDisable(true);
+      try {
+        const result = await sendMail(contestId, emails);
+        setAlert(true);
+        setEmails([]);
+        setMsg({
+          errMsg: "Mail send successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
+          setAlert(false);
+        }, 1100);
+        setOpen(false);
+        setDisable(false);
+      } catch (error) {
+        setAlert(true);
+        setMsg({
+          errMsg: "Mail not send...!",
+          color: "red",
+        });
+        setTimeout(() => {
+          setAlert(false);
+        }, 1100);
+        setOpen(false);
+        setDisable(false);
+      }
     }
   };
   const handleChange = (e) => {
     setContestId(e.target.value);
   };
+  useEffect(()=>{
+    setTimeout(() => {
+      setIsAlert(false)
+    },2500);
+  },[isAlert])
+
+  console.log(contestId,'iddd')
   return (
     <div>
       <Dialog

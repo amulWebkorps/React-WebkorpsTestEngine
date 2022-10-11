@@ -122,6 +122,7 @@ const EmailShow = () => {
   const [uploadEmail, setUploadEmail] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchString, setSearchString] = useState("");
+  const [showMsg, setShowMsg]=useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
   const [sent, setSent] = useState(false);
   const [upload, setUpload] = useState({
@@ -329,6 +330,8 @@ const EmailShow = () => {
         setEmails={setEmails}
         sent={sent}
         setSent={setSent}
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
       />
       {showAlert || upload.alert ||isAlert? (
         <MsgBar errMsg={msg.errMsg} color={msg.color} />
