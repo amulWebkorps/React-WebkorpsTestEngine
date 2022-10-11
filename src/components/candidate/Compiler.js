@@ -346,7 +346,7 @@ const Compiler = () => {
     var newArray = [];
     for (var i = 0; i < len; i++) {
       var Object = {};
-      Object["questiondId"] = quesIds?.[i];
+      Object["questionId"] = quesIds?.[i];
       Object["code"] = codeData?.[i];
       newArray.push(Object);
     }
