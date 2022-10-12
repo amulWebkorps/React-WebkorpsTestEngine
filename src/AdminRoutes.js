@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const AdminRoutes = (props) => {
   const { Component,setregistercredential } = props;
-  
   const navigate = useNavigate();
   const path = window?.location?.pathname;
 
@@ -13,6 +12,7 @@ const AdminRoutes = (props) => {
       navigate("/");
     } 
   }, []);
+
   return (
     <>
       <Component setregistercredential={setregistercredential} />

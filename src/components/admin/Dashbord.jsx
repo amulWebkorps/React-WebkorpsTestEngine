@@ -221,7 +221,9 @@ const Dashbord = () => {
       }
       setContestDetails(response.data);
     } catch (error) {
-      console.log(error);
+      if(error?.response?.status===403){
+        navigate('/')
+      }
       setloader(false);
     }
   };

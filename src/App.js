@@ -53,20 +53,37 @@ function App() {
   }, [window.location]);
 
   useEffect(() => {
-    //if user close the tab it redireted to login page
-    window.onbeforeunload = function (e) {
-      window.onunload = function () {
-        window.localStorage.isMySessionActive = "false";
-      };
-      return undefined;
-    };
-    if (
-      window?.localStorage?.isMySessionActive === null ||
-      window?.localStorage?.isMySessionActive !== false
-    ) {
-      navigate("/");
+    // define increment counter part
+    const tabsOpen = localStorage.getItem("tabsOpen");
+    if (tabsOpen == null) {
+      localStorage.setItem("tabsOpen", 1);
+    } else {
+      localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
     }
-  }, []);
+    
+    // define decrement counter part
+    window.onunload = function (e) {
+      const newTabCount = localStorage.getItem("tabsOpen");
+      if (newTabCount !== null) {
+        localStorage.setItem("tabsOpen", newTabCount - 1);
+      }
+    };
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      window.localStorage.isMySessionActive = "false";
+    } else {
+      const newTabCount2 = localStorage.getItem("tabsOpen");
+      let value = localStorage.getItem("isMySessionActive");
+      console.log(newTabCount2)
+      if (value == "true") {
+        if (newTabCount2 - 1 == 0) {
+          localStorage.clear();
+          window.localStorage.isMySessionActive = "false";
+        } else {
+          window.localStorage.isMySessionActive = "false";
+        }
+      }
+    }
+    }, []);
 
   return (
     <ThemeProvider theme={theme}>
