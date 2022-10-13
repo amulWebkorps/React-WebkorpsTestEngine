@@ -693,7 +693,7 @@ const Level1 = () => {
                         <Stack
                           spacing={2}
                           direction="row"
-                          justifyContent={"flex-end"}
+                          justifyContent={"flex-start"}
                           mt={2}
                         >
                           <Button
@@ -703,9 +703,7 @@ const Level1 = () => {
                           >
                             Add
                           </Button>
-                          <Button variant="contained" sx={Addbtn}>
-                            Close
-                          </Button>
+                         
                         </Stack>
                       </Container>
                     </div>

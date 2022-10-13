@@ -677,7 +677,7 @@ const Level2 = () => {
                         <Stack
                           spacing={2}
                           direction="row"
-                          justifyContent={"flex-end"}
+                          justifyContent={"flex-start"}
                           mt={2}
                         >
                           <Button
@@ -686,9 +686,6 @@ const Level2 = () => {
                             onClick={addTest}
                           >
                             Add
-                          </Button>
-                          <Button variant="contained" sx={Addbtn}>
-                            Close
                           </Button>
                         </Stack>
                       </Container>
