@@ -133,8 +133,6 @@ export default function Model2({
       setIsAlert(false)
     },2500);
   },[isAlert])
-
-  console.log(contestId,'iddd')
   return (
     <div>
       <Dialog

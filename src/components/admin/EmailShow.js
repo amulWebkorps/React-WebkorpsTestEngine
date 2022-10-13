@@ -2,7 +2,7 @@ import { Grid, InputBase } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Container, Box } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button } from "@mui/material";
+import { Button, MenuItem, FormControl, Select } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { Typography } from "@mui/material";
@@ -16,7 +16,7 @@ import Header from "../UI/Header";
 import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
-import { getParticipator } from "../services/mail/particiaptiorMail";
+import { filterParticipator, getParticipator } from "../services/mail/particiaptiorMail";
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
@@ -33,6 +33,7 @@ const background1 = {
 const innerSearch = {
   display: "flex",
   height: "40px",
+  position:"relative",
   width: "212px",
 };
 
@@ -105,7 +106,7 @@ const scrollDiv = {
 };
 
 const emailContainer = {
-  marginTop:"17px",
+  marginTop: "17px",
   overflowY: "auto",
   height: "360px",
 };
@@ -117,13 +118,14 @@ const EmailShow = () => {
     color: "",
   });
   const [emails, setEmails] = useState([]);
-  const [isAlert, setIsAlert]=useState(false);
+  const [isAlert, setIsAlert] = useState(false);
   const [sentEmails, setSentEmails] = useState([]);
   const [uploadEmail, setUploadEmail] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchString, setSearchString] = useState("");
-  const [showMsg, setShowMsg]=useState(false);
+  const [showMsg, setShowMsg] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
+  const [dropValue, setDropValue] = useState("All");
   const [sent, setSent] = useState(false);
   const [upload, setUpload] = useState({
     alert: false,
@@ -133,19 +135,36 @@ const EmailShow = () => {
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     if (emails.length <= 0) {
-    setIsAlert(true);
+      setIsAlert(true);
       setMsg({
         errMsg: "Please select Participant...!",
         color: "red",
       });
       setTimeout(() => {
-       setIsAlert(false);
-      },1400);
+        setIsAlert(false);
+      }, 1400);
     } else {
       setSent(false);
       setOpen(true);
     }
   };
+
+  const participatorFilter=async()=>{
+    setLoading(true);
+   try {
+    const result=await filterParticipator(dropValue);
+    setLoading(false);
+    const response = result?.data;
+    const arr = response.filter((val) => {
+      return val.trim("") != "";
+    });
+    setUploadEmail(arr);
+    setFilteredResults(arr);
+    console.log(response?.data)
+   } catch (error) {
+    setLoading(false);
+   }
+  }
 
   const handleChange = (e) => {
     const { value, checked } = e.target;
@@ -157,6 +176,12 @@ const EmailShow = () => {
       });
     }
   };
+
+  const handleDropChange=(e)=>{
+    const { value } = e.target;
+    setDropValue(value);
+  }
+
   const handleDelete = async (mail) => {
     setMsg({
       errMsg: "Participator deleted Successfully...!",
@@ -199,13 +224,14 @@ const EmailShow = () => {
     } catch (error) {
       console.log(error);
     }
-   
-    
   };
 
-  useEffect(() => {
-    getParticipatorData();
-  }, [showAlert,]);
+  // useEffect(() => {
+  //   getParticipatorData();
+  // }, [showAlert]);
+  useEffect(()=>{
+    participatorFilter();
+  },[dropValue])
 
   const getParticipatorData = async () => {
     setLoading(true);
@@ -225,18 +251,19 @@ const EmailShow = () => {
 
   const handleFileSelect = async (event) => {
     const { files } = event.target;
-    console.log(files[0]?.type,'------')
-    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       setIsAlert(true);
       setMsg({
-        errMsg:"Please select excel file...!",
-        color:"red"
-      })
+        errMsg: "Please select excel file...!",
+        color: "red",
+      });
       setTimeout(() => {
         setIsAlert(false);
       }, 1500);
-    }
-    else{
+    } else {
       setUpload({
         alert: false,
         loader: true,
@@ -283,7 +310,6 @@ const EmailShow = () => {
         console.log("---------", error);
       }
     }
-    
   };
 
   const handleOnChange = (e) => {
@@ -306,16 +332,17 @@ const EmailShow = () => {
     color: "white",
     borderRadius: "6px",
     marginLeft: "10px",
+    height: '39px',
+    marginTop: '17px'
   };
-  const sentMails={
+  const sentMails = {
     fontSize: "8",
     fontWeight: "600",
     color: "white",
     borderRadius: "6px",
-    marginTop: '47px',
-    marginLeft: '27px'
-  }
- console.log(sent,'------sent')
+    marginTop: "47px",
+    marginLeft: "27px",
+  };
   return (
     <>
       <Modal2
@@ -333,7 +360,7 @@ const EmailShow = () => {
         isAlert={isAlert}
         setIsAlert={setIsAlert}
       />
-      {showAlert || upload.alert ||isAlert? (
+      {showAlert || upload.alert || isAlert ? (
         <MsgBar errMsg={msg.errMsg} color={msg.color} />
       ) : (
         <></>
@@ -357,8 +384,8 @@ const EmailShow = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Grid container>
-                <Grid item justifyContent="center" flexDirection="column">
+              <Grid container justifyContent="center" flexDirection="column">
+                <Grid item justifyContent="end" display="flex">
                   <Box sx={innerSearch}>
                     <IconButton type="submit" sx={searchIcon}>
                       <SearchIcon disabled />
@@ -371,22 +398,45 @@ const EmailShow = () => {
                       onChange={handleOnChange}
                     />
                   </Box>
-                  <Grid item textAlign="center " mt={1}>
-                    <Box sx={{ display: "flex" }}>
-                      {upload.loader && <Loader />}
-                      <Button
-                        variant="contained"
-                        component="label"
-                        sx={buttonEmail}
-                        onChange={handleFileSelect}
-                        onClick={(e) => (e.target.value = null)}
-                        disabled={upload?.loader}
-                      >
-                        Upload File
-                        <input type="file" hidden />
-                      </Button>
-                    </Box>
-                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  textAlign="center "
+                  mt={1}
+                  sx={{
+                    justifyContent: "spaceBetween",
+                    display: "flex",
+                    right: "14",
+                    marginTop:"-12px"
+                  }}
+                >
+                  <FormControl sx={{ mt: 2, minWidth: 160 }} size="small">
+                    <Select
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      value={dropValue}
+                      onChange={handleDropChange}
+                    >
+                      <MenuItem value={"All"}>All</MenuItem>
+                      <MenuItem value={"Level 1"}>Level 1</MenuItem>
+                      <MenuItem value={"Level 2"}>Level 2</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <Box sx={{ display: "flex" }}>
+                    {upload.loader && <Loader />}
+                    <Button
+                      variant="contained"
+                      component="label"
+                      sx={buttonEmail}
+                      onChange={handleFileSelect}
+                      onClick={(e) => (e.target.value = null)}
+                      disabled={upload?.loader}
+                    >
+                      Upload File
+                      <input type="file" hidden />
+                    </Button>
+                  </Box>
                 </Grid>
               </Grid>
             </Grid>
