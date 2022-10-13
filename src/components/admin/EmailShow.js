@@ -424,7 +424,7 @@ const EmailShow = () => {
                   </FormControl>
 
                   <Box sx={{ display: "flex" }}>
-                    {upload.loader && <Loader />}
+                    {/* {upload.loader && <Loader />} */}
                     <Button
                       variant="contained"
                       component="label"
