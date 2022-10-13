@@ -66,8 +66,8 @@ const copyright = {
 
 const Thankupage = () => {
   const navigate = useNavigate();
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
   useEffect(() => {
     window.onbeforeunload = function () {
       console.log("akkk");
@@ -78,47 +78,32 @@ const Thankupage = () => {
       window.onbeforeunload = null;
       console.log("kkk");
     };
-}, []);
+  }, []);
 
-useEffect(() => {
-  window.addEventListener("popstate", (event) => {
-    navigate("/thanku");
-  });
-  if (window.location.pathname === "/thanku") {
-    navigate("/thanku");
-  } else {
-    navigate("/thanku");
-  }
-}, [window, navigate]);
+  useEffect(() => {
+    window.addEventListener("popstate", (event) => {
+      navigate("/thanku");
+    });
+    if (window.location.pathname === "/thanku") {
+      navigate("/thanku");
+    } else {
+      navigate("/thanku");
+    }
+  }, [window, navigate]);
 
   return (
     <>
       <div className="box">
         <h1 className="thank">Thank You</h1>
-        <p className="textt">Your Assessment has been submitted successfully..!</p>
+        <p className="textt">
+          Your Assessment has been submitted successfully..!
+        </p>
         <div className="pyro">
           <div className="before"></div>
           <div className="after"></div>
         </div>
       </div>
       <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
-      {/* <Grid container>
-        <Grid item sx={Headers}>
-          <Box ml={2} my={2}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box mx={0.5} sx={logoText} my={3}>
-            Webkorps
-          </Box>
-        </Grid>
-      </Grid>
-      <Box sx={MainBox}>
-        <Typography sx={text}>Thank you</Typography>
-        <Box sx={centerBox}>
-          <Typography sx={pageNot}>Your code is  successfully submitted</Typography>
-          
-        </Box>
-      </Box> */}
     </>
   );
 };
