@@ -16,6 +16,7 @@
     "clsx": "^1.2.1",
     "hh-mm-ss": "^1.2.0",
     "jquery": "^3.6.1",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
     "react-ace": "^10.1.0",
     "react-countdown": "^2.3.2",

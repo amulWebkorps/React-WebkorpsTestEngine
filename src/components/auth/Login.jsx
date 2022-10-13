@@ -200,7 +200,7 @@ const Login = ({setregistercredential}) => {
       navigate('/')
     }
   },[])
-  console.log('---dd',setregistercredential);
+  
   return (
     <>
       <Grid container>
