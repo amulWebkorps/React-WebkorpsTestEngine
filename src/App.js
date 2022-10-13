@@ -61,7 +61,6 @@ function App() {
       localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
     }
     
-    // define decrement counter part
     window.onunload = function (e) {
       const newTabCount = localStorage.getItem("tabsOpen");
       if (newTabCount !== null) {
