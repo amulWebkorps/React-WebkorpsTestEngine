@@ -36,7 +36,7 @@ const createContext = {
   position: "sticky",
   textAlign: "center",
   height: "15px",
-  marginTop:"20px"
+  marginTop: "20px",
 };
 
 const text = {
@@ -67,14 +67,14 @@ const card = {
 const cardImg = {
   padding: "10px",
 };
-const cardBodyx={
+const cardBodyx = {
   height: "220px",
-  backgroundColor:"#F8F7F7",
-  overflow:"auto",
-}
+  backgroundColor: "#F8F7F7",
+  overflow: "auto",
+};
 const cardBody = {
   height: "220px",
-  backgroundColor:"#F8F7F7",
+  backgroundColor: "#F8F7F7",
 };
 
 const contestText = {
@@ -136,9 +136,9 @@ const months = {
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
-  height:"29px",
-  overflowX:'auto',
-  'overflow-wrap':'break-word'
+  height: "29px",
+  overflowX: "auto",
+  overflowWrap: "break-word",
 };
 
 const loaderStyle = {
@@ -176,12 +176,14 @@ const Dashbord = () => {
   const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const adminToken=localStorage.getItem("token");
-  const handleContest = async (id) => {
+  const adminToken = localStorage.getItem("token");
+  const handleContest = async (id, type) => {
     try {
       const result = await getContestDetail(id);
       setContestData(result?.data);
-      navigate("/addQuestion", { state: { result } });
+      type === "MCQ"
+        ? navigate("/addMcq", { state: { result } })
+        : navigate("/addMcq", { state: { result } });
     } catch (error) {
       console.log("error", error);
     }
@@ -225,14 +227,14 @@ const Dashbord = () => {
       setloader(false);
     }
   };
-  
+
   useEffect(() => {
-    if(adminToken===null || adminToken===undefined){
-      navigate('/')
-    }else{
+    if (adminToken === null || adminToken === undefined) {
+      navigate("/");
+    } else {
       fetchContestData();
     }
-  }, []); 
+  }, []);
   return (
     <div style={app}>
       <Header />
@@ -281,18 +283,21 @@ const Dashbord = () => {
             <Grid container ml={0} mt={2}>
               {contestDetails?.map?.((val, index) => {
                 return (
-                  <Grid item md={3} mt={5} key={index}>
+                  <Grid item md={3} mt={5} key={`${index}+{val}`}>
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
                           onClick={() =>
-                            handleContest(contestDetails?.[index]?.contestId)
+                            handleContest(
+                              contestDetails?.[index]?.contestId,
+                              contestDetails?.[index]?.contestType
+                            )
                           }
                           style={cardImg}
                           component="img"
                           height="140"
                           image={contestImg}
-                          alt="green iguana"
+                          alt="Webkorps"
                         />
                         <IconButton
                           color="primary"
@@ -308,15 +313,17 @@ const Dashbord = () => {
                         >
                           <CancelIcon />
                         </IconButton>
-                        <CardContent  sx={cardBody}>
+                        <CardContent sx={cardBody}>
                           <div>
-                          <h6 style={contestText}>
-                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
-                            {contestDetails?.[index]?.contestLevel}
-                          </h6>
-                          <p style={months}>
-                           {contestDetails?.[index]?.date} ~ {contestDetails?.[index]?.contestDescription}
-                          </p>
+                            <h6 style={contestText}>
+                              {contestDetails?.[index]?.contestName}
+                              &nbsp;~&nbsp;
+                              {contestDetails?.[index]?.contestLevel}
+                            </h6>
+                            <p style={months}>
+                              {contestDetails?.[index]?.date} ~{" "}
+                              {contestDetails?.[index]?.contestDescription}
+                            </p>
                           </div>
                         </CardContent>
                       </CardActionArea>
@@ -381,7 +388,7 @@ const Dashbord = () => {
                           component="img"
                           height="140"
                           image={contestImg}
-                          alt="green iguana"
+                          alt="Webkorps"
                         />
 
                         <CardContent sx={cardBody}>

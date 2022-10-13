@@ -37,8 +37,8 @@ const MenuPropsfortime = {
   },
 };
 const names = ["Level 1", "Level 2"];
-
 const times = ["30 min", "60 min", "90 min", "120 min"];
+const types=["MCQ","Questions"]
 
 function getStyles(name, level, theme) {
   return {
@@ -150,6 +150,7 @@ const Modal = ({
     contestDescription: "",
     contestLevel: "",
     contestTime: "",
+    contestType:""
   });
   const handleClose = () => {
     setshowMessage(false);
@@ -158,6 +159,7 @@ const Modal = ({
     inputData.contestDescription = "";
     inputData.contestLevel = "";
     inputData.contestTime = "";
+    inputData.contestType="";
   };
   const theme = useTheme();
 
@@ -170,19 +172,19 @@ const Modal = ({
       [name]: value,
     });
   };
-
+  
   const createContest = async () => {
     if (
       inputData.contestName === "" ||
       inputData.contestDescription === "" ||
       inputData.contestLevel === "" ||
-      inputData.contestTime === ""
+      inputData.contestTime === ""||
+      inputData.contestType===""
     ) {
       setshowMessage(true);
     } else {
       try {
         const response = await addContest(inputData);
-        // setContestDetails([...contestDetails, inputData]);
         fetchContestData();
         if (response) {
           handleClose();
@@ -196,6 +198,7 @@ const Modal = ({
       }
     }
   };
+  console.log(inputData,'contestdata')
   return (
     <div>
       {showMessage && (
@@ -238,14 +241,14 @@ const Modal = ({
                   id="fullWidth"
                   onChange={handleOnChange}
                   name="contestName"
-                  value={contestDetails?.contestName}
+                  value={inputData?.contestName}
                 />
                 <label style={label}>Add Description</label>
                 <TextField
                   id="outlined-multiline-static"
                   name="contestDescription"
                   onChange={handleOnChange}
-                  value={contestDetails?.contestDescription}
+                  value={inputData?.contestDescription}
                   multiline
                   rows={2}
                   fullWidth
@@ -254,12 +257,12 @@ const Modal = ({
                   }}
                   //   sx={{description}}
                 />
-                <FormControl sx={{ width: 300, mt: 2 }}>
+                <FormControl sx={{ width: 250, mt: 2 }}>
                   <label style={label}>Level</label>
                   <Select
                     displayEmpty
                     name="contestLevel"
-                    value={contestDetails?.contestLevel}
+                    value={inputData?.contestLevel}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -272,7 +275,6 @@ const Modal = ({
                     sx={level}
                     inputProps={{ "aria-label": "Without label" }}
                   >
-                    <MenuItem disabled value=""></MenuItem>
                     {names.map((name) => (
                       <MenuItem
                         key={name}
@@ -284,13 +286,12 @@ const Modal = ({
                     ))}
                   </Select>
                 </FormControl>
-
                 <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
                   <label style={label}>Time</label>
                   <Select
                     displayEmpty
                     name="contestTime"
-                    value={contestDetails?.contestTime}
+                    value={inputData?.contestTime}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -303,7 +304,6 @@ const Modal = ({
                     sx={level}
                     inputProps={{ "aria-label": "Without label" }}
                   >
-                    <MenuItem disabled value=""></MenuItem>
                     {times.map((name) => (
                       <MenuItem
                         key={name}
@@ -313,6 +313,44 @@ const Modal = ({
                         {name}
                       </MenuItem>
                     ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
+                  <label style={label}>Type</label>
+                  <Select
+                    displayEmpty
+                    name="contestType"
+                    value={inputData?.contestLevel==="Level 2"?"Question":inputData?.contestType}
+                    onChange={handleOnChange}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => {
+                      if (selected?.length === 0) {
+                        return <em style={secLevel}>Type</em>;
+                      }
+                      return selected;
+                    }}
+                    MenuProps={MenuPropsfortime}
+                    sx={level}
+                    inputProps={{ "aria-label": "Without label" }}
+                  >
+                    {(inputData?.contestLevel==="Level 1"||inputData?.contestLevel==="")?
+                    types.map((name) => (
+                     <MenuItem
+                       key={name}
+                       value={name}
+                       style={getStyles(name, theme)}
+                     >
+                       {name}
+                     </MenuItem>
+                   )):<MenuItem
+                       key={"3455Ques.."}
+                       value="Question"
+                       style={getStyles("name--", theme)}
+                     >
+                       {'Question'}
+                     </MenuItem>
+                    }
+                   
                   </Select>
                 </FormControl>
               </Box>

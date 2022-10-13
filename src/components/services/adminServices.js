@@ -37,12 +37,7 @@ const deleteContest = (id) => {
 };
 
 const addContest = (contestDetails) => {
-  return api.post(CREATE_CONTEST, {
-    contestName: contestDetails?.contestName,
-    contestDescription: contestDetails?.contestDescription,
-    contestLevel: contestDetails?.contestLevel,
-    contestTime: contestDetails?.contestTime,
-  });
+  return api.post(CREATE_CONTEST,contestDetails);
 };
 const sendMail = (Id, mail) => {
   return api.post(SEND_MAIL, {

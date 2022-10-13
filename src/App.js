@@ -7,8 +7,6 @@ import EmailShow from "./components/admin/EmailShow";
 import Login from "./components/auth/Login";
 import RegisterStepOne from "./components/auth/RegisterStepOne";
 import RegisterStepTwo from "./components/auth/RegisterStepTwo";
-// import RegisterOne from "./components/auth/RegisterStepOne";
-// import RegisterTwo from "./components/auth/RegisterStepTwo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -22,6 +20,7 @@ import CandidateRoutes from "./CandidateRoutes";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
 import Thankupage from "./components/UI/Thankupage";
 import CandidateLogin from "./components/candidate/CandidateLogin";
+import Mcq from "./components/admin/Mcq";
 const theme = createTheme({
   palette: {
     primary: {
@@ -47,6 +46,10 @@ function App() {
             <Route
               path="/email"
               element={<AdminRoutes Component={EmailShow} />}
+            ></Route>
+             <Route
+              path="/addMcq"
+              element={<AdminRoutes Component={Mcq} />}
             ></Route>
             <Route
               path="/register"
