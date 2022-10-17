@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Grid, Fab, Button, Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Card from "@mui/material/Card";
@@ -7,17 +7,21 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { contestImg, logo } from "../assests/images";
+import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
-import CardActions from "@mui/material/CardActions";
 import Modal from "../UI/Modal";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllContestList } from "../services/adminServices";
+import { getContestDetail } from "../services/adminServices";
+import Popup from "../UI/Popup";
+import MsgBar from "../auth/base/MsgBar";
+import Loader from "../auth/base/Loader";
 
 const containerStyle = {
   overflowY: "auto",
-  height: "68vh",
+  height: "550px",
   background: "linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)",
   display: "flex",
   flexDirection: "row",
@@ -26,22 +30,21 @@ const containerStyle = {
 };
 
 const createContext = {
-  marginTop: "27px",
   background: "#F9F9F9",
   borderRadius: "18px 18px 0px 0px",
   padding: "30px",
   position: "sticky",
   textAlign: "center",
-  height: "11vh",
+  height: "15px",
+  marginTop:"20px"
 };
 
 const text = {
-  margin: "-10px",
+  marginTop: "-20px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "700",
-  fontSize: "48px",
-  lineHeight: "56px",
+  fontSize: "28px",
 };
 
 const app = {
@@ -57,30 +60,28 @@ const app = {
 
 const card = {
   width: "220px",
-  maxHeight: "27vh",
+  maxHeight: "211px",
   borderRadius: "11px",
 };
 
 const cardImg = {
   padding: "10px",
 };
-
-const cardBody = { height: "100vh",
-background: `linear-gradient(
-    180deg,
-    rgba(24, 135, 201, 0) 0%,
-    rgba(24, 135, 201, 0.224167) 40.42%,
-    rgba(24, 135, 201, 0.4) 100%
-  )`,
-overflow: "auto",
-  backgroundColor: "#F8F7F7",
+const cardBodyx={
+  height: "220px",
+  backgroundColor:"#F8F7F7",
+  overflow:"auto",
+}
+const cardBody = {
+  height: "220px",
+  backgroundColor:"#F8F7F7",
 };
 
 const contestText = {
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: 600,
-  fontSize: "18px",
+  fontSize: "14px",
   lineHeight: "21px",
   color: "#3D3D3D",
 };
@@ -93,10 +94,9 @@ const contestDate = {
 };
 
 const createContest = {
-  // margin:"10px",
   marginTop: "40px",
   width: "220px",
-  maxHeight: "27vh",
+  maxHeight: "211px",
   borderRadius: "11px",
 };
 
@@ -119,10 +119,9 @@ const delBtn1 = {
 
 const forwardIcon = {
   transform: " rotate(-90deg)",
-  position: "absolute",
-  top: `calc(50% - -78px)`,
+  position: "sticky",
+  top: `50%`,
   color: "white",
-  //  background:"black"
 };
 const backIcon = {
   transform: " rotate(90deg)",
@@ -137,64 +136,160 @@ const months = {
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
+  height:"29px",
+  overflowX:'auto',
+  'overflow-wrap':'break-word'
 };
 
-const array = [1, 1, 1];
-const levels = ["Level 1", "Level 2", "Level 3", "ALL"];
-const today = new Date();
-const date =
-  (today.getDate() < 10 ? "0" + today.getDate() : today.getDate()) +
-  "/" +
-  (today.getMonth() + 1 < 10
-    ? "0" + (today.getMonth() + 1)
-    : today.getMonth() + 1) +
-  "/" +
-  today.getFullYear();
-
+const loaderStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItem: "center",
+  ".css-1hf2oir ": {
+    position: "absolute",
+    top: "50%",
+  },
+  ".css-l4f0tx-MuiCircularProgress-root ": {
+    color: "white",
+  },
+};
+const levels = ["Level 1", "Level 2", "ALL"];
+const contestInitialValues = {
+  contestName: "",
+  contestDescription: "",
+  contestLevel: "",
+};
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
+  const location = useLocation();
+  const [showAlert, setAlert] = useState(false);
+  const [bar, setBar] = useState(false);
+  const [delContest, setDelContest] = useState({
+    name: "",
+    id: "",
+    contestId: "",
+  });
+  const [confirm, setConfirm] = useState(false);
+  const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
-  const navigate=useNavigate()
-  const handleContest=()=>{
-    navigate('/addQuestion')
-
-    console.log('-----')
-  }
-  const handleClickOpen = () => {
-    setOpen(true);
-
-  
+  const [contestData, setContestData] = useState(null);
+  const [loader, setloader] = useState(true);
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
+  const adminToken=localStorage.getItem("token");
+  const handleContest = async (id) => {
+    try {
+      const result = await getContestDetail(id);
+      setContestData(result?.data);
+      navigate("/addQuestion", { state: { result } });
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
+  const deleteContest = (id, Name, contestId) => {
+    setDelContest({
+      name: Name,
+      id: id,
+      contestId: contestId,
+    });
+    setConfirm(true);
+  };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handlePop = () => {
+    setConfirm(true);
+  };
+
+  const handleCheck = (index) => {
+    if (index === 0) {
+      navigate("/level1");
+    } else if (index === 1) {
+      navigate("/level2");
+    } else if (index === 2) {
+      navigate("/allavailable");
+    }
+  };
+
+  const fetchContestData = async () => {
+    try {
+      const response = await getAllContestList();
+      if (response.message == "success" && response.status == "200") {
+        setloader(false);
+      }
+      setContestDetails(response.data);
+    } catch (error) {
+      if(error?.response?.status===403){
+        navigate('/')
+      }
+      setloader(false);
+    }
+  };
+  
+  useEffect(() => {
+    if(adminToken===null || adminToken===undefined){
+      navigate('/')
+    }else{
+      fetchContestData();
+    }
+  }, []); 
   return (
     <div style={app}>
       <Header />
+      {/* <BackButton /> */}
       {showAvailq ? (
         <>
           <Modal
             open={open}
             setOpen={setOpen}
             handleClickOpen={handleClickOpen}
+            setContestDetails={setContestDetails}
+            contestDetails={contestDetails}
+            setAlert={setAlert}
+            fetchContestData={fetchContestData}
           />
+          <Popup
+            contestDetails={contestDetails}
+            setContestDetails={setContestDetails}
+            contest={delContest}
+            opens={confirm}
+            setConfirm={setConfirm}
+            setOpen={setOpen}
+            handleClickOpen={handlePop}
+            setBar={setBar}
+          />
+          {bar || showAlert ? (
+            <MsgBar
+              errMsg={
+                bar
+                  ? "Contest Delete Successfully...!"
+                  : "Contest Created Successfully...!"
+              }
+              color={bar ? "blue" : "green"}
+            />
+          ) : (
+            <></>
+          )}
+          {error && (
+            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+          )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
           </Container>
+          <Grid sx={loaderStyle}>{loader && <Loader />}</Grid>
           <Container sx={containerStyle}>
-            <ExpandCircleDownRoundedIcon
-              sx={forwardIcon}
-              fontSize="large"
-              onClick={() => setAvailQ(false)}
-            ></ExpandCircleDownRoundedIcon>
-
-            <Grid container ml={4} mt={2}>
-              {array.map((val, index) => {
+            <Grid container ml={0} mt={2}>
+              {contestDetails?.map?.((val, index) => {
                 return (
-                  <Grid item md={3} mt={5}>
+                  <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
-                         onClick={()=>handleContest()}
+                          onClick={() =>
+                            handleContest(contestDetails?.[index]?.contestId)
+                          }
                           style={cardImg}
                           component="img"
                           height="140"
@@ -205,15 +300,94 @@ const Dashbord = () => {
                           color="primary"
                           aria-label="add"
                           sx={delBtn1}
+                          onClick={() =>
+                            deleteContest(
+                              index,
+                              contestDetails?.[index]?.contestName,
+                              contestDetails?.[index]?.contestId
+                            )
+                          }
                         >
-                          <CancelIcon
-                            onClick={() => alert("contest deleted succesfully")}
-                          />
+                          <CancelIcon />
                         </IconButton>
+                        <CardContent  sx={cardBody}>
+                          <div>
+                          <h6 style={contestText}>
+                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
+                            {contestDetails?.[index]?.contestLevel}
+                          </h6>
+                          <p style={months}>
+                           {contestDetails?.[index]?.date} ~ {contestDetails?.[index]?.contestDescription}
+                          </p>
+                          </div>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                );
+              })}
+              <Grid>
+                {loader || (
+                  <Card sx={createContest}>
+                    <CardActionArea>
+                      <CardMedia sx={{ paddingBottom: "16px" }}>
+                        <Fab
+                          color="primary"
+                          aria-label="add"
+                          sx={addButton}
+                          onClick={() => handleClickOpen()}
+                        >
+                          <AddIcon fontSize="large" />
+                        </Fab>
+                      </CardMedia>
+                      <CardContent sx={cardBody}>
+                        <br />
+                        <h4 style={contestText}>create contest</h4>
+
+                        <p style={months}>add Description</p>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                )}
+              </Grid>
+            </Grid>
+            <Grid ml={-5} mt={6}>
+              <ExpandCircleDownRoundedIcon
+                sx={forwardIcon}
+                fontSize="large"
+                onClick={() => setAvailQ(false)}
+              ></ExpandCircleDownRoundedIcon>
+            </Grid>
+          </Container>
+        </>
+      ) : (
+        <>
+          <Container sx={createContext}>
+            <Typography sx={text}>Available Question</Typography>
+          </Container>
+
+          <Container sx={containerStyle}>
+            <ExpandCircleDownRoundedIcon
+              sx={backIcon}
+              fontSize="large"
+              onClick={() => setAvailQ(true)}
+            ></ExpandCircleDownRoundedIcon>
+            <Grid container ml={4} mt={2}>
+              {levels.map((val, index) => {
+                return (
+                  <Grid item md={3} mt={5} key={index}>
+                    <Card sx={card}>
+                      <CardActionArea onClick={() => handleCheck(index)}>
+                        <CardMedia
+                          style={cardImg}
+                          component="img"
+                          height="140"
+                          image={contestImg}
+                          alt="green iguana"
+                        />
+
                         <CardContent sx={cardBody}>
-                          <h4 style={contestText}>Fresherss</h4>
-                          <p style={months}>00 months to 06 months</p>
-                          <p style={contestDate}>Last Changes {date}</p>
+                          <h4 style={contestText}>{levels[index]}</h4>
                         </CardContent>
                       </CardActionArea>
                     </Card>
@@ -228,74 +402,18 @@ const Dashbord = () => {
                         color="primary"
                         aria-label="add"
                         sx={addButton}
-                        onClick={() => handleClickOpen()}
+                        onClick={() =>
+                          navigate("/email", {
+                            state: { data: contestDetails },
+                          })
+                        }
                       >
                         <AddIcon fontSize="large" />
                       </Fab>
                     </CardMedia>
                     <CardContent sx={cardBody}>
-                    <br/>
-                      <h4 style={contestText}>create contest</h4>
-                      
-                      <p style= {months}>add Description</p>
-                     
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            </Grid>
-          </Container>
-        </>
-      ) : (
-        <>
-          <Container sx={createContext}>
-            <Typography sx={text}>available question</Typography>
-          </Container>
-
-          <Container sx={containerStyle}>
-            <Grid container ml={4} mt={2}>
-              {levels.map((val, index) => {
-                return (
-                  <Grid item md={3} mt={5}>
-                    <Card sx={card}>
-                      <CardActionArea>
-                        <CardMedia
-                          style={cardImg}
-                          component="img"
-                          height="140"
-                          image={contestImg}
-                          alt="green iguana"
-                        />
-                        {/* <IconButton
-                          color="primary"
-                          aria-label="add"
-                          sx={delBtn}
-                        >
-                          <CancelIcon
-                            onClick={() => alert("contest deleted succesfully")}
-                          />
-                        </IconButton> */}
-                        <CardContent sx={cardBody}>
-                          <h4 style={contestText}>{levels[index]}</h4>
-                          <p style={months}>00 months to 06 months</p>
-                          <p style={contestDate}>Last Changes {date}</p>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
-                );
-              })}
-              <Grid>
-                <Card sx={createContest}>
-                  <CardActionArea>
-                    <CardMedia sx={{ paddingBottom: "16px" }}>
-                      <Fab color="primary" aria-label="add" sx={addButton}>
-                        <AddIcon fontSize="large" />
-                      </Fab>
-                    </CardMedia>
-                    <CardContent sx={cardBody}>
                       <h4 style={contestText}>
-                        <h4>Upload A New Participatior</h4>
+                        <h4>Upload New Participants</h4>
                       </h4>
                       <p></p>
                     </CardContent>
@@ -303,13 +421,7 @@ const Dashbord = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid>
-              <ExpandCircleDownRoundedIcon
-                sx={backIcon}
-                fontSize="large"
-                onClick={() => setAvailQ(true)}
-              ></ExpandCircleDownRoundedIcon>
-            </Grid>
+            <Grid></Grid>
           </Container>
         </>
       )}

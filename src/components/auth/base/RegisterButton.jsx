@@ -13,13 +13,12 @@ const button = {
   marginBottom: "20px",
   textTransform: "none",
   borderRadius: "6px",
+  
 };
-
-
-const RegisterButton = ({name}) => {
+const RegisterButton = ({name, onClick}) => {
   return (
     <>
-      <Button variant="contained" sx={button}>
+      <Button variant="contained" sx={button} onClick={onClick}>
         {name}
       </Button>
     </>

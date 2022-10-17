@@ -21,11 +21,12 @@ import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  filterQuestion,
   saveQuestion,
-  uploadQuestions,
 } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
+import { uploadQuestions } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
 
 const useStyles = makeStyles({
@@ -63,43 +64,21 @@ const topButton = {
   justifyContent: "center",
 };
 
-const MainBox = {
-  height: "15vh",
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-};
-
-const QuestionBox = {
-  cursor: "pointer",
-  width: "250px",
-  height: "55px",
-  background: "#0057FF !important",
-  color: "white",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  borderRadius: `18px 0px 0px 18px`,
-  fontWeight: 700,
-  fontSize: "20px",
-};
-
-const AnswerBox = {
-  cursor: "pointer",
-  width: "250px",
-  height: "55px",
-  background: "white",
-  color: "Black",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  borderRadius: `0px 18px 18px 0px`,
-  fontWeight: 700,
-  fontSize: "20px",
+const buttonLevel = {
+  width: "260px",
+  height: "51px",
+  background: "#0057ff",
+  borderRadius: "18px 18px 18px 18px",
+  fontWeight: "700",
+  fontSize: "25px",
+  lineHeight: "19px",
+  textTransform: "none",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  paddingTop: "12px",
+  paddingLeft: "25px",
+  marginTop: "25px",
+  color: "#FFFFFF",
 };
 
 const delBtn = {
@@ -115,7 +94,6 @@ const delBtn = {
 const mainContainer = {
   marginTop: "20px",
   background: "white",
-  borderRadius: "18px",
 };
 
 const cardBody = {
@@ -175,20 +153,20 @@ const sampleTestInitialFields = {
 const problemStatementIntialVal = {
   question: "",
 };
-const QuestionList = () => {
+const Level1 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const classes = useStyles();
-  const [editRef, setEditRef] = useState(null);
   const [contestData, setContestData] = useState(
-    location?.state?.result?.data?.contest
+    location?.state?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
+  const [editRef, setEditRef] = useState(null);
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
-    contestLevel: `${contestData?.contestLevel}@${contestData?.contestId}`,
+    contestLevel: `Level 1`,
   };
 
   const quesIntialField = {
@@ -207,25 +185,20 @@ const QuestionList = () => {
   const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
   const [testCases, setTestCases] = useState(testInitialFields);
   const [testCaseList, setTestCaseList] = useState([]);
-  const [contestQuestion, setContestQuestion] = useState();
+  const [contestQuestion, setContestQuestion] = useState(null);
   const [editQuestion, setEditQuestion] = useState(false);
   const [delFromContest, setDelFromContest] = useState({
-    state: true,
-    contestId: contestData?.contestId,
+    state: false,
   });
-  const [availableQuestions, setAvailableQuestions] = useState(
-    location?.state?.data?.totalAvailableQuestion
-  );
+  const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
-  const [showAlreadyQuestion, setShowAlreadyQuestion] = useState(false);
-  const [showSelectQuestion, setshowselectquestion] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
-  const [loader, setloader] = useState(true);
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
   });
-
+  const [loader, setloader] = useState(true);
+  const [error, setError] = useState(false);
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -276,6 +249,7 @@ const QuestionList = () => {
       sampleTestCase?.output === "" ||
       testCaseList.length === 0
     ) {
+      // setAlert(true);
       setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",
@@ -283,10 +257,6 @@ const QuestionList = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
       }, 1200);
     } else {
       try {
@@ -310,6 +280,7 @@ const QuestionList = () => {
             errMsg: "Question edit successfully...!",
             color: "green",
           });
+          console.log("editquestion");
           setEditQuestion(false);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -330,17 +301,23 @@ const QuestionList = () => {
           setTestCaseList([]);
         }
       } catch (error) {
+        setAlert(true);
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
         console.log("error");
       }
     }
   };
+
   const delTestCase = (id) => {
     setTestCaseList((val) => {
       return val.filter((a, index) => index !== id);
     });
   };
 
-  const editTestcase = (e, index) => {
+  const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
       const newState = prevState.map((obj, inn) => {
@@ -354,79 +331,97 @@ const QuestionList = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       setShowValidation(true);
       setMsg({
-        errMsg:"Please select excel file...!",
-        color:"red"
-      })
+        errMsg: "Please select excel file...!",
+        color: "red",
+      });
       setTimeout(() => {
         setShowValidation(false);
-      setMsg({
-        errMsg:"",
-        color:""
-      })
-      }, 1500);}
-      else{
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);
+    } else {
+      try {
+        const result = await uploadQuestions(files[0], "", "Level 1");
         setAlert(true);
-        try {
-          const result = await uploadQuestions(
-            files[0],
-            contestData?.contestId,
-            ""
-          );
+        // setContestQuestion([...contestQuestion, ...result]);
+        setMsg({
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
           setMsg({
-            errMsg: "Question uploaded successfully...!",
-            color: "green",
+            errMsg: "",
+            color: "",
           });
-          setTimeout(() => {
-            setAlert(false);
-          }, 1200);
-        } catch (error) {
           setAlert(false);
-          console.log("ee", error);
-        }
+        }, 1200);
+      } catch (error) {
+        setAlert(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+        console.log("ee", error);
       }
-
+    }
   };
 
   useEffect(() => {
-    const result = getContestDetail(contestData?.contestId)
-      .then((res) => {
-        if (res.message == "success" && res.status == "200") {
-          setloader(false);
-        }
-        setContestQuestion(res?.data?.contestQuestionDetail);
-      })
-      .catch("dmndv");
+    filtersQuestions();
   }, [showAlert]);
-  console.log("useeffect");
+
+  const filtersQuestions = async () => {
+    try {
+      const res = await filterQuestion("Level 1");
+      const response = res.data;
+      if (res.message == "success" && res.status == "200") {
+        setloader(false);
+      }
+      setContestQuestion(response);
+    } catch (error) {
+      setloader(false);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+      console.log(error);
+    }
+  };
+
+  // useEffect(()=>{
+  // const result= filterQuestion("All").then((res)=>{
+  //   const response=res.data
+  //   setAvailableQuestions(response);
+  // })
+  // },[])
+
   return (
-    <div style={questionList}>
+    <div id="body" style={questionList}>
       <Header />
       <BackButton />
       <Container sx={topButton}>
-        {showAlert ||
-        showValidation ||
-        showAlreadyQuestion ||
-        showSelectQuestion ? (
+        {showAlert || showValidation ? (
           <MsgBar errMsg={msg.errMsg} color={msg.color} />
         ) : (
           <></>
         )}
-        <Grid container sx={{ justifyContent: "center" }} mt={3}>
-          <Box sx={QuestionBox}>Questions</Box>
-
-          {/* <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}> */}
-
-          <Box
-            sx={AnswerBox}
-            onClick={() =>
-              navigate("/participator ", { state: location?.state })
-            }
-          >
-            Participators
-          </Box>
+        {error && (
+          <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+        )}
+        <Grid container sx={{ justifyContent: "center" }}>
+          <Grid item>
+            <Box variant="contained" sx={buttonLevel}>
+              Level 1 Questions
+            </Box>
+          </Grid>
         </Grid>
       </Container>
       <Container sx={mainContainer} ref={editRef}>
@@ -460,7 +455,9 @@ const QuestionList = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -489,7 +486,9 @@ const QuestionList = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -518,7 +517,9 @@ const QuestionList = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -538,7 +539,9 @@ const QuestionList = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -567,9 +570,9 @@ const QuestionList = () => {
                         <Button
                           variant="outlined"
                           component="label"
-                          onClick={(e) => (e.target.value = null)}
-                          onChange={uploadQuestion}
                           startIcon={<NoteAddIcon />}
+                          onChange={uploadQuestion}
+                          onClick={(e) => (e.target.value = null)}
                         >
                           Upload File
                           <input hidden accept="file/*" multiple type="file" />
@@ -642,9 +645,11 @@ const QuestionList = () => {
                           }}
                         >
                           {testCaseList?.map((val, index) => {
+                            {
+                              console.log("index from map", index);
+                            }
                             return (
                               <Box
-                                key={index}
                                 component="form"
                                 sx={{
                                   "& > :not(style)": { m: 1, width: "15ch" },
@@ -663,7 +668,6 @@ const QuestionList = () => {
                                   color="primary"
                                   focused
                                 />
-
                                 <TextField
                                   name="output"
                                   value={val?.output}
@@ -699,6 +703,7 @@ const QuestionList = () => {
                           >
                             Add
                           </Button>
+                         
                         </Stack>
                       </Container>
                     </div>
@@ -710,11 +715,9 @@ const QuestionList = () => {
           </Card>
         </Grid>
         <AddedQues
-          setEditRef={setEditRef}
           loader={loader}
-          showAlert={showAlert}
-          contestId={contestData?.contestId}
           setMsg={setMsg}
+          setEditRef={setEditRef}
           availableQuestions={availableQuestions}
           setAvailableQuestions={setAvailableQuestions}
           question={question}
@@ -730,12 +733,11 @@ const QuestionList = () => {
           setTestCaseList={setTestCaseList}
           setSampleTestCase={setSampleTestCase}
           setIndex={setIndex}
-          setShowAlreadyQuestion={setShowAlreadyQuestion}
-          setshowselectquestion={setshowselectquestion}
+          level={true}
         />
       </Container>
     </div>
   );
 };
 
-export default QuestionList;
+export default Level1;

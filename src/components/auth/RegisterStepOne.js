@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-//import Header from "../UI/Header";
 import { background } from "../assests/images";
 import { Ellips } from "../assests/images";
 import TextInput from "./base/TextInput";
@@ -11,14 +10,15 @@ import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { logo } from "../assests/images";
-import { NavLink } from "react-router-dom";
-
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import MsgBar from "./base/MsgBar";
+import Header from "../UI/Header";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
   backgroundSize: "cover",
   position: "relative",
-  height: "86vh",
+  height: "86.8vh",
   width: "100%",
   display: "flex",
   justifyContent: "center",
@@ -155,19 +155,67 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterOne = () => {
+const RegisterStepOne = ({ setregistercredential , registercredential}) => {
+  const [showAlert, setAlert] = useState(false);
+  const [showNumber, setshownumber] = useState(false);
+  const [showEmail, setshowemail] = useState(false);
+  const navigate = useNavigate();
+
+  // const [credential, setcredential] = useState({
+  //   hName: "",
+  //   email: "",
+  //   hNumber: "",
+  // });
+  const date=new Date();
+  const year=date.getFullYear();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+   // setcredential({ ...credential, [name]: value });
+    setregistercredential({ ...registercredential, [name]: value });
+  };
+  const handleClick = () => {
+    if (
+      registercredential.hName == "" ||
+      registercredential.email == "" ||
+      registercredential.hNumber == ""
+    ) {
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, 2000);
+    } else if (!/.+@.+\.[A-Za-z]+$/.test(registercredential.email) === true) {
+      setshowemail(true);
+      setTimeout(() => {
+        setshowemail(false);
+      }, 2000);
+    } else if (
+      registercredential.hNumber === Number("credential.hNumber") ||
+      registercredential.hNumber === "" ||
+      registercredential.hNumber[0] === "-" ||
+      registercredential.hNumber.length > 10 ||
+      registercredential.hNumber.length < 10
+    ) {
+      setshownumber(true);
+      setTimeout(() => {
+        setshownumber(false);
+      }, 2000);
+    } else {
+      navigate("/password");
+    }
+  };
   return (
     <>
       <Grid container>
-        <Grid item sx={Headers}>
-          <Box ml={2} my={2}>
-            <img src={logo} alt="logo" />
-          </Box>
-          <Box sx={logoText} my={3}>
-            WEBKORPS
-          </Box>
-        </Grid>
+        <Header setColor={true} setShow={true}/>
       </Grid>
+      {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
+      {showNumber && (
+        <MsgBar errMsg={"Please enter valid phone number"} color={"red"} />
+      )}
+      {showEmail && (
+        <MsgBar errMsg={"Please fill valid email address"} color={"red"} />
+      )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
@@ -176,19 +224,39 @@ const RegisterOne = () => {
               <Typography sx={first}>1</Typography>
               <Typography sx={lining}>___</Typography>
               <Typography sx={second}>
-                <img src={Ellips} className="image" />2
+                <img src={Ellips} className="image" alt="error" />2
               </Typography>
             </Box>
             <Stack>
               <Typography sx={Required}>
                 <span className="star">*</span>Required Field
               </Typography>
-              <TextInput label="Full Name" star={"*"} />
-              <TextInput label="Email Address" star={"*"} />
-              <TextInput label="Phone Number" star={"*"} />
-              <NavLink to="/password" style={{textDecoration: 'none'}}>
-                <ContinueButton name="Continue" />
-              </NavLink>
+              <TextInput
+                label="Full Name"
+                star={"*"}
+                onChange={handleChange}
+                value={registercredential.hName}
+                name="hName"
+                type="text"
+              />
+              <TextInput
+                label="Email Address"
+                star={"*"}
+                onChange={handleChange}
+                value={registercredential.email}
+                name="email"
+                type="email"
+              />
+              <TextInput
+                label="Phone Number"
+                star={"*"}
+                onChange={handleChange}
+                value={registercredential.hNumber}
+                type="number"
+                name="hNumber"
+              />
+
+              <ContinueButton name="Continue" onClick={handleClick} />
 
               <Typography sx={footerOne}>
                 Have an account?
@@ -200,10 +268,10 @@ const RegisterOne = () => {
             </Stack>
           </Box>
         </Box>
-        <Typography sx={copyright}>Copyright@webkorps2021</Typography>
+        <Typography sx={copyright}>Copyright@webkorps{year}</Typography>
       </Container>
     </>
   );
 };
 
-export default RegisterOne;
+export default RegisterStepOne;

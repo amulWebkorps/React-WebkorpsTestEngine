@@ -16,7 +16,7 @@ const button = {
   borderRadius: "6px",
 };
 
-const MainButton = ({ name,onClick, isLoading }) => {
+const MainButton = ({ name,onClick,isLoading }) => {
   return (
     <>
       <Button variant="contained" onClick={onClick} sx={button} disabled={isLoading}>

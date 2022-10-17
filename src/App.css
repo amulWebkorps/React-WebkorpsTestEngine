@@ -5,7 +5,48 @@
   padding: 0;
   box-sizing: border-box;
 }
-body{
-  font-family: 'Raleway';
 
+.option1{
+  margin-top:10px;
+  width: 100px !important;
+  height: 40px !important;
+}
+
+.CodeCompilerText1 {
+  font-Size: 30px !important;
+  font-weight: 600 !important;
+  line-height: 35px !important ;
+  text-align: left !important ;
+};
+
+@media screen and (max-width: 1000px) {
+  .CodeCompilerText1 {
+    font-Size: 20px ;
+    font-weight: 400; 
+    text-align: left ;
+  }; 
+}
+body{
+  font-family: 'Raleway';}
+
+/* *{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+} */
+
+ .background1{
+  height: "100%" !important;
+  background: linear-gradient(
+    180deg,
+    rgba(24, 135, 201, 0) 0%,
+    rgba(24, 135, 201, 0.224167) 40.42%,
+    rgba(24, 135, 201, 0.4) 100%
+  ) !important;
+
+};
+
+::-ms-reveal {
+  display: none !important
 }
