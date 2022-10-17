@@ -155,7 +155,7 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterStepOne = ({ setregistercredential , registercredential}) => {
+const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
   const [showAlert, setAlert] = useState(false);
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
@@ -172,29 +172,29 @@ const RegisterStepOne = ({ setregistercredential , registercredential}) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
    // setcredential({ ...credential, [name]: value });
-    setregistercredential({ ...registercredential, [name]: value });
+    SetRegisterCredential({ ...registerCredential, [name]: value });
   };
   const handleClick = () => {
     if (
-      registercredential.hName == "" ||
-      registercredential.email == "" ||
-      registercredential.hNumber == ""
+      registerCredential.hName == "" ||
+      registerCredential.email == "" ||
+      registerCredential.hNumber == ""
     ) {
       setAlert(true);
       setTimeout(() => {
         setAlert(false);
       }, 2000);
-    } else if (!/.+@.+\.[A-Za-z]+$/.test(registercredential.email) === true) {
+    } else if (!/.+@.+\.[A-Za-z]+$/.test(registerCredential.email) === true) {
       setshowemail(true);
       setTimeout(() => {
         setshowemail(false);
       }, 2000);
     } else if (
-      registercredential.hNumber === Number("credential.hNumber") ||
-      registercredential.hNumber === "" ||
-      registercredential.hNumber[0] === "-" ||
-      registercredential.hNumber.length > 10 ||
-      registercredential.hNumber.length < 10
+      registerCredential.hNumber === Number("credential.hNumber") ||
+      registerCredential.hNumber === "" ||
+      registerCredential.hNumber[0] === "-" ||
+      registerCredential.hNumber.length > 10 ||
+      registerCredential.hNumber.length < 10
     ) {
       setshownumber(true);
       setTimeout(() => {
@@ -235,7 +235,7 @@ const RegisterStepOne = ({ setregistercredential , registercredential}) => {
                 label="Full Name"
                 star={"*"}
                 onChange={handleChange}
-                value={registercredential.hName}
+                value={registerCredential.hName}
                 name="hName"
                 type="text"
               />
@@ -243,7 +243,7 @@ const RegisterStepOne = ({ setregistercredential , registercredential}) => {
                 label="Email Address"
                 star={"*"}
                 onChange={handleChange}
-                value={registercredential.email}
+                value={registerCredential.email}
                 name="email"
                 type="email"
               />
@@ -251,7 +251,7 @@ const RegisterStepOne = ({ setregistercredential , registercredential}) => {
                 label="Phone Number"
                 star={"*"}
                 onChange={handleChange}
-                value={registercredential.hNumber}
+                value={registerCredential.hNumber}
                 type="number"
                 name="hNumber"
               />

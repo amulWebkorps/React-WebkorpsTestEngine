@@ -32,7 +32,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const [registercredential, setregistercredential] = useState({
+  const [registerCredential, SetRegisterCredential] = useState({
     hName: "",
     email: "",
     hNumber: "",
@@ -93,7 +93,7 @@ function App() {
             element={
               <AdminRoutes
                 Component={Login}
-                setregistercredential={setregistercredential}
+                SetRegisterCredential={SetRegisterCredential}
               />
             }
           ></Route>
@@ -105,8 +105,8 @@ function App() {
             path="/register"
             element={
               <RegisterStepOne
-                registercredential={registercredential}
-                setregistercredential={setregistercredential}
+                registerCredential={registerCredential}
+                SetRegisterCredential={SetRegisterCredential}
               />
             }
           ></Route>
@@ -114,8 +114,8 @@ function App() {
             path="/password"
             element={
               <RegisterStepTwo
-                registercredential={registercredential}
-                setregistercredential={setregistercredential}
+                registerCredential={registerCredential}
+                SetRegisterCredential={SetRegisterCredential}
               />
             }
           ></Route>

@@ -128,7 +128,7 @@ const hideIcon = {
   margin: "126px 0px 0px 290px",
 };
 
-const Login = ({setregistercredential}) => {
+const Login = ({ SetRegisterCredential }) => {
   const [credential, setCredential] = useState({
     email: "",
     password: "",
@@ -139,8 +139,9 @@ const Login = ({setregistercredential}) => {
   const [isLoading, setLoading] = useState(false);
   const [showMsg, setMsg] = useState(false);
   const [seenPassword, setSeenpassword] = useState(false);
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
+
   const handleLogin = async () => {
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
@@ -155,7 +156,7 @@ const Login = ({setregistercredential}) => {
         setMsg(true);
         const token = result?.data?.data;
         localStorage.setItem("token", token);
-        localStorage.setItem("role","admin");
+        localStorage.setItem("role", "admin");
         setTimeout(() => {
           navigate("/dashboard", { state: { data: result.data } });
         }, 1500);
@@ -173,6 +174,7 @@ const Login = ({setregistercredential}) => {
   const showPassword = () => {
     setSeenpassword(true);
   };
+
   const hidePassword = () => {
     setSeenpassword(false);
   };
@@ -184,27 +186,28 @@ const Login = ({setregistercredential}) => {
   const handleChange = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
   };
-  const tokens=localStorage.getItem('token');
-  const role=localStorage.getItem('role');
-  useEffect(()=>{
-    setregistercredential({
+
+  const tokens = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  useEffect(() => {
+    SetRegisterCredential({
       hName: "",
       email: "",
       hNumber: "",
       password: "",
-    })
-    if(tokens!=null &&role!="student"){
-      navigate('/dashboard')
+    });
+    if (tokens != null && role != "student") {
+      navigate("/dashboard");
+    } else if (role === "student") {
+      navigate("/");
     }
-    else if(role==="student"){
-      navigate('/')
-    }
-  },[])
-  
+  }, []);
+  console.log("---dd", SetRegisterCredential);
   return (
     <>
       <Grid container>
-        <Header setColor={true} setShow={true}/>
+        <Header setColor={true} setShow={true} />
         {showAlert && (
           <MsgBar empty={"Please fill all Details"} color={"Red"} />
         )}
@@ -254,7 +257,11 @@ const Login = ({setregistercredential}) => {
                 label="Remember me"
                 sx={checkboxname}
               /> */}
-              <LoginButton name="Log in" onClick={handleLogin} isLoading={isLoading} />
+              <LoginButton
+                name="Log in"
+                onClick={handleLogin}
+                isLoading={isLoading}
+              />
               <>
                 <Typography sx={footerOne}>
                   Don't have account?
