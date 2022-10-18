@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import jwt_decode from "jwt-decode";
 import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
@@ -235,6 +236,18 @@ const Dashbord = () => {
       fetchContestData();
     }
   }, []); 
+  const token = localStorage?.getItem("token");
+  useEffect(() => {
+    // if access token is expire it redirected to login page
+    if (token !== null) {
+      const decodeToken = jwt_decode(token);
+      if (decodeToken?.exp * 1000 < Date.now()) {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, [window.location]);
   return (
     <div style={app}>
       <Header />
