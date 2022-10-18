@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import jwt_decode from "jwt-decode";
 import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
@@ -235,6 +236,49 @@ const Dashbord = () => {
       fetchContestData();
     }
   }, []); 
+  const token = localStorage?.getItem("token");
+  useEffect(() => {
+    // if access token is expire it redirected to login page
+    if (token !== null) {
+      const decodeToken = jwt_decode(token);
+      if (decodeToken?.exp * 1000 < Date.now()) {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, [window.location]);
+  useEffect(() => {
+    // define increment counter part
+    const tabsOpen = localStorage.getItem("tabsOpen");
+    if (tabsOpen == null) {
+      localStorage.setItem("tabsOpen", 1);
+    } else {
+      localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
+    }
+    
+    window.onunload = function (e) {
+      const newTabCount = localStorage.getItem("tabsOpen");
+      if (newTabCount !== null) {
+        localStorage.setItem("tabsOpen", newTabCount - 1);
+      }
+    };
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      window.localStorage.isMySessionActive = "false";
+    } else {
+      const newTabCount2 = localStorage.getItem("tabsOpen");
+      let value = localStorage.getItem("isMySessionActive");
+      console.log(newTabCount2)
+      if (value == "true") {
+        if (newTabCount2 - 1 == 0) {
+          localStorage.clear();
+          window.localStorage.isMySessionActive = "false";
+        } else {
+          window.localStorage.isMySessionActive = "false";
+        }
+      }
+    }
+    }, []);
   return (
     <div style={app}>
       <Header />
