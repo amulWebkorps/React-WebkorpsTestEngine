@@ -118,6 +118,7 @@ const AddedQues = ({
     setShowQ(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const scrollTop = () => {
     setEditRef(refs.current?.scrollIntoView({ behavior: "smooth" }));
   };
@@ -138,7 +139,6 @@ const AddedQues = ({
   };
 
   const delQuestion = async (id, quesId) => {
-    
     const arr = [
       delFromContest.state ? delFromContest.contestId : `questionForLevel`,
       quesId,
@@ -158,8 +158,8 @@ const AddedQues = ({
       setTimeout(() => {
         setAlert(false);
         setMsg({
-          errMsg:"",
-          color:""
+          errMsg: "",
+          color: "",
         });
       }, 1200);
       // if (response) {
@@ -214,7 +214,7 @@ const AddedQues = ({
           })}
         </Grid>
       </CardContent>
-      <div ref={ref}></div>
+      {/* <div ref={ref}></div> */}
       {showq && (
         <All
           showAlert={showAlert}

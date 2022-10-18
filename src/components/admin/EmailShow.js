@@ -13,13 +13,17 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
 import { getParticipator } from "../services/mail/particiaptiorMail";
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const background1 = {
   height: "100%",
@@ -105,7 +109,7 @@ const scrollDiv = {
 };
 
 const emailContainer = {
-  marginTop:"17px",
+  marginTop: "17px",
   overflowY: "auto",
   height: "360px",
 };
@@ -117,7 +121,7 @@ const EmailShow = () => {
     color: "",
   });
   const [emails, setEmails] = useState([]);
-  const [isAlert, setIsAlert]=useState(false);
+  const [isAlert, setIsAlert] = useState(false);
   const [sentEmails, setSentEmails] = useState([]);
   const [uploadEmail, setUploadEmail] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -132,14 +136,14 @@ const EmailShow = () => {
   const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     if (emails.length <= 0) {
-    setIsAlert(true);
+      setIsAlert(true);
       setMsg({
         errMsg: "Please select Participant...!",
         color: "red",
       });
       setTimeout(() => {
-       setIsAlert(false);
-      },1400);
+        setIsAlert(false);
+      }, 1400);
     } else {
       setSent(false);
       setOpen(true);
@@ -198,13 +202,11 @@ const EmailShow = () => {
     } catch (error) {
       console.log(error);
     }
-   
-    
   };
 
   useEffect(() => {
     getParticipatorData();
-  }, [showAlert,]);
+  }, [showAlert]);
 
   const getParticipatorData = async () => {
     setLoading(true);
@@ -224,18 +226,20 @@ const EmailShow = () => {
 
   const handleFileSelect = async (event) => {
     const { files } = event.target;
-    console.log(files[0]?.type,'------')
-    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+    console.log(files[0]?.type, "------");
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       setIsAlert(true);
       setMsg({
-        errMsg:"Please select excel file...!",
-        color:"red"
-      })
+        errMsg: "Please select excel file...!",
+        color: "red",
+      });
       setTimeout(() => {
         setIsAlert(false);
       }, 1500);
-    }
-    else{
+    } else {
       setUpload({
         alert: false,
         loader: true,
@@ -282,7 +286,6 @@ const EmailShow = () => {
         console.log("---------", error);
       }
     }
-    
   };
 
   const handleOnChange = (e) => {
@@ -299,6 +302,11 @@ const EmailShow = () => {
       setFilteredResults(uploadEmail);
     }
   };
+  // MY change
+  const navigate = useNavigate();
+  const text = () => {
+    navigate("/McqPage");
+  };
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -306,15 +314,15 @@ const EmailShow = () => {
     borderRadius: "6px",
     marginLeft: "10px",
   };
-  const sentMails={
+  const sentMails = {
     fontSize: "8",
     fontWeight: "600",
     color: "white",
     borderRadius: "6px",
-    marginTop: '47px',
-    marginLeft: '27px'
-  }
- console.log(sent,'------sent')
+    marginTop: "47px",
+    marginLeft: "27px",
+  };
+  console.log(sent, "------sent");
   return (
     <>
       <Modal2
@@ -330,7 +338,7 @@ const EmailShow = () => {
         sent={sent}
         setSent={setSent}
       />
-      {showAlert || upload.alert ||isAlert? (
+      {showAlert || upload.alert || isAlert ? (
         <MsgBar errMsg={msg.errMsg} color={msg.color} />
       ) : (
         <></>
@@ -360,6 +368,7 @@ const EmailShow = () => {
                     <IconButton type="submit" sx={searchIcon}>
                       <SearchIcon disabled />
                     </IconButton>
+
                     <InputBase
                       placeholder="Search emails"
                       sx={searchField}
@@ -370,6 +379,18 @@ const EmailShow = () => {
                   </Box>
                   <Grid item textAlign="center " mt={1}>
                     <Box sx={{ display: "flex" }}>
+                      <Select
+                        displayEmpty={true}
+                        defaultValue="All"
+                        sx={{ height: 34, minWidth: 120 }}
+                      >
+                        <MenuItem value="All">All</MenuItem>
+                        {/* <MenuItem value="All"> All</MenuItem> */}
+                        <MenuItem value="Level1">Level1</MenuItem>
+                        <MenuItem value="Level2">Level2</MenuItem>
+                      </Select>
+
+                      <Button onClick={text}>Test</Button>
                       {upload.loader && <Loader />}
                       <Button
                         variant="contained"
@@ -398,7 +419,6 @@ const EmailShow = () => {
               >
                 {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
                   <>
-                    {" "}
                     <Typography sx={dataText}>No data</Typography>
                     <br />
                   </>

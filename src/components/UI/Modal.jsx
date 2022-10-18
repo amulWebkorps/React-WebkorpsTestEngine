@@ -37,13 +37,11 @@ const MenuPropsfortime = {
   },
 };
 const names = ["Level 1", "Level 2"];
-
+const types = ["questions", "MCQ"];
 const times = ["30 min", "60 min", "90 min", "120 min"];
 
 function getStyles(name, level, theme) {
-  return {
-    
-  };
+  return {};
 }
 
 const modalBody = {
@@ -150,6 +148,7 @@ const Modal = ({
     contestDescription: "",
     contestLevel: "",
     contestTime: "",
+    contestType: "",
   });
   const handleClose = () => {
     setshowMessage(false);
@@ -254,7 +253,7 @@ const Modal = ({
                   }}
                   //   sx={{description}}
                 />
-                <FormControl sx={{ width: 300, mt: 2 }}>
+                <FormControl sx={{ width: 200, mt: 2 }}>
                   <label style={label}>Level</label>
                   <Select
                     displayEmpty
@@ -313,6 +312,47 @@ const Modal = ({
                         {name}
                       </MenuItem>
                     ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 150, mt: 2, ml: 3 }}>
+                  <label style={label}>Type</label>
+                  <Select
+                    displayEmpty
+                    name="contestType"
+                    value={contestDetails?.contestTime}
+                    onChange={handleOnChange}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => {
+                      if (selected?.length === 0) {
+                        return <em style={secLevel}>Select Type</em>;
+                      }
+                      return selected;
+                    }}
+                    MenuProps={MenuPropsfortime}
+                    sx={level}
+                    inputProps={{ "aria-label": "Without label" }}
+                  >
+                    <MenuItem disabled value=""></MenuItem>
+                    {inputData?.contestLevel === "Level 1" ||
+                    inputData?.contestLevel === "" ? (
+                      types.map((name) => (
+                        <MenuItem
+                          key={name}
+                          value={name}
+                          style={getStyles(name, theme)}
+                        >
+                          {name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem
+                        key={"name"}
+                        value={"Question"}
+                        style={getStyles("name", theme)}
+                      >
+                        {"Question"}
+                      </MenuItem>
+                    )}
                   </Select>
                 </FormControl>
               </Box>

@@ -108,7 +108,7 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "12px",
-  justifyContent:'space-between'
+  justifyContent: "space-between",
 };
 
 const containerUpper = {
@@ -206,7 +206,7 @@ const All = ({
     }
   };
   useEffect(() => {
-    setloader(true)
+    setloader(true);
     const result = filterQuestion(dropValue).then((res) => {
       if (res.message == "success" && res.status == "200") {
         setloader(false);

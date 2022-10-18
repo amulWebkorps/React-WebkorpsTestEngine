@@ -22,6 +22,9 @@ import CandidateRoutes from "./CandidateRoutes";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
 import Thankupage from "./components/UI/Thankupage";
 import CandidateLogin from "./components/candidate/CandidateLogin";
+import McqPage from "./components/admin/McqPage";
+import McqParticipator from "./components/admin/McqParticipator";
+import AllMcq from "./components/admin/AllMcq";
 const theme = createTheme({
   palette: {
     primary: {
@@ -43,7 +46,15 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<AdminRoutes Component={Login} setregistercredential={setregistercredential}  />}></Route>
+            <Route
+              path="/"
+              element={
+                <AdminRoutes
+                  Component={Login}
+                  setregistercredential={setregistercredential}
+                />
+              }
+            ></Route>
             <Route
               path="/email"
               element={<AdminRoutes Component={EmailShow} />}
@@ -57,6 +68,7 @@ function App() {
                 />
               }
             ></Route>
+
             <Route
               path="/password"
               element={
@@ -70,6 +82,18 @@ function App() {
               path="/dashboard"
               element={<AdminRoutes Component={Dashbord} />}
             ></Route>
+
+            {/* //my changes */}
+            <Route path="/mcqPage" element={<McqPage />}></Route>
+            <Route
+              path="/mcqParticipator"
+              element={<McqParticipator />}
+            ></Route>
+             <Route
+              path="/allmcq"
+              element={<AllMcq />}
+            ></Route>
+             
 
             <Route
               path="/addQuestion"
@@ -100,6 +124,7 @@ function App() {
               path="/allavailable"
               element={<AdminRoutes Component={Allavailable} />}
             ></Route>
+
             <Route
               path="/instruction"
               element={<CandidateRoutes Component={Instruction} />}
@@ -109,7 +134,10 @@ function App() {
               path="/user"
               element={<CandidateRoutes Component={Compiler} />}
             ></Route>
-            <Route path="/thanku" element={<CandidateRoutes Component={Thankupage} />}></Route>
+            <Route
+              path="/thanku"
+              element={<CandidateRoutes Component={Thankupage} />}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </div>

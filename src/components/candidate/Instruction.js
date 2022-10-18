@@ -83,7 +83,6 @@ const instructions = {
   marginLeft: "24px",
   marginTop: "-46px",
   color: "#000000",
-  
 };
 
 const instructionSubHead = {
@@ -116,11 +115,11 @@ const cancelBtn = {
   margin: "20px",
 };
 
-const loader={
-  marginTop:'-30px',
-  marginLeft:"200px",
-  width:"80vh"
-}
+const loader = {
+  marginTop: "-30px",
+  marginLeft: "200px",
+  width: "80vh",
+};
 const InstructionData = [
   "Use command line argument for input.",
   "If you change window or tab or reload the page so test will be submited automatically.",
@@ -138,14 +137,14 @@ const Instruction = () => {
     location?.state?.data?.data?.student
   );
   const [languages, setLanguages] = useState();
-  const [showLoader, setLoader]=useState(false);
-  const [participatorsContestDetails, setParticipatorsContestDetails] =useState();
+  const [showLoader, setLoader] = useState(false);
+  const [participatorsContestDetails, setParticipatorsContestDetails] =
+    useState();
   const [defaultCode, setDefaultCode] = useState();
   const handleChange = (event) => {
     setLanguage(event.target.value);
   };
-  const{userInfo}=useSelector((state)=>state?.user);
-
+  const { userInfo } = useSelector((state) => state?.user);
 
   console.log(userInfo, " getjhbjb");
 
@@ -163,7 +162,7 @@ const Instruction = () => {
   useEffect(() => {
     window.addEventListener("popstate", (event) => {
       console.log("INSIDE!");
-      navigate('/instruction')
+      navigate("/instruction");
     });
   }, [window, navigate]);
 
@@ -177,7 +176,7 @@ const Instruction = () => {
       })
     );
   }, [language]);
-console.log(language)
+  console.log(language);
   useEffect(() => {
     window.addEventListener("popstate", (event) => {
       navigate("/instruction");
@@ -210,7 +209,7 @@ console.log(language)
 
   return (
     <div style={background1}>
-      <Header  setShow={true} />
+      <Header setShow={true} />
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
@@ -224,7 +223,6 @@ console.log(language)
             <Typography sx={instructionSubHead}>
               Please follow the instructions while giving the test.
             </Typography>
-           
           </Grid>
           <Grid item>
             {InstructionData.map((val, index) => {
@@ -235,14 +233,14 @@ console.log(language)
                       <Typography sx={divText} variant="h1">
                         {`${index + 1}. `}
                       </Typography>
-                 <Typography sx={instructions}>{`  ${val}`}</Typography>
+                      <Typography sx={instructions}>{`  ${val}`}</Typography>
                     </Grid>
                   </Grid>
                 </>
               );
             })}
           </Grid>
-        
+
           <Grid container>
             <Typography mt={2} sx={selectTechnology}>
               Select Technology:
@@ -265,7 +263,7 @@ console.log(language)
             </Box>
           </Grid>
           <Grid container>
-          {showLoader&&<Loader mt={3}/>}
+            {showLoader && <Loader mt={3} />}
             <Button
               variant="contained"
               onClick={() => {
@@ -276,9 +274,9 @@ console.log(language)
             >
               Start Contest
             </Button>
-            {/* <Button variant="outlined" sx={cancelBtn}>
+            <Button variant="outlined" sx={cancelBtn}>
               Cancel
-            </Button> */}
+            </Button>
           </Grid>
         </Grid>
       </Container>
