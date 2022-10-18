@@ -122,6 +122,10 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
+const constraintsText={
+  maxHeight:'48px',
+  overflow:'auto'
+}
 
 const CodeCompilerText1 = {
   fontSize: "25px",
@@ -170,6 +174,10 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
+const questionText={
+  maxHeight:'48px',
+  overflow:'auto'
+}
 
 const textTestCases = {
   padding: "10px",
@@ -221,15 +229,15 @@ const Compiler = () => {
   useEffect(() => {
     window.addEventListener('blur', function(){
       console.log('window change',window)
-      setWinCount(winCount+1)
-      setOpen(true);
+      // setWinCount(winCount+1)
+      // setOpen(true);
    }); 
    window.addEventListener('focus', function(){
    });
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
-        setWarning(warning + 1);
-        setOpen(true);
+        // setWarning(warning + 1);
+        // setOpen(true);
       }
     });
   }, [warning,winCount]);
@@ -536,20 +544,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = async () => {
     setExit(false);
@@ -662,7 +670,7 @@ const Compiler = () => {
                           Problem statement
                         </Typography>
                         <Box style={inputField} p={2}>
-                          <Typography>
+                          <Typography sx={questionText}>
                             {
                               profile
                                 ?.QuestionList?.[count]?.question
@@ -675,7 +683,7 @@ const Compiler = () => {
                       <Box>
                         <Typography style={inputLabel}>Constraints</Typography>
                         <Box style={inputField} p={2}>
-                          <Typography>
+                          <Typography sx={constraintsText}>
                             {
                               profile
                                 ?.QuestionList?.[count]?.sampleTestCase[0]
@@ -692,7 +700,7 @@ const Compiler = () => {
                             Sample Input
                           </Typography>
                           <Box style={inputField} p={2}>
-                            <Typography>
+                            <Typography sx={questionText}>
                               {
                                 profile
                                   ?.QuestionList?.[count]?.sampleTestCase[0]
@@ -708,7 +716,7 @@ const Compiler = () => {
                             Sample Output
                           </Typography>
                           <Box style={inputField} p={2}>
-                            <Typography>
+                            <Typography sx={questionText}>
                               {
                                 profile
                                   ?.QuestionList?.[count]?.sampleTestCase[0]
