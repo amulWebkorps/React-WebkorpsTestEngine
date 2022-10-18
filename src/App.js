@@ -89,11 +89,7 @@ function App() {
               path="/mcqParticipator"
               element={<McqParticipator />}
             ></Route>
-             <Route
-              path="/allmcq"
-              element={<AllMcq />}
-            ></Route>
-             
+            <Route path="/allmcq" element={<AllMcq />}></Route>
 
             <Route
               path="/addQuestion"
