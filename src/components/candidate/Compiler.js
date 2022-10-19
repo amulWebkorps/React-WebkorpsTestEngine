@@ -222,22 +222,20 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const navigate = useNavigate();
-  // const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
-  // const timeOut = true;
 
   useEffect(() => {
     window.addEventListener('blur', function(){
-      console.log('window change',window)
-      setWinCount(winCount+1)
-      setOpen(true);
+      // setWinCount(winCount+1)
+      // setOpen(true);
    }); 
+
    window.addEventListener('focus', function(){
    });
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
-        setWarning(warning + 1);
-        setOpen(true);
+        // setWarning(warning + 1);
+        // setOpen(true);
       }
     });
   }, [warning,winCount]);
@@ -345,6 +343,7 @@ const Compiler = () => {
       const a = [];
       testArray.push(a);
     }
+    console.log(testArray)
     setTestRecord(testArray);
     setDefCode(newArray);
   };
@@ -396,7 +395,9 @@ const Compiler = () => {
           },
         ],
       });
+      setError(resultData?.data?.complilationMessage);
       if (resultData) {
+        console.log(resultData,'insdie ');
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
         if (
@@ -406,8 +407,7 @@ const Compiler = () => {
           navigate("/thanku");
         }
       }
-
-      const newState = testRecord.map((val, index) => {
+      const newState = testRecord?.map((val, index) => {
         if (index === count) {
           return resultData?.data?.testCasesSuccess;
         }
@@ -544,20 +544,20 @@ const Compiler = () => {
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = async () => {
     setExit(false);

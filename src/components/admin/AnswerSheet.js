@@ -17,7 +17,7 @@ import Loader from "../candidate/base/Loader";
 const BigContainer = {
   // background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
   // height: "88vh",
-  minWidth: "100vw",
+  minWidth: "100%",
   // position: "relative",
   height: "100vh",
   background: `linear-gradient(
