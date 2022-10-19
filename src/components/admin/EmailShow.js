@@ -231,7 +231,7 @@ const EmailShow = () => {
   // }, [showAlert]);
   useEffect(()=>{
     participatorFilter();
-  },[dropValue])
+  },[dropValue,showAlert])
 
   const getParticipatorData = async () => {
     setLoading(true);
