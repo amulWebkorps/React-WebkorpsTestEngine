@@ -43,7 +43,7 @@ const divSelect = {
   // marginLeft: "100px",
 };
 const emailContainer = {
-  overflow: "hidden",
+  // overflow: "hidden",
   maxHeight: "340px",
 };
 
@@ -132,7 +132,7 @@ export default function Model2({
     setTimeout(() => {
       setIsAlert(false)
     },2500);
-  },[isAlert])
+  },[isAlert])  
   return (
     <div>
       <Dialog

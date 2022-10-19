@@ -190,7 +190,7 @@ const All = ({
       try {
         const result = await addSelectiveQuestion(selectiveQuestion);
         setMsg({
-          errMsg: "selected Question  added successfully...!",
+          errMsg: "selected Question added successfully...!",
           color: "green",
         });
         setAlert(true);
