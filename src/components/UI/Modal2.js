@@ -132,7 +132,7 @@ export default function Model2({
     setTimeout(() => {
       setIsAlert(false)
     },2500);
-  },[isAlert])
+  },[isAlert])  
   return (
     <div>
       <Dialog
