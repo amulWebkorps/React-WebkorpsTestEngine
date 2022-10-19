@@ -231,7 +231,7 @@ const EmailShow = () => {
   // }, [showAlert]);
   useEffect(()=>{
     participatorFilter();
-  },[dropValue,showAlert])
+  },[dropValue])
 
   const getParticipatorData = async () => {
     setLoading(true);
@@ -352,6 +352,7 @@ const EmailShow = () => {
         showAlert={showAlert}
         open={open}
         setOpen={setOpen}
+        participatorFilter={ participatorFilter}
         handleClickOpen={handleClickOpen}
         emails={emails}
         setEmails={setEmails}
