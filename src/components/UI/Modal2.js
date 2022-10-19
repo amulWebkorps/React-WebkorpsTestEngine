@@ -43,7 +43,7 @@ const divSelect = {
   // marginLeft: "100px",
 };
 const emailContainer = {
-  overflow: "hidden",
+  // overflow: "hidden",
   maxHeight: "340px",
 };
 
