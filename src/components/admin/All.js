@@ -116,15 +116,11 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-const loaderStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItem: "center",
-};
+
 const All = ({
   showAlert,
   setshowselectquestion,
-  setShowAlreadyQuestion,
+  // setShowAlreadyQuestion,
   availableQuestions,
   setAvailableQuestions,
   setContestQuestion,
@@ -133,7 +129,6 @@ const All = ({
   setMsg,
   contestId,
 }) => {
-  const ref = useRef(null);
   const [dropValue, setDropValue] = useState("All");
   const [questionArr, setQuestionArr] = useState([]);
   const [loader, setloader] = useState(true);
@@ -141,6 +136,8 @@ const All = ({
     questionsIds: "",
     contestId: [],
   });
+  const ref = useRef(null);
+
   const handleQuestion = (e) => {
     const { checked, value } = e.target;
     if (checked) {
@@ -164,6 +161,7 @@ const All = ({
     setDropValue(value);
     setAvailableQuestions([]);
   };
+
   const addSelectiveQuestions = async () => {
     const questionsid = contestQuestion.map((v) => v.questionId);
     const selectId = selectiveQuestion.questionsIds.map((v) => v);
@@ -178,13 +176,13 @@ const All = ({
         setshowselectquestion(false);
       }, 1200);
     } else if (data.length === 0 && questionArr.length != 0) {
-      setShowAlreadyQuestion(true);
+      setshowselectquestion(true);
       setMsg({
         errMsg: "selected Question is already present in contest...!",
         color: "blue",
       });
       setTimeout(() => {
-        setShowAlreadyQuestion(false);
+        setshowselectquestion(false);
       }, 2000);
     } else {
       try {
@@ -205,6 +203,7 @@ const All = ({
       }
     }
   };
+
   useEffect(() => {
     setloader(true)
     const result = filterQuestion(dropValue).then((res) => {
@@ -218,6 +217,7 @@ const All = ({
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
+  
 
   return (
     <div ref={ref}>

@@ -1,11 +1,5 @@
 import * as React from "react";
-import { Button, IconButton } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
+import { Button, IconButton,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,Slide } from "@mui/material";
 import { deleteContest } from "../services/adminServices";
 import CancelIcon from "@mui/icons-material/Cancel";
 

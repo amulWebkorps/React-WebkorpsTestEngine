@@ -273,8 +273,6 @@ const Dashbord = () => {
             open={open}
             setOpen={setOpen}
             handleClickOpen={handleClickOpen}
-            setContestDetails={setContestDetails}
-            contestDetails={contestDetails}
             setAlert={setAlert}
             fetchContestData={fetchContestData}
           />

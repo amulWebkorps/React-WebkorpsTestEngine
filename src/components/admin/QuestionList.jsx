@@ -63,14 +63,6 @@ const topButton = {
   justifyContent: "center",
 };
 
-const MainBox = {
-  height: "15vh",
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-};
 
 const QuestionBox = {
   cursor: "pointer",
@@ -237,7 +229,6 @@ const QuestionList = () => {
 
   const handleTestChange = (e) => {
     const { name, value } = e.target;
-
     setTestCases({
       ...testCases,
       [name]: value,

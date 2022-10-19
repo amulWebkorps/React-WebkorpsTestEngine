@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AnswerSheet from "./components/admin/AnswerSheet";
 import Dashbord from "./components/admin/Dashbord";
 import Compiler from "./components/candidate/Compiler";
@@ -7,7 +7,7 @@ import EmailShow from "./components/admin/EmailShow";
 import Login from "./components/auth/Login";
 import RegisterStepOne from "./components/auth/RegisterStepOne";
 import RegisterStepTwo from "./components/auth/RegisterStepTwo";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import {Routes, Route } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import All from "./components/admin/All";
@@ -35,7 +35,6 @@ function App() {
     hNumber: "",
     password: "",
   });
-
 
   return (
     <ThemeProvider theme={theme}>

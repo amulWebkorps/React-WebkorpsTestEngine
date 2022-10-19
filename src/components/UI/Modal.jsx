@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { color, Container } from "@mui/system";
-import { Grid, IconButton } from "@mui/material";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import CloseIcon from "@mui/icons-material/Close";
-import { useTheme } from "@mui/material/styles";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import React, {useState } from "react";
+import {Container } from "@mui/system";
 import Select from "@mui/material/Select";
+import {Grid,Box,TextField,FormControl,OutlinedInput,MenuItem, IconButton,Button,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { addContest } from "../services/adminServices";
-import { getAllContestList } from "../services/adminServices";
 import MsgBar from "../auth/base/MsgBar";
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -28,6 +16,7 @@ const MenuProps = {
     },
   },
 };
+
 const MenuPropsfortime = {
   PaperProps: {
     style: {
@@ -40,11 +29,6 @@ const names = ["Level 1", "Level 2"];
 
 const times = ["30 min", "60 min", "90 min", "120 min"];
 
-function getStyles(name, level, theme) {
-  return {
-    
-  };
-}
 
 const modalBody = {
   background: "#F9FAFC",
@@ -52,6 +36,7 @@ const modalBody = {
   borderRadius: "18px",
   height: "510px",
 };
+
 const title = {
   marginTop: "15px",
   fontFamily: "Raleway",
@@ -59,19 +44,19 @@ const title = {
   fontWeight: "700",
   fontSize: "30px",
   lineHeight: "35px",
-
   color: " #000000",
 };
+
 const delBtn = {
   position: "absolute",
   top: "3%",
   right: "2%",
   fontSize: "smaller",
-  // backgroundColor: '#E5E5E5',
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
 };
+
 const label = {
   marginBottom: "8px",
   fontFamily: "Raleway",
@@ -81,6 +66,7 @@ const label = {
   lineHeight: "19px",
   color: "#000000",
 };
+
 const nameInput = {
   marginTop: "5px",
   marginBottom: "15px",
@@ -99,6 +85,7 @@ const description = {
   border: "1px solid #E5E5E5 !important",
   borderRadius: " 2px !important",
 };
+
 const secLevel = {
   fontFamily: "Montserrat",
   fontStyle: "normal",
@@ -106,6 +93,7 @@ const secLevel = {
   fontSize: "16px",
   lineHeight: "20px",
 };
+
 const level = {
   background: "#FFFFFF !important ",
   boxShadow: `0px 4px 14px rgba(0, 0, 0, 0.1)`,
@@ -123,11 +111,11 @@ const crebtn = {
   lineHeight: "21px",
   color: "#FFFFFF",
 };
+
 const notbtn = {
   marginLeft: "25px",
   background: "#F9FAFC",
   boxShadow: "4px 9px 19px rgba(230, 230, 230, 0.37)",
-  // border:"2px",
   borderRadius: "10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -140,8 +128,6 @@ const Modal = ({
   setAlert,
   open,
   setOpen,
-  setContestDetails,
-  contestDetails,
   fetchContestData,
 }) => {
   const [showMessage, setshowMessage] = useState(false);
@@ -159,7 +145,6 @@ const Modal = ({
     inputData.contestLevel = "";
     inputData.contestTime = "";
   };
-  const theme = useTheme();
 
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -182,7 +167,6 @@ const Modal = ({
     } else {
       try {
         const response = await addContest(inputData);
-        // setContestDetails([...contestDetails, inputData]);
         fetchContestData();
         if (response) {
           handleClose();
@@ -238,28 +222,28 @@ const Modal = ({
                   id="fullWidth"
                   onChange={handleOnChange}
                   name="contestName"
-                  value={contestDetails?.contestName}
+                  value={inputData?.contestName}
                 />
                 <label style={label}>Add Description</label>
                 <TextField
                   id="outlined-multiline-static"
                   name="contestDescription"
                   onChange={handleOnChange}
-                  value={contestDetails?.contestDescription}
+                  value={inputData?.contestDescription}
                   multiline
                   rows={2}
                   fullWidth
                   InputProps={{
                     style: description,
                   }}
-                  //   sx={{description}}
+                  
                 />
                 <FormControl sx={{ width: 300, mt: 2 }}>
                   <label style={label}>Level</label>
                   <Select
                     displayEmpty
                     name="contestLevel"
-                    value={contestDetails?.contestLevel}
+                    value={inputData?.contestLevel}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -277,20 +261,18 @@ const Modal = ({
                       <MenuItem
                         key={name}
                         value={name}
-                        style={getStyles(name, theme)}
                       >
                         {name}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-
                 <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
                   <label style={label}>Time</label>
                   <Select
                     displayEmpty
                     name="contestTime"
-                    value={contestDetails?.contestTime}
+                    value={inputData?.contestTime}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -308,7 +290,7 @@ const Modal = ({
                       <MenuItem
                         key={name}
                         value={name}
-                        style={getStyles(name, theme)}
+                       
                       >
                         {name}
                       </MenuItem>

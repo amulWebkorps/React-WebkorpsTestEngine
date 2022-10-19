@@ -101,7 +101,6 @@ const AddedQues = ({
   contestQuestion,
   setContestQuestion,
   setEditQuestion,
-  // setDeleteQ,
   setProblemStatement,
   setSampleTestCase,
   setTestCaseList,
@@ -113,14 +112,18 @@ const AddedQues = ({
   const [showq, setShowQ] = useState(false);
   const ref = useRef(null);
   const refs = useRef(null);
+
   setEditRef(refs);
+
   const scrollBottom = () => {
     setShowQ(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const scrollTop = () => {
     setEditRef(refs.current?.scrollIntoView({ behavior: "smooth" }));
   };
+
   const editQuestion = (id, questionID) => {
     scrollTop();
     setEditQuestion(true);
@@ -138,7 +141,6 @@ const AddedQues = ({
   };
 
   const delQuestion = async (id, quesId) => {
-    
     const arr = [
       delFromContest.state ? delFromContest.contestId : `questionForLevel`,
       quesId,
@@ -146,11 +148,6 @@ const AddedQues = ({
     try {
       const result = await deleteQuestion(arr);
       setAlert(true);
-      // setContestQuestion((val) => {
-      //   return val.filter((val, index) => {
-      //     return index !== id;
-      //   });
-      // });
       setMsg({
         errMsg: "Question deleted successfully...!",
         color: "red",
@@ -162,9 +159,6 @@ const AddedQues = ({
           color:""
         });
       }, 1200);
-      // if (response) {
-      //   // setDeleteQ(true);
-      // }
     } catch (error) {
       console.log("eroror", error);
     }
