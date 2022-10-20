@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Alert from "./base/Alert";
 import Stack from "@mui/material/Stack";
-// import Header from "../UI/Header";
-import CheckIcon from "@mui/icons-material/Check";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
 import { Button } from "@mui/material";
 import RegisterButton from "./base/RegisterButton";
 import Grid from "@mui/material/Grid";
-import { logo } from "../assests/images";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { registerAdmin } from "../services/adminServices";
-import Validation from "./base/Validation";
 import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Header from "../UI/Header";
+
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -130,24 +126,6 @@ const lining = {
   marginTop: "-7px",
 };
 
-const Headers = {
-  height: "14vh",
-  background: "#121419",
-  width: "100%",
-  display: "flex",
-  flexDirection: "Row",
-};
-
-const logoText = {
-  height: " 56px",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "600",
-  fontSize: "45px",
-  lineHeight: "52.35px",
-  color: "#1887C9",
-};
-
 const showIcon = {
   position: "absolute",
   margin: "110px 0px 0px 290px",
@@ -166,66 +144,69 @@ const hideIconConfirm = {
   margin: "200px 0px 0px 290px",
 };
 
+const initialState = {
+  hName: "",
+  email: "",
+  hNumber: "",
+  password: "",
+};
+
 const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
   const [seenPassword, setSeenpassword] = useState(false);
   const [seenConfirmPassword, setSeenConfirmpassword] = useState(false);
-  const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
+  const [msg, setMsg] = useState({ msg: "", color: "" });
   const [fillalert, setfillalert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
   const [conditionpassword, setconditionpassword] = useState(false);
   const [showemail, setshowemail] = useState(false);
-  const date=new Date();
-  const year=date.getFullYear();
-  // const [credential, setcredential] = useState({
-  //   password: "",
-  // });
+  const navigate = useNavigate();
+  const date = new Date();
+  const year = date.getFullYear();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // setcredential({ ...credential, [name]: value });
     setRegisterCredential({ ...registerCredential, [name]: value });
   };
 
+  const formValidation = () => {};
+
   const register = async () => {
     if (registerCredential.password === "" || confirmPassword === "") {
-      setalertpassword(true);
-      setTimeout(() => {
-        setalertpassword(false);
-      }, 2000);
+      setAlert(true);
+      setMsg({ msg: "Please fill all details.", color: "red" });
     } else if (registerCredential.password !== confirmPassword) {
-      setfillalert(true);
-      setTimeout(() => {
-        setfillalert(false);
-      }, 2000);
+      setAlert(true);
+      setMsg({ msg: "Please fill correct password.", color: "red" });
     } else if (
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#@?&]{8,}$/.test(
         registerCredential.password
       ) === false
     ) {
-      setconditionpassword(true);
-      setTimeout(() => {
-        setconditionpassword(false);
-      }, 3000);
+      setAlert(true);
+      setMsg({
+        msg: "Minimum eight characters, at least one letter, one number and one special character.",
+        color: "red",
+      });
     } else if (registerCredential.password === confirmPassword) {
       try {
         const response = await registerAdmin(registerCredential);
         setAlert(true);
+        setMsg({
+          msg: "Admin Register Succesfully......!",
+          color: "green",
+        });
         setTimeout(() => {
-          setRegisterCredential([{
-            hName: "",
-            email: "",
-            hNumber: "",
-            password: "",
-          }])
+          setRegisterCredential([initialState]);
           navigate("/");
         }, 2000);
       } catch (error) {
-        setshowemail(true);
-        setTimeout(() => {
-          setshowemail(false);
-        }, 2000);
+        setAlert(true);
+        setMsg({
+          msg: "Email already registered.",
+          color: "red",
+        });
       }
     }
   };
@@ -244,32 +225,26 @@ const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
     setSeenConfirmpassword(false);
   };
 
+  useEffect(() => {
+    if (showAlert) {
+      setTimeout(() => {
+        setAlert(false);
+        setMsg({
+          msg: "",
+          color: "",
+        });
+      }, 2000);
+    }
+  }, [showAlert]);
+
   return (
     <>
       <Grid container>
-        <Header setColor={true} setShow={true}/>
+        <Header setColor={true} setShow={true} />
       </Grid>
 
-      {showAlert && (
-        <MsgBar errMsg={"Admin Register Succesfully......!"} color={"green"} />
-      )}
-      {showalertpassword && (
-        <MsgBar errMsg={"Please fill all details."} color={"red"} />
-      )}
-      {fillalert && (
-        <MsgBar errMsg={"Please fill correct password."} color={"red"} />
-      )}
-      {showemail && (
-        <MsgBar errMsg={"Email already registered."} color={"red"} />
-      )}
-      {conditionpassword && (
-        <MsgBar
-          errMsg={
-            "Minimum eight characters, at least one letter, one number and one special character."
-          }
-          color={"red"}
-        />
-      )}
+      {showAlert && <MsgBar errMsg={msg?.msg} color={msg?.color} />}
+
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
