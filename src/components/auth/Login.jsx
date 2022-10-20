@@ -109,9 +109,6 @@ const Login = ({ setRegisterCredential }) => {
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
       setLoading(false);
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
     } else {
       try {
         const result = await loginAdmin(credential);
@@ -126,9 +123,6 @@ const Login = ({ setRegisterCredential }) => {
       } catch (error) {
         setLoading(false);
         setShowWarning(true);
-        setTimeout(() => {
-          setShowWarning(false);
-        }, 3000);
         navigate("/");
       }
     }
@@ -143,8 +137,17 @@ const Login = ({ setRegisterCredential }) => {
   };
 
   useEffect(() => {
-    setAlert(false);
-  }, [credential]);
+    if (showAlert) {
+      setTimeout(() => {
+        setAlert(false);
+      }, 3000);
+    }
+    if (showWarning) {
+      setTimeout(() => {
+        setShowWarning(false);
+      }, 3000);
+    }
+  }, [showAlert, showWarning]);
 
   const handleChange = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });

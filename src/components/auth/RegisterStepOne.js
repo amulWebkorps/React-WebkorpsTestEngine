@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -9,10 +9,10 @@ import TextInput from "./base/TextInput";
 import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { logo } from "../assests/images";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import {NavLink, useNavigate } from "react-router-dom";
 import MsgBar from "./base/MsgBar";
 import Header from "../UI/Header";
+
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -160,20 +160,14 @@ const RegisterStepOne = ({ setRegisterCredential , registerCredential}) => {
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
   const navigate = useNavigate();
-
-  // const [credential, setcredential] = useState({
-  //   hName: "",
-  //   email: "",
-  //   hNumber: "",
-  // });
   const date=new Date();
   const year=date.getFullYear();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-   // setcredential({ ...credential, [name]: value });
     setRegisterCredential({ ...registerCredential, [name]: value });
   };
+
   const handleClick = () => {
     if (
       registerCredential.hName == "" ||
@@ -255,9 +249,7 @@ const RegisterStepOne = ({ setRegisterCredential , registerCredential}) => {
                 type="number"
                 name="hNumber"
               />
-
-              <ContinueButton name="Continue" onClick={handleClick} />
-
+              <ContinueButton name="Continue" onClick={handleClick}/>
               <Typography sx={footerOne}>
                 Have an account?
                 <NavLink to="/">
