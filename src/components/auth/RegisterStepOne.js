@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -9,7 +9,7 @@ import TextInput from "./base/TextInput";
 import ContinueButton from "./base/ContinueButton";
 import { Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import {NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import MsgBar from "./base/MsgBar";
 import Header from "../UI/Header";
 
@@ -137,52 +137,31 @@ const Head = {
   fontWeight: 600,
 };
 
-const Headers = {
-  height: "14vh",
-  background: "#121419",
-  width: "100%",
-  display: "flex",
-  flexDirection: "Row",
-};
-
-const logoText = {
-  height: " 56px",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "600",
-  fontSize: "45px",
-  lineHeight: "52.35px",
-  color: "#1887C9",
-};
-
-const RegisterStepOne = ({ setRegisterCredential , registerCredential}) => {
+const RegisterStepOne = ({ setRegisterCredential, registerCredential }) => {
   const [showAlert, setAlert] = useState(false);
-  const [showNumber, setshownumber] = useState(false);
-  const [showEmail, setshowemail] = useState(false);
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRegisterCredential({ ...registerCredential, [name]: value });
   };
 
-  const handleClick = () => {
+  const formValidation = () => {
     if (
       registerCredential.hName == "" ||
       registerCredential.email == "" ||
       registerCredential.hNumber == ""
     ) {
       setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+      setMsg("Please fill all details");
+      return false;
     } else if (!/.+@.+\.[A-Za-z]+$/.test(registerCredential.email) === true) {
-      setshowemail(true);
-      setTimeout(() => {
-        setshowemail(false);
-      }, 2000);
+      setAlert(true);
+      setMsg("Plese enter vallid email address");
+      return false;
     } else if (
       registerCredential.hNumber === Number("credential.hNumber") ||
       registerCredential.hNumber === "" ||
@@ -190,26 +169,33 @@ const RegisterStepOne = ({ setRegisterCredential , registerCredential}) => {
       registerCredential.hNumber.length > 10 ||
       registerCredential.hNumber.length < 10
     ) {
-      setshownumber(true);
-      setTimeout(() => {
-        setshownumber(false);
-      }, 2000);
+      setAlert(true);
+      setMsg("Please enter valid phone number");
+      return false;
     } else {
-      navigate("/password");
+      return true;
     }
   };
+
+  const handleClick = () => {
+    if (formValidation()) navigate("/password");
+  };
+
+  useEffect(() => {
+    if (showAlert) {
+      setTimeout(() => {
+        setAlert(false);
+        setMsg("");
+      }, 1000);
+    }
+  }, [showAlert]);
+
   return (
     <>
       <Grid container>
-        <Header setColor={true} setShow={true}/>
+        <Header setColor={true} setShow={true} />
       </Grid>
-      {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
-      {showNumber && (
-        <MsgBar errMsg={"Please enter valid phone number"} color={"red"} />
-      )}
-      {showEmail && (
-        <MsgBar errMsg={"Please fill valid email address"} color={"red"} />
-      )}
+      {showAlert && <MsgBar errMsg={msg} color={"red"} />}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
@@ -249,7 +235,7 @@ const RegisterStepOne = ({ setRegisterCredential , registerCredential}) => {
                 type="number"
                 name="hNumber"
               />
-              <ContinueButton name="Continue" onClick={handleClick}/>
+              <ContinueButton name="Continue" onClick={handleClick} />
               <Typography sx={footerOne}>
                 Have an account?
                 <NavLink to="/">
