@@ -166,7 +166,7 @@ const hideIconConfirm = {
   margin: "200px 0px 0px 290px",
 };
 
-const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
+const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
   const [seenPassword, setSeenpassword] = useState(false);
   const [seenConfirmPassword, setSeenConfirmpassword] = useState(false);
@@ -185,7 +185,7 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     // setcredential({ ...credential, [name]: value });
-    SetRegisterCredential({ ...registerCredential, [name]: value });
+    setRegisterCredential({ ...registerCredential, [name]: value });
   };
 
   const register = async () => {
@@ -213,7 +213,7 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
         const response = await registerAdmin(registerCredential);
         setAlert(true);
         setTimeout(() => {
-          SetRegisterCredential([{
+          setRegisterCredential([{
             hName: "",
             email: "",
             hNumber: "",

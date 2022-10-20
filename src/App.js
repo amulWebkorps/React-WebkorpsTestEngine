@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, } from "react";
 import AnswerSheet from "./components/admin/AnswerSheet";
 import Dashbord from "./components/admin/Dashbord";
 import Compiler from "./components/candidate/Compiler";
@@ -7,10 +7,7 @@ import EmailShow from "./components/admin/EmailShow";
 import Login from "./components/auth/Login";
 import RegisterStepOne from "./components/auth/RegisterStepOne";
 import RegisterStepTwo from "./components/auth/RegisterStepTwo";
-import jwt_decode from "jwt-decode";
-// import RegisterOne from "./components/auth/RegisterStepOne";
-// import RegisterTwo from "./components/auth/RegisterStepTwo";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import {  Routes, Route } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import All from "./components/admin/All";
@@ -30,14 +27,14 @@ const theme = createTheme({
     },
   },
 });
-
+const initialState={
+  hName: "",
+  email: "",
+  hNumber: "",
+  password: "",
+}
 function App() {
-  const [registerCredential, SetRegisterCredential] = useState({
-    hName: "",
-    email: "",
-    hNumber: "",
-    password: "",
-  });
+  const [registerCredential, setRegisterCredential] = useState(initialState);
 
 
   return (
@@ -49,7 +46,7 @@ function App() {
             element={
               <AdminRoutes
                 Component={Login}
-                SetRegisterCredential={SetRegisterCredential}
+                setRegisterCredential={setRegisterCredential}
               />
             }
           ></Route>
@@ -62,7 +59,7 @@ function App() {
             element={
               <RegisterStepOne
                 registerCredential={registerCredential}
-                SetRegisterCredential={SetRegisterCredential}
+                setRegisterCredential={setRegisterCredential}
               />
             }
           ></Route>
@@ -71,7 +68,7 @@ function App() {
             element={
               <RegisterStepTwo
                 registerCredential={registerCredential}
-                SetRegisterCredential={SetRegisterCredential}
+                setRegisterCredential={setRegisterCredential}
               />
             }
           ></Route>
@@ -92,7 +89,6 @@ function App() {
             path="/viewparticipator"
             element={<AdminRoutes Component={viewParticipatorDetail} />}
           ></Route>
-
           <Route
             path="/level1"
             element={<AdminRoutes Component={Level1} />}

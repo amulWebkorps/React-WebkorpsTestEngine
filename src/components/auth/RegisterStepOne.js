@@ -155,7 +155,7 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
+const RegisterStepOne = ({ setRegisterCredential , registerCredential}) => {
   const [showAlert, setAlert] = useState(false);
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
@@ -172,7 +172,7 @@ const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
    // setcredential({ ...credential, [name]: value });
-    SetRegisterCredential({ ...registerCredential, [name]: value });
+    setRegisterCredential({ ...registerCredential, [name]: value });
   };
   const handleClick = () => {
     if (

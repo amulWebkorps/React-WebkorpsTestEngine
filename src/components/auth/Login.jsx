@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Stack,
-  FormControlLabel,
-  Checkbox,
-  Button,
-  Grid,
-} from "@mui/material";
+import { Box, Container, Typography, Stack, Button, Grid } from "@mui/material";
 import { background } from "../assests/images";
 import TextInput from "./base/TextInput";
 import Heading from "./base/Heading";
 import LoginButton from "./base/LoginButton";
-import { logo } from "../assests/images";
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginAdmin } from "../services/adminServices";
-import Loader from "./base/Loader";
 import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Header from "../UI/Header";
+
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -66,28 +56,11 @@ const footerOne = {
   },
 };
 
-const footerTwo = {
-  color: "#616166",
-  fontSize: 14,
-  marginLeft: "105px",
-};
-
 const RegisterButton = {
   fontSize: 14,
   fontWeight: 600,
   color: "#0057FF",
   textTransform: "none",
-};
-
-const checkboxname = {
-  ".css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
-    marginTop: "-13px",
-  },
-  ".css-ahj2mt-MuiTypography-root": {
-    fontSize: "13px",
-    fontWeight: "100",
-    marginTop: "3px",
-  },
 };
 
 const copyright = {
@@ -101,44 +74,34 @@ const copyright = {
   left: "50%",
 };
 
-const Headers = {
-  height: "14vh",
-  background: "#121419",
-  width: "100%",
-  display: "flex",
-  flexDirection: "Row",
-};
-
-const logoText = {
-  height: " 56px",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "600",
-  fontSize: "45px",
-  lineHeight: "52.35px",
-  color: "#1887C9",
-};
-
 const showIcon = {
   position: "absolute",
   margin: "126px 0px 0px 290px",
 };
+
 const hideIcon = {
   position: "absolute",
   margin: "126px 0px 0px 290px",
 };
 
-const Login = ({ SetRegisterCredential }) => {
+const initialState = {
+  hName: "",
+  email: "",
+  hNumber: "",
+  password: "",
+};
+
+const Login = ({ setRegisterCredential }) => {
   const [credential, setCredential] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
-  const [showWarning, setShowwarning] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [showMsg, setMsg] = useState(false);
-  const [seenPassword, setSeenpassword] = useState(false);
+  const [seenPassword, setSeenPassword] = useState(false);
+  const navigate = useNavigate();
   const date = new Date();
   const year = date.getFullYear();
 
@@ -162,9 +125,9 @@ const Login = ({ SetRegisterCredential }) => {
         }, 1500);
       } catch (error) {
         setLoading(false);
-        setShowwarning(true);
+        setShowWarning(true);
         setTimeout(() => {
-          setShowwarning(false);
+          setShowWarning(false);
         }, 3000);
         navigate("/");
       }
@@ -172,11 +135,11 @@ const Login = ({ SetRegisterCredential }) => {
   };
 
   const showPassword = () => {
-    setSeenpassword(true);
+    setSeenPassword(true);
   };
 
   const hidePassword = () => {
-    setSeenpassword(false);
+    setSeenPassword(false);
   };
 
   useEffect(() => {
@@ -191,19 +154,14 @@ const Login = ({ SetRegisterCredential }) => {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    SetRegisterCredential({
-      hName: "",
-      email: "",
-      hNumber: "",
-      password: "",
-    });
+    setRegisterCredential(initialState);
     if (tokens != null && role != "student") {
       navigate("/dashboard");
     } else if (role === "student") {
       navigate("/");
     }
   }, []);
-  console.log("---dd", SetRegisterCredential);
+
   return (
     <>
       <Grid container>
@@ -216,13 +174,10 @@ const Login = ({ SetRegisterCredential }) => {
         )}
       </Grid>
       {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
-
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
-            {/* {loading && <Loader />} */}
-
             <Stack>
               <TextInput
                 label="Email Address"
@@ -230,7 +185,6 @@ const Login = ({ SetRegisterCredential }) => {
                 onChange={(e) => handleChange(e)}
                 value={credential?.email}
               />
-
               <TextInput
                 label="Password"
                 name="password"
@@ -252,11 +206,6 @@ const Login = ({ SetRegisterCredential }) => {
                     fontSize="small"
                   />
                 ))}
-              {/* <FormControlLabel
-                control={<Checkbox size="10px" />}
-                label="Remember me"
-                sx={checkboxname}
-              /> */}
               <LoginButton
                 name="Log in"
                 onClick={handleLogin}
@@ -269,7 +218,6 @@ const Login = ({ SetRegisterCredential }) => {
                     <Button sx={RegisterButton}>Register</Button>
                   </NavLink>
                 </Typography>
-                {/* <Typography sx={footerTwo}>Forgot Password?</Typography> */}
               </>
             </Stack>
           </Box>
