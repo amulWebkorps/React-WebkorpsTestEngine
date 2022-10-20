@@ -65,16 +65,18 @@ export default function Model2({
   sent,
   setSent,
   setMsg,
+  participatorFilter
 }) {
-  // const [loading, setLoading] = useState(true);
   const [disable, setDisable] = useState(false);
   const [contestId, setContestId] =useState();
   const [contestDetails, setContestDetails]=useState(null);
+
   useEffect(() => {
    const response=getAllContestList().then((res)=>{
     setContestDetails(res?.data);
    });
   }, [])
+
   const handleClose = () => {
     setOpen(false);
     setTimeout(() => {
@@ -106,6 +108,7 @@ export default function Model2({
           errMsg: "Mail send successfully...!",
           color: "green",
         });
+        participatorFilter();
         setTimeout(() => {
           setAlert(false);
         }, 1100);

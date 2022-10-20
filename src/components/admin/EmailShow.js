@@ -352,6 +352,7 @@ const EmailShow = () => {
         showAlert={showAlert}
         open={open}
         setOpen={setOpen}
+        participatorFilter={ participatorFilter}
         handleClickOpen={handleClickOpen}
         emails={emails}
         setEmails={setEmails}
