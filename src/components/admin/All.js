@@ -16,25 +16,7 @@ import {
   filterQuestion,
 } from "../services/contest/contestServices";
 import Loader from "../auth/base/Loader";
-const background1 = {
-  height: "100%",
-  background: ` linear-gradient(
-      180deg,
-      rgba(24, 135, 201, 0) 0%,
-      rgba(24, 135, 201, 0.224167) 40.42%,
-      rgba(24, 135, 201, 0.4) 100%
-    )`,
-};
-const delBtn = {
-  top: "29%",
-  height: "30px",
-  width: "30px",
-  fontSize: "smaller",
-  // backgroundColor: '#E5E5E5',
-  backgroundColor: "#E5E5E5",
-  color: "black",
-  borderRadius: "50%",
-};
+
 const whiteContainer = {
   marginTop: "50px",
   height: "460px",
@@ -42,22 +24,7 @@ const whiteContainer = {
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
 };
-const buttonLevel = {
-  width: "260px",
-  height: "51px",
-  background: "#0057ff",
-  borderRadius: "18px 18px 18px 18px",
-  fontWeight: "700",
-  fontSize: "25px",
-  lineHeight: "19px",
-  textTransform: "none",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  paddingTop: "12px",
-  paddingLeft: "50px",
 
-  color: "#FFFFFF",
-};
 
 const levelText = {
   fontFamily: "Raleway",
@@ -116,11 +83,6 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-const loaderStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItem: "center",
-};
 const All = ({
   showAlert,
   setshowselectquestion,
@@ -133,7 +95,6 @@ const All = ({
   setMsg,
   contestId,
 }) => {
-  const ref = useRef(null);
   const [dropValue, setDropValue] = useState("All");
   const [questionArr, setQuestionArr] = useState([]);
   const [loader, setloader] = useState(true);
@@ -141,6 +102,8 @@ const All = ({
     questionsIds: "",
     contestId: [],
   });
+  const ref = useRef(null);
+
   const handleQuestion = (e) => {
     const { checked, value } = e.target;
     if (checked) {
@@ -164,6 +127,7 @@ const All = ({
     setDropValue(value);
     setAvailableQuestions([]);
   };
+
   const addSelectiveQuestions = async () => {
     const questionsid = contestQuestion.map((v) => v.questionId);
     const selectId = selectiveQuestion.questionsIds.map((v) => v);
@@ -205,6 +169,7 @@ const All = ({
       }
     }
   };
+  
   useEffect(() => {
     setloader(true)
     const result = filterQuestion(dropValue).then((res) => {

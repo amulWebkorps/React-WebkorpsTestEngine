@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import { Box, Container } from "@mui/system";
 import {
   Grid,
   Button,
@@ -10,23 +13,21 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import { makeStyles } from "@mui/styles";
-import { Box, Container } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import Header from "../UI/Header";
-import clsx from "clsx";
-import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   saveQuestion,
   uploadQuestions,
 } from "../services/contest/contestServices";
-import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
+import CloseIcon from "@mui/icons-material/Close";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import Header from "../UI/Header";
+import clsx from "clsx";
+import AddedQues from "./AddedQues";
+import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
+import { questionValidation } from "../auth/base/formValidation";
 
 const useStyles = makeStyles({
   container: {
@@ -61,15 +62,6 @@ const questionList = {
 const topButton = {
   display: "flex",
   justifyContent: "center",
-};
-
-const MainBox = {
-  height: "15vh",
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
 };
 
 const QuestionBox = {
@@ -167,11 +159,13 @@ const testInitialFields = {
   input: "",
   output: "",
 };
+
 const sampleTestInitialFields = {
   constraints: "",
   input: "",
   output: "",
 };
+
 const problemStatementIntialVal = {
   question: "",
 };
@@ -237,7 +231,6 @@ const QuestionList = () => {
 
   const handleTestChange = (e) => {
     const { name, value } = e.target;
-
     setTestCases({
       ...testCases,
       [name]: value,
@@ -263,32 +256,19 @@ const QuestionList = () => {
       testcases: testCaseList,
     });
   };
-
+  const formValidation = () => {};
   const addTest = () => {
     setTestCaseList([...testCaseList, testCases]);
     setTestCases(testInitialFields);
   };
 
   const addQuestion = async (e) => {
-    if (
-      problemStatement.question === "" ||
-      sampleTestCase.constraints === "" ||
-      sampleTestCase?.input === "" ||
-      sampleTestCase?.output === "" ||
-      testCaseList.length === 0
-    ) {
+    if (questionValidation(problemStatement, sampleTestCase, testCaseList)) {
       setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
       });
-      setTimeout(() => {
-        setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
-      }, 1200);
     } else {
       try {
         const result = await saveQuestion(question);
@@ -341,11 +321,11 @@ const QuestionList = () => {
     });
   };
 
-  const editTestcase = (e, index) => {
+  const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj, inn) => {
-        if (index === inn) {
+      const newState = prevState.map((obj, index) => {
+        if (id === index) {
           return { ...obj, [name]: value };
         }
         return obj;
@@ -353,6 +333,7 @@ const QuestionList = () => {
       return newState;
     });
   };
+
   const uploadQuestion = async (e) => {
     const { files } = e.target;
     if (
@@ -364,13 +345,6 @@ const QuestionList = () => {
         errMsg: "Please select excel file...!",
         color: "red",
       });
-      setTimeout(() => {
-        setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
-      }, 1500);
     } else {
       setAlert(true);
       try {
@@ -393,6 +367,17 @@ const QuestionList = () => {
     }
   };
 
+useEffect(()=>{
+  if(showValidation)
+  setTimeout(() => {
+    setShowValidation(false);
+    setMsg({
+      errMsg: "",
+      color: "",
+    });
+  }, 1500);
+},[showValidation])
+
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
       .then((res) => {
@@ -403,7 +388,7 @@ const QuestionList = () => {
       })
       .catch("dmndv");
   }, [showAlert]);
-  console.log("useeffect");
+  
   return (
     <div style={questionList}>
       <Header />
@@ -419,9 +404,6 @@ const QuestionList = () => {
         )}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-
-          {/* <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}> */}
-
           <Box
             sx={AnswerBox}
             onClick={() =>
@@ -452,7 +434,6 @@ const QuestionList = () => {
                       <Typography sx={label} display="inline">
                         Write Problem statement
                       </Typography>
-
                       <TextField
                         multiline
                         rows={3}
@@ -560,7 +541,6 @@ const QuestionList = () => {
                         </Grid>
                       </Grid>
                       <hr style={{ marginTop: "20px" }} />
-
                       <Stack
                         spacing={2}
                         direction="row"
