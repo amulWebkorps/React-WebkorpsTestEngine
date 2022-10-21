@@ -152,15 +152,11 @@ const initialState = {
 };
 
 const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
-  const [confirmPassword, setConfirmpassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [seenPassword, setSeenpassword] = useState(false);
   const [seenConfirmPassword, setSeenConfirmpassword] = useState(false);
   const [showAlert, setAlert] = useState(false);
   const [msg, setMsg] = useState({ msg: "", color: "" });
-  const [fillalert, setfillalert] = useState(false);
-  const [showalertpassword, setalertpassword] = useState(false);
-  const [conditionpassword, setconditionpassword] = useState(false);
-  const [showemail, setshowemail] = useState(false);
   const navigate = useNavigate();
   const date = new Date();
   const year = date.getFullYear();
@@ -169,8 +165,6 @@ const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
     const { name, value } = e.target;
     setRegisterCredential({ ...registerCredential, [name]: value });
   };
-
-  const formValidation = () => {};
 
   const register = async () => {
     if (registerCredential.password === "" || confirmPassword === "") {
@@ -214,6 +208,7 @@ const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
   const showPassword = () => {
     setSeenpassword(true);
   };
+
   const hidePassword = () => {
     setSeenpassword(false);
   };
@@ -242,19 +237,16 @@ const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
       <Grid container>
         <Header setColor={true} setShow={true} />
       </Grid>
-
       {showAlert && <MsgBar errMsg={msg?.msg} color={msg?.color} />}
-
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Register" />
-
-            <Box sx={pages}>
+             <Box sx={pages}>
               <Typography sx={first}>1</Typography>
               <Typography sx={lining}>___</Typography>
               <Typography sx={second}>2</Typography>
-            </Box>
+             </Box>
             <Stack>
               <Typography sx={Required}>
                 <span className="star">*</span>Required Field
@@ -285,7 +277,7 @@ const RegisterStepTwo = ({ registerCredential, setRegisterCredential }) => {
                 label="Confirm Password"
                 star={"*"}
                 type={seenConfirmPassword ? "text" : "password"}
-                onChange={(e) => setConfirmpassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
               />
               {confirmPassword !== "" &&

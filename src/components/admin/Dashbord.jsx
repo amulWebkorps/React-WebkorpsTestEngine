@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Fab, Button, Snackbar } from "@mui/material";
-import { IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
-import jwt_decode from "jwt-decode";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllContestList,getContestDetail } from "../services/adminServices";
 import { contestImg } from "../assests/images";
+import { Container, Grid, Fab,IconButton,Card,CardContent,CardMedia,Typography,CardActionArea} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import jwt_decode from "jwt-decode";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
-import { useLocation, useNavigate } from "react-router-dom";
-import { getAllContestList } from "../services/adminServices";
-import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "../auth/base/Loader";
@@ -86,13 +79,6 @@ const contestText = {
   lineHeight: "21px",
   color: "#3D3D3D",
 };
-const contestDate = {
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: 200,
-  fontSize: "10px",
-  lineHeight: "12px",
-};
 
 const createContest = {
   marginTop: "40px",
@@ -139,7 +125,7 @@ const months = {
   lineHeight: "14px",
   height:"29px",
   overflowX:'auto',
-  'overflow-wrap':'break-word'
+  overflowWrap:'break-word'
 };
 
 const loaderStyle = {
@@ -155,14 +141,9 @@ const loaderStyle = {
   },
 };
 const levels = ["Level 1", "Level 2", "ALL"];
-const contestInitialValues = {
-  contestName: "",
-  contestDescription: "",
-  contestLevel: "",
-};
+
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  const location = useLocation();
   const [showAlert, setAlert] = useState(false);
   const [bar, setBar] = useState(false);
   const [delContest, setDelContest] = useState({
@@ -178,6 +159,7 @@ const Dashbord = () => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const adminToken=localStorage.getItem("token");
+  
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
@@ -236,11 +218,11 @@ const Dashbord = () => {
       fetchContestData();
     }
   }, []); 
-  const token = localStorage?.getItem("token");
+
   useEffect(() => {
     // if access token is expire it redirected to login page
-    if (token !== null) {
-      const decodeToken = jwt_decode(token);
+    if (adminToken !== null) {
+      const decodeToken = jwt_decode(adminToken);
       if (decodeToken?.exp * 1000 < Date.now()) {
         navigate("/");
       }
@@ -248,6 +230,7 @@ const Dashbord = () => {
       navigate("/");
     }
   }, [window.location]);
+
   useEffect(() => {
     // define increment counter part
     const tabsOpen = localStorage.getItem("tabsOpen");
@@ -256,7 +239,6 @@ const Dashbord = () => {
     } else {
       localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
     }
-    
     window.onunload = function (e) {
       const newTabCount = localStorage.getItem("tabsOpen");
       if (newTabCount !== null) {
@@ -278,11 +260,11 @@ const Dashbord = () => {
         }
       }
     }
-    }, []);
+    },[]);
+
   return (
     <div style={app}>
       <Header />
-      {/* <BackButton /> */}
       {showAvailq ? (
         <>
           <Modal
@@ -325,14 +307,14 @@ const Dashbord = () => {
           <Grid sx={loaderStyle}>{loader && <Loader />}</Grid>
           <Container sx={containerStyle}>
             <Grid container ml={0} mt={2}>
-              {contestDetails?.map?.((val, index) => {
+              {contestDetails?.map?.((contest, index) => {
                 return (
                   <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
                       <CardActionArea>
                         <CardMedia
                           onClick={() =>
-                            handleContest(contestDetails?.[index]?.contestId)
+                            handleContest(contest.contestId)
                           }
                           style={cardImg}
                           component="img"
@@ -347,8 +329,8 @@ const Dashbord = () => {
                           onClick={() =>
                             deleteContest(
                               index,
-                              contestDetails?.[index]?.contestName,
-                              contestDetails?.[index]?.contestId
+                              contest.contestName,
+                              contest.contestId
                             )
                           }
                         >
@@ -357,11 +339,11 @@ const Dashbord = () => {
                         <CardContent  sx={cardBody}>
                           <div>
                           <h6 style={contestText}>
-                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
-                            {contestDetails?.[index]?.contestLevel}
+                            {contest.contestName}&nbsp;~&nbsp;
+                            {contest.contestLevel}
                           </h6>
                           <p style={months}>
-                           {contestDetails?.[index]?.date} ~ {contestDetails?.[index]?.contestDescription}
+                           {contest.date} ~ {contest.contestDescription}
                           </p>
                           </div>
                         </CardContent>
@@ -387,7 +369,6 @@ const Dashbord = () => {
                       <CardContent sx={cardBody}>
                         <br />
                         <h4 style={contestText}>create contest</h4>
-
                         <p style={months}>add Description</p>
                       </CardContent>
                     </CardActionArea>
@@ -405,7 +386,7 @@ const Dashbord = () => {
           </Container>
         </>
       ) : (
-        <>
+        <div>
           <Container sx={createContext}>
             <Typography sx={text}>Available Question</Typography>
           </Container>
@@ -417,7 +398,7 @@ const Dashbord = () => {
               onClick={() => setAvailQ(true)}
             ></ExpandCircleDownRoundedIcon>
             <Grid container ml={4} mt={2}>
-              {levels.map((val, index) => {
+              {levels.map((_, index) => {
                 return (
                   <Grid item md={3} mt={5} key={index}>
                     <Card sx={card}>
@@ -429,7 +410,6 @@ const Dashbord = () => {
                           image={contestImg}
                           alt="green iguana"
                         />
-
                         <CardContent sx={cardBody}>
                           <h4 style={contestText}>{levels[index]}</h4>
                         </CardContent>
@@ -467,7 +447,7 @@ const Dashbord = () => {
             </Grid>
             <Grid></Grid>
           </Container>
-        </>
+        </div>
       )}
     </div>
   );
