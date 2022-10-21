@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import { Box, Container } from "@mui/system";
 import {
   Grid,
   Button,
@@ -10,24 +13,22 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import { makeStyles } from "@mui/styles";
-import { Box, Container } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import Header from "../UI/Header";
-import clsx from "clsx";
-import AddedQues from "./AddedQues";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   filterQuestion,
   saveQuestion,
 } from "../services/contest/contestServices";
-import MsgBar from "../auth/base/MsgBar";
-import { getContestDetail } from "../services/adminServices";
 import { uploadQuestions } from "../services/contest/contestServices";
+import { questionValidation } from "../auth/base/formValidation";
+import CloseIcon from "@mui/icons-material/Close";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import Header from "../UI/Header";
+import clsx from "clsx";
+import AddedQues from "./AddedQues";
+import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
+
 
 const useStyles = makeStyles({
   container: {
@@ -145,24 +146,27 @@ const testInitialFields = {
   input: "",
   output: "",
 };
+
 const sampleTestInitialFields = {
   constraints: "",
   input: "",
   output: "",
 };
+
 const problemStatementIntialVal = {
   question: "",
 };
+
 const Level1 = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const classes = useStyles();
   const [contestData, setContestData] = useState(
     location?.state?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
   const [editRef, setEditRef] = useState(null);
+  const classes = useStyles();
+
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
@@ -243,13 +247,8 @@ const Level1 = () => {
 
   const addQuestion = async (e) => {
     if (
-      problemStatement.question === "" ||
-      sampleTestCase.constraints === "" ||
-      sampleTestCase?.input === "" ||
-      sampleTestCase?.output === "" ||
-      testCaseList.length === 0
+     questionValidation()
     ) {
-      // setAlert(true);
       setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",
@@ -329,6 +328,7 @@ const Level1 = () => {
       return newState;
     });
   };
+
   const uploadQuestion = async (e) => {
     const { files } = e.target;
     if (
@@ -351,7 +351,6 @@ const Level1 = () => {
       try {
         const result = await uploadQuestions(files[0], "", "Level 1");
         setAlert(true);
-        // setContestQuestion([...contestQuestion, ...result]);
         setMsg({
           errMsg: "Question uploaded successfully...!",
           color: "green",
@@ -395,14 +394,6 @@ const Level1 = () => {
       console.log(error);
     }
   };
-
-  // useEffect(()=>{
-  // const result= filterQuestion("All").then((res)=>{
-  //   const response=res.data
-  //   setAvailableQuestions(response);
-  // })
-  // },[])
-
   return (
     <div id="body" style={questionList}>
       <Header />

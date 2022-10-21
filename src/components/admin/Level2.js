@@ -153,15 +153,14 @@ const problemStatementIntialVal = {
   question: "",
 };
 const Level2 = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const classes = useStyles();
   const [contestData, setContestData] = useState(
     location?.state?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
   const [editRef, setEditRef]=useState(null);
   const [index, setIndex] = useState(null);
+  const classes = useStyles();
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
@@ -208,7 +207,6 @@ const Level2 = () => {
 
   const handleTestChange = (e) => {
     const { name, value } = e.target;
-
     setTestCases({
       ...testCases,
       [name]: value,
@@ -261,7 +259,6 @@ const Level2 = () => {
         setShowValidation(false)
       }, 1200);
     } else {
-   
       try {
         const result = await saveQuestion(question);
         setAlert(true);
@@ -335,7 +332,6 @@ const Level2 = () => {
         try {
           const result = await uploadQuestions(files[0], "", "Level 1");
           setAlert(true);
-          // setContestQuestion([...contestQuestion, ...result]);
           setMsg({
             errMsg: "Question uploaded successfully...!",
             color: "green",
