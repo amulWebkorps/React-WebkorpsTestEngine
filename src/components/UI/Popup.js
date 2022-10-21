@@ -1,11 +1,5 @@
 import * as React from "react";
-import { Button, IconButton } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
+import { Button, IconButton,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,Slide } from "@mui/material";
 import { deleteContest } from "../services/adminServices";
 import CancelIcon from "@mui/icons-material/Cancel";
 
@@ -26,23 +20,29 @@ export default function Popup({
   setConfirm,
   setContestDetails,
 }) {
+
   const handleDelete = async () => {
-    const result = await deleteContest(contest.contestId);
-    console.log("ressss", result);
-    setContestDetails((val) => {
-      return val.filter((val, index) => {
-        return index !== contest.id;
+    try {
+      const result = await deleteContest(contest.contestId);
+      setContestDetails((val) => {
+        return val.filter((val, index) => {
+          return index !== contest.id;
+        });
       });
-    });
-    setConfirm(false);
-    setBar(true);
-    setTimeout(() => {
-      setBar(false);
-    }, 1000);
+      setConfirm(false);
+      setBar(true);
+      setTimeout(() => {
+        setBar(false);
+      }, 1000);
+    } catch (error) {
+      console.log(error)
+    }
   };
+
   const handleClose = () => {
     setConfirm(false);
   };
+  
   return (
     <div>
       <Dialog

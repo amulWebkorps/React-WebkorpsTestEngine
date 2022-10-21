@@ -232,6 +232,7 @@ const Dashbord = () => {
   }, [window.location]);
 
   useEffect(() => {
+    const detectReload = performance.getEntriesByType("navigation");
     // define increment counter part
     const tabsOpen = localStorage.getItem("tabsOpen");
     if (tabsOpen == null) {
@@ -245,7 +246,7 @@ const Dashbord = () => {
         localStorage.setItem("tabsOpen", newTabCount - 1);
       }
     };
-    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    if (detectReload[0].type ==="reload") {
       window.localStorage.isMySessionActive = "false";
     } else {
       const newTabCount2 = localStorage.getItem("tabsOpen");
@@ -271,8 +272,6 @@ const Dashbord = () => {
             open={open}
             setOpen={setOpen}
             handleClickOpen={handleClickOpen}
-            setContestDetails={setContestDetails}
-            contestDetails={contestDetails}
             setAlert={setAlert}
             fetchContestData={fetchContestData}
           />
@@ -314,7 +313,7 @@ const Dashbord = () => {
                       <CardActionArea>
                         <CardMedia
                           onClick={() =>
-                            handleContest(contest.contestId)
+                            handleContest(contest?.contestId)
                           }
                           style={cardImg}
                           component="img"
@@ -329,8 +328,8 @@ const Dashbord = () => {
                           onClick={() =>
                             deleteContest(
                               index,
-                              contest.contestName,
-                              contest.contestId
+                              contest?.contestName,
+                              contest?.contestId
                             )
                           }
                         >
@@ -339,11 +338,11 @@ const Dashbord = () => {
                         <CardContent  sx={cardBody}>
                           <div>
                           <h6 style={contestText}>
-                            {contest.contestName}&nbsp;~&nbsp;
-                            {contest.contestLevel}
+                            {contest?.contestName}&nbsp;~&nbsp;
+                            {contest?.contestLevel}
                           </h6>
                           <p style={months}>
-                           {contest.date} ~ {contest.contestDescription}
+                           {contest?.date} ~ {contest?.contestDescription}
                           </p>
                           </div>
                         </CardContent>
@@ -390,7 +389,6 @@ const Dashbord = () => {
           <Container sx={createContext}>
             <Typography sx={text}>Available Question</Typography>
           </Container>
-
           <Container sx={containerStyle}>
             <ExpandCircleDownRoundedIcon
               sx={backIcon}

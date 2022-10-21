@@ -40,12 +40,6 @@ const names = ["Level 1", "Level 2"];
 
 const times = ["30 min", "60 min", "90 min", "120 min"];
 
-function getStyles(name, level, theme) {
-  return {
-    
-  };
-}
-
 const modalBody = {
   background: "#F9FAFC",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
@@ -136,53 +130,55 @@ const notbtn = {
   lineHeight: "21px",
   color: "#0057FF",
 };
+const initialState = {
+  contestName: "",
+  contestDescription: "",
+  contestLevel: "",
+  contestTime: "",
+};
 const Modal = ({
   setAlert,
   open,
   setOpen,
-  setContestDetails,
-  contestDetails,
   fetchContestData,
 }) => {
-  const [showMessage, setshowMessage] = useState(false);
-  const [inputData, setInputData] = useState({
-    contestName: "",
-    contestDescription: "",
-    contestLevel: "",
-    contestTime: "",
-  });
+  const [showMessage, setShowMessage] = useState(false);
+  const [inputData, setInputData] = useState(initialState);
   const handleClose = () => {
-    setshowMessage(false);
+    setShowMessage(false);
     setOpen(false);
-    inputData.contestName = "";
-    inputData.contestDescription = "";
-    inputData.contestLevel = "";
-    inputData.contestTime = "";
+    setInputData(initialState);
   };
-  const theme = useTheme();
 
   const handleOnChange = (e) => {
     e.preventDefault();
-    setshowMessage(false);
+    setShowMessage(false);
     const { name, value } = e?.target;
     setInputData({
       ...inputData,
       [name]: value,
     });
   };
-
-  const createContest = async () => {
+  
+  const formValidation = () => {
     if (
       inputData.contestName === "" ||
       inputData.contestDescription === "" ||
       inputData.contestLevel === "" ||
       inputData.contestTime === ""
     ) {
-      setshowMessage(true);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const createContest = async () => {
+    if (formValidation()) {
+      setShowMessage(true);
     } else {
       try {
         const response = await addContest(inputData);
-        // setContestDetails([...contestDetails, inputData]);
         fetchContestData();
         if (response) {
           handleClose();
@@ -238,14 +234,14 @@ const Modal = ({
                   id="fullWidth"
                   onChange={handleOnChange}
                   name="contestName"
-                  value={contestDetails?.contestName}
+                  value={inputData?.contestName}
                 />
                 <label style={label}>Add Description</label>
                 <TextField
                   id="outlined-multiline-static"
                   name="contestDescription"
                   onChange={handleOnChange}
-                  value={contestDetails?.contestDescription}
+                  value={inputData?.contestDescription}
                   multiline
                   rows={2}
                   fullWidth
@@ -259,7 +255,7 @@ const Modal = ({
                   <Select
                     displayEmpty
                     name="contestLevel"
-                    value={contestDetails?.contestLevel}
+                    value={inputData?.contestLevel}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -274,11 +270,7 @@ const Modal = ({
                   >
                     <MenuItem disabled value=""></MenuItem>
                     {names.map((name) => (
-                      <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, theme)}
-                      >
+                      <MenuItem key={name} value={name}>
                         {name}
                       </MenuItem>
                     ))}
@@ -290,7 +282,7 @@ const Modal = ({
                   <Select
                     displayEmpty
                     name="contestTime"
-                    value={contestDetails?.contestTime}
+                    value={inputData?.contestTime}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -305,11 +297,7 @@ const Modal = ({
                   >
                     <MenuItem disabled value=""></MenuItem>
                     {times.map((name) => (
-                      <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, theme)}
-                      >
+                      <MenuItem key={name} value={name}>
                         {name}
                       </MenuItem>
                     ))}
