@@ -16,7 +16,10 @@ import Header from "../UI/Header";
 import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
-import { filterParticipator, getParticipator } from "../services/mail/particiaptiorMail";
+import {
+  filterParticipator,
+  getParticipator,
+} from "../services/mail/particiaptiorMail";
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
@@ -33,7 +36,7 @@ const background1 = {
 const innerSearch = {
   display: "flex",
   height: "40px",
-  position:"relative",
+  position: "relative",
   width: "212px",
 };
 
@@ -149,22 +152,22 @@ const EmailShow = () => {
     }
   };
 
-  const participatorFilter=async()=>{
+  const participatorFilter = async () => {
     setLoading(true);
-   try {
-    const result=await filterParticipator(dropValue);
-    setLoading(false);
-    const response = result?.data;
-    const arr = response.filter((val) => {
-      return val.trim("") != "";
-    });
-    setUploadEmail(arr);
-    setFilteredResults(arr);
-    console.log(response?.data)
-   } catch (error) {
-    setLoading(false);
-   }
-  }
+    try {
+      const result = await filterParticipator(dropValue);
+      setLoading(false);
+      const response = result?.data;
+      const arr = response.filter((val) => {
+        return val.trim("") != "";
+      });
+      setUploadEmail(arr);
+      setFilteredResults(arr);
+      console.log(response?.data);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { value, checked } = e.target;
@@ -177,10 +180,10 @@ const EmailShow = () => {
     }
   };
 
-  const handleDropChange=(e)=>{
+  const handleDropChange = (e) => {
     const { value } = e.target;
     setDropValue(value);
-  }
+  };
 
   const handleDelete = async (mail) => {
     setMsg({
@@ -226,12 +229,9 @@ const EmailShow = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getParticipatorData();
-  // }, [showAlert]);
-  useEffect(()=>{
+  useEffect(() => {
     participatorFilter();
-  },[dropValue])
+  }, [dropValue]);
 
   const getParticipatorData = async () => {
     setLoading(true);
@@ -248,6 +248,14 @@ const EmailShow = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setFilteredResults(
+      uploadEmail.filter((mail) =>
+        mail.toLowerCase().includes(searchString.toLowerCase())
+      )
+    );
+  }, [searchString, uploadEmail]);
 
   const handleFileSelect = async (event) => {
     const { files } = event.target;
@@ -332,8 +340,8 @@ const EmailShow = () => {
     color: "white",
     borderRadius: "6px",
     marginLeft: "10px",
-    height: '39px',
-    marginTop: '17px'
+    height: "39px",
+    marginTop: "17px",
   };
   const sentMails = {
     fontSize: "8",
@@ -352,7 +360,7 @@ const EmailShow = () => {
         showAlert={showAlert}
         open={open}
         setOpen={setOpen}
-        participatorFilter={ participatorFilter}
+        participatorFilter={participatorFilter}
         handleClickOpen={handleClickOpen}
         emails={emails}
         setEmails={setEmails}
@@ -366,7 +374,6 @@ const EmailShow = () => {
       ) : (
         <></>
       )}
-
       <div style={background1}>
         <Header />
         <BackButton />
@@ -408,7 +415,7 @@ const EmailShow = () => {
                     justifyContent: "spaceBetween",
                     display: "flex",
                     right: "14",
-                    marginTop:"-12px"
+                    marginTop: "-12px",
                   }}
                 >
                   <FormControl sx={{ mt: 2, minWidth: 160 }} size="small">
@@ -423,7 +430,6 @@ const EmailShow = () => {
                       <MenuItem value={"Level 2"}>Level 2</MenuItem>
                     </Select>
                   </FormControl>
-
                   <Box sx={{ display: "flex" }}>
                     {/* {upload.loader && <Loader />} */}
                     <Button
@@ -456,38 +462,8 @@ const EmailShow = () => {
                     <Typography sx={dataText}>No data</Typography>
                     <br />
                   </>
-                ) : searchString?.length > 1 ? (
+                ):(
                   filteredResults.map((val, index) => {
-                    return (
-                      <Grid key={`${index}-${val}`} container sx={divSelect}>
-                        <Grid item sm={10} sx={scrollDiv}>
-                          <Typography sx={divText}>{val}</Typography>
-                        </Grid>
-                        <Grid item mt={1}>
-                          <Checkbox
-                            // checked={true}
-                            value={val}
-                            onChange={handleChange}
-                            icon={<RadioButtonUncheckedIcon />}
-                            checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                            sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                          />
-                        </Grid>
-
-                        <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                          <IconButton
-                            aria-label="add"
-                            sx={delBtn}
-                            onClick={(e) => handleDelete(val)}
-                          >
-                            <CloseIcon fontSize="x-small" />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    );
-                  })
-                ) : (
-                  uploadEmail?.map((val, index) => {
                     return (
                       <Grid key={`${index}-${val}`} container sx={divSelect}>
                         <Grid item sm={10} sx={scrollDiv}>
