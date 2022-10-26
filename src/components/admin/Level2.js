@@ -27,6 +27,7 @@ import {
 import MsgBar from "../auth/base/MsgBar";
 import { uploadQuestions } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
+import { expectedType } from "../auth/base/formValidation";
 
 const useStyles = makeStyles({
   container: {
@@ -313,8 +314,7 @@ const Level2 = () => {
   const uploadQuestion = async (e) => {
     const { files } = e.target;
     if (
-      files?.[0]?.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      files?.[0]?.type !==expectedType
     ) {
       setShowValidation(true);
       setMsg({

@@ -18,6 +18,7 @@ import Select from "@mui/material/Select";
 import { addContest } from "../services/adminServices";
 import { getAllContestList } from "../services/adminServices";
 import MsgBar from "../auth/base/MsgBar";
+import { contestValidation } from "../auth/base/formValidation";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -160,21 +161,10 @@ const Modal = ({
     });
   };
   
-  const formValidation = () => {
-    if (
-      inputData.contestName === "" ||
-      inputData.contestDescription === "" ||
-      inputData.contestLevel === "" ||
-      inputData.contestTime === ""
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+
 
   const createContest = async () => {
-    if (formValidation()) {
+    if (contestValidation(inputData)) {
       setShowMessage(true);
     } else {
       try {
@@ -276,7 +266,6 @@ const Modal = ({
                     ))}
                   </Select>
                 </FormControl>
-
                 <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
                   <label style={label}>Time</label>
                   <Select

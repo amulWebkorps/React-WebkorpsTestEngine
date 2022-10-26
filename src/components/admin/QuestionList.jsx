@@ -27,7 +27,7 @@ import clsx from "clsx";
 import AddedQues from "./AddedQues";
 import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
-import { questionValidation } from "../auth/base/formValidation";
+import { expectedType, questionValidation } from "../auth/base/formValidation";
 
 const useStyles = makeStyles({
   container: {
@@ -336,10 +336,7 @@ const QuestionList = () => {
 
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    if (
-      files?.[0]?.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
+    if (files?.[0]?.type !== expectedType) {
       setShowValidation(true);
       setMsg({
         errMsg: "Please select excel file...!",
@@ -367,16 +364,16 @@ const QuestionList = () => {
     }
   };
 
-useEffect(()=>{
-  if(showValidation)
-  setTimeout(() => {
-    setShowValidation(false);
-    setMsg({
-      errMsg: "",
-      color: "",
-    });
-  }, 1500);
-},[showValidation])
+  useEffect(() => {
+    if (showValidation)
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);
+  }, [showValidation]);
 
   useEffect(() => {
     const result = getContestDetail(contestData?.contestId)
@@ -388,7 +385,7 @@ useEffect(()=>{
       })
       .catch("dmndv");
   }, [showAlert]);
-  
+
   return (
     <div style={questionList}>
       <Header />

@@ -11,4 +11,18 @@ const questionValidation = (problemStatement,sampleTestCase,testCaseList) => {
     return false;
   }
 };
-export { questionValidation };
+const contestValidation = (inputData) => {
+  if (
+    inputData.contestName === "" ||
+    inputData.contestDescription === "" ||
+    inputData.contestLevel === "" ||
+    inputData.contestTime === ""
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const expectedType=`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+export { questionValidation,contestValidation,expectedType };

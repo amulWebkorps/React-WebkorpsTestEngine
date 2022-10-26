@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
+import { Button,Box,Typography,Grid } from "@mui/material";
 import { Container } from "@mui/system";
-import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
-import { Typography } from "@mui/material";
+import { getparticipatordetail } from "../services/contest/contestServices";
+import { useLocation } from "react-router-dom";
 import Header from "../UI/Header";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -14,9 +13,6 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
-import { getparticipatordetail } from "../services/contest/contestServices";
-// import { getparticipatordetail } from "../services/adminServices";
-import { useLocation } from "react-router-dom";
 import BackButton from "../UI/BackButton";
 
 const div1 = {
@@ -134,7 +130,7 @@ const buttonTest = {
   lineHeight: "19px",
 };
 const textTestCases = {
-  // height:"50px",
+  
   padding: "10px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -155,7 +151,7 @@ const ViewParticipatorDetail = () => {
   const [studentId, setStudentId] = useState(location?.state);
 
  
-  const nextQuestion = (e) => {
+  const nextQuestion = () => {
     setCount(function (prevCount) {
       if (prevCount <= participatorDetails?.questionSubmitedByStudent?.length) {
         return (prevCount += 1);
@@ -166,7 +162,7 @@ const ViewParticipatorDetail = () => {
     });
   };
 
-  const prevQuestion = (e) => {
+  const prevQuestion = () => {
     setCount(function (prevCount) {
       if (prevCount > 0) {
         return (prevCount -= 1);

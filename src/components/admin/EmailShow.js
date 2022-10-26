@@ -1,25 +1,32 @@
 import { Grid, InputBase } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import {
+  Button,
+  MenuItem,
+  FormControl,
+  Select,
+  Typography,
+  IconButton,
+  Checkbox,
+} from "@mui/material";
+import { sentMail, uploadParticipator } from "../services/adminServices";
+import {
+  filterParticipator,
+  getParticipator,
+} from "../services/mail/particiaptiorMail";
+import { deletestudent } from "../services/mail/particiaptiorMail";
 import { Container, Box } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, MenuItem, FormControl, Select } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import { Typography } from "@mui/material";
-import "../../App.css";
-import { crossbtn } from "../assests/images";
-import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
-import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
-import { sentMail, uploadParticipator } from "../services/adminServices";
-import { filterParticipator, getParticipator } from "../services/mail/particiaptiorMail";
 import Loader from "../auth/base/Loader";
-import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
+import "../../App.css";
+import { expectedType } from "../auth/base/formValidation";
 
 const background1 = {
   height: "100%",
@@ -33,7 +40,7 @@ const background1 = {
 const innerSearch = {
   display: "flex",
   height: "40px",
-  position:"relative",
+  position: "relative",
   width: "212px",
 };
 
@@ -70,18 +77,18 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  // marginLeft: "100px",
   justifyContent: "space-between",
 };
+
 const dataText = {
   display: "flex",
   justifyContent: "center",
 };
+
 const delBtn = {
   marginTop: "4px !important",
   width: "30px !important",
   fontSize: "smaller",
-
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -131,8 +138,8 @@ const EmailShow = () => {
     alert: false,
     loader: false,
   });
-
   const [showAlert, setAlert] = useState(false);
+
   const handleClickOpen = () => {
     if (emails.length <= 0) {
       setIsAlert(true);
@@ -149,22 +156,22 @@ const EmailShow = () => {
     }
   };
 
-  const participatorFilter=async()=>{
+  const participatorFilter = async () => {
     setLoading(true);
-   try {
-    const result=await filterParticipator(dropValue);
-    setLoading(false);
-    const response = result?.data;
-    const arr = response.filter((val) => {
-      return val.trim("") != "";
-    });
-    setUploadEmail(arr);
-    setFilteredResults(arr);
-    console.log(response?.data)
-   } catch (error) {
-    setLoading(false);
-   }
-  }
+    try {
+      const result = await filterParticipator(dropValue);
+      setLoading(false);
+      const response = result?.data;
+      const arr = response.filter((val) => {
+        return val.trim("") != "";
+      });
+      setUploadEmail(arr);
+      setFilteredResults(arr);
+      console.log(response?.data);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { value, checked } = e.target;
@@ -177,10 +184,10 @@ const EmailShow = () => {
     }
   };
 
-  const handleDropChange=(e)=>{
+  const handleDropChange = (e) => {
     const { value } = e.target;
     setDropValue(value);
-  }
+  };
 
   const handleDelete = async (mail) => {
     setMsg({
@@ -226,12 +233,9 @@ const EmailShow = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getParticipatorData();
-  // }, [showAlert]);
-  useEffect(()=>{
+  useEffect(() => {
     participatorFilter();
-  },[dropValue])
+  }, [dropValue]);
 
   const getParticipatorData = async () => {
     setLoading(true);
@@ -252,8 +256,7 @@ const EmailShow = () => {
   const handleFileSelect = async (event) => {
     const { files } = event.target;
     if (
-      files?.[0]?.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      files?.[0]?.type !==expectedType
     ) {
       setIsAlert(true);
       setMsg({
@@ -326,15 +329,17 @@ const EmailShow = () => {
       setFilteredResults(uploadEmail);
     }
   };
+
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
     color: "white",
     borderRadius: "6px",
     marginLeft: "10px",
-    height: '39px',
-    marginTop: '17px'
+    height: "39px",
+    marginTop: "17px",
   };
+
   const sentMails = {
     fontSize: "8",
     fontWeight: "600",
@@ -352,7 +357,7 @@ const EmailShow = () => {
         showAlert={showAlert}
         open={open}
         setOpen={setOpen}
-        participatorFilter={ participatorFilter}
+        participatorFilter={participatorFilter}
         handleClickOpen={handleClickOpen}
         emails={emails}
         setEmails={setEmails}
@@ -408,7 +413,7 @@ const EmailShow = () => {
                     justifyContent: "spaceBetween",
                     display: "flex",
                     right: "14",
-                    marginTop:"-12px"
+                    marginTop: "-12px",
                   }}
                 >
                   <FormControl sx={{ mt: 2, minWidth: 160 }} size="small">

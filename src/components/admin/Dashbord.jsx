@@ -233,7 +233,6 @@ const Dashbord = () => {
 
   useEffect(() => {
     const detectReload = performance.getEntriesByType("navigation");
-    // define increment counter part
     const tabsOpen = localStorage.getItem("tabsOpen");
     if (tabsOpen == null) {
       localStorage.setItem("tabsOpen", 1);

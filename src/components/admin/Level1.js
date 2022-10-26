@@ -19,7 +19,7 @@ import {
   saveQuestion,
 } from "../services/contest/contestServices";
 import { uploadQuestions } from "../services/contest/contestServices";
-import { questionValidation } from "../auth/base/formValidation";
+import { expectedType, questionValidation } from "../auth/base/formValidation";
 import CloseIcon from "@mui/icons-material/Close";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
@@ -332,8 +332,7 @@ const Level1 = () => {
   const uploadQuestion = async (e) => {
     const { files } = e.target;
     if (
-      files?.[0]?.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      files?.[0]?.type !==expectedType
     ) {
       setShowValidation(true);
       setMsg({
