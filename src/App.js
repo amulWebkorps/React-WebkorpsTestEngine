@@ -20,6 +20,7 @@ import CandidateRoutes from "./CandidateRoutes";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
 import Thankupage from "./components/UI/Thankupage";
 import CandidateLogin from "./components/candidate/CandidateLogin";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -27,15 +28,16 @@ const theme = createTheme({
     },
   },
 });
+
 const initialState={
   hName: "",
   email: "",
   hNumber: "",
   password: "",
 }
+
 function App() {
   const [registerCredential, setRegisterCredential] = useState(initialState);
-
 
   return (
     <ThemeProvider theme={theme}>

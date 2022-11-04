@@ -1,20 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography,MenuItem,FormControl,Select,Checkbox } from "@mui/material";
 import { Container } from "@mui/system";
-import { Button, IconButton, InputLabel } from "@mui/material";
-import "../../App.css";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { crossbtn } from "../assests/images";
-import CloseIcon from "@mui/icons-material/Close";
-import Checkbox from "@mui/material/Checkbox";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Button } from "@mui/material";
 import {
   addSelectiveQuestion,
   filterQuestion,
 } from "../services/contest/contestServices";
+import "../../App.css";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Loader from "../auth/base/Loader";
 
 const whiteContainer = {
@@ -132,7 +126,7 @@ const All = ({
     const questionsid = contestQuestion.map((v) => v.questionId);
     const selectId = selectiveQuestion.questionsIds.map((v) => v);
     let data = selectId.filter((arr) => !questionsid.includes(arr));
-    if (data.length === 0 && questionArr.length == 0) {
+    if (data.length === 0 && questionArr.length === 0) {
       setshowselectquestion(true);
       setMsg({
         errMsg: "Please select a question...!",
@@ -141,7 +135,7 @@ const All = ({
       setTimeout(() => {
         setshowselectquestion(false);
       }, 1200);
-    } else if (data.length === 0 && questionArr.length != 0) {
+    } else if (data.length === 0 && questionArr.length !== 0) {
       setShowAlreadyQuestion(true);
       setMsg({
         errMsg: "selected Question is already present in contest...!",
@@ -172,8 +166,8 @@ const All = ({
   
   useEffect(() => {
     setloader(true)
-    const result = filterQuestion(dropValue).then((res) => {
-      if (res.message == "success" && res.status == "200") {
+     filterQuestion(dropValue).then((res) => {
+      if (res.message === "success" && res.status === "200") {
         setloader(false);
       }
       setAvailableQuestions(res.data);

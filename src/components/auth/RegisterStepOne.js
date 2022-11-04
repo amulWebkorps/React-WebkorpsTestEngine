@@ -12,7 +12,7 @@ import Grid from "@mui/material/Grid";
 import { NavLink, useNavigate } from "react-router-dom";
 import MsgBar from "./base/MsgBar";
 import Header from "../UI/Header";
-
+import { registerValidation } from "./base/formValidation";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -149,36 +149,9 @@ const RegisterStepOne = ({ setRegisterCredential, registerCredential }) => {
     setRegisterCredential({ ...registerCredential, [name]: value });
   };
 
-  const formValidation = () => {
-    if (
-      registerCredential.hName == "" ||
-      registerCredential.email == "" ||
-      registerCredential.hNumber == ""
-    ) {
-      setAlert(true);
-      setMsg("Please fill all details");
-      return false;
-    } else if (!/.+@.+\.[A-Za-z]+$/.test(registerCredential.email) === true) {
-      setAlert(true);
-      setMsg("Plese enter vallid email address");
-      return false;
-    } else if (
-      registerCredential.hNumber === Number("credential.hNumber") ||
-      registerCredential.hNumber === "" ||
-      registerCredential.hNumber[0] === "-" ||
-      registerCredential.hNumber.length > 10 ||
-      registerCredential.hNumber.length < 10
-    ) {
-      setAlert(true);
-      setMsg("Please enter valid phone number");
-      return false;
-    } else {
-      return true;
-    }
-  };
 
   const handleClick = () => {
-    if (formValidation()) navigate("/password");
+    if (registerValidation(registerCredential,setAlert,setMsg)) navigate("/password");
   };
 
   useEffect(() => {

@@ -182,6 +182,7 @@ const Dashbord = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+  
   const handlePop = () => {
     setConfirm(true);
   };
@@ -199,7 +200,7 @@ const Dashbord = () => {
   const fetchContestData = async () => {
     try {
       const response = await getAllContestList();
-      if (response.message == "success" && response.status == "200") {
+      if (response.message === "success" && response.status === "200") {
         setloader(false);
       }
       setContestDetails(response.data);
@@ -234,7 +235,7 @@ const Dashbord = () => {
   useEffect(() => {
     const detectReload = performance.getEntriesByType("navigation");
     const tabsOpen = localStorage.getItem("tabsOpen");
-    if (tabsOpen == null) {
+    if (tabsOpen === null) {
       localStorage.setItem("tabsOpen", 1);
     } else {
       localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
@@ -251,8 +252,8 @@ const Dashbord = () => {
       const newTabCount2 = localStorage.getItem("tabsOpen");
       let value = localStorage.getItem("isMySessionActive");
       console.log(newTabCount2)
-      if (value == "true") {
-        if (newTabCount2 - 1 == 0) {
+      if (value === "true") {
+        if (newTabCount2 - 1 === 0) {
           localStorage.clear();
           window.localStorage.isMySessionActive = "false";
         } else {

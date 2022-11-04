@@ -15,10 +15,7 @@ import BackButton from "../UI/BackButton";
 import Loader from "../candidate/base/Loader";
 
 const BigContainer = {
-  // background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
-  // height: "88vh",
   minWidth: "100%",
-  // position: "relative",
   height: "100vh",
   background: `linear-gradient(
         180deg,
@@ -27,7 +24,7 @@ const BigContainer = {
         rgba(24, 135, 201, 0.4) 100%
       )`,
   overflow: "auto",
-  // opacity: 0.8,
+
 };
 
 const MainContainer = {
@@ -42,27 +39,8 @@ const MainContainers = {
   justifyContent: "space-between",
   background: "#F9FAFC",
   width: "70vw",
-  // height: "65vh",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
-  // borderRadius: "17px",
-  // overflow: "auto",
-};
-const Headers = {
-  height: "14vh",
-  background: "#FDFEFF",
-  width: "100%",
-  display: "flex",
-  flexDirection: "Row",
-};
 
-const logoText = {
-  height: " 56px",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "600",
-  fontSize: "45px",
-  lineHeight: "52px",
-  color: "#1887C9",
 };
 
 const MainBox = {
@@ -103,22 +81,21 @@ const AnswerBox = {
 };
 
 const innerHeading = {
-  // width: "70vw",
-  // height: "71vh",
+
   background: "#F9FAFC",
   borderRadius: " 17px 17px 0px 0px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   marginLeft: "25px",
-  // marginRight: "30px",
+
   paddingTop: "10px",
 };
 
 const innerSearch = {
   display: "flex",
   height: "40px",
-  // width: "50%",
+
 };
 
 const searchIcon = {
@@ -149,9 +126,7 @@ const Answerheading = {
 
 const maindata = {
   height: "70px",
-  // width: "63vw",
   marginTop: "10px",
-  // background: "red",
   background: "#FFFFFF",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   borderRadius: "14px",
@@ -168,10 +143,6 @@ const innerdata = {
   justifyContent: "center",
 };
 
-const Sno = {
-  fontSize: "18px",
-  marginRight: "5px",
-};
 const UniqueId = {
   fontSize: "20px",
   marginRight: "5px",
@@ -330,7 +301,6 @@ const AnswerSheet = () => {
                           View Details
                         </Typography>
                       </Button>
-
                       <IconButton
                         aria-label="add"
                         sx={delBtn}

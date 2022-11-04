@@ -158,7 +158,7 @@ const Login = ({ setRegisterCredential }) => {
 
   useEffect(() => {
     setRegisterCredential(initialState);
-    if (tokens != null && role != "student") {
+    if (tokens !== null && role !== "student") {
       navigate("/dashboard");
     } else if (role === "student") {
       navigate("/");

@@ -69,6 +69,7 @@ const testCaseText1 = {
   lineHeight: "35px",
   color: "#000000",
 };
+
 const testCaseText2 = {
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -89,6 +90,7 @@ const inputLabel = {
   textAlign: "left",
   margin: "10px",
 };
+
 const testCaseResult = {
   height: "48px",
   background: "#F9FAFC",
@@ -129,8 +131,8 @@ const buttonTest = {
   fontSize: "16px",
   lineHeight: "19px",
 };
+
 const textTestCases = {
-  
   padding: "10px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -149,7 +151,6 @@ const ViewParticipatorDetail = () => {
   const location = useLocation();
   const [participatorDetails, setParticipatorDetails] = useState();
   const [studentId, setStudentId] = useState(location?.state);
-
  
   const nextQuestion = () => {
     setCount(function (prevCount) {
@@ -175,7 +176,6 @@ const ViewParticipatorDetail = () => {
   const getparticipatordetails = async () => {
     try {
       const res = await getparticipatordetail(studentId);
-      console.log('res',res?.data)
       setParticipatorDetails(res?.data);
       setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {
@@ -329,7 +329,6 @@ const ViewParticipatorDetail = () => {
                     participatorDetails?.studentDetail?.testCaseRecord[count]
                       ?.fileName
                   }
-                  // onChange={onchange}
                   fontSize="20px"
                   readOnly="true"
                 />
