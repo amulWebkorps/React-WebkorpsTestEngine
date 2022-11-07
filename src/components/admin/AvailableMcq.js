@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { Box, Container } from "@mui/system";
 import { Grid, Button, Typography } from "@mui/material";
@@ -6,8 +6,19 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { addSelectiveMcq } from "../services/contest/mcqService";
+import Loader from "../candidate/base/Loader";
 
-function AvailableMcq() {
+function AvailableMcq({
+  avaiableMcqs,
+  contestId,
+  loader,
+  loadContestDetails,
+  setAlert,
+  setMsg,
+  setshowselectMcq,
+  setAvaiableMcqs,
+}) {
   const AddMcq = {
     width: "141px",
     height: "39px",
@@ -59,24 +70,91 @@ function AvailableMcq() {
     justifyContent: "space-between",
     display: "flex",
   };
-  const whiteContainer = {
-    marginTop: "30px",
-    maxHeight: "600px",
-    background: "#f9fafc",
-    boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
-    borderRadius: "18px",
-    paddingBottom: "100px",
+  const dataText = {
+    display: "flex",
+    justifyContent: "center",
+    fontSize: "20px",
   };
+
   const ref = useRef(null);
+  const [mcqArr, setMcqArr] = useState([]);
+  const [selectiveMcq, setSelectiveMcq] = useState({
+    contestId: [],
+    mcqIds: "",
+  });
+
+  const handleMcq = (e) => {
+    const { checked, value } = e.target;
+    if (checked) {
+      setMcqArr([...mcqArr, value]);
+    } else {
+      setMcqArr((val) => {
+        return val.filter((index) => index !== value);
+      });
+    }
+  };
+
+  const addSelectiveMcqs = async () => {
+    const arr = {
+      contestId: [contestId],
+      mcqIds: mcqArr,
+    };
+    if (mcqArr.length <= 0) {
+      setshowselectMcq(true);
+      setMsg({
+        errMsg: "Please select a question...!",
+        color: "blue",
+      });
+      setTimeout(() => {
+        setshowselectMcq(false);
+      }, 1200);
+    } else {
+      try {
+        const result = await addSelectiveMcq(arr).then((res) => {
+          loadContestDetails();
+
+          setAlert(true);
+          setMsg({
+            state: true,
+            errMsg: "Mcq Add succesfully",
+            color: "Green",
+          });
+          setTimeout(() => {
+            setAlert(false);
+            setMsg({
+              state: false,
+              errMsg: "",
+              color: "",
+            });
+          }, 1200);
+          setAvaiableMcqs([]);
+        });
+      } catch (error) {
+        console.log("question err", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   return (
     <div ref={ref}>
-      <Container>
+      <Container ref={ref}>
+        {/* <Grid>{loader && <Loader />}</Grid> */}
+
         <Grid item textAlign="center " mt={4}>
           <Box sx={test}>
             <DialogTitle id="alert-dialog-title" sx={title}>
               {"Avalaible MCQ’s"}
             </DialogTitle>
-            <Button variant="contained" component="label" sx={AddMcq}>
+            <Button
+              variant="contained"
+              component="label"
+              sx={AddMcq}
+              onClick={() => addSelectiveMcqs()}
+            >
               Add MCQ’s
             </Button>
           </Box>
@@ -84,30 +162,30 @@ function AvailableMcq() {
       </Container>
       <Container sx={mcqContainer}>
         <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-          {[
-            "1 Avatars containing simple characters can be created by ",
-            "2 Avatars containing simple characters can be created by. ",
-            "3 Avatars containing simple characters can be created by. ",
-            "4 Avatars containing simple characters can be created by. ",
-            "5 Avatars containing simple characters can be created by. ",
-            "6 Avatars containing simple characters can be created by. ",
-          ].map((val, index) => {
-            return (
-              <Grid container sx={divSelect}>
-                <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>{val}</Typography>
+          {loader ? (
+            <Loader />
+          ) : avaiableMcqs.length <= 0 ? (
+            <Typography sx={dataText}></Typography>
+          ) : (
+            avaiableMcqs?.map((val, index) => {
+              return (
+                <Grid container sx={divSelect}>
+                  <Grid item sm={10} sx={scrollDiv}>
+                    <Typography sx={divText}>{val?.mcqQuestion}</Typography>
+                  </Grid>
+                  <Grid item mt={1}>
+                    <Checkbox
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                      value={val?.mcqId}
+                      onChange={handleMcq}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item mt={1}>
-                  <Checkbox
-                    value={val}
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                  />
-                </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })
+          )}
         </Grid>
       </Container>
     </div>

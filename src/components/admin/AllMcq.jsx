@@ -9,11 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import React from "react";
-import Loader from "../candidate/base/Loader";
+import React, { useEffect, useState } from "react";
+
 import BackButton from "../UI/BackButton";
 import Header from "../UI/Header";
 import { useNavigate } from "react-router-dom";
+import { uploadMcqs } from "../services/contest/mcqService";
+import Loader from "../candidate/base/Loader";
 
 const background1 = {
   height: "100%",
@@ -122,8 +124,72 @@ const delBtn = {
   color: "black",
   borderRadius: "50%",
 };
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 function AllMcq() {
   const navigate = useNavigate();
+  const [showValidation, setShowValidation] = useState(false);
+  const [loader, setloader] = useState(true);
+  const [msg, setMsg] = useState({
+    state: false,
+    msg: "",
+    color: "",
+  });
+  const [mcqQuestion, setMcqQuestion] = useState([]);
+  useEffect(() => {
+    setloader(false)
+  }, [setMcqQuestion]);
+
+  const uploadMcq = async (e) => {
+    const { files } = e.target;
+
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Please select excel file...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);
+    } else {
+      try {
+        const result = await uploadMcqs(files[0], "");
+
+        setMcqQuestion(result?.data);
+        setShowValidation(true);
+        setMsg({
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
+          setShowValidation(false);
+          setMsg({
+            errMsg: "",
+            color: "",
+          });
+        }, 1200);
+      } catch (error) {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+        console.log("ee", error);
+      }
+    }
+  };
+  console.log(mcqQuestion, "dfghjkl;");
   return (
     <>
       <div style={background1}>
@@ -134,7 +200,7 @@ function AllMcq() {
           <Box
             variant="contained"
             sx={allQuestion}
-            onClick={() => navigate("/allavailable")}
+            onClick={() => navigate(-1)}
           >
             All question
           </Box>
@@ -154,6 +220,8 @@ function AllMcq() {
                 variant="contained"
                 component="label"
                 sx={buttonUploadMCQ}
+                onChange={uploadMcq}
+                onClick={(e) => (e.target.value = null)}
               >
                 Upload MCQ's
                 <input hidden accept="file/*" multiple type="file" />
@@ -162,28 +230,27 @@ function AllMcq() {
           </Grid>
           {/* <Grid>{loader && <Loader />}</Grid> */}
           <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
-            {[
-              "Avatars containing simple characters can be created by ",
-              " Avatars containing simple characters can be created by. ",
-              " Avatars containing simple characters can be created by. ",
-              " Avatars containing simple characters can be created by. ",
-              " Avatars containing simple characters can be created by. ",
-              " Avatars containing simple characters can be created by. ",
-            ].map((val, index) => {
-              return (
-                <Grid container sx={divSelect} key={index}>
-                  <Grid item sm={10} sx={scrollDiv}>
-                    <Typography sx={divText}>{val}</Typography>
+            {loader ? (
+              <Loader />
+            ) : mcqQuestion.length == 0 ? (
+              <Typography align="center" sx={dataText}  ></Typography>
+            ) : (
+              mcqQuestion?.map((val, index) => {
+                return (
+                  <Grid container sx={divSelect} key={index}>
+                    <Grid item sm={10} sx={scrollDiv}>
+                      <Typography sx={divText}>{val.mcqQuestion}</Typography>
+                    </Grid>
+                    <Grid item sm={1} mt={1}></Grid>
+                    <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
+                      <IconButton aria-label="add" sx={delBtn}>
+                        <CloseIcon fontSize="x-small" />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item sm={1} mt={1}></Grid>
-                  <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
-                    <IconButton aria-label="add" sx={delBtn}>
-                      <CloseIcon fontSize="x-small" />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              );
-            })}
+                );
+              })
+            )}
           </Grid>
         </Container>
       </div>

@@ -143,7 +143,11 @@ const mcqBtn = {
   fontWeight: 700,
   fontSize: "20px",
 };
-
+const dataText={
+  display:"flex",
+  justifyContent:"center",
+  fontSize:"20px"
+}
 const Allavailable = () => {
   const navigate = useNavigate();
   const [allAvailQues, setAllAvailQues] = useState([]);
@@ -213,16 +217,13 @@ const Allavailable = () => {
         <Box variant="contained" sx={allQuestion}>
           All question
         </Box>
-        <Box sx={mcqBtn} onClick={() =>
-              navigate("/allmcq")
-            }>
+        <Box sx={mcqBtn} onClick={() => navigate("/allmcq")}>
           MCQ
         </Box>
       </Grid>
 
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
-          
           <Grid item sx={levelSubHeading}>
             <Typography sx={levelText} mt={2}>
               Available Questions
@@ -248,27 +249,33 @@ const Allavailable = () => {
             </Button> */}
           </Grid>
         </Grid>
-        <Grid>{loader && <Loader />}</Grid>
-        <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
-          {allAvailQues?.map((val, index) => {
-            return (
-              <Grid container sx={divSelect} key={index}>
-                <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>{val?.question}</Typography>
+        {/* <Grid>{loader && <Loader />}</Grid> */}
+        <Grid container sx={{ maxHeight: "500px", overflow: "auto" ,justifyContent: "center"}}>
+          {loader ? (
+            <Loader />
+          ) : allAvailQues.length <= 0 ? (
+            <Typography align="center" sx={dataText}>No Data</Typography>
+          ) : (
+            allAvailQues?.map((val, index) => {
+              return (
+                <Grid container sx={divSelect} key={index}>
+                  <Grid item sm={10} sx={scrollDiv}>
+                    <Typography sx={divText}>{val?.question}</Typography>
+                  </Grid>
+                  <Grid item sm={1} mt={1}></Grid>
+                  <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
+                    <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      onClick={() => handleDelete(index, val?.questionId)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-                <Grid item sm={1} mt={1}></Grid>
-                <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
-                  <IconButton
-                    aria-label="add"
-                    sx={delBtn}
-                    onClick={() => handleDelete(index, val?.questionId)}
-                  >
-                    <CloseIcon fontSize="x-small" />
-                  </IconButton>
-                </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })
+          )}
         </Grid>
       </Container>
     </div>

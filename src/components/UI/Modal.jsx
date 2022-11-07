@@ -37,7 +37,7 @@ const MenuPropsfortime = {
   },
 };
 const names = ["Level 1", "Level 2"];
-const types = ["questions", "MCQ"];
+const types = ["Question", "MCQ"];
 const times = ["30 min", "60 min", "90 min", "120 min"];
 
 function getStyles(name, level, theme) {
@@ -157,6 +157,7 @@ const Modal = ({
     inputData.contestDescription = "";
     inputData.contestLevel = "";
     inputData.contestTime = "";
+    inputData.contestType=""
   };
   const theme = useTheme();
 
@@ -175,11 +176,13 @@ const Modal = ({
       inputData.contestName === "" ||
       inputData.contestDescription === "" ||
       inputData.contestLevel === "" ||
-      inputData.contestTime === ""
+      inputData.contestTime === "" || 
+      inputData.contestType === ""
     ) {
       setshowMessage(true);
     } else {
       try {
+        console.log(inputData,"inputdata");
         const response = await addContest(inputData);
         // setContestDetails([...contestDetails, inputData]);
         fetchContestData();
@@ -319,7 +322,7 @@ const Modal = ({
                   <Select
                     displayEmpty
                     name="contestType"
-                    value={contestDetails?.contestTime}
+                    value={contestDetails?.contestType}
                     onChange={handleOnChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
@@ -364,7 +367,7 @@ const Modal = ({
                 <Button
                   variant="contained"
                   sx={crebtn}
-                  onClick={() => createContest()}
+                  onClick={createContest}
                 >
                   Create
                 </Button>

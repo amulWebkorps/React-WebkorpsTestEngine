@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -66,19 +66,18 @@ export default function Model2({
 }) {
   // const [loading, setLoading] = useState(true);
   const [disable, setDisable] = useState(false);
-  const [contestId, setContestId] =useState();
-  const [contestDetails, setContestDetails]=useState(null);
+  const [contestId, setContestId] = useState();
+  const [contestDetails, setContestDetails] = useState(null);
   useEffect(() => {
-   const response=getAllContestList().then((res)=>{
-    setContestDetails(res?.data);
-   });
-  }, [])
+    const response = getAllContestList().then((res) => {
+      setContestDetails(res?.data);
+    });
+  }, []);
   const handleClose = () => {
     setOpen(false);
     setTimeout(() => {
       setSent(false);
-    },500);
- 
+    }, 500);
   };
   const modalBody = {
     background: "#F9FAFC",
@@ -199,7 +198,7 @@ export default function Model2({
                       variant="contained"
                       onClick={() => handleMail()}
                     >
-                      Send{" "}
+                      Send
                     </Button>
                   )}
                 </Box>

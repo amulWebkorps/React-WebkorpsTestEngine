@@ -25,6 +25,8 @@ import CandidateLogin from "./components/candidate/CandidateLogin";
 import McqPage from "./components/admin/McqPage";
 import McqParticipator from "./components/admin/McqParticipator";
 import AllMcq from "./components/admin/AllMcq";
+import McqInstruction from "./components/candidate/McqInstruction";
+import McqQuestion from "./components/candidate/McqQuestion";
 const theme = createTheme({
   palette: {
     primary: {
@@ -83,13 +85,18 @@ function App() {
               element={<AdminRoutes Component={Dashbord} />}
             ></Route>
 
-            {/* //my changes */}
-            <Route path="/mcqPage" element={<McqPage />}></Route>
+            <Route
+              path="/mcqPage"
+              element={<AdminRoutes Component={McqPage} />}
+            ></Route>
             <Route
               path="/mcqParticipator"
-              element={<McqParticipator />}
+              element={<AdminRoutes Component={McqParticipator} />}
             ></Route>
-            <Route path="/allmcq" element={<AllMcq />}></Route>
+            <Route
+              path="/allmcq"
+              element={<AdminRoutes Component={AllMcq} />}
+            ></Route>
 
             <Route
               path="/addQuestion"

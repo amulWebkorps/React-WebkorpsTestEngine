@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./base";
 import api from "./api";
+import { inputAdornmentClasses } from "@mui/material";
 //const BASE_URL = `http://localhost:8085`;
 const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
@@ -28,8 +29,8 @@ const registerAdmin = (credential) => {
   });
 };
 
-const getContestDetail = (id) => {
-  return api.get(`${CONTEST_URL}?contestId=${id}`);
+const getContestDetail = (id,type) => {
+  return api.get(`${CONTEST_URL}?contestId=${id}&contestType=${type}`);
 };
 
 const deleteContest = (id) => {
@@ -37,11 +38,13 @@ const deleteContest = (id) => {
 };
 
 const addContest = (contestDetails) => {
+  console.log(contestDetails,"contest");
   return api.post(CREATE_CONTEST, {
     contestName: contestDetails?.contestName,
     contestDescription: contestDetails?.contestDescription,
     contestLevel: contestDetails?.contestLevel,
     contestTime: contestDetails?.contestTime,
+    contestType: contestDetails?.contestType
   });
 };
 const sendMail = (Id, mail) => {

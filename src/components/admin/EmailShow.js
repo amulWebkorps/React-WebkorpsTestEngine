@@ -302,11 +302,7 @@ const EmailShow = () => {
       setFilteredResults(uploadEmail);
     }
   };
-  // MY change
-  const navigate = useNavigate();
-  const text = () => {
-    navigate("/McqPage");
-  };
+
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -385,12 +381,11 @@ const EmailShow = () => {
                         sx={{ height: 34, minWidth: 120 }}
                       >
                         <MenuItem value="All">All</MenuItem>
-                        {/* <MenuItem value="All"> All</MenuItem> */}
+
                         <MenuItem value="Level1">Level1</MenuItem>
                         <MenuItem value="Level2">Level2</MenuItem>
                       </Select>
 
-                      <Button onClick={text}>Test</Button>
                       {upload.loader && <Loader />}
                       <Button
                         variant="contained"

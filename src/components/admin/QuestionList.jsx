@@ -391,7 +391,7 @@ const QuestionList = () => {
   };
 
   useEffect(() => {
-    const result = getContestDetail(contestData?.contestId)
+    const result = getContestDetail(contestData?.contestId , contestData?.contestType)
       .then((res) => {
         if (res.message == "success" && res.status == "200") {
           setloader(false);

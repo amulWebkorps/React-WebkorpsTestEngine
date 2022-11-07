@@ -121,6 +121,11 @@ const loaderStyle = {
   justifyContent: "center",
   alignItem: "center",
 };
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 const All = ({
   showAlert,
   setshowselectquestion,
@@ -256,24 +261,30 @@ const All = ({
         </Grid>
         <Grid>{loader && <Loader />}</Grid>
         <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
-          {availableQuestions?.map((val, index) => {
-            return (
-              <Grid container sx={divSelect} key={index}>
-                <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>{val?.question}</Typography>
+          {loader ? (
+            <Loader />
+          ) : availableQuestions.length == 0 ? (
+            <Typography sx={dataText}>No Data</Typography>
+          ) : (
+            availableQuestions?.map((val, index) => {
+              return (
+                <Grid container sx={divSelect} key={index}>
+                  <Grid item sm={10} sx={scrollDiv}>
+                    <Typography sx={divText}>{val?.question}</Typography>
+                  </Grid>
+                  <Grid item sm={1} mt={2} key={`${index}%%$`}>
+                    <Checkbox
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                      value={val?.questionId}
+                      onChange={handleQuestion}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item sm={1} mt={2} key={`${index}%%$`}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                    value={val?.questionId}
-                    onChange={handleQuestion}
-                  />
-                </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })
+          )}
         </Grid>
       </Container>
     </div>

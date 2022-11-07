@@ -8,7 +8,13 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import AvailableMcq from "./AvailableMcq";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { uploadMcqs } from "../services/contest/mcqService";
+import { deleteMcq } from "../services/contest/mcqService";
+import { useEffect } from "react";
+import { getContestDetail } from "../services/adminServices";
+import Loader from "../candidate/base/Loader";
+import MsgBar from "../auth/base/MsgBar";
 
 const background1 = {
   height: "100vh",
@@ -127,24 +133,145 @@ const delBtn = {
   color: "black",
   borderRadius: "50%",
 };
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 
 function McqPage() {
   const navigate = useNavigate();
-  const ref = useRef(null);
+  const location = useLocation();
   const [showMcq, setShowMcq] = useState(false);
+  const ref = useRef(null);
+  const [loader, setloader] = useState(true);
+  const [showSelectMcq, setshowselectMcq] = useState(false);
+  const [showAlert, setAlert] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
+  const [mcqQuestion, setMcqQuestion] = useState([]);
+  const [avaiableMcqs, setAvaiableMcqs] = useState([]);
+
+  const [msg, setMsg] = useState({
+    errMsg: "",
+    color: "",
+  });
+
+  const [contestData, setContestData] = useState(
+    location?.state?.result?.data?.contest
+  );
+
   const scrollBottom = () => {
     setShowMcq(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const uploadMcq = async (e) => {
+    const { files } = e.target;
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Please select excel file...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);
+    } else {
+      try {
+        const result = await uploadMcqs(files[0], contestData?.contestId);
+        loadContestDetails();
+        setShowValidation(true);
+        setMsg({
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
+          setShowValidation(false);
+          setMsg({
+            errMsg: "",
+            color: "",
+          });
+        }, 1200);
+      } catch (error) {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+        console.log("ee", error);
+      }
+    }
+  };
+
+  const handleDelete = async (contestId, mcqId) => {
+    const arr = [contestId, mcqId];
+    setloader(true);
+    try {
+      const result = await deleteMcq(arr).then((res) => {
+        loadContestDetails();
+        setAlert(true);
+        setMsg({
+          state: true,
+          errMsg: "Question delete succesfully",
+          color: "red",
+        });
+        setTimeout(() => {
+          setAlert(false);
+          setMsg({
+            state: false,
+            errMsg: "",
+            color: "",
+          });
+        }, 1200);
+      });
+    } catch (error) {}
+    setloader(false);
+  };
+
+  const loadContestDetails = async () => {
+    try {
+      const result = await getContestDetail(
+        contestData?.contestId,
+        contestData?.contestType
+      );
+      setMcqQuestion(result?.data?.contestMCQDetail);
+      setAvaiableMcqs(result?.data?.totalAvailableMCQ);
+      setloader(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  useEffect(() => {
+    loadContestDetails();
+  }, []);
 
   return (
     <div style={background1}>
       <Header />
       <BackButton />
       <Container sx={topButton}>
+        {showAlert || showValidation || showSelectMcq ? (
+          <MsgBar errMsg={msg.errMsg} color={msg.color} />
+        ) : (
+          <></>
+        )}
+
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={MCQBox}>MCQ</Box>
-          <Box sx={Participator} onClick={() => navigate("/mcqParticipator")}>
+          <Box
+            sx={Participator}
+            onClick={() =>
+              navigate("/mcqParticipator", { state: location?.state })
+            }
+          >
             Participators
           </Box>
         </Grid>
@@ -157,6 +284,8 @@ function McqPage() {
                 variant="contained"
                 component="label"
                 sx={buttonUploadMCQ}
+                onChange={uploadMcq}
+                onClick={(e) => (e.target.value = null)}
               >
                 Upload MCQ's
                 <input hidden accept="file/*" multiple type="file" />
@@ -179,36 +308,49 @@ function McqPage() {
         </Container>
         <Container sx={mcqContainer}>
           <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-            {[
-              "1 Avatars containing simple characters can be created by ",
-              "2 Avatars containing simple characters can be created by. ",
-              "3 Avatars containing simple characters can be created by. ",
-              "4 Avatars containing simple characters can be created by. ",
-              "5 Avatars containing simple characters can be created by. ",
-              "6 Avatars containing simple characters can be created by. ",
-            ].map((val, index) => {
-              return (
-                <Grid container sx={divSelect}>
-                  <Grid item sm={10} sx={scrollDiv}>
-                    <Typography sx={divText}>{val}</Typography>
-                  </Grid>
+            {loader ? (
+              <Loader />
+            ) : mcqQuestion.length == 0 ? (
+              <Typography sx={dataText}>No Data</Typography>
+            ) : (
+              mcqQuestion?.map((val, index) => {
+                return (
+                  <Grid container sx={divSelect}>
+                    <Grid item sm={10} sx={scrollDiv}>
+                      <Typography sx={divText}>{val.mcqQuestion}</Typography>
+                    </Grid>
 
-                  <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
-                    <IconButton
-                      aria-label="add"
-                      sx={delBtn}
-                      // onClick={(e) => handleDelete(val)}
-                    >
-                      <CloseIcon fontSize="x-small" />
-                    </IconButton>
+                    <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                      <IconButton
+                        aria-label="add"
+                        sx={delBtn}
+                        onClick={(e) =>
+                          handleDelete(contestData?.contestId, val?.mcqId)
+                        }
+                      >
+                        <CloseIcon fontSize="x-small" />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                </Grid>
-              );
-            })}
+                );
+              })
+            )}
           </Grid>
         </Container>
 
-        {showMcq && <AvailableMcq ref={ref} />}
+        {showMcq && (
+          <AvailableMcq
+            ref={ref}
+            avaiableMcqs={avaiableMcqs}
+            setAvaiableMcqs={setAvaiableMcqs}
+            contestId={contestData?.contestId}
+            loader={loader}
+            loadContestDetails={loadContestDetails}
+            setAlert={setAlert}
+            setMsg={setMsg}
+            setshowselectMcq={setshowselectMcq}
+          />
+        )}
       </Container>
     </div>
   );

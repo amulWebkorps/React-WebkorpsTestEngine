@@ -202,16 +202,28 @@ const Dashbord = () => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const handleContest = async (id) => {
+  const handleContest = async (id, type) => {
     try {
-      const result = await getContestDetail(id);
-      console.log(result,"result");
-      setContestData(result?.data);
-      navigate("/addQuestion", { state: { result } });
+      console.log(type, "type.......");
+      if (type == "MCQ") {
+        const result = await getContestDetail(id, type);
+      
+        navigate("/mcqPage", { state: { result  } });
+      } else {
+        const result = await getContestDetail(id, type);
+        setContestData(result?.data);
+        navigate("/addQuestion", { state: { result } });
+      }
+
+      // ! another way
+      // const result = await getContestDetail(id, type);
+      // setContestData(result?.data);
+
+      // const navigationLink = type === "MCQ" ? "/mcqPage" : "/addQuestion";
+      // navigate(navigationLink, { state: { result } });
     } catch (error) {
       console.log("error", error);
     }
-    
   };
 
   const deleteContest = (id, Name, contestId) => {
@@ -243,6 +255,7 @@ const Dashbord = () => {
   const fetchContestData = async () => {
     try {
       const response = await getAllContestList();
+      console.log(response, "get Data");
       if (response.message == "success" && response.status == "200") {
         setloader(false);
       }
@@ -264,6 +277,11 @@ const Dashbord = () => {
     <div style={app}>
       <Header />
       {/* <BackButton /> */}
+      {/* <button onClick={() => navigate("/mcqInstruction")}>
+        MCQ Instruction
+      </button>
+      <button onClick={() => navigate("/mcqQuestion")}>MCQ Question</button> */}
+
       {showAvailq ? (
         <>
           <Modal
@@ -313,8 +331,10 @@ const Dashbord = () => {
                       <CardActionArea>
                         <CardMedia
                           onClick={() =>
-                            handleContest(contestDetails?.[index]?.contestId)
-                            
+                            handleContest(
+                              contestDetails?.[index]?.contestId,
+                              contestDetails?.[index].contestType
+                            )
                           }
                           style={cardImg}
                           component="img"
