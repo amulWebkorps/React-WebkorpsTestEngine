@@ -160,7 +160,7 @@ const Level2 = () => {
     location?.state?.data?.contest
   );
   const [quesId, setQuesId] = useState(null);
-  const [editRef, setEditRef]=useState(null);
+  const [editRef, setEditRef] = useState(null);
   const [index, setIndex] = useState(null);
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
@@ -236,8 +236,23 @@ const Level2 = () => {
   };
 
   const addTest = () => {
-    setTestCaseList([...testCaseList, testCases]);
-    setTestCases(testInitialFields);
+    if (testCases?.input === "" || testCases?.output === "") {
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Input and Output can not be null..!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 2000);
+    } else {
+      setTestCaseList([...testCaseList, testCases]);
+      setTestCases(testInitialFields);
+    }
   };
 
   const addQuestion = async (e) => {
@@ -248,7 +263,7 @@ const Level2 = () => {
       sampleTestCase?.output === "" ||
       testCaseList.length === 0
     ) {
-      setShowValidation(true)
+      setShowValidation(true);
       setMsg({
         errMsg: "Please fill details...!",
         color: "red",
@@ -258,10 +273,9 @@ const Level2 = () => {
           errMsg: "",
           color: "",
         });
-        setShowValidation(false)
+        setShowValidation(false);
       }, 1200);
     } else {
-   
       try {
         const result = await saveQuestion(question);
         setAlert(true);
@@ -273,9 +287,9 @@ const Level2 = () => {
         setTestCaseList([]);
         setTimeout(() => {
           setMsg({
-            errMsg:"",
-            color:""
-          })
+            errMsg: "",
+            color: "",
+          });
           setAlert(false);
         }, 1200);
         if (editQuestion) {
@@ -330,33 +344,32 @@ const Level2 = () => {
           errMsg: "",
           color: "",
         });
-      }, 1500);}
-      else{
-        try {
-          const result = await uploadQuestions(files[0], "", "Level 1");
-          setAlert(true);
-          // setContestQuestion([...contestQuestion, ...result]);
-          setMsg({
-            errMsg: "Question uploaded successfully...!",
-            color: "green",
-          });
-          setTimeout(() => {
-            setMsg({
-              errMsg: "",
-              color: "",
-            });
-            setAlert(false);
-          }, 1200);
-        } catch (error) {
-          setAlert(false);
+      }, 1500);
+    } else {
+      try {
+        const result = await uploadQuestions(files[0], "", "Level 1");
+        setAlert(true);
+        // setContestQuestion([...contestQuestion, ...result]);
+        setMsg({
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
           setMsg({
             errMsg: "",
             color: "",
           });
-          console.log("ee", error);
-        }
+          setAlert(false);
+        }, 1200);
+      } catch (error) {
+        setAlert(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+        console.log("ee", error);
       }
-
+    }
   };
 
   const delTestCase = (id) => {
@@ -404,10 +417,14 @@ const Level2 = () => {
       <Header />
       <BackButton />
       <Container sx={topButton}>
-        {showAlert ||showValidation? <MsgBar errMsg={msg.errMsg} color={msg.color} />:""}
+        {showAlert || showValidation ? (
+          <MsgBar errMsg={msg.errMsg} color={msg.color} />
+        ) : (
+          ""
+        )}
         {error && (
-            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
-          )}
+          <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+        )}
         <Grid container sx={{ justifyContent: "center" }}>
           <Grid item>
             <Box variant="contained" sx={buttonLevel}>
@@ -447,7 +464,9 @@ const Level2 = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -476,7 +495,9 @@ const Level2 = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -505,7 +526,9 @@ const Level2 = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -525,7 +548,9 @@ const Level2 = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -555,7 +580,7 @@ const Level2 = () => {
                           variant="outlined"
                           component="label"
                           onChange={uploadQuestion}
-                          onClick={(e)=>e.target.value=null}
+                          onClick={(e) => (e.target.value = null)}
                           startIcon={<NoteAddIcon />}
                         >
                           Upload File

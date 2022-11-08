@@ -237,8 +237,23 @@ const Level1 = () => {
   };
 
   const addTest = () => {
-    setTestCaseList([...testCaseList, testCases]);
-    setTestCases(testInitialFields);
+    if(testCases?.input===""||testCases?.output===""){
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Input and Output can not be null..!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 2000);
+    }else{
+      setTestCaseList([...testCaseList, testCases]);
+      setTestCases(testInitialFields);
+    }
   };
 
   const addQuestion = async (e) => {
