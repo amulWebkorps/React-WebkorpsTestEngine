@@ -21,13 +21,14 @@ import MsgBar from "../auth/base/MsgBar";
 import Loader from "../auth/base/Loader";
 
 const containerStyle = {
-  overflowY: "auto",
+  // overflowY: "auto",
   height: "550px",
   background: "linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)",
   display: "flex",
   flexDirection: "row",
   marginBottom: "40px",
   paddingBottom: "30px",
+
 };
 
 const createContext = {
@@ -120,7 +121,7 @@ const delBtn1 = {
 
 const forwardIcon = {
   transform: " rotate(-90deg)",
-  position: "sticky",
+  position: "relative",
   top: `50%`,
   color: "white",
 };
@@ -324,7 +325,7 @@ const Dashbord = () => {
           </Container>
           <Grid sx={loaderStyle}>{loader && <Loader />}</Grid>
           <Container sx={containerStyle}>
-            <Grid container ml={0} mt={2}>
+            <Grid container ml={0} mt={2} sx={{overflowY:'auto',height:"500px", width:'100%'}}>
               {contestDetails?.map?.((val, index) => {
                 return (
                   <Grid item md={3} mt={5} key={index}>
@@ -357,7 +358,7 @@ const Dashbord = () => {
                         <CardContent  sx={cardBody}>
                           <div>
                           <h6 style={contestText}>
-                            {contestDetails?.[index]?.contestName}&nbsp;~&nbsp;
+                            {(contestDetails?.[index]?.contestName).slice(0,16)}..&nbsp;~&nbsp;
                             {contestDetails?.[index]?.contestLevel}
                           </h6>
                           <p style={months}>
@@ -385,7 +386,7 @@ const Dashbord = () => {
                         </Fab>
                       </CardMedia>
                       <CardContent sx={cardBody}>
-                        <br />
+                       
                         <h4 style={contestText}>create contest</h4>
 
                         <p style={months}>add Description</p>
@@ -395,7 +396,7 @@ const Dashbord = () => {
                 )}
               </Grid>
             </Grid>
-            <Grid ml={-5} mt={6}>
+            <Grid ml={-7} mt={6}>
               <ExpandCircleDownRoundedIcon
                 sx={forwardIcon}
                 fontSize="large"

@@ -247,7 +247,7 @@ const AnswerSheet = () => {
         return Object?.values(item)
           ?.join("")
           ?.toLowerCase()
-          ?.includes(searchString?.toLowerCase());
+          ?.includes(searchString?.toLowerCase().trim());
       });
       setFilteredResults(filteredData);
     } else {
