@@ -25,7 +25,7 @@ import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
 
 const background1 = {
-  height: "100%",
+  height: "100vh",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
@@ -59,7 +59,7 @@ const searchField = {
 
 const whiteContainer = {
   marginTop: "30px",
-  height: "82vh",
+  height: "70%",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -220,10 +220,10 @@ const EmailShow = () => {
 
   const handleSentMail = async () => {
     setSent(true);
+    setOpen(true);
     try {
       const result = await sentMail();
       setSentEmails(result?.data);
-      setOpen(true);
     } catch (error) {
       console.log(error);
     }
