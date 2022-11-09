@@ -30,7 +30,6 @@ const delBtn = {
   height: "30px",
   width: "30px",
   fontSize: "smaller",
-  // backgroundColor: '#E5E5E5',
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -41,22 +40,6 @@ const whiteContainer = {
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
-};
-const buttonLevel = {
-  width: "260px",
-  height: "51px",
-  background: "#0057ff",
-  borderRadius: "18px 18px 18px 18px",
-  fontWeight: "700",
-  fontSize: "25px",
-  lineHeight: "19px",
-  textTransform: "none",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  paddingTop: "12px",
-  paddingLeft: "50px",
-
-  color: "#FFFFFF",
 };
 
 const levelText = {
@@ -108,7 +91,7 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "12px",
-  justifyContent:'space-between'
+  justifyContent: "space-between",
 };
 
 const containerUpper = {
@@ -116,11 +99,7 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-const loaderStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItem: "center",
-};
+
 const All = ({
   showAlert,
   setshowselectquestion,
@@ -146,9 +125,7 @@ const All = ({
     if (checked) {
       setQuestionArr([...questionArr, value]);
     } else {
-      setQuestionArr((val) => {
-        return val.filter((index) => index !== value);
-      });
+      setQuestionArr((val) => val.filter((index) => index !== value));
     }
   };
 
@@ -164,6 +141,7 @@ const All = ({
     setDropValue(value);
     setAvailableQuestions([]);
   };
+
   const addSelectiveQuestions = async () => {
     const questionsid = contestQuestion.map((v) => v.questionId);
     const selectId = selectiveQuestion.questionsIds.map((v) => v);
@@ -174,18 +152,14 @@ const All = ({
         errMsg: "Please select a question...!",
         color: "blue",
       });
-      setTimeout(() => {
-        setshowselectquestion(false);
-      }, 1200);
+      setTimeout(() => setshowselectquestion(false), 1200);
     } else if (data.length === 0 && questionArr.length != 0) {
       setShowAlreadyQuestion(true);
       setMsg({
         errMsg: "selected Question is already present in contest...!",
         color: "blue",
       });
-      setTimeout(() => {
-        setShowAlreadyQuestion(false);
-      }, 2000);
+      setTimeout(() => setShowAlreadyQuestion(false), 2000);
     } else {
       try {
         const result = await addSelectiveQuestion(selectiveQuestion);
@@ -194,9 +168,7 @@ const All = ({
           color: "green",
         });
         setAlert(true);
-        setTimeout(() => {
-          setAlert(false);
-        }, 1200);
+        setTimeout(() => setAlert(false), 1200);
         setAvailableQuestions([]);
         setQuestionArr([]);
         setContestQuestion([...contestQuestion, ...result.data]);
@@ -206,7 +178,7 @@ const All = ({
     }
   };
   useEffect(() => {
-    setloader(true)
+    setloader(true);
     const result = filterQuestion(dropValue).then((res) => {
       if (res.message == "success" && res.status == "200") {
         setloader(false);
@@ -279,5 +251,4 @@ const All = ({
     </div>
   );
 };
-
 export default All;

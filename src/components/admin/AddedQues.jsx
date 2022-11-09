@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import All from "./All";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { deleteQuestion } from "../services/contest/contestServices";
 import Loader from "../candidate/base/Loader";
+
 const heading = {
   height: "89px",
   background: "#F9FAFC",
@@ -19,6 +20,7 @@ const heading = {
   justifyContent: "space-between",
   overFlow: "auto",
 };
+
 const headText = {
   marginLeft: 2,
   fontStyle: "normal",
@@ -26,21 +28,20 @@ const headText = {
   fontSize: "34px",
   lineHeight: "40px",
 };
+
 const ques = {
   display: "flex",
   height: "70px",
   background: "#FFFFFF",
-  /* vv */
-
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
 };
+
 const delBtn = {
   top: "29%",
   height: "30px",
   width: "30px",
   fontSize: "smaller",
-  // backgroundColor: '#E5E5E5',
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -58,6 +59,7 @@ const quesText = {
   color: "#000000",
   overflowY: "auto",
 };
+
 const edit = {
   paddingTop: "2%",
   width: "24%",
@@ -68,7 +70,6 @@ const edit = {
   fontSize: "24px",
   lineHeight: "28px",
   textDecorationLine: "underline",
-
   color: "#0057FF",
 };
 
@@ -85,6 +86,10 @@ const btn = {
   borderRadius: "6px",
   width: "200px",
 };
+const msgInitialField={
+  errMsg:"",
+  color:""
+}
 
 const AddedQues = ({
   showAlert,
@@ -101,7 +106,6 @@ const AddedQues = ({
   contestQuestion,
   setContestQuestion,
   setEditQuestion,
-  // setDeleteQ,
   setProblemStatement,
   setSampleTestCase,
   setTestCaseList,
@@ -114,13 +118,15 @@ const AddedQues = ({
   const ref = useRef(null);
   const refs = useRef(null);
   setEditRef(refs);
+
   const scrollBottom = () => {
     setShowQ(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
-  const scrollTop = () => {
-    setEditRef(refs.current?.scrollIntoView({ behavior: "smooth" }));
-  };
+
+  const scrollTop = () =>  setEditRef(refs.current?.scrollIntoView({ behavior: "smooth" }));
+
+
   const editQuestion = (id, questionID) => {
     scrollTop();
     setEditQuestion(true);
@@ -138,7 +144,6 @@ const AddedQues = ({
   };
 
   const delQuestion = async (id, quesId) => {
-    
     const arr = [
       delFromContest.state ? delFromContest.contestId : `questionForLevel`,
       quesId,
@@ -146,25 +151,14 @@ const AddedQues = ({
     try {
       const result = await deleteQuestion(arr);
       setAlert(true);
-      // setContestQuestion((val) => {
-      //   return val.filter((val, index) => {
-      //     return index !== id;
-      //   });
-      // });
       setMsg({
         errMsg: "Question deleted successfully...!",
         color: "red",
       });
       setTimeout(() => {
         setAlert(false);
-        setMsg({
-          errMsg:"",
-          color:""
-        });
+        setMsg(msgInitialField);
       }, 1200);
-      // if (response) {
-      //   // setDeleteQ(true);
-      // }
     } catch (error) {
       console.log("eroror", error);
     }

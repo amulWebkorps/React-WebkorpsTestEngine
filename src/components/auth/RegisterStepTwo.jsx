@@ -166,88 +166,71 @@ const hideIconConfirm = {
   margin: "200px 0px 0px 290px",
 };
 
+const initialField= {
+  hName: "",
+  email: "",
+  hNumber: "",
+  password: "",
+}
 const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
   const [confirmPassword, setConfirmpassword] = useState("");
   const [seenPassword, setSeenpassword] = useState(false);
   const [seenConfirmPassword, setSeenConfirmpassword] = useState(false);
-  const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [fillalert, setfillalert] = useState(false);
   const [showalertpassword, setalertpassword] = useState(false);
   const [conditionpassword, setconditionpassword] = useState(false);
   const [showemail, setshowemail] = useState(false);
-  const date=new Date();
-  const year=date.getFullYear();
-  // const [credential, setcredential] = useState({
-  //   password: "",
-  // });
+  const navigate = useNavigate();
+  const date = new Date();
+  const year = date.getFullYear();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // setcredential({ ...credential, [name]: value });
     SetRegisterCredential({ ...registerCredential, [name]: value });
   };
 
   const register = async () => {
     if (registerCredential.password === "" || confirmPassword === "") {
       setalertpassword(true);
-      setTimeout(() => {
-        setalertpassword(false);
-      }, 2000);
+      setTimeout(() => setalertpassword(false), 2000);
     } else if (registerCredential.password !== confirmPassword) {
       setfillalert(true);
-      setTimeout(() => {
-        setfillalert(false);
-      }, 2000);
+      setTimeout(() => setfillalert(false), 2000);
     } else if (
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#@?&]{8,}$/.test(
         registerCredential.password
       ) === false
     ) {
       setconditionpassword(true);
-      setTimeout(() => {
-        setconditionpassword(false);
-      }, 3000);
+      setTimeout(() => setconditionpassword(false), 3000);
     } else if (registerCredential.password === confirmPassword) {
       try {
         const response = await registerAdmin(registerCredential);
         setAlert(true);
         setTimeout(() => {
-          SetRegisterCredential([{
-            hName: "",
-            email: "",
-            hNumber: "",
-            password: "",
-          }])
+          SetRegisterCredential([initialField]);
           navigate("/");
         }, 2000);
       } catch (error) {
         setshowemail(true);
-        setTimeout(() => {
-          setshowemail(false);
-        }, 2000);
+        setTimeout(() => setshowemail(false), 2000);
       }
     }
   };
 
-  const showPassword = () => {
-    setSeenpassword(true);
-  };
-  const hidePassword = () => {
-    setSeenpassword(false);
-  };
+  const showPassword = () => setSeenpassword(true);
 
-  const showPasswordConfirm = () => {
-    setSeenConfirmpassword(true);
-  };
-  const hidePasswordConfirm = () => {
-    setSeenConfirmpassword(false);
-  };
+  const hidePassword = () => setSeenpassword(false);
+
+  const showPasswordConfirm = () => setSeenConfirmpassword(true);
+
+  const hidePasswordConfirm = () => setSeenConfirmpassword(false);
 
   return (
     <>
       <Grid container>
-        <Header setColor={true} setShow={true}/>
+        <Header setColor={true} setShow={true} />
       </Grid>
 
       {showAlert && (
@@ -274,7 +257,6 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Register" />
-
             <Box sx={pages}>
               <Typography sx={first}>1</Typography>
               <Typography sx={lining}>___</Typography>

@@ -19,13 +19,12 @@ import React, { useEffect, useState } from "react";
 import Header from "../UI/Header";
 import clsx from "clsx";
 import AddedQues from "./AddedQues";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   filterQuestion,
   saveQuestion,
 } from "../services/contest/contestServices";
 import MsgBar from "../auth/base/MsgBar";
-import { getContestDetail } from "../services/adminServices";
 import { uploadQuestions } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
 
@@ -85,7 +84,6 @@ const delBtn = {
   marginTop: "20px !important",
   width: "30px !important",
   fontSize: "smaller",
-
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -154,12 +152,8 @@ const problemStatementIntialVal = {
   question: "",
 };
 const Level1 = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const classes = useStyles();
-  const [contestData, setContestData] = useState(
-    location?.state?.data?.contest
-  );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
   const [editRef, setEditRef] = useState(null);
@@ -187,9 +181,7 @@ const Level1 = () => {
   const [testCaseList, setTestCaseList] = useState([]);
   const [contestQuestion, setContestQuestion] = useState(null);
   const [editQuestion, setEditQuestion] = useState(false);
-  const [delFromContest, setDelFromContest] = useState({
-    state: false,
-  });
+  const [delFromContest, setDelFromContest] = useState({ state: false });
   const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
@@ -237,7 +229,7 @@ const Level1 = () => {
   };
 
   const addTest = () => {
-    if(testCases?.input===""||testCases?.output===""){
+    if (testCases?.input === "" || testCases?.output === "") {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
@@ -250,7 +242,7 @@ const Level1 = () => {
           color: "",
         });
       }, 2000);
-    }else{
+    } else {
       setTestCaseList([...testCaseList, testCases]);
       setTestCases(testInitialFields);
     }
@@ -270,9 +262,7 @@ const Level1 = () => {
         errMsg: "Please fill details...!",
         color: "red",
       });
-      setTimeout(() => {
-        setShowValidation(false);
-      }, 1200);
+      setTimeout(() => setShowValidation(false), 1200);
     } else {
       try {
         const result = await saveQuestion(question);
@@ -318,25 +308,21 @@ const Level1 = () => {
       } catch (error) {
         setAlert(true);
         setError(true);
-        setTimeout(() => {
-          setError(false);
-        }, 2000);
+        setTimeout(() => setError(false), 2000);
         console.log("error");
       }
     }
   };
 
   const delTestCase = (id) => {
-    setTestCaseList((val) => {
-      return val.filter((a, index) => index !== id);
-    });
+    setTestCaseList((val) => val.filter((a, index) => index !== id));
   };
 
   const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj, inn) => {
-        if (index === inn) {
+      const newState = prevState.map((obj, index) => {
+        if (id === index) {
           return { ...obj, [name]: value };
         }
         return obj;
@@ -718,7 +704,6 @@ const Level1 = () => {
                           >
                             Add
                           </Button>
-                         
                         </Stack>
                       </Container>
                     </div>

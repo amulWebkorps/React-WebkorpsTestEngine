@@ -155,25 +155,19 @@ const logoText = {
   color: "#1887C9",
 };
 
-const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
+const RegisterStepOne = ({ SetRegisterCredential, registerCredential }) => {
   const [showAlert, setAlert] = useState(false);
   const [showNumber, setshownumber] = useState(false);
   const [showEmail, setshowemail] = useState(false);
   const navigate = useNavigate();
-
-  // const [credential, setcredential] = useState({
-  //   hName: "",
-  //   email: "",
-  //   hNumber: "",
-  // });
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-   // setcredential({ ...credential, [name]: value });
     SetRegisterCredential({ ...registerCredential, [name]: value });
   };
+
   const handleClick = () => {
     if (
       registerCredential.hName == "" ||
@@ -181,14 +175,10 @@ const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
       registerCredential.hNumber == ""
     ) {
       setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+      setTimeout(() => setAlert(false), 2000);
     } else if (!/.+@.+\.[A-Za-z]+$/.test(registerCredential.email) === true) {
       setshowemail(true);
-      setTimeout(() => {
-        setshowemail(false);
-      }, 2000);
+      setTimeout(() => setshowemail(false), 2000);
     } else if (
       registerCredential.hNumber === Number("credential.hNumber") ||
       registerCredential.hNumber === "" ||
@@ -197,9 +187,7 @@ const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
       registerCredential.hNumber.length < 10
     ) {
       setshownumber(true);
-      setTimeout(() => {
-        setshownumber(false);
-      }, 2000);
+      setTimeout(() => setshownumber(false), 2000);
     } else {
       navigate("/password");
     }
@@ -207,7 +195,7 @@ const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
   return (
     <>
       <Grid container>
-        <Header setColor={true} setShow={true}/>
+        <Header setColor={true} setShow={true} />
       </Grid>
       {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
       {showNumber && (
@@ -255,13 +243,10 @@ const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
                 type="number"
                 name="hNumber"
               />
-
               <ContinueButton name="Continue" onClick={handleClick} />
-
               <Typography sx={footerOne}>
                 Have an account?
                 <NavLink to="/">
-                  {" "}
                   <Button sx={LoginButton}>Log in</Button>
                 </NavLink>
               </Typography>

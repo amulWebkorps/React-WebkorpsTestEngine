@@ -143,6 +143,7 @@ const Modal = ({
   setContestDetails,
   contestDetails,
   fetchContestData,
+  setError
 }) => {
   const [showMessage, setshowMessage] = useState(false);
   const [inputData, setInputData] = useState({
@@ -197,9 +198,10 @@ const Modal = ({
         const status=error.response.data.status
         if(status===409){
           setMsg(true);
-          setTimeout(()=>{
-            setMsg(false);
-          },3000)
+          setTimeout(()=>setMsg(false),3000)
+        }else{
+          setError(true)
+          setTimeout(()=>setError(false),2000)
         }
       }
     }

@@ -26,9 +26,9 @@ export default function Popup({
   setConfirm,
   setContestDetails,
 }) {
+
   const handleDelete = async () => {
     const result = await deleteContest(contest.contestId);
-    console.log("ressss", result);
     setContestDetails((val) => {
       return val.filter((val, index) => {
         return index !== contest.id;
@@ -36,13 +36,11 @@ export default function Popup({
     });
     setConfirm(false);
     setBar(true);
-    setTimeout(() => {
-      setBar(false);
-    }, 1000);
+    setTimeout(() => setBar(false), 1000);
   };
-  const handleClose = () => {
-    setConfirm(false);
-  };
+  
+  const handleClose = () => setConfirm(false);
+
   return (
     <div>
       <Dialog

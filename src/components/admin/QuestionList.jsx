@@ -63,15 +63,6 @@ const topButton = {
   justifyContent: "center",
 };
 
-const MainBox = {
-  height: "15vh",
-  width: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-};
-
 const QuestionBox = {
   cursor: "pointer",
   width: "250px",
@@ -106,7 +97,6 @@ const delBtn = {
   marginTop: "20px !important",
   width: "30px !important",
   fontSize: "smaller",
-
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -175,6 +165,10 @@ const sampleTestInitialFields = {
 const problemStatementIntialVal = {
   question: "",
 };
+const msgInitialField = {
+  errMsg: "",
+  color: "",
+};
 const QuestionList = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -185,13 +179,11 @@ const QuestionList = () => {
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
-
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
     contestLevel: `${contestData?.contestLevel}@${contestData?.contestId}`,
   };
-
   const quesIntialField = {
     questionId: defaulValues?.questionId,
     question: "",
@@ -200,11 +192,8 @@ const QuestionList = () => {
     sampleTestCase: [],
     testcases: [],
   };
-
   const [question, setQuestion] = useState(quesIntialField);
-  const [problemStatement, setProblemStatement] = useState(
-    problemStatementIntialVal
-  );
+  const [problemStatement, setProblemStatement] = useState(problemStatementIntialVal);
   const [sampleTestCase, setSampleTestCase] = useState(sampleTestInitialFields);
   const [testCases, setTestCases] = useState(testInitialFields);
   const [testCaseList, setTestCaseList] = useState([]);
@@ -214,18 +203,13 @@ const QuestionList = () => {
     state: true,
     contestId: contestData?.contestId,
   });
-  const [availableQuestions, setAvailableQuestions] = useState(
-    location?.state?.data?.totalAvailableQuestion
-  );
+  const [availableQuestions, setAvailableQuestions] = useState(location?.state?.data?.totalAvailableQuestion);
   const [showAlert, setAlert] = useState(false);
   const [showAlreadyQuestion, setShowAlreadyQuestion] = useState(false);
   const [showSelectQuestion, setshowselectquestion] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
   const [loader, setloader] = useState(true);
-  const [msg, setMsg] = useState({
-    errMsg: "",
-    color: "",
-  });
+  const [msg, setMsg] = useState(msgInitialField);
 
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
@@ -237,7 +221,6 @@ const QuestionList = () => {
 
   const handleTestChange = (e) => {
     const { name, value } = e.target;
-
     setTestCases({
       ...testCases,
       [name]: value,
@@ -265,7 +248,7 @@ const QuestionList = () => {
   };
 
   const addTest = () => {
-    if(testCases?.input===""||testCases?.output===""){
+    if (testCases?.input === "" || testCases?.output === "") {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
@@ -273,16 +256,12 @@ const QuestionList = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
+        setMsg(msgInitialField);
       }, 2000);
-    }else{
+    } else {
       setTestCaseList([...testCaseList, testCases]);
       setTestCases(testInitialFields);
     }
-   
   };
 
   const addQuestion = async (e) => {
@@ -300,10 +279,7 @@ const QuestionList = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
+        setMsg(msgInitialField);
       }, 1200);
     } else {
       try {
@@ -317,10 +293,7 @@ const QuestionList = () => {
         setTestCaseList([]);
         setTimeout(() => {
           setAlert(false);
-          setMsg({
-            errMsg: "",
-            color: "",
-          });
+          setMsg(msgInitialField);
         }, 1200);
         if (editQuestion) {
           setMsg({
@@ -351,6 +324,7 @@ const QuestionList = () => {
       }
     }
   };
+
   const delTestCase = (id) => {
     setTestCaseList((val) => {
       return val.filter((a, index) => index !== id);
@@ -369,6 +343,7 @@ const QuestionList = () => {
       return newState;
     });
   };
+
   const uploadQuestion = async (e) => {
     const { files } = e.target;
     if (
@@ -382,10 +357,7 @@ const QuestionList = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
+        setMsg(msgInitialField);
       }, 1500);
     } else {
       setAlert(true);
@@ -399,9 +371,7 @@ const QuestionList = () => {
           errMsg: "Question uploaded successfully...!",
           color: "green",
         });
-        setTimeout(() => {
-          setAlert(false);
-        }, 1200);
+        setTimeout(() => setAlert(false), 1200);
       } catch (error) {
         setAlert(false);
         console.log("ee", error);
@@ -417,9 +387,9 @@ const QuestionList = () => {
         }
         setContestQuestion(res?.data?.contestQuestionDetail);
       })
-      .catch("dmndv");
+      .catch((error) => console.log(error));
   }, [showAlert]);
-  console.log("useeffect");
+
   return (
     <div style={questionList}>
       <Header />
@@ -435,8 +405,6 @@ const QuestionList = () => {
         )}
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={QuestionBox}>Questions</Box>
-
-          {/* <Box sx={AnswerBox} onClick={() => navigate("/participator ",{state:contestData?.contestId})}> */}
 
           <Box
             sx={AnswerBox}
