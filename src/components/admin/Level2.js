@@ -381,8 +381,8 @@ const Level2 = () => {
   const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj, inn) => {
-        if (index === inn) {
+      const newState = prevState.map((obj, index) => {
+        if (id === index) {
           return { ...obj, [name]: value };
         }
         return obj;
