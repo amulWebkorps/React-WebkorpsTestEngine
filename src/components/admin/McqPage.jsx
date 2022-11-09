@@ -66,7 +66,6 @@ const whiteContainer = {
   borderRadius: "18px",
   paddingBottom: "100px",
 };
-
 const buttonUploadMCQ = {
   fontSize: "8",
   fontWeight: "600",
@@ -81,7 +80,6 @@ const buttonAvalaible = {
   borderRadius: "6px",
   marginRight: "50px",
 };
-
 const title = {
   marginTop: "15px",
   fontFamily: "Raleway",
@@ -89,7 +87,6 @@ const title = {
   fontWeight: "700",
   fontSize: "30px",
   lineHeight: "35px",
-
   color: " ##F9FAFC",
 };
 const mcqContainer = {
@@ -97,7 +94,6 @@ const mcqContainer = {
   overflowY: "auto",
   height: "377px",
 };
-
 const divSelect = {
   width: "100%",
   height: "76px",
@@ -105,7 +101,6 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  // marginLeft: "100px",
   justifyContent: "space-between",
 };
 const scrollDiv = {
@@ -133,7 +128,7 @@ const delBtn = {
   color: "black",
   borderRadius: "50%",
 };
-const dataText = {
+const noData = {
   display: "flex",
   justifyContent: "center",
   fontSize: "20px",
@@ -311,7 +306,7 @@ function McqPage() {
             {loader ? (
               <Loader />
             ) : mcqQuestion.length == 0 ? (
-              <Typography sx={dataText}>No Data</Typography>
+              <Typography sx={noData}>No Data</Typography>
             ) : (
               mcqQuestion?.map((val, index) => {
                 return (
@@ -320,7 +315,7 @@ function McqPage() {
                       <Typography sx={divText}>{val.mcqQuestion}</Typography>
                     </Grid>
 
-                    <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
+                    <Grid item sm={1} mt={2} sx={{ justifyContent: "end" }}>
                       <IconButton
                         aria-label="add"
                         sx={delBtn}

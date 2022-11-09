@@ -38,7 +38,6 @@ function AvailableMcq({
     overflowY: "auto",
     height: "377px",
   };
-
   const divSelect = {
     width: "100%",
     height: "76px",

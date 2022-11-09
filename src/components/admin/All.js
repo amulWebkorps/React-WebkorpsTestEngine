@@ -259,15 +259,15 @@ const All = ({
             </Button>
           </Grid>
         </Grid>
-        <Grid>{loader && <Loader />}</Grid>
-        <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
-          {loader ? (
-            <Loader />
-          ) : availableQuestions.length == 0 ? (
-            <Typography sx={dataText}>No Data</Typography>
-          ) : (
-            availableQuestions?.map((val, index) => {
-              return (
+
+        {loader ? (
+          <Loader />
+        ) : availableQuestions.length == 0 ? (
+          <Typography sx={dataText}>No Data</Typography>
+        ) : (
+          availableQuestions?.map((val, index) => {
+            return (
+              <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
                 <Grid container sx={divSelect} key={index}>
                   <Grid item sm={10} sx={scrollDiv}>
                     <Typography sx={divText}>{val?.question}</Typography>
@@ -282,10 +282,10 @@ const All = ({
                     />
                   </Grid>
                 </Grid>
-              );
-            })
-          )}
-        </Grid>
+              </Grid>
+            );
+          })
+        )}
       </Container>
     </div>
   );
