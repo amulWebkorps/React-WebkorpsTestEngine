@@ -7,13 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { Typography } from "@mui/material";
 import "../../App.css";
-import { crossbtn } from "../assests/images";
 import Checkbox from "@mui/material/Checkbox";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
-import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
 import {
@@ -33,6 +31,7 @@ const background1 = {
       rgba(24, 135, 201, 0.4) 100%
     )`,
 };
+
 const innerSearch = {
   display: "flex",
   height: "40px",
@@ -114,28 +113,49 @@ const emailContainer = {
   height: "235px",
 };
 
+const msgInitialVal = {
+  errMsg: "",
+  color: "",
+};
+
+const uploadField = {
+  alert: false,
+  loader: false,
+};
+
+const buttonEmail = {
+  fontSize: "8",
+  fontWeight: "600",
+  color: "white",
+  borderRadius: "6px",
+  marginLeft: "10px",
+  height: "39px",
+  marginTop: "17px",
+};
+
+const sentMails = {
+  fontSize: "8",
+  fontWeight: "600",
+  color: "white",
+  borderRadius: "6px",
+  marginTop: "47px",
+  marginLeft: "27px",
+};
 const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
-  const [msg, setMsg] = useState({
-    errMsg: "",
-    color: "",
-  });
+  const [msg, setMsg] = useState(msgInitialVal);
   const [emails, setEmails] = useState([]);
   const [isAlert, setIsAlert] = useState(false);
   const [sentEmails, setSentEmails] = useState([]);
   const [uploadEmail, setUploadEmail] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchString, setSearchString] = useState("");
-  const [showMsg, setShowMsg] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
   const [dropValue, setDropValue] = useState("All");
   const [sent, setSent] = useState(false);
-  const [upload, setUpload] = useState({
-    alert: false,
-    loader: false,
-  });
-
+  const [upload, setUpload] = useState(uploadField);
   const [showAlert, setAlert] = useState(false);
+
   const handleClickOpen = () => {
     if (emails.length <= 0) {
       setIsAlert(true);
@@ -143,9 +163,7 @@ const EmailShow = () => {
         errMsg: "Please select Participant...!",
         color: "red",
       });
-      setTimeout(() => {
-        setIsAlert(false);
-      }, 1400);
+      setTimeout(() => setIsAlert(false), 1400);
     } else {
       setSent(false);
       setOpen(true);
@@ -158,9 +176,7 @@ const EmailShow = () => {
       const result = await filterParticipator(dropValue);
       setLoading(false);
       const response = result?.data;
-      const arr = response.filter((val) => {
-        return val.trim("") != "";
-      });
+      const arr = response.filter((val) => val.trim("") != "");
       setUploadEmail(arr);
       setFilteredResults(arr);
       console.log(response?.data);
@@ -171,13 +187,8 @@ const EmailShow = () => {
 
   const handleChange = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setEmails([...emails, value]);
-    } else {
-      setEmails((val) => {
-        return val.filter((mail) => mail !== value);
-      });
-    }
+    if (checked) setEmails([...emails, value]);
+    else setEmails((val) => val.filter((mail) => mail !== value));
   };
 
   const handleDropChange = (e) => {
@@ -201,37 +212,24 @@ const EmailShow = () => {
         color: "red",
       });
       getParticipatorData();
-      setUploadEmail((val) => {
-        return val.filter((id) => id !== mail);
-      });
-      setTimeout(() => {
-        setUpload({
-          alert: false,
-          loader: false,
-        });
-      }, 1200);
+      setUploadEmail((val) => val.filter((id) => id !== mail));
+      setTimeout(() => setUpload(uploadField), 1200);
     } catch (error) {
-      setUpload({
-        alert: false,
-        loader: false,
-      });
+      setUpload(uploadField);
     }
   };
 
   const handleSentMail = async () => {
     setSent(true);
+    setOpen(true);
     try {
       const result = await sentMail();
       setSentEmails(result?.data);
-      setOpen(true);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // useEffect(() => {
-  //   getParticipatorData();
-  // }, [showAlert]);
   useEffect(() => {
     participatorFilter();
   }, [dropValue]);
@@ -242,9 +240,7 @@ const EmailShow = () => {
       const res = await getParticipator();
       setLoading(false);
       const response = res?.data;
-      const arr = response.filter((val) => {
-        return val.trim("") != "";
-      });
+      const arr = response.filter((val) => val.trim("") != "");
       setUploadEmail(arr);
       setFilteredResults(arr);
     } catch (error) {
@@ -263,9 +259,7 @@ const EmailShow = () => {
         errMsg: "Please select excel file...!",
         color: "red",
       });
-      setTimeout(() => {
-        setIsAlert(false);
-      }, 1500);
+      setTimeout(() => setIsAlert(false), 1500);
     } else {
       setUpload({
         alert: false,
@@ -285,9 +279,7 @@ const EmailShow = () => {
         });
         getParticipatorData();
         const response = result?.data;
-        const arr = response.filter((val) => {
-          return val.trim("") != "";
-        });
+        const arr = response.filter((val) => val.trim("") !== "");
         setUploadEmail(arr);
         if (response.length === 0) {
           setMsg({
@@ -296,56 +288,32 @@ const EmailShow = () => {
           });
         }
         setTimeout(() => {
-          setUpload({
-            alert: false,
-            loader: false,
-          });
-          setMsg({
-            errMsg: "",
-            color: "",
-          });
+          setUpload(uploadField);
+          setMsg(msgInitialVal);
         }, 1200);
       } catch (error) {
-        setUpload({
-          alert: false,
-          loader: false,
-        });
+        setUpload(uploadField);
         console.log("---------", error);
       }
     }
   };
 
   const handleOnChange = (e) => {
-    setSearchString(e.target.value);
-    if (searchString !== "") {
+    const { value } = e.target;
+    setSearchString(value);
+    if (value !== "") {
       const filteredData = uploadEmail?.filter((item) => {
         return Object?.values(item)
           ?.join("")
           ?.toLowerCase()
-          ?.includes(searchString?.toLowerCase().trim());
+          ?.includes(value?.toLowerCase().trim());
       });
       setFilteredResults(filteredData);
     } else {
       setFilteredResults(uploadEmail);
     }
   };
-  const buttonEmail = {
-    fontSize: "8",
-    fontWeight: "600",
-    color: "white",
-    borderRadius: "6px",
-    marginLeft: "10px",
-    height: "39px",
-    marginTop: "17px",
-  };
-  const sentMails = {
-    fontSize: "8",
-    fontWeight: "600",
-    color: "white",
-    borderRadius: "6px",
-    marginTop: "47px",
-    marginLeft: "27px",
-  };
+
   return (
     <>
       <Modal2
@@ -455,7 +423,6 @@ const EmailShow = () => {
               >
                 {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
                   <>
-                    {" "}
                     <Typography sx={dataText}>No data</Typography>
                     <br />
                   </>
@@ -468,7 +435,6 @@ const EmailShow = () => {
                         </Grid>
                         <Grid item mt={1}>
                           <Checkbox
-                            // checked={true}
                             value={val}
                             onChange={handleChange}
                             icon={<RadioButtonUncheckedIcon />}
@@ -476,7 +442,6 @@ const EmailShow = () => {
                             sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                           />
                         </Grid>
-
                         <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
                           <IconButton
                             aria-label="add"

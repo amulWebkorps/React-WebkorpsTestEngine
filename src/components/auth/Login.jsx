@@ -141,14 +141,14 @@ const Login = ({ SetRegisterCredential }) => {
   const [seenPassword, setSeenpassword] = useState(false);
   const date = new Date();
   const year = date.getFullYear();
+  const tokens = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const handleLogin = async () => {
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
       setLoading(false);
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+      setTimeout(() =>  setAlert(false), 2000);
     } else {
       try {
         const result = await loginAdmin(credential);
@@ -163,32 +163,25 @@ const Login = ({ SetRegisterCredential }) => {
       } catch (error) {
         setLoading(false);
         setShowwarning(true);
-        setTimeout(() => {
-          setShowwarning(false);
-        }, 3000);
+        setTimeout(() =>  setShowwarning(false), 3000);
         navigate("/");
       }
     }
   };
 
-  const showPassword = () => {
-    setSeenpassword(true);
-  };
+  const showPassword = () =>  setSeenpassword(true);
 
-  const hidePassword = () => {
-    setSeenpassword(false);
-  };
+  const hidePassword = () =>  setSeenpassword(false);
+  
 
   useEffect(() => {
     setAlert(false);
   }, [credential]);
 
   const handleChange = (e) => {
-    setCredential({ ...credential, [e.target.name]: e.target.value });
+    const{name,value}=e.target
+    setCredential({ ...credential, [name]: value });
   };
-
-  const tokens = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     SetRegisterCredential({
@@ -203,7 +196,7 @@ const Login = ({ SetRegisterCredential }) => {
       navigate("/");
     }
   }, []);
-  console.log("---dd", SetRegisterCredential);
+  
   return (
     <>
       <Grid container>
@@ -221,8 +214,6 @@ const Login = ({ SetRegisterCredential }) => {
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
             <Heading lable="Login" />
-            {/* {loading && <Loader />} */}
-
             <Stack>
               <TextInput
                 label="Email Address"
@@ -252,11 +243,6 @@ const Login = ({ SetRegisterCredential }) => {
                     fontSize="small"
                   />
                 ))}
-              {/* <FormControlLabel
-                control={<Checkbox size="10px" />}
-                label="Remember me"
-                sx={checkboxname}
-              /> */}
               <LoginButton
                 name="Log in"
                 onClick={handleLogin}

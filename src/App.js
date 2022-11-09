@@ -8,8 +8,6 @@ import Login from "./components/auth/Login";
 import RegisterStepOne from "./components/auth/RegisterStepOne";
 import RegisterStepTwo from "./components/auth/RegisterStepTwo";
 import jwt_decode from "jwt-decode";
-// import RegisterOne from "./components/auth/RegisterStepOne";
-// import RegisterTwo from "./components/auth/RegisterStepTwo";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import QuestionList from "./components/admin/QuestionList";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -31,13 +29,15 @@ const theme = createTheme({
   },
 });
 
+const initialField={
+  hName: "",
+  email: "",
+  hNumber: "",
+  password: "",
+}
+
 function App() {
-  const [registerCredential, SetRegisterCredential] = useState({
-    hName: "",
-    email: "",
-    hNumber: "",
-    password: "",
-  });
+  const [registerCredential, SetRegisterCredential] = useState(initialField);
 
 
   return (
