@@ -91,11 +91,13 @@ const initialState = {
   password: "",
 };
 
+const credInitialField = {
+  email: "",
+  password: "",
+};
+
 const Login = ({ setRegisterCredential }) => {
-  const [credential, setCredential] = useState({
-    email: "",
-    password: "",
-  });
+  const [credential, setCredential] = useState(credInitialField);
   const [showAlert, setAlert] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -104,6 +106,8 @@ const Login = ({ setRegisterCredential }) => {
   const navigate = useNavigate();
   const date = new Date();
   const year = date.getFullYear();
+  const tokens = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const handleLogin = async () => {
     if (credential.email === "" || credential.password === "") {
@@ -128,33 +132,20 @@ const Login = ({ setRegisterCredential }) => {
     }
   };
 
-  const showPassword = () => {
-    setSeenPassword(true);
-  };
+  const showPassword = () => setSeenPassword(true);
 
-  const hidePassword = () => {
-    setSeenPassword(false);
+  const hidePassword = () => setSeenPassword(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredential({ ...credential, [name]: value });
   };
 
   useEffect(() => {
-    if (showAlert) {
-      setTimeout(() => {
-        setAlert(false);
-      }, 3000);
-    }
-    if (showWarning) {
-      setTimeout(() => {
-        setShowWarning(false);
-      }, 3000);
-    }
+    if (showAlert) setTimeout(() => setAlert(false), 3000);
+
+    if (showWarning) setTimeout(() => setShowWarning(false), 3000);
   }, [showAlert, showWarning]);
-
-  const handleChange = (e) => {
-    setCredential({ ...credential, [e.target.name]: e.target.value });
-  };
-
-  const tokens = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     setRegisterCredential(initialState);
@@ -170,7 +161,7 @@ const Login = ({ setRegisterCredential }) => {
       <Grid container>
         <Header setColor={true} setShow={true} />
         {showAlert && (
-          <MsgBar empty={"Please fill all Details"} color={"Red"} />
+          <MsgBar empty={"Please fill all Detailslll"} color={"Red"} />
         )}
         {showWarning && (
           <MsgBar color={"Red"} errMsg={"email and password does not match"} />

@@ -38,7 +38,6 @@ const initialState={
 
 function App() {
   const [registerCredential, setRegisterCredential] = useState(initialState);
-
   return (
     <ThemeProvider theme={theme}>
       <div className="App">

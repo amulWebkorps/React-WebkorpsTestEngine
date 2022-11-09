@@ -117,13 +117,17 @@ const emailContainer = {
   overflowY: "auto",
   height: "360px",
 };
-
+const msgInitialVal = {
+  errMsg: "",
+  color: ""
+}
+const uploadField = {
+  alert: false,
+  loader: false
+}
 const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
-  const [msg, setMsg] = useState({
-    errMsg: "",
-    color: "",
-  });
+  const [msg, setMsg] = useState(msgInitialVal);
   const [emails, setEmails] = useState([]);
   const [isAlert, setIsAlert] = useState(false);
   const [sentEmails, setSentEmails] = useState([]);
@@ -134,10 +138,7 @@ const EmailShow = () => {
   const [filteredResults, setFilteredResults] = useState([]);
   const [dropValue, setDropValue] = useState("All");
   const [sent, setSent] = useState(false);
-  const [upload, setUpload] = useState({
-    alert: false,
-    loader: false,
-  });
+  const [upload, setUpload] = useState(uploadField);
   const [showAlert, setAlert] = useState(false);
 
   const handleClickOpen = () => {
@@ -147,9 +148,7 @@ const EmailShow = () => {
         errMsg: "Please select Participant...!",
         color: "red",
       });
-      setTimeout(() => {
-        setIsAlert(false);
-      }, 1400);
+      setTimeout(() => setIsAlert(false), 1400);
     } else {
       setSent(false);
       setOpen(true);
@@ -162,12 +161,9 @@ const EmailShow = () => {
       const result = await filterParticipator(dropValue);
       setLoading(false);
       const response = result?.data;
-      const arr = response.filter((val) => {
-        return val.trim("") != "";
-      });
+      const arr = response.filter((val) => val.trim("") !== "");
       setUploadEmail(arr);
       setFilteredResults(arr);
-      console.log(response?.data);
     } catch (error) {
       setLoading(false);
     }
@@ -178,9 +174,7 @@ const EmailShow = () => {
     if (checked) {
       setEmails([...emails, value]);
     } else {
-      setEmails((val) => {
-        return val.filter((mail) => mail !== value);
-      });
+      setEmails((val) => val.filter((mail) => mail !== value));
     }
   };
 
@@ -208,17 +202,9 @@ const EmailShow = () => {
       setUploadEmail((val) => {
         return val.filter((id) => id !== mail);
       });
-      setTimeout(() => {
-        setUpload({
-          alert: false,
-          loader: false,
-        });
-      }, 1200);
+      setTimeout(() => setUpload(uploadField), 1200);
     } catch (error) {
-      setUpload({
-        alert: false,
-        loader: false,
-      });
+      setUpload(uploadField);
     }
   };
 
@@ -243,9 +229,7 @@ const EmailShow = () => {
       const res = await getParticipator();
       setLoading(false);
       const response = res?.data;
-      const arr = response.filter((val) => {
-        return val.trim("") != "";
-      });
+      const arr = response.filter((val) => val.trim("") != "");
       setUploadEmail(arr);
       setFilteredResults(arr);
     } catch (error) {
@@ -256,16 +240,14 @@ const EmailShow = () => {
   const handleFileSelect = async (event) => {
     const { files } = event.target;
     if (
-      files?.[0]?.type !==expectedType
+      files?.[0]?.type !== expectedType
     ) {
       setIsAlert(true);
       setMsg({
         errMsg: "Please select excel file...!",
         color: "red",
       });
-      setTimeout(() => {
-        setIsAlert(false);
-      }, 1500);
+      setTimeout(() => setIsAlert(false), 1500);
     } else {
       setUpload({
         alert: false,
@@ -285,9 +267,7 @@ const EmailShow = () => {
         });
         getParticipatorData();
         const response = result?.data;
-        const arr = response.filter((val) => {
-          return val.trim("") != "";
-        });
+        const arr = response.filter((val) =>  val.trim("") != "");
         setUploadEmail(arr);
         if (response.length === 0) {
           setMsg({
@@ -296,20 +276,11 @@ const EmailShow = () => {
           });
         }
         setTimeout(() => {
-          setUpload({
-            alert: false,
-            loader: false,
-          });
-          setMsg({
-            errMsg: "",
-            color: "",
-          });
+          setUpload(uploadField);
+          setMsg(msgInitialVal);
         }, 1200);
       } catch (error) {
-        setUpload({
-          alert: false,
-          loader: false,
-        });
+        setUpload(uploadField);
         console.log("---------", error);
       }
     }
@@ -470,7 +441,6 @@ const EmailShow = () => {
                         </Grid>
                         <Grid item mt={1}>
                           <Checkbox
-                            // checked={true}
                             value={val}
                             onChange={handleChange}
                             icon={<RadioButtonUncheckedIcon />}
@@ -478,7 +448,6 @@ const EmailShow = () => {
                             sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
                           />
                         </Grid>
-
                         <Grid item sm={1} mt={2} x={{ justifyContent: "end" }}>
                           <IconButton
                             aria-label="add"
