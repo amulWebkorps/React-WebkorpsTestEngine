@@ -15,7 +15,6 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { getparticipatordetail } from "../services/contest/contestServices";
-// import { getparticipatordetail } from "../services/adminServices";
 import { useLocation } from "react-router-dom";
 import BackButton from "../UI/BackButton";
 
@@ -73,6 +72,7 @@ const testCaseText1 = {
   lineHeight: "35px",
   color: "#000000",
 };
+
 const testCaseText2 = {
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -93,6 +93,7 @@ const inputLabel = {
   textAlign: "left",
   margin: "10px",
 };
+
 const testCaseResult = {
   height: "48px",
   background: "#F9FAFC",
@@ -134,7 +135,6 @@ const buttonTest = {
   lineHeight: "19px",
 };
 const textTestCases = {
-  // height:"50px",
   padding: "10px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",

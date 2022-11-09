@@ -151,6 +151,10 @@ const sampleTestInitialFields = {
 const problemStatementIntialVal = {
   question: "",
 };
+const msgInitialField={
+  errMsg:"",
+  color:""
+}
 const Level1 = () => {
   const location = useLocation();
   const classes = useStyles();
@@ -185,12 +189,10 @@ const Level1 = () => {
   const [availableQuestions, setAvailableQuestions] = useState();
   const [showAlert, setAlert] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
-  const [msg, setMsg] = useState({
-    errMsg: "",
-    color: "",
-  });
+  const [msg, setMsg] = useState(msgInitialField);
   const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
+
   const handleConstraintChange = (e) => {
     const { name, value } = e.target;
     setSampleTestCase({
@@ -201,7 +203,6 @@ const Level1 = () => {
 
   const handleTestChange = (e) => {
     const { name, value } = e.target;
-
     setTestCases({
       ...testCases,
       [name]: value,
@@ -237,10 +238,7 @@ const Level1 = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
+        setMsg(msgInitialField);
       }, 2000);
     } else {
       setTestCaseList([...testCaseList, testCases]);
@@ -275,10 +273,7 @@ const Level1 = () => {
         setTestCaseList([]);
         setTimeout(() => {
           setAlert(false);
-          setMsg({
-            errMsg: "",
-            color: "",
-          });
+          setMsg(msgInitialField);
         }, 1200);
         if (editQuestion) {
           setMsg({
@@ -343,10 +338,7 @@ const Level1 = () => {
       });
       setTimeout(() => {
         setShowValidation(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
+        setMsg(msgInitialField);
       }, 1500);
     } else {
       try {
@@ -358,18 +350,12 @@ const Level1 = () => {
           color: "green",
         });
         setTimeout(() => {
-          setMsg({
-            errMsg: "",
-            color: "",
-          });
+          setMsg(msgInitialField);
           setAlert(false);
         }, 1200);
       } catch (error) {
         setAlert(false);
-        setMsg({
-          errMsg: "",
-          color: "",
-        });
+        setMsg(msgInitialField);
         console.log("ee", error);
       }
     }
@@ -390,19 +376,12 @@ const Level1 = () => {
     } catch (error) {
       setloader(false);
       setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 3000);
+      setTimeout(() => setError(false), 3000);
       console.log(error);
     }
   };
 
-  // useEffect(()=>{
-  // const result= filterQuestion("All").then((res)=>{
-  //   const response=res.data
-  //   setAvailableQuestions(response);
-  // })
-  // },[])
+
 
   return (
     <div id="body" style={questionList}>
