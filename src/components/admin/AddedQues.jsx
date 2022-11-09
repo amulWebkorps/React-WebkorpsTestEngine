@@ -85,11 +85,11 @@ const btn = {
   borderRadius: "6px",
   width: "200px",
 };
-const dataText={
-  display:"flex",
-  justifyContent:"center",
-  fontSize:"20px"
-}
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 
 const AddedQues = ({
   showAlert,
@@ -198,7 +198,9 @@ const AddedQues = ({
           {loader ? (
             <Loader />
           ) : contestQuestion.length == 0 ? (
-            <Typography align="center" sx={dataText}>No Data</Typography>
+            <Typography align="center" sx={dataText}>
+              No Data
+            </Typography>
           ) : (
             contestQuestion?.map?.((val, index) => {
               return (

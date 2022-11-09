@@ -78,10 +78,6 @@ function AvailableMcq({
 
   const ref = useRef(null);
   const [mcqArr, setMcqArr] = useState([]);
-  const [selectiveMcq, setSelectiveMcq] = useState({
-    contestId: [],
-    mcqIds: "",
-  });
 
   const handleMcq = (e) => {
     const { checked, value } = e.target;
@@ -169,7 +165,7 @@ function AvailableMcq({
           ) : (
             avaiableMcqs?.map((val, index) => {
               return (
-                <Grid container sx={divSelect}>
+                <Grid container sx={divSelect}  key={index}>
                   <Grid item sm={10} sx={scrollDiv}>
                     <Typography sx={divText}>{val?.mcqQuestion}</Typography>
                   </Grid>

@@ -25,8 +25,7 @@ import CandidateLogin from "./components/candidate/CandidateLogin";
 import McqPage from "./components/admin/McqPage";
 import McqParticipator from "./components/admin/McqParticipator";
 import AllMcq from "./components/admin/AllMcq";
-import McqInstruction from "./components/candidate/McqInstruction";
-import McqQuestion from "./components/candidate/McqQuestion";
+
 const theme = createTheme({
   palette: {
     primary: {

@@ -25,10 +25,8 @@ const scrollDiv = {
   overflowY: "auto",
 };
 const divText = {
-  // width: "515px",
-  // height: "28px",
   margin: "9px",
-  // textAlign: "center",
+
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "300",
@@ -39,12 +37,10 @@ const divText = {
 };
 const divSelect = {
   width: "1000h",
-  // height: "76px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  // marginLeft: "100px",
 };
 const modalBody = {
   background: "#F9FAFC",
@@ -90,9 +86,9 @@ function McqModel({ open, setOpen, sent, setSent }) {
                   "chandan.r@webkorps.com",
                   "chandan.r@webkorps.com",
                   "chandan.r@webkorps.com",
-                ].map((val) => {
+                ].map((val,index) => {
                   return (
-                    <Grid container sx={divSelect}>
+                    <Grid container sx={divSelect} key={index}>
                       <Grid item sm={9} sx={scrollDiv}>
                         <Typography sx={divText} mt={2.5}>
                           {val}
@@ -149,23 +145,4 @@ function McqModel({ open, setOpen, sent, setSent }) {
 
 export default McqModel;
 
-{
-  /* <Box sx={{ display: "flex", justifyContent: "end" }}>
-<Box>{disable && <Loader mt={6} ml={12} />}</Box>
-<Box sx={btn}>
-  {disable ? (
-    <Button marginTop={2} variant="contained" disabled>
-      Send
-    </Button>
-  ) : (
-    <Button
-      marginTop={2}
-      variant="contained"
-      // onClick={() => handleMail()}
-    >
-      Send
-    </Button>
-  )}
-</Box>
-</Box> */
-}
+

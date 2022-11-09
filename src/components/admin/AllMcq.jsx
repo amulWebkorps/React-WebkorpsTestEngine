@@ -139,9 +139,6 @@ function AllMcq() {
     color: "",
   });
   const [mcqQuestion, setMcqQuestion] = useState([]);
-  useEffect(() => {
-    setloader(false)
-  }, [setMcqQuestion]);
 
   const uploadMcq = async (e) => {
     const { files } = e.target;
@@ -189,7 +186,10 @@ function AllMcq() {
       }
     }
   };
-  console.log(mcqQuestion, "dfghjkl;");
+  useEffect(() => {
+    setloader(false);
+  }, [setMcqQuestion]);
+
   return (
     <>
       <div style={background1}>
@@ -228,12 +228,11 @@ function AllMcq() {
               </Button>
             </Grid>
           </Grid>
-          {/* <Grid>{loader && <Loader />}</Grid> */}
           <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
             {loader ? (
               <Loader />
             ) : mcqQuestion.length == 0 ? (
-              <Typography align="center" sx={dataText}  ></Typography>
+              <Typography align="center" sx={dataText}></Typography>
             ) : (
               mcqQuestion?.map((val, index) => {
                 return (

@@ -15,17 +15,6 @@ import { useEffect } from "react";
 import { getParticipatorOfContest } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
 
-const BigContainer = {
-  minWidth: "100vw",
-
-  height: "100vh",
-  background: `linear-gradient(
-        180deg,
-        rgba(24, 135, 201, 0) 0%,
-        rgba(24, 135, 201, 0.224167) 40.42%,
-        rgba(24, 135, 201, 0.4) 100%
-      )`,
-};
 const background1 = {
   height: "100vh",
   background: `linear-gradient(
@@ -54,7 +43,7 @@ const MainBox = {
   alignItems: "center",
   textAlign: "center",
 };
-const QuestionBox = {
+const mcqBtn = {
   cursor: "pointer",
   width: "250px",
   height: "55px",
@@ -68,7 +57,7 @@ const QuestionBox = {
   fontSize: "20px",
 };
 
-const AnswerBox = {
+const PartBtn = {
   cursor: "pointer",
   width: "250px",
   height: "55px",
@@ -84,22 +73,18 @@ const AnswerBox = {
 };
 
 const innerHeading = {
-  // width: "70vw",
-  // height: "71vh",
   background: "#F9FAFC",
   borderRadius: " 17px 17px 0px 0px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   marginLeft: "25px",
-  // marginRight: "30px",
-  paddingTop: "10px",
+ paddingTop: "10px",
 };
 
 const innerSearch = {
   display: "flex",
   height: "40px",
-  // width: "50%",
 };
 
 const searchIcon = {
@@ -130,9 +115,7 @@ const Answerheading = {
 
 const maindata = {
   height: "70px",
-  // width: "63vw",
   marginTop: "10px",
-  // background: "red",
   background: "#FFFFFF",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   borderRadius: "14px",
@@ -243,7 +226,7 @@ function McqParticipator() {
       setFilteredResults(participator);
     }
   };
-  // useEffect(() => {}, [open]);
+
   return (
     <>
       <McqModel open={open} setOpen={setOpen} sent={sent} setSent={setSent} />
@@ -253,10 +236,10 @@ function McqParticipator() {
         <BackButton />
         <Container>
           <Box sx={MainBox}>
-            <Box sx={QuestionBox} onClick={() => navigate(-1)}>
+            <Box sx={mcqBtn} onClick={() => navigate(-1)}>
               MCQ
             </Box>
-            <Box sx={AnswerBox}>Participators</Box>
+            <Box sx={PartBtn}>Participators</Box>
           </Box>
           <Container sx={MainContainer}>
             <Container>
@@ -274,12 +257,12 @@ function McqParticipator() {
                 </Box>
               </Box>
 
-              {participator?.length <= 0 || filteredResults?.length <= 0? (
+              {participator?.length <= 0 || filteredResults?.length <= 0 ? (
                 <Typography sx={dataText}>No data</Typography>
               ) : searchString?.length > 1 ? (
                 filteredResults?.map((val, index) => {
                   return (
-                    <Grid sx={maindata}>
+                    <Grid sx={maindata} key={index}>
                       <Box sx={innerdata}>
                         <Typography sx={UniqueId}> {index + 1}</Typography>
                         <Typography sx={UserName}>{val.email}</Typography>
@@ -306,7 +289,7 @@ function McqParticipator() {
               ) : (
                 participator?.map((val, index) => {
                   return (
-                    <Grid sx={maindata}>
+                    <Grid sx={maindata} key={index}>
                       <Box sx={innerdata}>
                         <Typography sx={UniqueId}> {index + 1}</Typography>
                         <Typography sx={UserName}>{val.email}</Typography>
@@ -331,8 +314,6 @@ function McqParticipator() {
                   );
                 })
               )}
-
-              
             </Container>
           </Container>
           <Container

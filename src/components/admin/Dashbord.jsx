@@ -7,20 +7,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { useSelector } from "react-redux";
 import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
 import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRounded";
 import Modal from "../UI/Modal";
-import { increment } from "../store/slicers/adminSlice";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAllContestList } from "../services/adminServices";
 import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
-import BackButton from "../UI/BackButton";
 import Loader from "../auth/base/Loader";
 
 const containerStyle = {
@@ -145,7 +141,6 @@ const months = {
   lineHeight: "14px",
   height: "29px",
   overflowX: "auto",
-  "overflow-wrap": "break-word",
 };
 
 const loaderStyle = {
@@ -167,10 +162,9 @@ const contestInitialValues = {
   contestLevel: "",
 };
 const Dashbord = () => {
-  const [showAvailq, setAvailQ] = useState(true);
-
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const [showAvailq, setAvailQ] = useState(true);
   const [showAlert, setAlert] = useState(false);
   const [bar, setBar] = useState(false);
   const [delContest, setDelContest] = useState({
@@ -178,21 +172,6 @@ const Dashbord = () => {
     id: "",
     contestId: "",
   });
-  useEffect(() => {
-    const handleTabClose = (event) => {
-      event.preventDefault();
-
-      console.log("beforeunload event triggered");
-
-      return event.returnValue(navigate("/"));
-    };
-
-    window.addEventListener("beforeunload", handleTabClose);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleTabClose);
-    };
-  }, []);
 
   const [confirm, setConfirm] = useState(false);
   const [contestDetails, setContestDetails] = useState();
@@ -200,27 +179,14 @@ const Dashbord = () => {
   const [contestData, setContestData] = useState(null);
   const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
 
   const handleContest = async (id, type) => {
     try {
-      console.log(type, "type.......");
-      if (type == "MCQ") {
-        const result = await getContestDetail(id, type);
-      
-        navigate("/mcqPage", { state: { result  } });
-      } else {
-        const result = await getContestDetail(id, type);
-        setContestData(result?.data);
-        navigate("/addQuestion", { state: { result } });
-      }
+      const result = await getContestDetail(id, type);
+      setContestData(result?.data);
 
-      // ! another way
-      // const result = await getContestDetail(id, type);
-      // setContestData(result?.data);
-
-      // const navigationLink = type === "MCQ" ? "/mcqPage" : "/addQuestion";
-      // navigate(navigationLink, { state: { result } });
+      const navigationLink = type === "MCQ" ? "/mcqPage" : "/addQuestion";
+      navigate(navigationLink, { state: { result } });
     } catch (error) {
       console.log("error", error);
     }
@@ -255,7 +221,6 @@ const Dashbord = () => {
   const fetchContestData = async () => {
     try {
       const response = await getAllContestList();
-      console.log(response, "get Data");
       if (response.message == "success" && response.status == "200") {
         setloader(false);
       }
@@ -272,15 +237,24 @@ const Dashbord = () => {
   useEffect(() => {
     fetchContestData();
   }, []);
-  console.log("--->>");
+  useEffect(() => {
+    const handleTabClose = (event) => {
+      event.preventDefault();
+
+      return event.returnValue(navigate("/"));
+    };
+
+    window.addEventListener("beforeunload", handleTabClose);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, []);
+
   return (
     <div style={app}>
       <Header />
       {/* <BackButton /> */}
-      {/* <button onClick={() => navigate("/mcqInstruction")}>
-        MCQ Instruction
-      </button>
-      <button onClick={() => navigate("/mcqQuestion")}>MCQ Question</button> */}
 
       {showAvailq ? (
         <>
