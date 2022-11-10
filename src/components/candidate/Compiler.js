@@ -231,36 +231,36 @@ const Compiler = () => {
   const changeseconds = timerGet * 60;
   const token = localStorage.getItem("token");
 
-  // useEffect(() => {
-  //   window.addEventListener("blur", function () {
-  //     setWinCount(winCount + 1);
-  //     setOpen(true);
-  //   });
-  //   document.addEventListener("visibilitychange", function () {
-  //     if (document.visibilityState === "hidden") {
-  //       setWarning(warning + 1);
-  //       setOpen(true);
-  //     }
-  //   });
-  // }, [warning, winCount]);
+  useEffect(() => {
+    window.addEventListener("blur", function () {
+      setWinCount(winCount + 1);
+      setOpen(true);
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        setWarning(warning + 1);
+        setOpen(true);
+      }
+    });
+  }, [warning, winCount]);
 
-  // $(document).ready(function () {
-  //   var ctrlDown = false,
-  //     ctrlKey = 17,
-  //     cmdKey = 91,
-  //     vKey = 86,
-  //     cKey = 67;
-  //   $(document)
-  //     .keydown(function (e) {
-  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
-  //     })
-  //     .keyup(function (e) {
-  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
-  //     });
-  //   $(".no-copy-paste").keydown(function (e) {
-  //     if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
-  //   });
-  // });
+  $(document).ready(function () {
+    var ctrlDown = false,
+      ctrlKey = 17,
+      cmdKey = 91,
+      vKey = 86,
+      cKey = 67;
+    $(document)
+      .keydown(function (e) {
+        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+      })
+      .keyup(function (e) {
+        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+      });
+    $(".no-copy-paste").keydown(function (e) {
+      if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+    });
+  });
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully")
@@ -486,19 +486,19 @@ const Compiler = () => {
   };
 
   const isRefreshed = sessionStorage.getItem("isRefreshed");
-  // useEffect(() => {
-  //   if (isRefreshed) {
-  //     setExit(false);
-  //     finishTest(true);
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [1000]);
-  //     sessionStorage.removeItem("isRefreshed");
-  //   } else {
-  //     sessionStorage.setItem("isRefreshed", true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isRefreshed) {
+      setExit(false);
+      finishTest(true);
+      setTimeout(() => {
+        navigate("/thanku");
+        localStorage.clear();
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
+    } else {
+      sessionStorage.setItem("isRefreshed", true);
+    }
+  }, []);
 
   const handleFinish = async () => {
     setExit(false);
