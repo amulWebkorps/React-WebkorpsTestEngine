@@ -21,10 +21,7 @@ const scrollDiv = {
   // overflowY: "auto",
 };
 const divText = {
-  // width: "515px",
-  // height: "28px",
   margin: "9px",
-  // textAlign: "center",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "300",
@@ -34,17 +31,20 @@ const divText = {
   marginLeft: "20px",
 };
 const divSelect = {
-  width: "1000h",
+  overflowX:"auto",
+  width: "100%",
   // height: "76px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  // marginLeft: "100px",
+
+
 };
 const emailContainer = {
   // overflow: "hidden",
   maxHeight: "340px",
+
 };
 
 const btn = {
@@ -88,8 +88,8 @@ export default function Model2({
     background: "#F9FAFC",
     boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
     borderRadius: "18px",
-    height: `${sent ? "50vh" : ""}`,
-    width: "70vh",
+    height: `${sent ? "320px" : ""}`,
+    width: "550px",
   };
   const handleMail = async () => {
     if(contestId===undefined || contestId===null){
@@ -151,19 +151,19 @@ export default function Model2({
             <img src={crossbtn} alt="logo" />
           </Button>
         </Box>
-        <DialogContent>
+        <DialogContent sx={{  marginBottom:"30px"}}>
           {sent ? (
             <Container sx={emailContainer}>
-              <Grid container>
+              <Grid container sx={{marginTop:'-27px'}}>
                 {sentEmails?.length === 0 ? (
-                  <h3>Sent emails is empty now...</h3>
+                  <h3 style={{marginTop:"20px"}}>Sent emails is empty now...</h3>
                 ) : (
                   sentEmails?.map((val) => {
                     return (
                       <Grid container sx={divSelect}>
                         <Grid item sm={9} sx={scrollDiv}>
                           <Typography sx={divText} mt={2.5}>
-                            {val}
+                          {val}
                           </Typography>
                         </Grid>
                       </Grid>
