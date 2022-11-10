@@ -278,6 +278,7 @@ const EmailShow = () => {
             alert: true,
             loader: false,
           });
+          setDropValue('All');
         }
         setMsg({
           errMsg: "Participator uploaded succesfully...!",
