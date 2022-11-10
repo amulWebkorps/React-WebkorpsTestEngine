@@ -26,10 +26,6 @@ import McqPage from "./components/admin/McqPage";
 import McqParticipator from "./components/admin/McqParticipator";
 import AllMcq from "./components/admin/AllMcq";
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 const theme = createTheme({
   palette: {
     primary: {

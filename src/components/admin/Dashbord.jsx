@@ -182,24 +182,11 @@ const Dashbord = () => {
 
   const handleContest = async (id, type) => {
     try {
-<<<<<<< Updated upstream
       const result = await getContestDetail(id, type);
       setContestData(result?.data);
 
       const navigationLink = type === "MCQ" ? "/mcqPage" : "/addQuestion";
       navigate(navigationLink, { state: { result } });
-=======
-      console.log(type, "type.......");
-      if (type == "MCQ") {
-        const result = await getContestDetail(id, type);
-
-        navigate("/mcqPage", { state: { result } });
-      } else {
-        const result = await getContestDetail(id, type);
-        setContestData(result?.data);
-        navigate("/addQuestion", { state: { result } });
-      }
->>>>>>> Stashed changes
     } catch (error) {
       console.log("error", error);
     }
@@ -263,10 +250,6 @@ const Dashbord = () => {
   return (
     <div style={app}>
       <Header />
-<<<<<<< Updated upstream
-      {/* <BackButton /> */}
-=======
->>>>>>> Stashed changes
 
       {showAvailq ? (
         <>

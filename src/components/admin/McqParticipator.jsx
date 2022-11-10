@@ -15,10 +15,6 @@ import { useEffect } from "react";
 import { getParticipatorOfContest } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 const background1 = {
   height: "100vh",
   background: `linear-gradient(
