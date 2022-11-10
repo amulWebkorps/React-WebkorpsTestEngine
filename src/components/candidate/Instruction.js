@@ -141,8 +141,9 @@ const Instruction = () => {
   const [showLoader, setLoader]=useState(false);
   const [participatorsContestDetails, setParticipatorsContestDetails] =useState();
   const [defaultCode, setDefaultCode] = useState();
-  const handleChange = (event) => {
-    setLanguage(event.target.value);
+  const handleChange = (e) => {
+    const{value}=e.target;
+    setLanguage(value);
   };
   const{userInfo}=useSelector((state)=>state?.user);
 
@@ -161,10 +162,7 @@ const Instruction = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("popstate", (event) => {
-      console.log("INSIDE!");
-      navigate('/instruction')
-    });
+    window.addEventListener("popstate", (event) => navigate('/instruction'));
   }, [window, navigate]);
 
   const dataLan = languages?.filter((lan2) => lan2.language == language);
@@ -172,16 +170,12 @@ const Instruction = () => {
     dataLan === undefined ? (
       <div></div>
     ) : (
-      setDefaultCode(() => {
-        return dataLan[0]?.codeBase;
-      })
+      setDefaultCode(() =>  dataLan[0]?.codeBase)
     );
   }, [language]);
-console.log(language)
+
   useEffect(() => {
-    window.addEventListener("popstate", (event) => {
-      navigate("/instruction");
-    });
+    window.addEventListener("popstate", (event) =>  navigate("/instruction"));
   }, [window, navigate]);
 
   const fetchStartContestData = async () => {
@@ -224,10 +218,9 @@ console.log(language)
             <Typography sx={instructionSubHead}>
               Please follow the instructions while giving the test.
             </Typography>
-           
           </Grid>
           <Grid item>
-            {InstructionData.map((val, index) => {
+            {InstructionData?.map((val, index) => {
               return (
                 <>
                   <Grid container sx={divSelect}>
@@ -276,9 +269,6 @@ console.log(language)
             >
               Start Contest
             </Button>
-            {/* <Button variant="outlined" sx={cancelBtn}>
-              Cancel
-            </Button> */}
           </Grid>
         </Grid>
       </Container>

@@ -122,10 +122,10 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
-const constraintsText={
-  maxHeight:'48px',
-  overflow:'auto'
-}
+const constraintsText = {
+  maxHeight: "48px",
+  overflow: "auto",
+};
 
 const CodeCompilerText1 = {
   fontSize: "25px",
@@ -166,7 +166,6 @@ const testCaseData = {
 const inputName = {
   fontWeight: "600",
   fontweight: "bold",
-  // marginLeft:"-10px"
 };
 
 const timerText = {
@@ -174,10 +173,10 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
-const questionText={
-  maxHeight:'48px',
-  overflow:'auto'
-}
+const questionText = {
+  maxHeight: "48px",
+  overflow: "auto",
+};
 
 const textTestCases = {
   padding: "10px",
@@ -190,99 +189,92 @@ const textTestCases = {
   justifyContent: "space-between",
 };
 
+const finishCodeInitail = {
+  questionId: "",
+  code: "",
+};
+
 const Compiler = () => {
   const location = useLocation();
   const [error, setError] = useState(null);
-  const [finishCodes, setFinishCodes] = useState([
-    {
-      questionId: "",
-      code: "",
-    },
-  ]);
-  const [quesIds, setQuesIds] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(val=>val?.['questionId']));
-  const [profile, setProfile] = useState(location?.state?.participatorsContestDetails);
+  const [finishCodes, setFinishCodes] = useState([finishCodeInitail]);
+  const [quesIds, setQuesIds] = useState(
+    location?.state?.participatorsContestDetails?.QuestionList?.map(
+      (val) => val?.["questionId"]
+    )
+  );
+  const [profile, setProfile] = useState(
+    location?.state?.participatorsContestDetails
+  );
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [exit, setExit] = useState(true);
-  const [winCount, setWinCount]=useState(0);
+  const [winCount, setWinCount] = useState(0);
   const [testRecord, setTestRecord] = useState([]);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
   const [show, setShow] = useState(false);
   const [showTestCase, setShowTestCase] = useState(false);
-  const [showCompilationError, setshowCompilationError] = useState();
   const [showError, setShowError] = useState(false);
   const [timer, setTimer] = useState("00:00:00");
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
-  const [duration, setDuration] = useState(location?.state?.participatorsContestDetails?.contestTime?.contestTime);
+  const [duration, setDuration] = useState(
+    location?.state?.participatorsContestDetails?.contestTime?.contestTime
+  );
   const [open, setOpen] = useState(false);
   const timerGet = duration?.match(/\d/g)?.join("");
   const Ref = useRef(null);
   const ref = useRef(null);
   const navigate = useNavigate();
   const changeseconds = timerGet * 60;
+  const token = localStorage.getItem("token");
+
+  // useEffect(() => {
+  //   window.addEventListener("blur", function () {
+  //     setWinCount(winCount + 1);
+  //     setOpen(true);
+  //   });
+  //   document.addEventListener("visibilitychange", function () {
+  //     if (document.visibilityState === "hidden") {
+  //       setWarning(warning + 1);
+  //       setOpen(true);
+  //     }
+  //   });
+  // }, [warning, winCount]);
+
+  // $(document).ready(function () {
+  //   var ctrlDown = false,
+  //     ctrlKey = 17,
+  //     cmdKey = 91,
+  //     vKey = 86,
+  //     cKey = 67;
+  //   $(document)
+  //     .keydown(function (e) {
+  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+  //     })
+  //     .keyup(function (e) {
+  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+  //     });
+  //   $(".no-copy-paste").keydown(function (e) {
+  //     if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+  //   });
+  // });
 
   useEffect(() => {
-    window.addEventListener('blur', function(){
-      setWinCount(winCount+1)
-      setOpen(true);
-   }); 
-
-   window.addEventListener('focus', function(){
-   });
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState === "hidden") {
-        setWarning(warning + 1);
-        setOpen(true);
-      }
-    });
-  }, [warning,winCount]);
-
-  $(document).ready(function () {
-    var ctrlDown = false,
-      ctrlKey = 17,
-      cmdKey = 91,
-      vKey = 86,
-      cKey = 67;
-    $(document)
-      .keydown(function (e) {
-        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
-      })
-      .keyup(function (e) {
-        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
-      });
-    $(".no-copy-paste").keydown(function (e) {
-      if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
-    });
-  });
-
-  useEffect(() => {
-    if (runCode?.successMessage === "Code Submitted Successfully") {
-      setShowError(true);
-    }
+    if (runCode?.successMessage === "Code Submitted Successfully")
+      return setShowError(true);
   }, [runCode]);
 
-  useEffect(() => {
-    if (runCode?.complilationMessage == null) {
-    } else {
-      setshowCompilationError(true);
-    }
-  }, [runCode]);
+ 
 
   useEffect(() => {
     getDefaultCode();
     handleQuestionAndCode();
   }, []);
 
-  useEffect(() => {
-    let timeout;
-    if (showCompilationError) {
-      timeout = setTimeout(() => setshowCompilationError(false), 5000);
-    }
-    return () => clearTimeout(timeout);
-  }, [showCompilationError]);
+
 
   useEffect(() => {
     let timeout;
@@ -293,32 +285,20 @@ const Compiler = () => {
   }, [showError]);
 
   useEffect(() => {
-    if (runCode?.complilationMessage !== null) {
-    } else if (
-      count === profile?.QuestionList?.length
-    ) {
-    } else {
-    }
-  }, [count]);
-
-  useEffect(() => {
-    {
-      try {
-        if (timer === "00:00:01") {
-          setExit(false);
-          finishTest(true);
-          setShowTestCase(true);
-          setTimeout(() => {
-            localStorage.clear();
-            navigate("/thanku");
-          }, 1500); 
-        }
-      } catch (error) {
-        console.log(error);
+    try {
+      if (timer === "00:00:01") {
+        setExit(false);
+        finishTest(true);
+        setShowTestCase(true);
+        setTimeout(() => {
+          localStorage.clear();
+          navigate("/thanku");
+        }, 1500);
       }
+    } catch (error) {
+      console.log(error);
     }
   }, [timer]);
-
 
   useEffect(() => {
     clearTimer(getDeadTime());
@@ -331,32 +311,16 @@ const Compiler = () => {
   }, [window]);
 
   const getDefaultCode = () => {
-    const len = profile?.QuestionList?.length;
-    const newArray = [];
-    for (var i = 0; i < len; i++) {
-      const a = profile?.languageCode?.codeBase;
-      newArray.push(a);
-    }
-    const length = profile?.QuestionList?.length;
-    const testArray = [];
-    for (var i = 0; i < length; i++) {
-      const a = [];
-      testArray.push(a);
-    }
-    console.log(testArray)
-    setTestRecord(testArray);
+    const newArray = profile?.QuestionList?.map(
+      () => profile?.languageCode?.codeBase
+    );
+    const testArray = profile?.QuestionList?.map(() => []);
     setDefCode(newArray);
+    setTestRecord(testArray);
   };
 
-  const handleQuestionAndCode = async (codeData) => {
-    const len = profile?.QuestionList?.length;
-    var newArray = [];
-    for (var i = 0; i < len; i++) {
-      var Object = {};
-      Object["questionId"] = quesIds?.[i];
-      Object["code"] = codeData?.[i];
-      newArray.push(Object);
-    }
+  const handleQuestionAndCode =  async(codeData) => {
+    const newArray = profile?.QuestionList?.map((_,i)=>({questionId:quesIds[i],code:codeData[i]}))
     await setFinishCodes(newArray);
     localStorage.setItem("code", JSON.stringify(newArray));
   };
@@ -388,22 +352,17 @@ const Compiler = () => {
         timeOut: false,
         questionsAndCode: [
           {
-            questionId:
-              profile?.QuestionList[count]
-                ?.questionId,
+            questionId: profile?.QuestionList[count]?.questionId,
             code: defCode[count],
           },
         ],
       });
       setError(resultData?.data?.complilationMessage);
       if (resultData) {
-        console.log(resultData,'insdie ');
+        console.log(resultData, "insdie ");
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
-        if (
-          profile?.QuestionList?.length <= 1 &&
-          flag === "1"
-        ) {
+        if (profile?.QuestionList?.length <= 1 && flag === "1") {
           navigate("/thanku");
         }
       }
@@ -416,55 +375,42 @@ const Compiler = () => {
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
-    }catch (error) {
-      setshowCompilationError(true);
+    } catch (error) {
       setError(null);
       setTimeout(() => {
         setError(null);
-        setshowCompilationError(false);
         setLoading(false);
       }, 1200);
       console.log(error);
     }
   };
 
-  const handleScroll = () => {
+  const handleScroll = () =>
     ref.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
-  const handleChange = async (codeData) => {
-    const newState = defCode.map((val, index) => {
-      if (index === count) {
-        return codeData;
-      }
-      return val;
-    });
-    await setDefCode(newState);
+  const handleChange = (codeData) => {
+    const newState = defCode.map((val, index) =>
+      index === count ? codeData : val
+    );
+    setDefCode(newState);
     handleQuestionAndCode(newState);
     return finishCodes, defCode;
   };
 
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
-      if (
-        prevCount <= profile?.QuestionList?.length
-      ) {
+      if (prevCount <= profile?.QuestionList?.length) {
         return (prevCount += 1);
       } else {
-        return (prevCount =
-          profile?.QuestionList?.length);
+        return (prevCount = profile?.QuestionList?.length);
       }
     });
   };
 
   const prevQuestion = (e) => {
-    setCount(function (prevCount) {
-      if (prevCount > 0) {
-        return (prevCount -= 1);
-      } else {
-        return (prevCount = 0);
-      }
-    });
+    setCount((prevCount) =>
+      prevCount > 0 ? (prevCount -= 1) : (prevCount = 0)
+    );
   };
 
   const submitCodes = async (flag) => {
@@ -477,12 +423,13 @@ const Compiler = () => {
         flag: flag,
         timeOut: false,
         questionsAndCode: [
-          {questionId:profile?.QuestionList[count]?.questionId,
+          {
+            questionId: profile?.QuestionList[count]?.questionId,
             code: defCode[count],
           },
         ],
       });
-      
+
       if (res?.data) {
         setTestRecord(res.data?.testCasesSuccess);
         setShow(false);
@@ -497,12 +444,7 @@ const Compiler = () => {
   };
 
   const handleNext = () => {
-    if (
-      profile?.QuestionList?.length - 1 ===count
-    ) {
-    } else {
-      setCount(count + 1);
-    }
+    if (profile?.QuestionList?.length - 1 !== count) return setCount(count + 1);
   };
 
   const getTimeRemaining = (e) => {
@@ -533,9 +475,7 @@ const Compiler = () => {
 
   const clearTimer = (e) => {
     if (Ref.current) clearInterval(Ref.current);
-    const id = setInterval(() => {
-      startTimer(e);
-    }, 100);
+    const id = setInterval(() => startTimer(e), 100);
     Ref.current = id;
   };
 
@@ -546,19 +486,19 @@ const Compiler = () => {
   };
 
   const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
 
   const handleFinish = async () => {
     setExit(false);
@@ -580,13 +520,11 @@ const Compiler = () => {
     }, [100]);
   };
 
-  const token = localStorage.getItem("token");
+ 
   useEffect(() => {
     if (token === null) {
       setExit(false);
-      setTimeout(() => {
-        navigate(`/login/:id`);
-      }, [200]);
+      setTimeout(() => navigate(`/login/:id`), [200]);
     }
   }, []);
 
@@ -606,12 +544,11 @@ const Compiler = () => {
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
         )}
         <ReactRouterPrompt when={exit}>
-          {({ isActive, onConfirm, onCancel }) =>
+          {({ isActive, onCancel }) =>
             isActive && (
               <div>
                 <Dialog
                   open={true}
-                  // onClose={onCancel}
                   onClose={(_, reason) => {
                     if (reason !== "backdropClick") {
                       onCancel();
@@ -672,10 +609,7 @@ const Compiler = () => {
                         </Typography>
                         <Box style={inputField} p={2}>
                           <Typography sx={questionText}>
-                            {
-                              profile
-                                ?.QuestionList?.[count]?.question
-                            }
+                            {profile?.QuestionList?.[count]?.question}
                           </Typography>
                         </Box>
                       </Box>
@@ -686,8 +620,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography sx={constraintsText}>
                             {
-                              profile
-                                ?.QuestionList?.[count]?.sampleTestCase[0]
+                              profile?.QuestionList?.[count]?.sampleTestCase[0]
                                 ?.constraints
                             }
                           </Typography>
@@ -703,9 +636,8 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography sx={questionText}>
                               {
-                                profile
-                                  ?.QuestionList?.[count]?.sampleTestCase[0]
-                                  ?.input
+                                profile?.QuestionList?.[count]
+                                  ?.sampleTestCase[0]?.input
                               }
                             </Typography>
                           </Box>
@@ -719,9 +651,8 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography sx={questionText}>
                               {
-                                profile
-                                  ?.QuestionList?.[count]?.sampleTestCase[0]
-                                  ?.output
+                                profile?.QuestionList?.[count]
+                                  ?.sampleTestCase[0]?.output
                               }
                             </Typography>
                           </Box>
@@ -744,11 +675,7 @@ const Compiler = () => {
                   variant="contained"
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
-                  disabled={
-                    profile?.QuestionList?.length -
-                      1 ===
-                    count
-                  }
+                  disabled={profile?.QuestionList?.length - 1 === count}
                 >
                   Next
                 </Button>
@@ -871,9 +798,7 @@ const Compiler = () => {
                 >
                   {"submit"}
                 </Button>
-                {count ===
-                  profile?.QuestionList?.length -
-                    1 && (
+                {count === profile?.QuestionList?.length - 1 && (
                   <Button
                     variant="contained"
                     sx={buttonTest}
@@ -921,5 +846,4 @@ const Compiler = () => {
     </Box>
   );
 };
-
 export default Compiler;
