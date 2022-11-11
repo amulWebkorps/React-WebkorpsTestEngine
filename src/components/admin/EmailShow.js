@@ -2,7 +2,7 @@ import { Grid, InputBase } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Container, Box } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button } from "@mui/material";
+import { Button, MenuItem, FormControl, Select } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { Typography } from "@mui/material";
@@ -13,20 +13,19 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
-import { getParticipator } from "../services/mail/particiaptiorMail";
+import {
+  filterParticipator,
+  getParticipator,
+} from "../services/mail/particiaptiorMail";
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+
 
 const background1 = {
-  height: "100%",
+  height: "100vh",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
@@ -37,6 +36,7 @@ const background1 = {
 const innerSearch = {
   display: "flex",
   height: "40px",
+  position: "relative",
   width: "212px",
 };
 
@@ -59,7 +59,7 @@ const searchField = {
 
 const whiteContainer = {
   marginTop: "30px",
-  height: "82vh",
+  height: "70%",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -111,7 +111,7 @@ const scrollDiv = {
 const emailContainer = {
   marginTop: "17px",
   overflowY: "auto",
-  height: "360px",
+  height: "235px",
 };
 
 const EmailShow = () => {
@@ -126,7 +126,9 @@ const EmailShow = () => {
   const [uploadEmail, setUploadEmail] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchString, setSearchString] = useState("");
+  const [showMsg, setShowMsg] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
+  const [dropValue, setDropValue] = useState("All");
   const [sent, setSent] = useState(false);
   const [upload, setUpload] = useState({
     alert: false,
@@ -150,6 +152,23 @@ const EmailShow = () => {
     }
   };
 
+  const participatorFilter = async () => {
+    setLoading(true);
+    try {
+      const result = await filterParticipator(dropValue);
+      setLoading(false);
+      const response = result?.data;
+      const arr = response.filter((val) => {
+        return val.trim("") != "";
+      });
+      setUploadEmail(arr);
+      setFilteredResults(arr);
+      console.log(response?.data);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -160,6 +179,12 @@ const EmailShow = () => {
       });
     }
   };
+
+  const handleDropChange = (e) => {
+    const { value } = e.target;
+    setDropValue(value);
+  };
+
   const handleDelete = async (mail) => {
     setMsg({
       errMsg: "Participator deleted Successfully...!",
@@ -195,18 +220,21 @@ const EmailShow = () => {
 
   const handleSentMail = async () => {
     setSent(true);
+    setOpen(true);
     try {
       const result = await sentMail();
       setSentEmails(result?.data);
-      setOpen(true);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // useEffect(() => {
+  //   getParticipatorData();
+  // }, [showAlert]);
   useEffect(() => {
-    getParticipatorData();
-  }, [showAlert]);
+    participatorFilter();
+  }, [dropValue]);
 
   const getParticipatorData = async () => {
     setLoading(true);
@@ -226,7 +254,6 @@ const EmailShow = () => {
 
   const handleFileSelect = async (event) => {
     const { files } = event.target;
-    console.log(files[0]?.type, "------");
     if (
       files?.[0]?.type !==
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -251,6 +278,7 @@ const EmailShow = () => {
             alert: true,
             loader: false,
           });
+          setDropValue("All");
         }
         setMsg({
           errMsg: "Participator uploaded succesfully...!",
@@ -295,7 +323,7 @@ const EmailShow = () => {
         return Object?.values(item)
           ?.join("")
           ?.toLowerCase()
-          ?.includes(searchString?.toLowerCase());
+          ?.includes(searchString?.toLowerCase().trim());
       });
       setFilteredResults(filteredData);
     } else {
@@ -309,6 +337,8 @@ const EmailShow = () => {
     color: "white",
     borderRadius: "6px",
     marginLeft: "10px",
+    height: "39px",
+    marginTop: "17px",
   };
   const sentMails = {
     fontSize: "8",
@@ -318,7 +348,6 @@ const EmailShow = () => {
     marginTop: "47px",
     marginLeft: "27px",
   };
-  console.log(sent, "------sent");
   return (
     <>
       <Modal2
@@ -328,11 +357,14 @@ const EmailShow = () => {
         showAlert={showAlert}
         open={open}
         setOpen={setOpen}
+        participatorFilter={participatorFilter}
         handleClickOpen={handleClickOpen}
         emails={emails}
         setEmails={setEmails}
         sent={sent}
         setSent={setSent}
+        isAlert={isAlert}
+        setIsAlert={setIsAlert}
       />
       {showAlert || upload.alert || isAlert ? (
         <MsgBar errMsg={msg.errMsg} color={msg.color} />
@@ -358,8 +390,8 @@ const EmailShow = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Grid container>
-                <Grid item justifyContent="center" flexDirection="column">
+              <Grid container justifyContent="center" flexDirection="column">
+                <Grid item justifyContent="end" display="flex">
                   <Box sx={innerSearch}>
                     <IconButton type="submit" sx={searchIcon}>
                       <SearchIcon disabled />
@@ -373,33 +405,45 @@ const EmailShow = () => {
                       onChange={handleOnChange}
                     />
                   </Box>
-                  <Grid item textAlign="center " mt={1}>
-                    <Box sx={{ display: "flex" }}>
-                      <Select
-                        displayEmpty={true}
-                        defaultValue="All"
-                        sx={{ height: 34, minWidth: 120 }}
-                      >
-                        <MenuItem value="All">All</MenuItem>
+                </Grid>
+                <Grid
+                  item
+                  textAlign="center "
+                  mt={1}
+                  sx={{
+                    justifyContent: "spaceBetween",
+                    display: "flex",
+                    right: "14",
+                    marginTop: "-12px",
+                  }}
+                >
+                  <FormControl sx={{ mt: 2, minWidth: 160 }} size="small">
+                    <Select
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      value={dropValue}
+                      onChange={handleDropChange}
+                    >
+                      <MenuItem value={"All"}>All</MenuItem>
+                      <MenuItem value={"Level 1"}>Level 1</MenuItem>
+                      <MenuItem value={"Level 2"}>Level 2</MenuItem>
+                    </Select>
+                  </FormControl>
 
-                        <MenuItem value="Level1">Level1</MenuItem>
-                        <MenuItem value="Level2">Level2</MenuItem>
-                      </Select>
-
-                      {upload.loader && <Loader />}
-                      <Button
-                        variant="contained"
-                        component="label"
-                        sx={buttonEmail}
-                        onChange={handleFileSelect}
-                        onClick={(e) => (e.target.value = null)}
-                        disabled={upload?.loader}
-                      >
-                        Upload File
-                        <input type="file" hidden />
-                      </Button>
-                    </Box>
-                  </Grid>
+                  <Box sx={{ display: "flex" }}>
+                    {/* {upload.loader && <Loader />} */}
+                    <Button
+                      variant="contained"
+                      component="label"
+                      sx={buttonEmail}
+                      onChange={handleFileSelect}
+                      onClick={(e) => (e.target.value = null)}
+                      disabled={upload?.loader}
+                    >
+                      Upload File
+                      <input type="file" hidden />
+                    </Button>
+                  </Box>
                 </Grid>
               </Grid>
             </Grid>

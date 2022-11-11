@@ -122,6 +122,10 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
+const constraintsText={
+  maxHeight:'48px',
+  overflow:'auto'
+}
 
 const CodeCompilerText1 = {
   fontSize: "25px",
@@ -170,6 +174,10 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
+const questionText={
+  maxHeight:'48px',
+  overflow:'auto'
+}
 
 const textTestCases = {
   padding: "10px",
@@ -214,16 +222,14 @@ const Compiler = () => {
   const Ref = useRef(null);
   const ref = useRef(null);
   const navigate = useNavigate();
-  // const finalGet = timerGet * 60000;
   const changeseconds = timerGet * 60;
-  // const timeOut = true;
 
   useEffect(() => {
     window.addEventListener('blur', function(){
-      console.log('window change',window)
       setWinCount(winCount+1)
       setOpen(true);
    }); 
+
    window.addEventListener('focus', function(){
    });
     document.addEventListener("visibilitychange", function () {
@@ -337,6 +343,7 @@ const Compiler = () => {
       const a = [];
       testArray.push(a);
     }
+    console.log(testArray)
     setTestRecord(testArray);
     setDefCode(newArray);
   };
@@ -346,7 +353,7 @@ const Compiler = () => {
     var newArray = [];
     for (var i = 0; i < len; i++) {
       var Object = {};
-      Object["questiondId"] = quesIds?.[i];
+      Object["questionId"] = quesIds?.[i];
       Object["code"] = codeData?.[i];
       newArray.push(Object);
     }
@@ -388,7 +395,9 @@ const Compiler = () => {
           },
         ],
       });
+      setError(resultData?.data?.complilationMessage);
       if (resultData) {
+        console.log(resultData,'insdie ');
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
         if (
@@ -398,8 +407,7 @@ const Compiler = () => {
           navigate("/thanku");
         }
       }
-
-      const newState = testRecord.map((val, index) => {
+      const newState = testRecord?.map((val, index) => {
         if (index === count) {
           return resultData?.data?.testCasesSuccess;
         }
@@ -474,6 +482,7 @@ const Compiler = () => {
           },
         ],
       });
+      
       if (res?.data) {
         setTestRecord(res.data?.testCasesSuccess);
         setShow(false);
@@ -662,7 +671,7 @@ const Compiler = () => {
                           Problem statement
                         </Typography>
                         <Box style={inputField} p={2}>
-                          <Typography>
+                          <Typography sx={questionText}>
                             {
                               profile
                                 ?.QuestionList?.[count]?.question
@@ -675,7 +684,7 @@ const Compiler = () => {
                       <Box>
                         <Typography style={inputLabel}>Constraints</Typography>
                         <Box style={inputField} p={2}>
-                          <Typography>
+                          <Typography sx={constraintsText}>
                             {
                               profile
                                 ?.QuestionList?.[count]?.sampleTestCase[0]
@@ -692,7 +701,7 @@ const Compiler = () => {
                             Sample Input
                           </Typography>
                           <Box style={inputField} p={2}>
-                            <Typography>
+                            <Typography sx={questionText}>
                               {
                                 profile
                                   ?.QuestionList?.[count]?.sampleTestCase[0]
@@ -708,7 +717,7 @@ const Compiler = () => {
                             Sample Output
                           </Typography>
                           <Box style={inputField} p={2}>
-                            <Typography>
+                            <Typography sx={questionText}>
                               {
                                 profile
                                   ?.QuestionList?.[count]?.sampleTestCase[0]

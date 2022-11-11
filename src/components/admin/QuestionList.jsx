@@ -185,6 +185,7 @@ const QuestionList = () => {
   );
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
+
   const defaulValues = {
     questionId: quesId === null ? "" : quesId,
     questionStatus: "true",
@@ -264,8 +265,24 @@ const QuestionList = () => {
   };
 
   const addTest = () => {
-    setTestCaseList([...testCaseList, testCases]);
-    setTestCases(testInitialFields);
+    if(testCases?.input===""||testCases?.output===""){
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Input and Output can not be null..!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 2000);
+    }else{
+      setTestCaseList([...testCaseList, testCases]);
+      setTestCases(testInitialFields);
+    }
+   
   };
 
   const addQuestion = async (e) => {
@@ -354,40 +371,42 @@ const QuestionList = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
-    if(files?.[0]?.type!=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+    if (
+      files?.[0]?.type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
       setShowValidation(true);
       setMsg({
-        errMsg:"Please select excel file...!",
-        color:"red"
-      })
+        errMsg: "Please select excel file...!",
+        color: "red",
+      });
       setTimeout(() => {
         setShowValidation(false);
-      setMsg({
-        errMsg:"",
-        color:""
-      })
-      }, 1500);}
-      else{
-        setAlert(true);
-        try {
-          const result = await uploadQuestions(
-            files[0],
-            contestData?.contestId,
-            ""
-          );
-          setMsg({
-            errMsg: "Question uploaded successfully...!",
-            color: "green",
-          });
-          setTimeout(() => {
-            setAlert(false);
-          }, 1200);
-        } catch (error) {
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 1500);
+    } else {
+      setAlert(true);
+      try {
+        const result = await uploadQuestions(
+          files[0],
+          contestData?.contestId,
+          ""
+        );
+        setMsg({
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
+        });
+        setTimeout(() => {
           setAlert(false);
-          console.log("ee", error);
-        }
+        }, 1200);
+      } catch (error) {
+        setAlert(false);
+        console.log("ee", error);
       }
-
+    }
   };
 
   useEffect(() => {
@@ -460,7 +479,9 @@ const QuestionList = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -489,7 +510,9 @@ const QuestionList = () => {
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="start">
-                              <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                              <BorderColorIcon
+                                sx={{ color: "grey", opacity: 0.5 }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -518,7 +541,9 @@ const QuestionList = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}
@@ -538,7 +563,9 @@ const QuestionList = () => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="start">
-                                  <BorderColorIcon sx={{ color: "grey", opacity:0.5 }} />
+                                  <BorderColorIcon
+                                    sx={{ color: "grey", opacity: 0.5 }}
+                                  />
                                 </InputAdornment>
                               ),
                             }}

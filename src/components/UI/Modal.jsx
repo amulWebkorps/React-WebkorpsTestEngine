@@ -150,6 +150,7 @@ const Modal = ({
     contestTime: "",
     contestType: "",
   });
+  const[msg, setMsg]=useState(false)
   const handleClose = () => {
     setshowMessage(false);
     setOpen(false);
@@ -169,6 +170,7 @@ const Modal = ({
       ...inputData,
       [name]: value,
     });
+    
   };
 
   const createContest = async () => {
@@ -194,7 +196,13 @@ const Modal = ({
           }, 2000);
         }
       } catch (error) {
-        alert(error.response.data);
+        const status=error.response.data.status
+        if(status===409){
+          setMsg(true);
+          setTimeout(()=>{
+            setMsg(false);
+          },3000)
+        }
       }
     }
   };
@@ -202,6 +210,9 @@ const Modal = ({
     <div>
       {showMessage && (
         <MsgBar errMsg={"Please fill all details"} color={"red"} />
+      )}
+      {msg && (
+        <MsgBar errMsg={"Contest with same name already exsists"} color={"red"} />
       )}
       <Dialog
         open={open}

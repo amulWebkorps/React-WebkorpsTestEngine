@@ -198,7 +198,7 @@ function McqParticipator() {
 
   const loadContestDetails = async () => {
     try {
-      console.log("chandan");
+   
       const participators = await getParticipatorOfContest(contestId);
       setParticipator(participators?.data);
       setFilteredResults(participators?.data);
@@ -320,6 +320,7 @@ function McqParticipator() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              width: "60vw",
             }}
           >
             <Grid item>

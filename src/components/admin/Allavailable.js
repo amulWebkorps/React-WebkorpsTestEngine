@@ -27,7 +27,7 @@ const background1 = {
 
 const whiteContainer = {
   marginTop: "50px",
-  height: "1000px",
+  height: "650px",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",

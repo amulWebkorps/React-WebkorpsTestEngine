@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import jwt_decode from "jwt-decode";
 import { contestImg } from "../assests/images";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "../UI/Header";
@@ -20,7 +21,7 @@ import MsgBar from "../auth/base/MsgBar";
 import Loader from "../auth/base/Loader";
 
 const containerStyle = {
-  overflowY: "auto",
+  // overflowY: "auto",
   height: "550px",
   background: "linear-gradient(90.17deg, #00a0ff 0.13%, #003aab 99.84%)",
   display: "flex",
@@ -30,7 +31,6 @@ const containerStyle = {
 };
 
 const createContext = {
-  // marginTop: "27px",
   background: "#F9F9F9",
   borderRadius: "18px 18px 0px 0px",
   padding: "30px",
@@ -42,12 +42,10 @@ const createContext = {
 
 const text = {
   marginTop: "-20px",
-  // margin: "-10px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "700",
   fontSize: "28px",
-  // lineHeight: "56px",
 };
 
 const app = {
@@ -122,7 +120,7 @@ const delBtn1 = {
 
 const forwardIcon = {
   transform: " rotate(-90deg)",
-  position: "sticky",
+  position: "relative",
   top: `50%`,
   color: "white",
 };
@@ -162,8 +160,6 @@ const contestInitialValues = {
   contestLevel: "",
 };
 const Dashbord = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const [showAvailq, setAvailQ] = useState(true);
   const [showAlert, setAlert] = useState(false);
   const [bar, setBar] = useState(false);
@@ -172,19 +168,19 @@ const Dashbord = () => {
     id: "",
     contestId: "",
   });
-
   const [confirm, setConfirm] = useState(false);
   const [contestDetails, setContestDetails] = useState();
   const [open, setOpen] = useState(false);
   const [contestData, setContestData] = useState(null);
   const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
+  const adminToken = localStorage.getItem("token");
 
   const handleContest = async (id, type) => {
     try {
       const result = await getContestDetail(id, type);
       setContestData(result?.data);
-
       const navigationLink = type === "MCQ" ? "/mcqPage" : "/addQuestion";
       navigate(navigationLink, { state: { result } });
     } catch (error) {
@@ -227,26 +223,63 @@ const Dashbord = () => {
       setContestDetails(response.data);
     } catch (error) {
       console.log(error);
+      if (error?.response?.status === 403) {
+        navigate("/");
+      }
       setloader(false);
     }
   };
+
   useEffect(() => {
-    fetchContestData();
+    if (adminToken === null || adminToken === undefined) {
+      navigate("/");
+    } else {
+      fetchContestData();
+    }
   }, []);
+  const token = localStorage?.getItem("token");
   useEffect(() => {
-    const handleTabClose = (event) => {
-      event.preventDefault();
+    // if access token is expire it redirected to login page
+    if (token !== null) {
+      const decodeToken = jwt_decode(token);
+      if (decodeToken?.exp * 1000 < Date.now()) {
+        navigate("/");
+      }
+    } else {
+      navigate("/");
+    }
+  }, [window.location]);
+  useEffect(() => {
+    // define increment counter part
+    const tabsOpen = localStorage.getItem("tabsOpen");
+    if (tabsOpen == null) {
+      localStorage.setItem("tabsOpen", 1);
+    } else {
+      localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
+    }
 
-      return event.returnValue(navigate("/"));
+    window.onunload = function (e) {
+      const newTabCount = localStorage.getItem("tabsOpen");
+      if (newTabCount !== null) {
+        localStorage.setItem("tabsOpen", newTabCount - 1);
+      }
     };
-
-    window.addEventListener("beforeunload", handleTabClose);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleTabClose);
-    };
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      window.localStorage.isMySessionActive = "false";
+    } else {
+      const newTabCount2 = localStorage.getItem("tabsOpen");
+      let value = localStorage.getItem("isMySessionActive");
+      console.log(newTabCount2);
+      if (value == "true") {
+        if (newTabCount2 - 1 == 0) {
+          localStorage.clear();
+          window.localStorage.isMySessionActive = "false";
+        } else {
+          window.localStorage.isMySessionActive = "false";
+        }
+      }
+    }
   }, []);
-
   return (
     <div style={app}>
       <Header />
@@ -292,7 +325,12 @@ const Dashbord = () => {
           </Container>
           <Grid sx={loaderStyle}>{loader && <Loader />}</Grid>
           <Container sx={containerStyle}>
-            <Grid container ml={0} mt={2}>
+            <Grid
+              container
+              ml={0}
+              mt={2}
+              sx={{ overflowY: "auto", height: "500px", width: "100%" }}
+            >
               {contestDetails?.map?.((val, index) => {
                 return (
                   <Grid item md={3} mt={5} key={index}>
@@ -328,8 +366,11 @@ const Dashbord = () => {
                         <CardContent sx={cardBody}>
                           <div>
                             <h6 style={contestText}>
-                              {contestDetails?.[index]?.contestName}
-                              &nbsp;~&nbsp;
+                              {(contestDetails?.[index]?.contestName).slice(
+                                0,
+                                16
+                              )}
+                              ..&nbsp;~&nbsp;
                               {contestDetails?.[index]?.contestLevel}
                             </h6>
                             <p style={months}>
@@ -358,7 +399,6 @@ const Dashbord = () => {
                         </Fab>
                       </CardMedia>
                       <CardContent sx={cardBody}>
-                        <br />
                         <h4 style={contestText}>create contest</h4>
 
                         <p style={months}>add Description</p>
@@ -368,7 +408,7 @@ const Dashbord = () => {
                 )}
               </Grid>
             </Grid>
-            <Grid ml={-5} mt={6}>
+            <Grid ml={-7} mt={6}>
               <ExpandCircleDownRoundedIcon
                 sx={forwardIcon}
                 fontSize="large"

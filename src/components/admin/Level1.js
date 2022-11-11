@@ -237,8 +237,23 @@ const Level1 = () => {
   };
 
   const addTest = () => {
-    setTestCaseList([...testCaseList, testCases]);
-    setTestCases(testInitialFields);
+    if(testCases?.input===""||testCases?.output===""){
+      setShowValidation(true);
+      setMsg({
+        errMsg: "Input and Output can not be null..!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setShowValidation(false);
+        setMsg({
+          errMsg: "",
+          color: "",
+        });
+      }, 2000);
+    }else{
+      setTestCaseList([...testCaseList, testCases]);
+      setTestCases(testInitialFields);
+    }
   };
 
   const addQuestion = async (e) => {
@@ -320,8 +335,8 @@ const Level1 = () => {
   const editTestcase = (e, id) => {
     const { name, value } = e.target;
     setTestCaseList((prevState) => {
-      const newState = prevState.map((obj, inn) => {
-        if (index === inn) {
+      const newState = prevState.map((obj, index) => {
+        if (id === index) {
           return { ...obj, [name]: value };
         }
         return obj;
@@ -693,7 +708,7 @@ const Level1 = () => {
                         <Stack
                           spacing={2}
                           direction="row"
-                          justifyContent={"flex-end"}
+                          justifyContent={"flex-start"}
                           mt={2}
                         >
                           <Button
@@ -703,9 +718,7 @@ const Level1 = () => {
                           >
                             Add
                           </Button>
-                          <Button variant="contained" sx={Addbtn}>
-                            Close
-                          </Button>
+                         
                         </Stack>
                       </Container>
                     </div>
