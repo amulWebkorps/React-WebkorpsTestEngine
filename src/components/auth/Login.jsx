@@ -203,7 +203,6 @@ const Login = ({ SetRegisterCredential }) => {
       navigate("/");
     }
   }, []);
-  console.log("---dd", SetRegisterCredential);
   return (
     <>
       <Grid container>
