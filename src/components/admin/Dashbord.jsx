@@ -224,6 +224,7 @@ const Dashbord = () => {
       setContestDetails(response.data);
     } catch (error) {
       if(error?.response?.status===403){
+        localStorage.clear();
         navigate('/')
       }
       setloader(false);
