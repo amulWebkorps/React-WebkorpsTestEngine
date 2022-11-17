@@ -183,6 +183,7 @@ const EmailShow = () => {
   const handleDropChange = (e) => {
     const { value } = e.target;
     setDropValue(value);
+    setEmails([]);
   };
 
   const handleDelete = async (mail) => {
@@ -318,6 +319,7 @@ const EmailShow = () => {
 
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
+    setEmails([])
     if (searchString !== "") {
       const filteredData = uploadEmail?.filter((item) => {
         return Object?.values(item)
@@ -526,7 +528,7 @@ const EmailShow = () => {
             display="flex"
             justifyContent="flex-end"
             mr={12}
-            mt={3}
+            mt={1.5}
             alignItems="flex-end"
           >
             <Button
