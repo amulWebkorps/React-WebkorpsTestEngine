@@ -84,7 +84,6 @@ const levelSubHeading = {
 };
 
 const divText = {
-  width: "70%",
   fontFamily: "railway",
   paddingTop: 3,
   marginLeft: 2,
@@ -94,6 +93,8 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   overflowY: "auto",
+  maxHeight:"55px",
+  display:"inline-block"
 };
 
 const scrollDiv = {

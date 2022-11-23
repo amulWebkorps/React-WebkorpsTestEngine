@@ -42,22 +42,6 @@ const whiteContainer = {
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
 };
-const buttonLevel = {
-  width: "260px",
-  height: "51px",
-  background: "#0057ff",
-  borderRadius: "18px 18px 18px 18px",
-  fontWeight: "700",
-  fontSize: "25px",
-  lineHeight: "19px",
-  textTransform: "none",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  paddingTop: "12px",
-  paddingLeft: "50px",
-
-  color: "#FFFFFF",
-};
 
 const levelText = {
   fontFamily: "Raleway",
@@ -85,7 +69,6 @@ const levelSubHeading = {
 };
 
 const divText = {
-  width: "70%",
   fontFamily: "railway",
   paddingTop: 3,
   marginLeft: 2,
@@ -95,6 +78,8 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   overflowY: "auto",
+  maxHeight:"55px",
+  display:"inline-block"
 };
 
 const scrollDiv = {
@@ -116,11 +101,7 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-const loaderStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItem: "center",
-};
+
 const All = ({
   showAlert,
   setshowselectquestion,

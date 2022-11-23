@@ -117,9 +117,7 @@ const CandidateLogin = () => {
       setTimeout(() => {
         setAlert(false);
       }, 2000);
-    }else if(role==="student"){setErrorMsg(true); setTimeout(() => {
-      setErrorMsg(false)
-    }, 1200);}
+    }
      else {
       try {
         const result = await participatorLogin(id, credential);

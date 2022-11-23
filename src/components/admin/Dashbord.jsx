@@ -28,7 +28,6 @@ const containerStyle = {
   flexDirection: "row",
   marginBottom: "40px",
   paddingBottom: "30px",
-
 };
 
 const createContext = {
@@ -38,7 +37,7 @@ const createContext = {
   position: "sticky",
   textAlign: "center",
   height: "15px",
-  marginTop:"20px"
+  marginTop: "20px",
 };
 
 const text = {
@@ -69,14 +68,14 @@ const card = {
 const cardImg = {
   padding: "10px",
 };
-const cardBodyx={
+const cardBodyx = {
   height: "220px",
-  backgroundColor:"#F8F7F7",
-  overflow:"auto",
-}
+  backgroundColor: "#F8F7F7",
+  overflow: "auto",
+};
 const cardBody = {
   height: "220px",
-  backgroundColor:"#F8F7F7",
+  backgroundColor: "#F8F7F7",
 };
 
 const contestText = {
@@ -138,9 +137,9 @@ const months = {
   fontWeight: "400",
   fontSize: "12px",
   lineHeight: "14px",
-  height:"29px",
-  overflowX:'auto',
-  'overflow-wrap':'break-word'
+  height: "29px",
+  overflowX: "auto",
+  "overflow-wrap": "break-word",
 };
 
 const loaderStyle = {
@@ -178,7 +177,8 @@ const Dashbord = () => {
   const [loader, setloader] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const adminToken=localStorage.getItem("token");
+  const adminToken = localStorage.getItem("token");
+
   const handleContest = async (id) => {
     try {
       const result = await getContestDetail(id);
@@ -201,6 +201,7 @@ const Dashbord = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handlePop = () => {
     setConfirm(true);
   };
@@ -223,26 +224,30 @@ const Dashbord = () => {
       }
       setContestDetails(response.data);
     } catch (error) {
-      if(error?.response?.status===403){
+      if (error?.response?.status === 403) {
         localStorage.clear();
-        navigate('/')
+        navigate("/");
+      }
+      if (error.toJSON().message === "Network Error") {
+        setError(true);
+        localStorage.clear();
       }
       setloader(false);
     }
   };
-  
+
   useEffect(() => {
-    if(adminToken===null || adminToken===undefined){
-      navigate('/')
-    }else{
+    if (adminToken === null || adminToken === undefined) {
+      navigate("/");
+    } else {
       fetchContestData();
     }
-  }, []); 
-  const token = localStorage?.getItem("token");
+  }, []);
+
   useEffect(() => {
     // if access token is expire it redirected to login page
-    if (token !== null) {
-      const decodeToken = jwt_decode(token);
+    if (adminToken !== null) {
+      const decodeToken = jwt_decode(adminToken);
       if (decodeToken?.exp * 1000 < Date.now()) {
         navigate("/");
       }
@@ -250,6 +255,7 @@ const Dashbord = () => {
       navigate("/");
     }
   }, [window.location]);
+
   useEffect(() => {
     // define increment counter part
     const tabsOpen = localStorage.getItem("tabsOpen");
@@ -258,19 +264,20 @@ const Dashbord = () => {
     } else {
       localStorage.setItem("tabsOpen", parseInt(tabsOpen) + parseInt(1));
     }
-    
+
     window.onunload = function (e) {
       const newTabCount = localStorage.getItem("tabsOpen");
       if (newTabCount !== null) {
         localStorage.setItem("tabsOpen", newTabCount - 1);
       }
     };
+
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       window.localStorage.isMySessionActive = "false";
     } else {
       const newTabCount2 = localStorage.getItem("tabsOpen");
       let value = localStorage.getItem("isMySessionActive");
-      console.log(newTabCount2)
+      console.log(newTabCount2);
       if (value == "true") {
         if (newTabCount2 - 1 == 0) {
           localStorage.clear();
@@ -280,11 +287,11 @@ const Dashbord = () => {
         }
       }
     }
-    }, []);
+  }, []);
+
   return (
     <div style={app}>
       <Header />
-      {/* <BackButton /> */}
       {showAvailq ? (
         <>
           <Modal
@@ -326,7 +333,12 @@ const Dashbord = () => {
           </Container>
           <Grid sx={loaderStyle}>{loader && <Loader />}</Grid>
           <Container sx={containerStyle}>
-            <Grid container ml={0} mt={2} sx={{overflowY:'auto',height:"500px", width:'100%'}}>
+            <Grid
+              container
+              ml={0}
+              mt={2}
+              sx={{ overflowY: "auto", height: "500px", width: "100%" }}
+            >
               {contestDetails?.map?.((val, index) => {
                 return (
                   <Grid item md={3} mt={5} key={index}>
@@ -356,15 +368,20 @@ const Dashbord = () => {
                         >
                           <CancelIcon />
                         </IconButton>
-                        <CardContent  sx={cardBody}>
+                        <CardContent sx={cardBody}>
                           <div>
-                          <h6 style={contestText}>
-                            {(contestDetails?.[index]?.contestName).slice(0,16)}..&nbsp;~&nbsp;
-                            {contestDetails?.[index]?.contestLevel}
-                          </h6>
-                          <p style={months}>
-                           {contestDetails?.[index]?.date} ~ {contestDetails?.[index]?.contestDescription}
-                          </p>
+                            <h6 style={contestText}>
+                              {(contestDetails?.[index]?.contestName).slice(
+                                0,
+                                16
+                              )}
+                              ..&nbsp;~&nbsp;
+                              {contestDetails?.[index]?.contestLevel}
+                            </h6>
+                            <p style={months}>
+                              {contestDetails?.[index]?.date} ~{" "}
+                              {contestDetails?.[index]?.contestDescription}
+                            </p>
                           </div>
                         </CardContent>
                       </CardActionArea>
@@ -387,7 +404,6 @@ const Dashbord = () => {
                         </Fab>
                       </CardMedia>
                       <CardContent sx={cardBody}>
-                       
                         <h4 style={contestText}>create contest</h4>
 
                         <p style={months}>add Description</p>
