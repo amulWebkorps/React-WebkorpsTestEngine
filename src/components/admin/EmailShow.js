@@ -187,24 +187,17 @@ const EmailShow = () => {
   };
 
   const handleDelete = async (mail) => {
-    setMsg({
-      errMsg: "Participator deleted Successfully...!",
-      color: "red",
-    });
     try {
       const result = await deletestudent(mail);
-      setUpload({
-        alert: true,
-        loader: false,
-      });
       setMsg({
         errMsg: "Participator deleted Successfully...!",
         color: "red",
       });
-      getParticipatorData();
-      setUploadEmail((val) => {
-        return val.filter((id) => id !== mail);
+      setUpload({
+        alert: true,
+        loader: false,
       });
+      participatorFilter();
       setTimeout(() => {
         setUpload({
           alert: false,
@@ -230,9 +223,7 @@ const EmailShow = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getParticipatorData();
-  // }, [showAlert]);
+
   useEffect(() => {
     participatorFilter();
   }, [dropValue]);
