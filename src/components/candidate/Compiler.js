@@ -122,10 +122,10 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
-const constraintsText={
-  maxHeight:'48px',
-  overflow:'auto'
-}
+const constraintsText = {
+  maxHeight: "48px",
+  overflow: "auto",
+};
 
 const CodeCompilerText1 = {
   fontSize: "25px",
@@ -174,10 +174,10 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
-const questionText={
-  maxHeight:'48px',
-  overflow:'auto'
-}
+const questionText = {
+  maxHeight: "48px",
+  overflow: "auto",
+};
 
 const textTestCases = {
   padding: "10px",
@@ -199,12 +199,18 @@ const Compiler = () => {
       code: "",
     },
   ]);
-  const [quesIds, setQuesIds] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(val=>val?.['questionId']));
-  const [profile, setProfile] = useState(location?.state?.participatorsContestDetails);
+  const [quesIds, setQuesIds] = useState(
+    location?.state?.participatorsContestDetails?.QuestionList?.map(
+      (val) => val?.["questionId"]
+    )
+  );
+  const [profile, setProfile] = useState(
+    location?.state?.participatorsContestDetails
+  );
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [exit, setExit] = useState(true);
-  const [winCount, setWinCount]=useState(0);
+  const [winCount, setWinCount] = useState(0);
   const [testRecord, setTestRecord] = useState([]);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
@@ -216,7 +222,9 @@ const Compiler = () => {
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
-  const [duration, setDuration] = useState(location?.state?.participatorsContestDetails?.contestTime?.contestTime);
+  const [duration, setDuration] = useState(
+    location?.state?.participatorsContestDetails?.contestTime?.contestTime
+  );
   const [open, setOpen] = useState(false);
   const timerGet = duration?.match(/\d/g)?.join("");
   const Ref = useRef(null);
@@ -225,20 +233,19 @@ const Compiler = () => {
   const changeseconds = timerGet * 60;
 
   useEffect(() => {
-    window.addEventListener('blur', function(){
+    window.addEventListener("blur", function () {
       setWinCount(winCount+1)
       setOpen(true);
-   }); 
+    });
 
-   window.addEventListener('focus', function(){
-   });
+    window.addEventListener("focus", function () {});
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
         setWarning(warning + 1);
         setOpen(true);
       }
     });
-  }, [warning,winCount]);
+  }, [warning, winCount]);
 
   $(document).ready(function () {
     var ctrlDown = false,
@@ -294,9 +301,7 @@ const Compiler = () => {
 
   useEffect(() => {
     if (runCode?.complilationMessage !== null) {
-    } else if (
-      count === profile?.QuestionList?.length
-    ) {
+    } else if (count === profile?.QuestionList?.length) {
     } else {
     }
   }, [count]);
@@ -311,14 +316,13 @@ const Compiler = () => {
           setTimeout(() => {
             localStorage.clear();
             navigate("/thanku");
-          }, 1500); 
+          }, 1500);
         }
       } catch (error) {
         console.log(error);
       }
     }
   }, [timer]);
-
 
   useEffect(() => {
     clearTimer(getDeadTime());
@@ -343,20 +347,31 @@ const Compiler = () => {
       const a = [];
       testArray.push(a);
     }
-    console.log(testArray)
+    console.log(testArray);
     setTestRecord(testArray);
     setDefCode(newArray);
   };
 
   const handleQuestionAndCode = async (codeData) => {
+    console.log(codeData, "codeeee...");
     const len = profile?.QuestionList?.length;
     var newArray = [];
-    for (var i = 0; i < len; i++) {
-      var Object = {};
-      Object["questionId"] = quesIds?.[i];
-      Object["code"] = codeData?.[i];
-      newArray.push(Object);
+    if (codeData === undefined || null) {
+      for (var i = 0; i < len; i++) {
+        var Object = {};
+        Object["questionId"] = quesIds?.[i];
+        Object["code"] = profile?.languageCode?.codeBase;
+        newArray.push(Object);
+      }
+    } else {
+      for (var i = 0; i < len; i++) {
+        var Object = {};
+        Object["questionId"] = quesIds?.[i];
+        Object["code"] = codeData?.[i];
+        newArray.push(Object);
+      }
     }
+
     await setFinishCodes(newArray);
     localStorage.setItem("code", JSON.stringify(newArray));
   };
@@ -388,22 +403,17 @@ const Compiler = () => {
         timeOut: false,
         questionsAndCode: [
           {
-            questionId:
-              profile?.QuestionList[count]
-                ?.questionId,
+            questionId: profile?.QuestionList[count]?.questionId,
             code: defCode[count],
           },
         ],
       });
       setError(resultData?.data?.complilationMessage);
       if (resultData) {
-        console.log(resultData,'insdie ');
+        console.log(resultData, "insdie ");
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
-        if (
-          profile?.QuestionList?.length <= 1 &&
-          flag === "1"
-        ) {
+        if (profile?.QuestionList?.length <= 1 && flag === "1") {
           navigate("/thanku");
         }
       }
@@ -416,7 +426,7 @@ const Compiler = () => {
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
-    }catch (error) {
+    } catch (error) {
       setshowCompilationError(true);
       setError(null);
       setTimeout(() => {
@@ -446,13 +456,10 @@ const Compiler = () => {
 
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
-      if (
-        prevCount <= profile?.QuestionList?.length
-      ) {
+      if (prevCount <= profile?.QuestionList?.length) {
         return (prevCount += 1);
       } else {
-        return (prevCount =
-          profile?.QuestionList?.length);
+        return (prevCount = profile?.QuestionList?.length);
       }
     });
   };
@@ -477,12 +484,13 @@ const Compiler = () => {
         flag: flag,
         timeOut: false,
         questionsAndCode: [
-          {questionId:profile?.QuestionList[count]?.questionId,
+          {
+            questionId: profile?.QuestionList[count]?.questionId,
             code: defCode[count],
           },
         ],
       });
-      
+
       if (res?.data) {
         setTestRecord(res.data?.testCasesSuccess);
         setShow(false);
@@ -497,9 +505,7 @@ const Compiler = () => {
   };
 
   const handleNext = () => {
-    if (
-      profile?.QuestionList?.length - 1 ===count
-    ) {
+    if (profile?.QuestionList?.length - 1 === count) {
     } else {
       setCount(count + 1);
     }
@@ -672,10 +678,7 @@ const Compiler = () => {
                         </Typography>
                         <Box style={inputField} p={2}>
                           <Typography sx={questionText}>
-                            {
-                              profile
-                                ?.QuestionList?.[count]?.question
-                            }
+                            {profile?.QuestionList?.[count]?.question}
                           </Typography>
                         </Box>
                       </Box>
@@ -686,8 +689,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography sx={constraintsText}>
                             {
-                              profile
-                                ?.QuestionList?.[count]?.sampleTestCase[0]
+                              profile?.QuestionList?.[count]?.sampleTestCase[0]
                                 ?.constraints
                             }
                           </Typography>
@@ -703,9 +705,8 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography sx={questionText}>
                               {
-                                profile
-                                  ?.QuestionList?.[count]?.sampleTestCase[0]
-                                  ?.input
+                                profile?.QuestionList?.[count]
+                                  ?.sampleTestCase[0]?.input
                               }
                             </Typography>
                           </Box>
@@ -719,9 +720,8 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography sx={questionText}>
                               {
-                                profile
-                                  ?.QuestionList?.[count]?.sampleTestCase[0]
-                                  ?.output
+                                profile?.QuestionList?.[count]
+                                  ?.sampleTestCase[0]?.output
                               }
                             </Typography>
                           </Box>
@@ -744,11 +744,7 @@ const Compiler = () => {
                   variant="contained"
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
-                  disabled={
-                    profile?.QuestionList?.length -
-                      1 ===
-                    count
-                  }
+                  disabled={profile?.QuestionList?.length - 1 === count}
                 >
                   Next
                 </Button>
@@ -871,9 +867,7 @@ const Compiler = () => {
                 >
                   {"submit"}
                 </Button>
-                {count ===
-                  profile?.QuestionList?.length -
-                    1 && (
+                {count === profile?.QuestionList?.length - 1 && (
                   <Button
                     variant="contained"
                     sx={buttonTest}
@@ -896,7 +890,6 @@ const Compiler = () => {
                     <Loader mt={8} />
                   ) : (
                     <AceEditor
-                      readOnly
                       style={{ borderRadius: "14px" }}
                       showGutter={false}
                       mode="java"
