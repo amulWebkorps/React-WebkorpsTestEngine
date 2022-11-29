@@ -608,12 +608,12 @@ const Compiler = () => {
         winCount={winCount}
       />
       <Box className="background1">
-        {showError && (
+        {showError ?(
           <MsgBar errMsg={"successfully submitted code"} color={"green"} />
-        )}
+        ):""}
         <ReactRouterPrompt when={exit}>
           {({ isActive, onConfirm, onCancel }) =>
-            isActive && (
+            isActive ? (
               <div>
                 <Dialog
                   open={true}
@@ -644,7 +644,7 @@ const Compiler = () => {
                   </DialogActions>
                 </Dialog>
               </div>
-            )
+            ):""
           }
         </ReactRouterPrompt>
         <Grid container>
@@ -757,7 +757,7 @@ const Compiler = () => {
                     Test Cases
                   </Typography>
                 </Grid>
-                {showTestCase &&
+                {showTestCase ?
                   (isLoading ? (
                     <Loader mt={8} />
                   ) : (
@@ -783,7 +783,7 @@ const Compiler = () => {
                         })}
                       </Box>
                     </Grid>
-                  ))}
+                  )):""}
               </Grid>
             </Grid>
           </Grid>
@@ -846,7 +846,7 @@ const Compiler = () => {
                 />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
-                {show && <Loader mt={1.8} />}
+                {show ? <Loader mt={1.8} />:""}
                 <Button
                   variant="contained"
                   sx={buttonTest}
@@ -867,7 +867,7 @@ const Compiler = () => {
                 >
                   {"submit"}
                 </Button>
-                {count === profile?.QuestionList?.length - 1 && (
+                {count === profile?.QuestionList?.length - 1 ? (
                   <Button
                     variant="contained"
                     sx={buttonTest}
@@ -875,7 +875,7 @@ const Compiler = () => {
                   >
                     {"Finish"}
                   </Button>
-                )}
+                ):""}
               </Grid>
             </Box>
             <Grid mt={3}>
@@ -885,7 +885,7 @@ const Compiler = () => {
                     {isLoading ? "Compiling......" : `Console`}
                   </Typography>
                 </Grid>
-                {showTestCase &&
+                {showTestCase ?
                   (isLoading ? (
                     <Loader mt={8} />
                   ) : (
@@ -905,7 +905,7 @@ const Compiler = () => {
                         dragEnabled: false,
                       }}
                     />
-                  ))}
+                  )):""}
               </Grid>
             </Grid>
           </Grid>
