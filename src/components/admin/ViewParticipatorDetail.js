@@ -48,11 +48,11 @@ const testCaseData = {
   flexDirection: "row",
   height: "180px",
   width: "100%",
-  overflowY:"auto"
+  overflowY: "auto",
 };
 
 const testCase = {
-  height: "30vh",
+  minHeight: "250px",
   background: "#F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
@@ -80,8 +80,7 @@ const testCaseText2 = {
   fontSize: "25px",
   lineHeight: "51px",
   color: "#000000",
-  width:'100%',
-
+  width: "100%",
 };
 
 const inputLabel = {
@@ -102,13 +101,13 @@ const testCaseResult = {
 
 const inputField = {
   marginTop: "10px",
-  height: "14vh",
+  minHeight: "80px",
   background: "#FFFFFF",
-  overflowY: "scroll",
+  overflowY: "auto",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
+  
 };
-
 
 const CodeCompilerText1 = {
   fontSize: "30px",
@@ -141,8 +140,8 @@ const textTestCases = {
   borderRadius: "14px",
   margin: "10px",
   width: "90%",
-  marginBottom:"5px",
-  marginTop:"10px",
+  marginBottom: "5px",
+  marginTop: "10px",
   display: "flex",
   justifyContent: "space-between",
 };
@@ -154,7 +153,6 @@ const ViewParticipatorDetail = () => {
   const [participatorDetails, setParticipatorDetails] = useState();
   const [studentId, setStudentId] = useState(location?.state);
 
- 
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
       if (prevCount <= participatorDetails?.questionSubmitedByStudent?.length) {
@@ -179,7 +177,7 @@ const ViewParticipatorDetail = () => {
   const getparticipatordetails = async () => {
     try {
       const res = await getparticipatordetail(studentId);
-      console.log('res',res?.data)
+      console.log("res", res?.data);
       setParticipatorDetails(res?.data);
       setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {
@@ -193,7 +191,7 @@ const ViewParticipatorDetail = () => {
   return (
     <div>
       <Header setShow={true} />
-      <BackButton/>
+      <BackButton />
       <div className="background1">
         <Grid container>
           <Grid item sm={6}>
@@ -239,7 +237,7 @@ const ViewParticipatorDetail = () => {
                         </Box>
                       </Box>
                     </Grid>
-                    <Grid container sm={12}>
+                    <Grid container sm={12} mt={2}>
                       <Grid item sm={6} px={2}>
                         <Box>
                           <label style={inputLabel}>Sample Input</label>
@@ -309,7 +307,6 @@ const ViewParticipatorDetail = () => {
                     <h3>Email {participatorDetails?.studentDetail?.email} </h3>
                   </label>
                 </Grid>
-               
               </Grid>
               <Container sx={rightDiv}>
                 <Grid container>
@@ -351,7 +348,9 @@ const ViewParticipatorDetail = () => {
                         (val, index) => {
                           return (
                             <Box key={index} sx={textTestCases}>
-                              <Typography variant="span">TestCase {index + 1}</Typography>
+                              <Typography variant="span">
+                                TestCase {index + 1}
+                              </Typography>
                               <Typography variant="h4">
                                 {val ? (
                                   <DoneIcon
