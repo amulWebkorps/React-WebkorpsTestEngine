@@ -26,6 +26,8 @@ import CandidateLogin from "./components/candidate/CandidateLogin";
 import McqPage from "./components/admin/McqPage";
 import McqParticipator from "./components/admin/McqParticipator";
 import AllMcq from "./components/admin/AllMcq";
+import McqQuestion from "./components/candidate/McqQuestion";
+import McqInstruction from "./components/candidate/McqInstruction";
 
 const theme = createTheme({
   palette: {
@@ -132,6 +134,14 @@ function App() {
           <Route
             path="/thanku"
             element={<CandidateRoutes Component={Thankupage} />}
+          ></Route>
+          <Route
+            path="mcqInstruction"
+            element={<CandidateRoutes Component={McqInstruction} />}
+          ></Route>
+          <Route
+            path="/mcqQuestion"
+            element={<CandidateRoutes Component={McqQuestion} />}
           ></Route>
         </Routes>
       </div>

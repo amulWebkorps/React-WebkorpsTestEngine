@@ -50,17 +50,4 @@ const getparticipatordetail=(id)=>{
   return api.get(`${GET_PARTICIPATOR_DETAILS}${id}`)
 }
 export { saveQuestion, filterQuestion, deleteQuestion, addSelectiveQuestion, uploadQuestions,getParticipatorOfContest,deleteStudent,getparticipatordetail };
-// const uploadQuestions = (file, id) => {
-//   const formData = new FormData();
-//   formData.append("contestId", id);
-//   formData.append("file", file);
-//   return api.post(UPLOAD_QUESTION, formData);
-// };
-// export {
-//   saveQuestion,
-//   filterQuestion,
-//   deleteQuestion,
-//   addSelectiveQuestion,
-//   uploadQuestions,
-// };
-// >>>>>>> dc51dd10e82606d221a262dd7ec88868bc3b4dcb
+

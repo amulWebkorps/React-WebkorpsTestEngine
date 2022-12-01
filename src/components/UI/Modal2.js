@@ -31,20 +31,17 @@ const divText = {
   marginLeft: "20px",
 };
 const divSelect = {
-  overflowX:"auto",
+  overflowX: "auto",
   width: "100%",
   // height: "76px",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-
-
 };
 const emailContainer = {
   // overflow: "hidden",
   maxHeight: "340px",
-
 };
 
 const btn = {
@@ -65,17 +62,17 @@ export default function Model2({
   sent,
   setSent,
   setMsg,
-  participatorFilter
+  participatorFilter,
 }) {
   const [disable, setDisable] = useState(false);
-  const [contestId, setContestId] =useState();
-  const [contestDetails, setContestDetails]=useState(null);
+  const [contestId, setContestId] = useState();
+  const [contestDetails, setContestDetails] = useState(null);
 
   useEffect(() => {
-   const response=getAllContestList().then((res)=>{
-    setContestDetails(res?.data);
-   });
-  }, [])
+    const response = getAllContestList().then((res) => {
+      setContestDetails(res?.data);
+    });
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -91,13 +88,13 @@ export default function Model2({
     width: "550px",
   };
   const handleMail = async () => {
-    if(contestId===undefined || contestId===null){
+    if (contestId === undefined || contestId === null) {
       setIsAlert(true);
       setMsg({
-        errMsg:"Please select contest",
-        color:"red"
-      })
-    }else{
+        errMsg: "Please select contest",
+        color: "red",
+      });
+    } else {
       setDisable(true);
       try {
         const result = await sendMail(contestId, emails);
@@ -130,11 +127,11 @@ export default function Model2({
   const handleChange = (e) => {
     setContestId(e.target.value);
   };
-  useEffect(()=>{
+  useEffect(() => {
     setTimeout(() => {
-      setIsAlert(false)
-    },2500);
-  },[isAlert])  
+      setIsAlert(false);
+    }, 2500);
+  }, [isAlert]);
   return (
     <div>
       <Dialog
@@ -150,19 +147,21 @@ export default function Model2({
             <img src={crossbtn} alt="logo" />
           </Button>
         </Box>
-        <DialogContent sx={{  marginBottom:"30px"}}>
+        <DialogContent sx={{ marginBottom: "30px" }}>
           {sent ? (
             <Container sx={emailContainer}>
-              <Grid container sx={{marginTop:'-27px'}}>
+              <Grid container sx={{ marginTop: "-27px" }}>
                 {sentEmails?.length === 0 ? (
-                  <h3 style={{marginTop:"20px"}}>Sent emails is empty now...</h3>
+                  <h3 style={{ marginTop: "20px" }}>
+                    Sent emails is empty now...
+                  </h3>
                 ) : (
                   sentEmails?.map((val) => {
                     return (
                       <Grid container sx={divSelect}>
                         <Grid item sm={9} sx={scrollDiv}>
                           <Typography sx={divText} mt={2.5}>
-                          {val}
+                            {val}
                           </Typography>
                         </Grid>
                       </Grid>

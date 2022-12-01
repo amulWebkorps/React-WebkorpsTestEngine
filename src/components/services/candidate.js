@@ -5,6 +5,8 @@ const PARTICIPATOR_LOGIN_URL = `${BASE_URL}/public/doSignInForParticipator`;
 const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
 const START_CONTEST_PAGE = `${BASE_URL}/startContestPage`;
 const RUN_AND_CODE_COMPILER = `${BASE_URL}/runAndCompilerCode`;
+const START_MCQ_PAGE = `${BASE_URL}/startMCQContest`;
+const SUBMIT_MCQ = `${BASE_URL}/submitMcqContest`;
 
 const participatorLogin = (contestId, credential) => {
   const cred = {
@@ -34,9 +36,22 @@ const runAndCompilerCode = (candidateCode) => {
 const submitCode = (candidateCode) => {
   return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
 };
-const finish=(candidateCode)=>{
+const finish = (candidateCode) => {
   return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
-}
+};
+
+const startMcqPage = () => {
+  console.log("startMcq");
+  return candidateApi.post(
+    `${START_MCQ_PAGE}?contestId=${localStorage.getItem(
+      "contestId"
+    )}&studentId=${localStorage.getItem("studentId")}`
+  );
+};
+
+const submitMcq = (submitArray) => {
+  return candidateApi.post(SUBMIT_MCQ, submitArray);
+};
 
 export {
   participatorLogin,
@@ -44,5 +59,7 @@ export {
   startContestPage,
   runAndCompilerCode,
   submitCode,
-  finish
+  finish,
+  startMcqPage,
+  submitMcq
 };

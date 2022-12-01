@@ -14,6 +14,8 @@ import McqModel from "../UI/McqModel";
 import { useEffect } from "react";
 import { getParticipatorOfContest } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
+import MsgBar from "../auth/base/MsgBar";
+import { sentMail } from "../services/adminServices";
 
 const background1 = {
   height: "100vh",
@@ -79,7 +81,7 @@ const innerHeading = {
   alignItems: "center",
   justifyContent: "space-between",
   marginLeft: "25px",
- paddingTop: "10px",
+  paddingTop: "10px",
 };
 
 const innerSearch = {
@@ -178,27 +180,66 @@ function McqParticipator() {
 
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
+  const [msg, setMsg] = useState({
+    errMsg: "",
+    color: "",
+  });
   const [participator, setParticipator] = useState([]);
   const [searchString, setSearchString] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [loader, setloader] = useState(true);
+  const [sentEmails, setSentEmails] = useState([]);
   const [contestId, setContestId] = useState(
     location?.state?.result?.data?.contest?.contestId
   );
-
-  const handleSentMail = () => {
+  const [emails, setEmails] = useState([]);
+  const [isAlert, setIsAlert] = useState(false);
+  const [showAlert, setAlert] = useState(false);
+  const handleSentMail = async () => {
     setSent(true);
     setOpen(true);
+    try {
+      const result = await sentMail();
+      setSentEmails(result?.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  const [upload, setUpload] = useState({
+    alert: false,
+    loader: false,
+  });
 
   const handleSendMail = () => {
-    setSent(false);
-    setOpen(true);
+    if (emails.length <= 0) {
+      setIsAlert(true);
+      setMsg({
+        errMsg: "Please select Participant...!",
+        color: "red",
+      });
+      setTimeout(() => {
+        setIsAlert(false);
+      }, 1400);
+    } else {
+      setSent(false);
+      setOpen(true);
+    }
   };
-
+  const handleChange = (e) => {
+    console.log("clickWork");
+    console.log(e.target.value, "e");
+    const { value, checked } = e.target;
+    console.log(value, "value");
+    if (checked) {
+      setEmails([...emails, value]);
+    } else {
+      setEmails((val) => {
+        return val.filter((mail) => mail !== value);
+      });
+    }
+  };
   const loadContestDetails = async () => {
     try {
-   
       const participators = await getParticipatorOfContest(contestId);
       setParticipator(participators?.data);
       setFilteredResults(participators?.data);
@@ -229,7 +270,25 @@ function McqParticipator() {
 
   return (
     <>
-      <McqModel open={open} setOpen={setOpen} sent={sent} setSent={setSent} />
+      <McqModel
+        open={open}
+        setOpen={setOpen}
+        sent={sent}
+        setSent={setSent}
+        setIsAlert={setIsAlert}
+        setAlert={setAlert}
+        setMsg={setMsg}
+        emails={emails}
+        setEmails={setEmails}
+        sentEmails={sentEmails}
+        loadContestDetails={loadContestDetails}
+      />
+
+      {showAlert || upload.alert || isAlert ? (
+        <MsgBar errMsg={msg.errMsg} color={msg.color} />
+      ) : (
+        <></>
+      )}
 
       <div style={background1}>
         <Header />
@@ -277,6 +336,7 @@ function McqParticipator() {
                         <Grid item mt={1}>
                           <Checkbox
                             value={val}
+                            onChange={handleChange}
                             icon={<RadioButtonUncheckedIcon />}
                             checkedIcon={<CheckCircleIcon color="#0057ff" />}
                             sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
@@ -303,7 +363,8 @@ function McqParticipator() {
 
                         <Grid item mt={1}>
                           <Checkbox
-                            value={val}
+                            value={val.email}
+                            onChange={handleChange}
                             icon={<RadioButtonUncheckedIcon />}
                             checkedIcon={<CheckCircleIcon color="#0057ff" />}
                             sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}

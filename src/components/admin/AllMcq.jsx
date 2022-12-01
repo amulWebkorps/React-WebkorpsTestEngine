@@ -16,6 +16,9 @@ import Header from "../UI/Header";
 import { useNavigate } from "react-router-dom";
 import { uploadMcqs } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
+import { getAllMcq } from "../services/contest/mcqService";
+import { deleteAllMcq } from "../services/contest/mcqService";
+import MsgBar from "../auth/base/MsgBar";
 
 const background1 = {
   height: "100%",
@@ -28,7 +31,7 @@ const background1 = {
 };
 const whiteContainer = {
   marginTop: "50px",
-  height: "1000px",
+  height: "650px",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -128,17 +131,18 @@ const dataText = {
   display: "flex",
   justifyContent: "center",
   fontSize: "20px",
+
 };
 function AllMcq() {
   const navigate = useNavigate();
   const [showValidation, setShowValidation] = useState(false);
+  const [showAlert, setAlert] = useState(false);
   const [loader, setloader] = useState(true);
   const [msg, setMsg] = useState({
-    state: false,
-    msg: "",
+    errMsg: "",
     color: "",
   });
-  const [mcqQuestion, setMcqQuestion] = useState([]);
+  const [allMcq, setAllMcq] = useState();
 
   const uploadMcq = async (e) => {
     const { files } = e.target;
@@ -163,15 +167,17 @@ function AllMcq() {
       try {
         const result = await uploadMcqs(files[0], "");
 
-        setMcqQuestion(result?.data);
         setShowValidation(true);
         setMsg({
+          state: true,
           errMsg: "Question uploaded successfully...!",
           color: "green",
         });
+        loadAllMcqs();
         setTimeout(() => {
           setShowValidation(false);
           setMsg({
+            state: false,
             errMsg: "",
             color: "",
           });
@@ -179,6 +185,7 @@ function AllMcq() {
       } catch (error) {
         setShowValidation(false);
         setMsg({
+          state: false,
           errMsg: "",
           color: "",
         });
@@ -186,14 +193,61 @@ function AllMcq() {
       }
     }
   };
-  useEffect(() => {
-    setloader(false);
-  }, [setMcqQuestion]);
 
+  useEffect(() => {
+    loadAllMcqs();
+  }, []);
+
+  const loadAllMcqs = async () => {
+    try {
+      const result = await getAllMcq();
+      console.log(result, "alldata");
+      console.log(result?.data?.data?.mcqQuestion, "dataaaa");
+      setAllMcq(result?.data);
+      setloader(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = (id, quesId) => {
+    const arr = quesId;
+    // setMsg({
+    //   state: true,
+    // });
+    console.log("----------", id, quesId);
+
+    try {
+      const result = deleteAllMcq(arr).then((res) => {
+        setAlert(true);
+        setMsg({
+          state: true,
+          errMsg: "Question delete succesfully",
+          color: "red",
+        });
+        loadAllMcqs();
+
+        setTimeout(() => {
+          setAlert(false)
+          setMsg({
+            state: false,
+            errMsg: "",
+            color: "",
+          });
+        }, 1200);
+      });
+    } catch (error) {}
+  };
   return (
     <>
       <div style={background1}>
         <Header />
+
+        {showValidation ? (
+          <MsgBar errMsg={msg.errMsg} color={msg.color} />
+        ) : (
+          <></>
+        )}
         <BackButton />
 
         <Grid container sx={{ justifyContent: "center" }} mt={5}>
@@ -230,11 +284,11 @@ function AllMcq() {
           </Grid>
           <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
             {loader ? (
-              <Loader />
-            ) : mcqQuestion.length == 0 ? (
-              <Typography align="center" sx={dataText}></Typography>
+              <Loader sx={{ alignItems: "center", justifyContent: "center" }} />
+            ) : allMcq?.length == 0 ? (
+              <Typography align="center" sx={dataText}>No Data</Typography>
             ) : (
-              mcqQuestion?.map((val, index) => {
+              allMcq?.map((val, index) => {
                 return (
                   <Grid container sx={divSelect} key={index}>
                     <Grid item sm={10} sx={scrollDiv}>
@@ -242,7 +296,11 @@ function AllMcq() {
                     </Grid>
                     <Grid item sm={1} mt={1}></Grid>
                     <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
-                      <IconButton aria-label="add" sx={delBtn}>
+                      <IconButton
+                        aria-label="add"
+                        sx={delBtn}
+                        onClick={() => handleDelete(index, val?.mcqId)}
+                      >
                         <CloseIcon fontSize="x-small" />
                       </IconButton>
                     </Grid>

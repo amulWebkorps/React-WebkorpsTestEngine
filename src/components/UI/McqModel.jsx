@@ -12,9 +12,10 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { crossbtn } from "../assests/images";
 import Loader from "../auth/base/Loader";
+import { getAllContestList, sendMail } from "../services/adminServices";
 
 const emailContainer = {
   overflowY: "auto",
@@ -54,10 +55,73 @@ const btn = {
   justifyContent: "end",
   display: "flex",
 };
-function McqModel({ open, setOpen, sent, setSent }) {
+function McqModel({
+  open,
+  setOpen,
+  sent,
+  setSent,
+  setIsAlert,
+  setMsg,
+  emails,
+  setAlert,
+  setEmails,
+  sentEmails,
+  loadContestDetails
+}) {
   const [disable, setDisable] = useState(false);
+  const [contestId, setContestId] = useState();
+  const [contestDetails, setContestDetails] = useState(null);
+  useEffect(() => {
+    const response = getAllContestList().then((res) => {
+      setContestDetails(res?.data);
+    });
+  }, []);
+
+  const handleMail = async () => {
+    if (contestId === undefined || contestId === null) {
+      setIsAlert(true);
+      setMsg({
+        errMsg: "Please select contest",
+        color: "red",
+      });
+    } else {
+      setDisable(true);
+      try {
+        const result = await sendMail(contestId, emails);
+        setAlert(true);
+        setEmails([]);
+        setMsg({
+          errMsg: "Mail send successfully...!",
+          color: "green",
+        });
+        loadContestDetails();
+        setTimeout(() => {
+          setAlert(false);
+        }, 1100);
+        setOpen(false);
+        setDisable(false);
+      } catch (error) {
+        setAlert(true);
+        setMsg({
+          errMsg: "Mail not send...!",
+          color: "red",
+        });
+        setTimeout(() => {
+          setAlert(false);
+        }, 1100);
+        setOpen(false);
+        setDisable(false);
+      }
+    }
+  };
   const handleClose = () => {
     setOpen(false);
+    setTimeout(() => {
+      setSent(false);
+    }, 500);
+  };
+  const handleChange = (e) => {
+    setContestId(e.target.value);
   };
   return (
     <>
@@ -78,25 +142,23 @@ function McqModel({ open, setOpen, sent, setSent }) {
           {sent ? (
             <Container sx={emailContainer}>
               <Grid container>
-                {[
-                  "chandan.r@webkorps.com",
-                  "chandan.r@webkorps.com",
-                  "chandan.r@webkorps.com",
-                  "chandan.r@webkorps.com",
-                  "chandan.r@webkorps.com",
-                  "chandan.r@webkorps.com",
-                  "chandan.r@webkorps.com",
-                ].map((val,index) => {
-                  return (
-                    <Grid container sx={divSelect} key={index}>
-                      <Grid item sm={9} sx={scrollDiv}>
-                        <Typography sx={divText} mt={2.5}>
-                          {val}
-                        </Typography>
+                {sentEmails?.length === 0 ? (
+                  <h3 style={{ marginTop: "20px" }}>
+                    Sent emails is empty now...
+                  </h3>
+                ) : (
+                  sentEmails?.map((val) => {
+                    return (
+                      <Grid container sx={divSelect}>
+                        <Grid item sm={9} sx={scrollDiv}>
+                          <Typography sx={divText} mt={2.5}>
+                            {val}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  );
-                })}
+                    );
+                  })
+                )}
               </Grid>
             </Container>
           ) : (
@@ -118,17 +180,23 @@ function McqModel({ open, setOpen, sent, setSent }) {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       defaultValue={10}
+                      onChange={handleChange}
                     >
-                      {["aaa", "bbb"].map((val, index) => {
-                        return <MenuItem value={val}>{val}</MenuItem>;
+                      {contestDetails?.map((val, index) => {
+                        return (
+                          <MenuItem value={val?.contestId}>
+                            {val.contestName}
+                          </MenuItem>
+                        );
                       })}
                     </Select>
                   </FormControl>
+                  <Box>{disable && <Loader mt={6} ml={12} />}</Box>
                   <Box sx={btn}>
                     <Button
                       marginTop={2}
                       variant="contained"
-                      // onClick={() => handleMail()}
+                      onClick={() => handleMail()}
                     >
                       Send
                     </Button>
@@ -144,5 +212,3 @@ function McqModel({ open, setOpen, sent, setSent }) {
 }
 
 export default McqModel;
-
-

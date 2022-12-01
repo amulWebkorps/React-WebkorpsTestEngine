@@ -15,7 +15,6 @@ import { useEffect } from "react";
 import { getContestDetail } from "../services/adminServices";
 import Loader from "../candidate/base/Loader";
 import MsgBar from "../auth/base/MsgBar";
-
 const background1 = {
   height: "100vh",
   background: `linear-gradient(
@@ -61,7 +60,7 @@ const topButton = {
 const whiteContainer = {
   marginTop: "30px",
   maxHeight: "1200px",
-  background: "#f9fafc",
+  background: "#F9FAFC",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
   paddingBottom: "100px",
@@ -92,7 +91,7 @@ const title = {
 const mcqContainer = {
   marginTop: "17px",
   overflowY: "auto",
-  height: "377px",
+  height: "350px",
 };
 const divSelect = {
   width: "100%",
@@ -101,29 +100,30 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  justifyContent: "space-between",
+  overflowY:"auto"
 };
 const scrollDiv = {
   overflowY: "auto",
-  width: "80%",
+  display:"flex",
+  justifyContent:"left",
+  alignItems:"centre",
+  marginLeft:"20px"
 };
 const divText = {
   width: "80%",
-  height: "28px",
+  height: "20px",
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "300",
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  marginLeft: "20px",
-  marginTop: "20px",
+  padding: "10px 0"
 };
 const delBtn = {
   marginTop: "4px !important",
   width: "30px !important",
   fontSize: "smaller",
-
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
@@ -133,7 +133,6 @@ const noData = {
   justifyContent: "center",
   fontSize: "20px",
 };
-
 function McqPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -145,21 +144,17 @@ function McqPage() {
   const [showValidation, setShowValidation] = useState(false);
   const [mcqQuestion, setMcqQuestion] = useState([]);
   const [avaiableMcqs, setAvaiableMcqs] = useState([]);
-
   const [msg, setMsg] = useState({
     errMsg: "",
     color: "",
   });
-
   const [contestData, setContestData] = useState(
     location?.state?.result?.data?.contest
   );
-
   const scrollBottom = () => {
     setShowMcq(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
-
   const uploadMcq = async (e) => {
     const { files } = e.target;
     if (
@@ -204,7 +199,6 @@ function McqPage() {
       }
     }
   };
-
   const handleDelete = async (contestId, mcqId) => {
     const arr = [contestId, mcqId];
     setloader(true);
@@ -229,7 +223,6 @@ function McqPage() {
     } catch (error) {}
     setloader(false);
   };
-
   const loadContestDetails = async () => {
     try {
       const result = await getContestDetail(
@@ -243,11 +236,9 @@ function McqPage() {
       console.log(error);
     }
   };
-
   useEffect(() => {
     loadContestDetails();
   }, []);
-
   return (
     <div style={background1}>
       <Header />
@@ -258,7 +249,6 @@ function McqPage() {
         ) : (
           <></>
         )}
-
         <Grid container sx={{ justifyContent: "center" }} mt={3}>
           <Box sx={MCQBox}>MCQ</Box>
           <Box
@@ -314,7 +304,6 @@ function McqPage() {
                     <Grid item sm={10} sx={scrollDiv}>
                       <Typography sx={divText}>{val.mcqQuestion}</Typography>
                     </Grid>
-
                     <Grid item sm={1} mt={2} sx={{ justifyContent: "end" }}>
                       <IconButton
                         aria-label="add"
@@ -332,7 +321,6 @@ function McqPage() {
             )}
           </Grid>
         </Container>
-
         {showMcq && (
           <AvailableMcq
             ref={ref}
@@ -350,5 +338,4 @@ function McqPage() {
     </div>
   );
 }
-
 export default McqPage;

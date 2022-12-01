@@ -166,7 +166,6 @@ const testCaseData = {
 const inputName = {
   fontWeight: "600",
   fontweight: "bold",
-  // marginLeft:"-10px"
 };
 
 const timerText = {

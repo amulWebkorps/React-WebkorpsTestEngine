@@ -12,7 +12,7 @@ import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -106,10 +106,10 @@ const CandidateLogin = () => {
   const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
   const handleLogin = async () => {
-    const role=localStorage?.getItem("role");
+    const role = localStorage?.getItem("role");
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
@@ -117,10 +117,12 @@ const CandidateLogin = () => {
       setTimeout(() => {
         setAlert(false);
       }, 2000);
-    }else if(role==="student"){setErrorMsg(true); setTimeout(() => {
-      setErrorMsg(false)
-    }, 1200);}
-     else {
+    } else if (role === "student") {
+      setErrorMsg(true);
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 1200);
+    } else {
       try {
         const result = await participatorLogin(id, credential);
         localStorage.setItem(
@@ -130,14 +132,24 @@ const CandidateLogin = () => {
         localStorage.setItem("studentId", result?.data?.data?.student?.id);
         localStorage.setItem("name", result?.data?.data?.student?.name);
         localStorage.setItem("email", result?.data?.data?.student?.email);
-        localStorage.setItem('role','student');
+        localStorage.setItem("role", "student");
+        localStorage.setItem(
+          "contestLevel",
+          result?.data?.data?.student?.contestLevel
+        );
         const token = result?.data?.data?.token;
         localStorage.setItem("token", token);
         setLoading(true);
         setMsg(true);
         localStorage.setItem("login", "true");
         setTimeout(() => {
-          navigate("/instruction", { state: { data: result.data } });
+          const contestLevel = result?.data?.data?.student?.contestLevel;
+          console.log(contestLevel, "level");
+          if (contestLevel == "Level 1") {
+            navigate("/mcqInstruction", { state: { data: result.data } });
+          } else {
+            navigate("/instruction", { state: { data: result.data } });
+          }
         }, 1500);
         console.log(result.data, "result");
       } catch (error) {
@@ -163,7 +175,7 @@ const CandidateLogin = () => {
   }, [credential]);
 
   const handleChange = (e) => {
-    const{name,value} =e.target;
+    const { name, value } = e.target;
     setCredential({ ...credential, [name]: value });
   };
   return (
@@ -215,7 +227,11 @@ const CandidateLogin = () => {
                     fontSize="small"
                   />
                 ))}
-              <LoginButton name="Log in" onClick={handleLogin}  isLoading={isLoading}/>
+              <LoginButton
+                name="Log in"
+                onClick={handleLogin}
+                isLoading={isLoading}
+              />
             </Stack>
           </Box>
         </Box>

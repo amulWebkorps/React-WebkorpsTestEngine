@@ -478,7 +478,6 @@ const Dashbord = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid></Grid>
           </Container>
         </>
       )}

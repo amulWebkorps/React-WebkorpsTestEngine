@@ -20,6 +20,7 @@ import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Header from "../UI/Header";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -176,8 +177,8 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
   const [showalertpassword, setalertpassword] = useState(false);
   const [conditionpassword, setconditionpassword] = useState(false);
   const [showemail, setshowemail] = useState(false);
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
   // const [credential, setcredential] = useState({
   //   password: "",
   // });
@@ -213,12 +214,14 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
         const response = await registerAdmin(registerCredential);
         setAlert(true);
         setTimeout(() => {
-          SetRegisterCredential([{
-            hName: "",
-            email: "",
-            hNumber: "",
-            password: "",
-          }])
+          SetRegisterCredential([
+            {
+              hName: "",
+              email: "",
+              hNumber: "",
+              password: "",
+            },
+          ]);
           navigate("/");
         }, 2000);
       } catch (error) {
@@ -247,7 +250,7 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
   return (
     <>
       <Grid container>
-        <Header setColor={true} setShow={true}/>
+        <Header setColor={true} setShow={true} />
       </Grid>
 
       {showAlert && (
@@ -273,6 +276,10 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>
           <Box sx={Boxstyle}>
+            <ArrowBackIcon
+              sx={{ marginLeft: "-350px", marginTop: "10px" }}
+              onClick={() => navigate(-1)}
+            />
             <Heading lable="Register" />
 
             <Box sx={pages}>

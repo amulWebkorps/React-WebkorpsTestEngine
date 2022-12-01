@@ -137,8 +137,6 @@ function AvailableMcq({
   return (
     <div ref={ref}>
       <Container ref={ref}>
-        {/* <Grid>{loader && <Loader />}</Grid> */}
-
         <Grid item textAlign="center " mt={4}>
           <Box sx={test}>
             <DialogTitle id="alert-dialog-title" sx={title}>
@@ -160,11 +158,11 @@ function AvailableMcq({
           {loader ? (
             <Loader />
           ) : avaiableMcqs.length <= 0 ? (
-            <Typography sx={dataText}></Typography>
+            <Typography sx={dataText}> No Data</Typography>
           ) : (
             avaiableMcqs?.map((val, index) => {
               return (
-                <Grid container sx={divSelect}  key={index}>
+                <Grid container sx={divSelect} key={index}>
                   <Grid item sm={10} sx={scrollDiv}>
                     <Typography sx={divText}>{val?.mcqQuestion}</Typography>
                   </Grid>
