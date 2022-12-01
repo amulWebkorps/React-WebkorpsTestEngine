@@ -19,7 +19,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { finish, runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
 import {
@@ -29,7 +28,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
+
 import TabAlert from "../UI/TabAlert";
 
 const div1 = {
@@ -63,6 +62,7 @@ const testCase = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
+
 const consoleArea = {
   marginTop: "25px",
   background: "black",
@@ -107,6 +107,7 @@ const inputLabel = {
   textAlign: "left",
   margin: "10px",
 };
+
 const testCaseResult = {
   height: "48px",
   background: "#F9FAFC",
@@ -122,6 +123,7 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
+
 const constraintsText = {
   maxHeight: "48px",
   overflow: "auto",
@@ -157,12 +159,14 @@ const testCaseData1 = {
   justifyContent: "end",
   overflowY: "auto",
 };
+
 const testCaseData = {
   display: "flex",
   flexDirection: "row",
   height: "200px",
   width: "100%",
 };
+
 const inputName = {
   fontWeight: "600",
   fontweight: "bold",
@@ -174,6 +178,7 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
+
 const questionText = {
   maxHeight: "48px",
   overflow: "auto",
@@ -347,13 +352,11 @@ const Compiler = () => {
       const a = [];
       testArray.push(a);
     }
-    console.log(testArray);
     setTestRecord(testArray);
     setDefCode(newArray);
   };
 
   const handleQuestionAndCode = async (codeData) => {
-    console.log(codeData, "codeeee...");
     const len = profile?.QuestionList?.length;
     var newArray = [];
     if (codeData === undefined || null) {
@@ -410,7 +413,6 @@ const Compiler = () => {
       });
       setError(resultData?.data?.complilationMessage);
       if (resultData) {
-        console.log(resultData, "insdie ");
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
         if (profile?.QuestionList?.length <= 1 && flag === "1") {
@@ -443,7 +445,7 @@ const Compiler = () => {
   };
 
   const handleChange = async (codeData) => {
-    const newState = defCode.map((val, index) => {
+    const newState = defCode?.map((val, index) => {
       if (index === count) {
         return codeData;
       }
@@ -586,6 +588,18 @@ const Compiler = () => {
     }, [100]);
   };
 
+  const handleReset=async(question)=>{
+    const newState = defCode?.map((val, index) => {
+      if (index === question) {
+        return profile?.languageCode?.codeBase;
+      }
+      return val;
+    });
+    await setDefCode(newState);
+    handleQuestionAndCode(newState);
+    return finishCodes, defCode;
+  }
+
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token === null) {
@@ -617,7 +631,6 @@ const Compiler = () => {
               <div>
                 <Dialog
                   open={true}
-                  // onClose={onCancel}
                   onClose={(_, reason) => {
                     if (reason !== "backdropClick") {
                       onCancel();
@@ -808,11 +821,19 @@ const Compiler = () => {
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
-                <Grid container>
-                  <Grid item sm={12}>
+                <Grid
+                  container
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Grid item>
                     <Typography mt={1.5}>
                       <div style={CodeCompilerText1}>Code Compiler</div>
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" sx={buttonTest} onClick={()=>handleReset(count)}>
+                      Reset
+                    </Button>
                   </Grid>
                 </Grid>
               </Container>
