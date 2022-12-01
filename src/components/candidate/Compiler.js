@@ -234,15 +234,15 @@ const Compiler = () => {
 
   useEffect(() => {
     window.addEventListener("blur", function () {
-      setWinCount(winCount+1)
-      setOpen(true);
+      // setWinCount(winCount+1)
+      // setOpen(true);
     });
 
     window.addEventListener("focus", function () {});
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
-        setWarning(warning + 1);
-        setOpen(true);
+        // setWarning(warning + 1);
+        // setOpen(true);
       }
     });
   }, [warning, winCount]);
@@ -353,7 +353,6 @@ const Compiler = () => {
   };
 
   const handleQuestionAndCode = async (codeData) => {
-    console.log(codeData, "codeeee...");
     const len = profile?.QuestionList?.length;
     var newArray = [];
     if (codeData === undefined || null) {
@@ -443,7 +442,7 @@ const Compiler = () => {
   };
 
   const handleChange = async (codeData) => {
-    const newState = defCode.map((val, index) => {
+    const newState = defCode?.map((val, index) => {
       if (index === count) {
         return codeData;
       }
@@ -551,21 +550,21 @@ const Compiler = () => {
     return deadline;
   };
 
-  const isRefreshed = sessionStorage.getItem("isRefreshed");
-  useEffect(() => {
-    if (isRefreshed) {
-      setExit(false);
-      finishTest(true);
-      setTimeout(() => {
-        navigate("/thanku");
-        localStorage.clear();
-      }, [1000]);
-      sessionStorage.removeItem("isRefreshed");
-    } else {
-      sessionStorage.setItem("isRefreshed", true);
-    }
-  }, []);
-
+  // const isRefreshed = sessionStorage.getItem("isRefreshed");
+  // useEffect(() => {
+  //   if (isRefreshed) {
+  //     setExit(false);
+  //     finishTest(true);
+  //     setTimeout(() => {
+  //       navigate("/thanku");
+  //       localStorage.clear();
+  //     }, [1000]);
+  //     sessionStorage.removeItem("isRefreshed");
+  //   } else {
+  //     sessionStorage.setItem("isRefreshed", true);
+  //   }
+  // }, []);
+  console.log(count, "codeeee...");
   const handleFinish = async () => {
     setExit(false);
     try {
@@ -585,6 +584,18 @@ const Compiler = () => {
       localStorage.clear();
     }, [100]);
   };
+
+  const handleReset=async(question)=>{
+    const newState = defCode?.map((val, index) => {
+      if (index === question) {
+        return profile?.languageCode?.codeBase;
+      }
+      return val;
+    });
+    await setDefCode(newState);
+    handleQuestionAndCode(newState);
+    return finishCodes, defCode;
+  }
 
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -808,11 +819,19 @@ const Compiler = () => {
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
-                <Grid container>
-                  <Grid item sm={12}>
+                <Grid
+                  container
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Grid item>
                     <Typography mt={1.5}>
                       <div style={CodeCompilerText1}>Code Compiler</div>
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button variant="contained" sx={buttonTest} onClick={()=>handleReset(count)}>
+                      Reset
+                    </Button>
                   </Grid>
                 </Grid>
               </Container>

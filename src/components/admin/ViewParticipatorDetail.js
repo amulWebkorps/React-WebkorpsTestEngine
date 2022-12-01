@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 import BackButton from "../UI/BackButton";
 
 const div1 = {
-  height: "70vh",
+  height: "445px",
   marginTop: "30px",
   background: " #F9FAFC",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -29,7 +29,7 @@ const div1 = {
 
 const blue1 = {
   width: "10px",
-  height: "70vh",
+  height: "445px",
   marginLeft: "-24px",
   background: "#0057FF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -37,7 +37,8 @@ const blue1 = {
 };
 
 const rightDiv = {
-  height: "68.81px",
+  width: "45.7vw",
+  height: "50.81px",
   background: "white",
   borderRadius: "17px 17px 0px 0px",
   marginTop: "20px",
@@ -52,10 +53,11 @@ const testCaseData = {
 };
 
 const testCase = {
-  height: "30vh",
   background: "#F9FAFC",
+  minHeight: "250px",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
+  marginLeft:"-4px"
 };
 
 const testCaseText = {
@@ -78,9 +80,10 @@ const testCaseText2 = {
   fontStyle: "normal",
   fontWeight: "500",
   fontSize: "25px",
-  lineHeight: "51px",
+  lineHeight: "35px",
   color: "#000000",
-  width:'100%',
+  overflowY: "auto",
+  width: "100%",
 
 };
 
@@ -102,9 +105,9 @@ const testCaseResult = {
 
 const inputField = {
   marginTop: "10px",
-  height: "14vh",
+  minHeight: "80px",
   background: "#FFFFFF",
-  overflowY: "scroll",
+  overflowY: "auto",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
@@ -326,9 +329,8 @@ const ViewParticipatorDetail = () => {
                   theme="monokai"
                   name="code"
                   editorProps={{ $blockScrolling: true }}
-                  height="60vh"
-                  width="47vw"
-                  placeholder=""
+                  height="405px"
+                  width="45.7vw"
                   value={
                     participatorDetails?.studentDetail?.testCaseRecord[count]
                       ?.fileName
