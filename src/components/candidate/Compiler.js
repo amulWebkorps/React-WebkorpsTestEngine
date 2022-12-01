@@ -19,7 +19,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { finish, runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
 import {
@@ -29,7 +28,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
+
 import TabAlert from "../UI/TabAlert";
 
 const div1 = {
@@ -63,6 +62,7 @@ const testCase = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
+
 const consoleArea = {
   marginTop: "25px",
   background: "black",
@@ -107,6 +107,7 @@ const inputLabel = {
   textAlign: "left",
   margin: "10px",
 };
+
 const testCaseResult = {
   height: "48px",
   background: "#F9FAFC",
@@ -122,6 +123,7 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
+
 const constraintsText = {
   maxHeight: "48px",
   overflow: "auto",
@@ -157,12 +159,14 @@ const testCaseData1 = {
   justifyContent: "end",
   overflowY: "auto",
 };
+
 const testCaseData = {
   display: "flex",
   flexDirection: "row",
   height: "200px",
   width: "100%",
 };
+
 const inputName = {
   fontWeight: "600",
   fontweight: "bold",
@@ -174,6 +178,7 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
+
 const questionText = {
   maxHeight: "48px",
   overflow: "auto",
@@ -234,15 +239,15 @@ const Compiler = () => {
 
   useEffect(() => {
     window.addEventListener("blur", function () {
-      // setWinCount(winCount+1)
-      // setOpen(true);
+      setWinCount(winCount+1)
+      setOpen(true);
     });
 
     window.addEventListener("focus", function () {});
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
-        // setWarning(warning + 1);
-        // setOpen(true);
+        setWarning(warning + 1);
+        setOpen(true);
       }
     });
   }, [warning, winCount]);
@@ -347,7 +352,6 @@ const Compiler = () => {
       const a = [];
       testArray.push(a);
     }
-    console.log(testArray);
     setTestRecord(testArray);
     setDefCode(newArray);
   };
@@ -409,7 +413,6 @@ const Compiler = () => {
       });
       setError(resultData?.data?.complilationMessage);
       if (resultData) {
-        console.log(resultData, "insdie ");
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
         if (profile?.QuestionList?.length <= 1 && flag === "1") {
@@ -550,21 +553,21 @@ const Compiler = () => {
     return deadline;
   };
 
-  // const isRefreshed = sessionStorage.getItem("isRefreshed");
-  // useEffect(() => {
-  //   if (isRefreshed) {
-  //     setExit(false);
-  //     finishTest(true);
-  //     setTimeout(() => {
-  //       navigate("/thanku");
-  //       localStorage.clear();
-  //     }, [1000]);
-  //     sessionStorage.removeItem("isRefreshed");
-  //   } else {
-  //     sessionStorage.setItem("isRefreshed", true);
-  //   }
-  // }, []);
-  console.log(count, "codeeee...");
+  const isRefreshed = sessionStorage.getItem("isRefreshed");
+  useEffect(() => {
+    if (isRefreshed) {
+      setExit(false);
+      finishTest(true);
+      setTimeout(() => {
+        navigate("/thanku");
+        localStorage.clear();
+      }, [1000]);
+      sessionStorage.removeItem("isRefreshed");
+    } else {
+      sessionStorage.setItem("isRefreshed", true);
+    }
+  }, []);
+
   const handleFinish = async () => {
     setExit(false);
     try {
@@ -628,7 +631,6 @@ const Compiler = () => {
               <div>
                 <Dialog
                   open={true}
-                  // onClose={onCancel}
                   onClose={(_, reason) => {
                     if (reason !== "backdropClick") {
                       onCancel();

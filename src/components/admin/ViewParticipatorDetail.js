@@ -182,7 +182,6 @@ const ViewParticipatorDetail = () => {
   const getparticipatordetails = async () => {
     try {
       const res = await getparticipatordetail(studentId);
-      console.log('res',res?.data)
       setParticipatorDetails(res?.data);
       setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {
