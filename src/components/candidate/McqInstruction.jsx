@@ -146,7 +146,7 @@ function McqInstruction() {
     });
   }, [window, navigate]);
 
-  console.log(participatorsContestDetails, "parti");
+ 
   return (
     <>
       <div style={background1}>

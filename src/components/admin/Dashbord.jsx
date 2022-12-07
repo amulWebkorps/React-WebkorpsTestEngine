@@ -250,7 +250,6 @@ const Dashbord = () => {
     }
   }, [window.location]);
   useEffect(() => {
-    // define increment counter part
     const tabsOpen = localStorage.getItem("tabsOpen");
     if (tabsOpen == null) {
       localStorage.setItem("tabsOpen", 1);

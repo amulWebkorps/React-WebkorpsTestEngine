@@ -47,6 +47,7 @@ const innerHeading = {
   justifyContent: "space-between",
   marginLeft: "25px",
   paddingTop: "10px",
+  overflow:"auto"
 };
 const innerSearch = {
   display: "flex",
@@ -231,12 +232,12 @@ function McqQuestion() {
       [`option${n}`]: true,
     });
     handleQuestionAndAns(e, mcqList[count].mcqId, n);
-    console.log(e, "valueeee");
+ 
   };
 
   const nextQuestion = (e) => {
     setSelectedOptions(selectedOptionsInitialState);
-    console.log("button is working");
+  
     setCount(function (prevCount) {
       if (prevCount <= mcqList?.length) {
         return (prevCount += 1);
@@ -262,22 +263,20 @@ function McqQuestion() {
     let options = mcqList[count];
     let isAvialiable = false;
     let sOption = "";
-    console.log("Qid", Qid);
-    console.log("Options", options);
-    console.log("queAns", queAns);
+   
     queAns?.map((data) => {
       if (data.mcqId === Qid) {
         isAvialiable = true;
         sOption = data.ans;
       }
     });
-    console.log(isAvialiable);
+
     if (isAvialiable) {
       [...Array(4)].map((i, index) => {
         let op = "option" + (index + 1);
         if (options[op] === sOption) {
           setSelectedOptions((p) => {
-            console.log(op);
+       
             return { ...p, [op]: true };
           });
         }
@@ -370,7 +369,7 @@ function McqQuestion() {
     } catch (error) {
       console.log(error);
     }
-    console.log("submit is working");
+  
     setTimeout(() => {
       navigate("/thanku");
       localStorage.clear();

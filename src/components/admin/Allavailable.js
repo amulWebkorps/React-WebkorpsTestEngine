@@ -165,10 +165,7 @@ const Allavailable = () => {
 
   const handleDelete = (id, quesId) => {
     const arr = [`questionForLevel`, quesId];
-    // setMsg({
-    //   state: true,
-    // });
-    console.log("----------", id, quesId);
+ 
     setAllAvailQues((val) => {
       return val.filter((e, index) => index !== id);
     });

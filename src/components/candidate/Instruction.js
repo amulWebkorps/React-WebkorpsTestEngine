@@ -146,7 +146,6 @@ const Instruction = () => {
   };
   const { userInfo } = useSelector((state) => state?.user);
 
-  console.log(userInfo, " getjhbjb");
 
   useEffect(() => {
     showAllLanguage()

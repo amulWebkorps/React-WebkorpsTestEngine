@@ -122,16 +122,16 @@ const delBtn = {
   height: "30px",
   width: "30px",
   fontSize: "smaller",
-  // backgroundColor: '#E5E5E5',
   backgroundColor: "#E5E5E5",
   color: "black",
   borderRadius: "50%",
 };
-const dataText = {
+
+const noData = {
   display: "flex",
   justifyContent: "center",
   fontSize: "20px",
-
+  textAlign: "centre",
 };
 function AllMcq() {
   const navigate = useNavigate();
@@ -165,7 +165,7 @@ function AllMcq() {
       }, 1500);
     } else {
       try {
-        const result = await uploadMcqs(files[0], "");
+        const result = await uploadMcqs(files[0], null);
 
         setShowValidation(true);
         setMsg({
@@ -201,8 +201,7 @@ function AllMcq() {
   const loadAllMcqs = async () => {
     try {
       const result = await getAllMcq();
-      console.log(result, "alldata");
-      console.log(result?.data?.data?.mcqQuestion, "dataaaa");
+
       setAllMcq(result?.data);
       setloader(false);
     } catch (error) {
@@ -212,10 +211,6 @@ function AllMcq() {
 
   const handleDelete = (id, quesId) => {
     const arr = quesId;
-    // setMsg({
-    //   state: true,
-    // });
-    console.log("----------", id, quesId);
 
     try {
       const result = deleteAllMcq(arr).then((res) => {
@@ -228,7 +223,7 @@ function AllMcq() {
         loadAllMcqs();
 
         setTimeout(() => {
-          setAlert(false)
+          setAlert(false);
           setMsg({
             state: false,
             errMsg: "",
@@ -282,33 +277,35 @@ function AllMcq() {
               </Button>
             </Grid>
           </Grid>
-          <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
-            {loader ? (
-              <Loader sx={{ alignItems: "center", justifyContent: "center" }} />
-            ) : allMcq?.length == 0 ? (
-              <Typography align="center" sx={dataText}>No Data</Typography>
-            ) : (
-              allMcq?.map((val, index) => {
-                return (
-                  <Grid container sx={divSelect} key={index}>
-                    <Grid item sm={10} sx={scrollDiv}>
-                      <Typography sx={divText}>{val.mcqQuestion}</Typography>
+          {loader ? (
+            <Loader />
+          ) : (
+            <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
+              {allMcq?.length == 0 ? (
+                <Typography sx={noData}>No Data</Typography>
+              ) : (
+                allMcq?.map((val, index) => {
+                  return (
+                    <Grid container sx={divSelect} key={index}>
+                      <Grid item sm={10} sx={scrollDiv}>
+                        <Typography sx={divText}>{val.mcqQuestion}</Typography>
+                      </Grid>
+                      <Grid item sm={1} mt={1}></Grid>
+                      <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
+                        <IconButton
+                          aria-label="add"
+                          sx={delBtn}
+                          onClick={() => handleDelete(index, val?.mcqId)}
+                        >
+                          <CloseIcon fontSize="x-small" />
+                        </IconButton>
+                      </Grid>
                     </Grid>
-                    <Grid item sm={1} mt={1}></Grid>
-                    <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
-                      <IconButton
-                        aria-label="add"
-                        sx={delBtn}
-                        onClick={() => handleDelete(index, val?.mcqId)}
-                      >
-                        <CloseIcon fontSize="x-small" />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                );
-              })
-            )}
-          </Grid>
+                  );
+                })
+              )}
+            </Grid>
+          )}
         </Container>
       </div>
     </>

@@ -167,9 +167,7 @@ const AddedQues = ({
           color: "",
         });
       }, 1200);
-      // if (response) {
-      //   // setDeleteQ(true);
-      // }
+   
     } catch (error) {
       console.log("eroror", error);
     }

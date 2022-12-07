@@ -12,6 +12,7 @@ const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
+const SENT_MAIL_MCQ = `${BASE_URL}/admin/sentMailForParticipatorForMCQ`;
 const loginAdmin = (credential) => {
 
   return axios.post(ADMIN_LOGIN_URL,credential);
@@ -57,6 +58,10 @@ const sendMail = (Id, mail) => {
 const sentMail = () => {
   return api.get(SENT_MAIL);
 };
+
+const sentMailMcq = () => {
+  return api.get(SENT_MAIL_MCQ);
+};
 const uploadParticipator = (file) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -77,6 +82,7 @@ export {
   deleteContest,
   sentMail,
   uploadParticipator,
+  sentMailMcq
 };
 
 // export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail,viewParticipatorOfContest};

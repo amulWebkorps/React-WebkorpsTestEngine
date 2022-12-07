@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { getParticipatorOfContest } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
 import MsgBar from "../auth/base/MsgBar";
-import { sentMail } from "../services/adminServices";
+import { sentMailMcq } from "../services/adminServices";
 
 const background1 = {
   height: "100vh",
@@ -155,8 +155,8 @@ const sentMails = {
   fontWeight: "600",
   color: "#1887C9",
   borderRadius: "6px",
-  marginTop: "47px",
-  marginLeft: "27px",
+  marginTop: "44px",
+  marginLeft: "24px",
   background: "transparent",
   border: "#0057FF solid 3px",
 };
@@ -199,7 +199,7 @@ function McqParticipator() {
     setSent(true);
     setOpen(true);
     try {
-      const result = await sentMail();
+      const result = await sentMailMcq();
       setSentEmails(result?.data);
     } catch (error) {
       console.log(error);
@@ -226,10 +226,8 @@ function McqParticipator() {
     }
   };
   const handleChange = (e) => {
-    console.log("clickWork");
-    console.log(e.target.value, "e");
     const { value, checked } = e.target;
-    console.log(value, "value");
+
     if (checked) {
       setEmails([...emails, value]);
     } else {
@@ -316,7 +314,9 @@ function McqParticipator() {
                 </Box>
               </Box>
 
-              {participator?.length <= 0 || filteredResults?.length <= 0 ? (
+              {loader ? (
+                <Loader />
+              ) : participator?.length <= 0 || filteredResults?.length <= 0 ? (
                 <Typography sx={dataText}>No data</Typography>
               ) : searchString?.length > 1 ? (
                 filteredResults?.map((val, index) => {
