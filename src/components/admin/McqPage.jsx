@@ -100,14 +100,14 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
-  overflowY:"auto"
+  overflowY: "auto",
 };
 const scrollDiv = {
   overflowY: "auto",
-  display:"flex",
-  justifyContent:"left",
-  alignItems:"centre",
-  marginLeft:"20px"
+  display: "flex",
+  justifyContent: "left",
+  alignItems: "centre",
+  marginLeft: "20px",
 };
 const divText = {
   width: "80%",
@@ -118,7 +118,7 @@ const divText = {
   fontSize: "24px",
   lineHeight: "28px",
   color: "#000000",
-  padding: "10px 0"
+  padding: "10px 0",
 };
 const delBtn = {
   marginTop: "4px !important",
@@ -332,6 +332,7 @@ function McqPage() {
             setAlert={setAlert}
             setMsg={setMsg}
             setshowselectMcq={setshowselectMcq}
+            setloader={setloader}
           />
         )}
       </Container>

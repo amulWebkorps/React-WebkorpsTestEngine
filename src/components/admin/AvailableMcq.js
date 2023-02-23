@@ -18,6 +18,7 @@ function AvailableMcq({
   setMsg,
   setshowselectMcq,
   setAvaiableMcqs,
+  setloader,
 }) {
   const AddMcq = {
     width: "141px",
@@ -69,7 +70,7 @@ function AvailableMcq({
     justifyContent: "space-between",
     display: "flex",
   };
-  const dataText = {
+  const noData = {
     display: "flex",
     justifyContent: "center",
     fontSize: "20px",
@@ -80,20 +81,24 @@ function AvailableMcq({
 
   const handleMcq = (e) => {
     const { checked, value } = e.target;
+
     if (checked) {
       setMcqArr([...mcqArr, value]);
     } else {
       setMcqArr((val) => {
+        console.log(val, "va;ll");
         return val.filter((index) => index !== value);
       });
     }
   };
 
   const addSelectiveMcqs = async () => {
+    setloader(true);
     const arr = {
       contestId: [contestId],
       mcqIds: mcqArr,
     };
+
     if (mcqArr.length <= 0) {
       setshowselectMcq(true);
       setMsg({
@@ -128,6 +133,8 @@ function AvailableMcq({
         console.log("question err", error);
       }
     }
+    setMcqArr([]);
+    setloader(false);
   };
 
   useEffect(() => {
@@ -157,8 +164,8 @@ function AvailableMcq({
         <Grid container sx={{ display: "flex", justifyContent: "center" }}>
           {loader ? (
             <Loader />
-          ) : avaiableMcqs.length <= 0 ? (
-            <Typography sx={dataText}> No Data</Typography>
+          ) : avaiableMcqs.length == 0 ? (
+            <Typography sx={noData}> No Data</Typography>
           ) : (
             avaiableMcqs?.map((val, index) => {
               return (

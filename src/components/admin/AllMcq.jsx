@@ -2,15 +2,12 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
   Grid,
   IconButton,
-  Select,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
-
 import BackButton from "../UI/BackButton";
 import Header from "../UI/Header";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +37,6 @@ const whiteContainer = {
 const containerUpper = {
   display: "flex",
   flexDirection: "row",
-  // justifyContent: "center",
 };
 const levelSubHeading = {
   width: "100%",
@@ -133,6 +129,7 @@ const noData = {
   fontSize: "20px",
   textAlign: "centre",
 };
+
 function AllMcq() {
   const navigate = useNavigate();
   const [showValidation, setShowValidation] = useState(false);
@@ -165,7 +162,7 @@ function AllMcq() {
       }, 1500);
     } else {
       try {
-        const result = await uploadMcqs(files[0], null);
+        await uploadMcqs(files[0], null);
 
         setShowValidation(true);
         setMsg({
@@ -201,7 +198,6 @@ function AllMcq() {
   const loadAllMcqs = async () => {
     try {
       const result = await getAllMcq();
-
       setAllMcq(result?.data);
       setloader(false);
     } catch (error) {
@@ -213,7 +209,7 @@ function AllMcq() {
     const arr = quesId;
 
     try {
-      const result = deleteAllMcq(arr).then((res) => {
+      deleteAllMcq(arr).then((res) => {
         setAlert(true);
         setMsg({
           state: true,
@@ -238,7 +234,7 @@ function AllMcq() {
       <div style={background1}>
         <Header />
 
-        {showValidation ? (
+        {showValidation || showAlert ? (
           <MsgBar errMsg={msg.errMsg} color={msg.color} />
         ) : (
           <></>
@@ -280,8 +276,8 @@ function AllMcq() {
           {loader ? (
             <Loader />
           ) : (
-            <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
-              {allMcq?.length == 0 ? (
+            <Grid sx={{ maxHeight: "500px", overflow: "auto" }}>
+              {allMcq?.length <= 0 ? (
                 <Typography sx={noData}>No Data</Typography>
               ) : (
                 allMcq?.map((val, index) => {
