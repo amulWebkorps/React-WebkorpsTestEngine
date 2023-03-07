@@ -79,7 +79,7 @@ const testCaseText = {
 };
 
 const testCaseText1 = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "600",
   fontSize: "30px",
@@ -88,7 +88,7 @@ const testCaseText1 = {
 };
 
 const testCaseText2 = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "500",
   fontSize: "25px",
@@ -145,6 +145,24 @@ const buttonTest = {
   color: "white",
   fontweight: "bold",
   margin: "10px",
+  marginBottom: "20px",
+  border: "1px solid #0057ff",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "700",
+  fontSize: "16px",
+  lineHeight: "19px",
+};
+
+const resetButtonTest = {
+  width: "100px",
+  height: "40px",
+  background: "#0057ff",
+  borderRadius: "8px",
+  color: "white",
+  fontweight: "bold",
+  marginRight: "-20px",
+  marginBottom: "-25px",
   border: "1px solid #0057ff",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -239,7 +257,7 @@ const Compiler = () => {
 
   useEffect(() => {
     window.addEventListener("blur", function () {
-      setWinCount(winCount+1)
+      setWinCount(winCount + 1);
       setOpen(true);
     });
 
@@ -588,7 +606,7 @@ const Compiler = () => {
     }, [100]);
   };
 
-  const handleReset=async(question)=>{
+  const handleReset = async (question) => {
     const newState = defCode?.map((val, index) => {
       if (index === question) {
         return profile?.languageCode?.codeBase;
@@ -598,7 +616,7 @@ const Compiler = () => {
     await setDefCode(newState);
     handleQuestionAndCode(newState);
     return finishCodes, defCode;
-  }
+  };
 
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -680,7 +698,7 @@ const Compiler = () => {
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} p={2}>
-                          Question {count + 1}
+                          Question: {count + 1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -766,7 +784,7 @@ const Compiler = () => {
             <Grid>
               <Grid containner sx={testCase} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
-                  <Typography m={3} mt={2} sx={testCaseText1}>
+                  <Typography p={1.2} px={3} sx={testCaseText1}>
                     Test Cases
                   </Typography>
                 </Grid>
@@ -804,20 +822,18 @@ const Compiler = () => {
             <Box mx={3}>
               <Grid container>
                 <Grid item sm={6} sx={{ display: "flex", marginLeft: "-10px" }}>
-                  <Box>
+                  <Box sx={{ display: "flex", gap: 1 }}>
                     <Typography sx={inputName}>Name: </Typography>
-                  </Box>
-                  <>
                     <Typography sx={inputName}>{name}</Typography>
-                  </>
+                  </Box>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
-                  <Box>
+                  <Box sx={{ display: "flex", gap: 1 }}>
                     <Typography sx={inputName}>Email: </Typography>
-                  </Box>
-                  <Box>
                     <Typography sx={inputName}>{email}</Typography>
                   </Box>
+                  {/* <Box>
+                  </Box> */}
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
@@ -831,7 +847,11 @@ const Compiler = () => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button variant="contained" sx={buttonTest} onClick={()=>handleReset(count)}>
+                    <Button
+                      variant="contained"
+                      sx={resetButtonTest}
+                      onClick={() => handleReset(count)}
+                    >
                       Reset
                     </Button>
                   </Grid>
@@ -902,7 +922,7 @@ const Compiler = () => {
             <Grid mt={3}>
               <Grid containner sx={consoleArea} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
-                  <Typography m={3} mt={2} sx={testCaseText1}>
+                  <Typography p={1.2} px={2} sx={testCaseText1}>
                     {isLoading ? "Compiling......" : `Console`}
                   </Typography>
                 </Grid>
