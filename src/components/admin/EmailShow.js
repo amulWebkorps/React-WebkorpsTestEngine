@@ -93,7 +93,7 @@ const delBtn = {
 const divText = {
   width: "80%",
   height: "28px",
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "300",
   fontSize: "24px",
@@ -163,7 +163,7 @@ const EmailShow = () => {
       });
       setUploadEmail(arr);
       setFilteredResults(arr);
-      console.log(response?.data);
+      // console.log(response?.data);
     } catch (error) {
       setLoading(false);
     }
@@ -223,7 +223,6 @@ const EmailShow = () => {
     }
   };
 
-
   useEffect(() => {
     participatorFilter();
   }, [dropValue]);
@@ -265,12 +264,13 @@ const EmailShow = () => {
       });
       try {
         const result = await uploadParticipator(files[0]);
+        console.log(result, "qqqqqqqqqqqqqqqqqqq");
         if (result?.data) {
           setUpload({
             alert: true,
             loader: false,
           });
-          setDropValue('All');
+          setDropValue("All");
         }
         setMsg({
           errMsg: "Participator uploaded succesfully...!",
@@ -278,6 +278,7 @@ const EmailShow = () => {
         });
         getParticipatorData();
         const response = result?.data;
+        console.log(response, "Participator email");
         const arr = response.filter((val) => {
           return val.trim("") != "";
         });
@@ -310,7 +311,7 @@ const EmailShow = () => {
 
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
-    setEmails([])
+    setEmails([]);
     if (searchString !== "") {
       const filteredData = uploadEmail?.filter((item) => {
         return Object?.values(item)
