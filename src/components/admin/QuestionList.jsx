@@ -265,7 +265,7 @@ const QuestionList = () => {
   };
 
   const addTest = () => {
-    if(testCases?.input===""||testCases?.output===""){
+    if (testCases?.input === "" || testCases?.output === "") {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
@@ -278,11 +278,10 @@ const QuestionList = () => {
           color: "",
         });
       }, 2000);
-    }else{
+    } else {
       setTestCaseList([...testCaseList, testCases]);
       setTestCases(testInitialFields);
     }
-   
   };
 
   const addQuestion = async (e) => {
@@ -371,6 +370,7 @@ const QuestionList = () => {
   };
   const uploadQuestion = async (e) => {
     const { files } = e.target;
+
     if (
       files?.[0]?.type !==
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -403,8 +403,14 @@ const QuestionList = () => {
           setAlert(false);
         }, 1200);
       } catch (error) {
-        setAlert(false);
-        console.log("ee", error);
+        setMsg({
+          errMsg: "Questions already uploaded...!",
+          color: "red",
+        });
+        setTimeout(() => {
+          setAlert(false);
+        }, 1500);
+        console.log("File already Uploaded", error);
       }
     }
   };
@@ -419,7 +425,7 @@ const QuestionList = () => {
       })
       .catch("dmndv");
   }, [showAlert]);
-  console.log("useeffect");
+
   return (
     <div style={questionList}>
       <Header />
@@ -524,7 +530,7 @@ const QuestionList = () => {
                         direction="row"
                         justifyContent={"space-between"}
                       >
-                        <Grid item xs={5}>
+                        <Grid item xs={4.7}>
                           <Typography sx={label} display="inline">
                             Sample Input
                           </Typography>
@@ -549,7 +555,7 @@ const QuestionList = () => {
                             }}
                           />
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={4.7}>
                           <Typography sx={label} display="inline">
                             Sample Output
                           </Typography>
