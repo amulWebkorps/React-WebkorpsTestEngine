@@ -64,7 +64,7 @@ const card = {
   maxHeight: "211px",
   borderRadius: "11px",
 };
-
+// -moz-image-cardImg: inherit;
 const cardImg = {
   padding: "10px",
 };
@@ -79,7 +79,7 @@ const cardBody = {
 };
 
 const contestText = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: 600,
   fontSize: "14px",
@@ -132,7 +132,7 @@ const backIcon = {
   color: "white",
 };
 const months = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "400",
   fontSize: "12px",
@@ -277,7 +277,7 @@ const Dashbord = () => {
     } else {
       const newTabCount2 = localStorage.getItem("tabsOpen");
       let value = localStorage.getItem("isMySessionActive");
-      console.log(newTabCount2);
+      // console.log(newTabCount2);
       if (value == "true") {
         if (newTabCount2 - 1 == 0) {
           localStorage.clear();
