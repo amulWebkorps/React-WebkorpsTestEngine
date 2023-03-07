@@ -26,20 +26,38 @@
     -->
     <title>WebkorpsTestEngine</title>
   </head>
-  <body>
+  <body oncontextmenu="return false">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
- <script>
-    window.addEventListener("beforeunload", (event) => {
-    window.localStorage.isMySessionActive = "true";
-  });
-  window.onunload = function (e) {
-    const newTabCount = localStorage.getItem("tabsOpen");
-    localStorage.setItem("tabsOpen", 1);
-    if (newTabCount !== null) {
-      localStorage.setItem("tabsOpen", newTabCount - 1);
-    }
-  };
- </script>
+    <script>
+      window.addEventListener("beforeunload", (event) => {
+        window.localStorage.isMySessionActive = "true";
+      });
+      window.onunload = function (e) {
+        const newTabCount = localStorage.getItem("tabsOpen");
+        localStorage.setItem("tabsOpen", 1);
+        if (newTabCount !== null) {
+          localStorage.setItem("tabsOpen", newTabCount - 1);
+        }
+      };
+      // Disabling inspect element
+      document.addEventListener("contextmenu", (event) =>
+        event.preventDefault()
+      );
+      document.onkeydown = function (e) {
+        if (event.keyCode == 123) {
+          return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+          return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+          return false;
+        }
+        if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+          return false;
+        }
+      };
+    </script>
   </body>
 </html>
