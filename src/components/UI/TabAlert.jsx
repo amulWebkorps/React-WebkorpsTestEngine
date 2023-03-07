@@ -69,10 +69,10 @@ export default function TabAlert({
         <DialogTitle sx={title}>Warning</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            You are suspected to switch tab {warning} / 3 Time..
+            You are suspected to switch tab {warning} / 3 Times..
           </DialogContentText>
           <DialogContentText id="alert-dialog-slide-description">
-            You are suspected to switch to new Window {winCount} / 3 Time..
+            You are suspected to switch to new Window {winCount} / 3 Times..
           </DialogContentText>
         </DialogContent>
         <DialogActions>
