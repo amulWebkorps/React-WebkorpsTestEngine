@@ -66,7 +66,8 @@ const card = {
 };
 // -moz-image-cardImg: inherit;
 const cardImg = {
-  padding: "10px",
+  width: "62%",
+  marginLeft: "40px",
 };
 const cardBodyx = {
   height: "220px",
@@ -351,6 +352,7 @@ const Dashbord = () => {
                           style={cardImg}
                           component="img"
                           height="140"
+                          width="62%"
                           image={contestImg}
                           alt="green iguana"
                         />
