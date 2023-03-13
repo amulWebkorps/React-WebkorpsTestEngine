@@ -270,23 +270,23 @@ const Compiler = () => {
     });
   }, [warning, winCount]);
 
-  $(document).ready(function () {
-    var ctrlDown = false,
-      ctrlKey = 17,
-      cmdKey = 91,
-      vKey = 86,
-      cKey = 67;
-    $(document)
-      .keydown(function (e) {
-        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
-      })
-      .keyup(function (e) {
-        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
-      });
-    $(".no-copy-paste").keydown(function (e) {
-      if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
-    });
-  });
+  // $(document).ready(function () {
+  //   var ctrlDown = false,
+  //     ctrlKey = 17,
+  //     cmdKey = 91,
+  //     vKey = 86,
+  //     cKey = 67;
+  //   $(document)
+  //     .trigger(function (e) {
+  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+  //     })
+  //     .on(function (e) {
+  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+  //     });
+  //   $(".no-copy-paste").trigger(function (e) {
+  //     if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+  //   });
+  // });
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -350,12 +350,6 @@ const Compiler = () => {
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
-
-  useEffect(() => {
-    document.oncontextmenu = document.body.oncontextmenu = function () {
-      return false;
-    };
-  }, [window]);
 
   const getDefaultCode = () => {
     const len = profile?.QuestionList?.length;

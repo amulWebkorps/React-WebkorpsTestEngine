@@ -12,7 +12,7 @@ import { logo } from "../assests/images";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { participatorLogin } from "../services/candidate";
 import Loader from "./base/Loader";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -106,10 +106,10 @@ const CandidateLogin = () => {
   const [seenPassword, setSeenpassword] = useState(false);
   const path = window?.location?.pathname;
   const { id } = useParams();
-  const date=new Date();
-  const year=date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
   const handleLogin = async () => {
-    const role=localStorage?.getItem("role");
+    const role = localStorage?.getItem("role");
     setLoading(true);
     if (credential.email === "" || credential.password === "") {
       setAlert(true);
@@ -117,8 +117,7 @@ const CandidateLogin = () => {
       setTimeout(() => {
         setAlert(false);
       }, 2000);
-    }
-     else {
+    } else {
       try {
         const result = await participatorLogin(id, credential);
         localStorage.setItem(
@@ -128,7 +127,7 @@ const CandidateLogin = () => {
         localStorage.setItem("studentId", result?.data?.data?.student?.id);
         localStorage.setItem("name", result?.data?.data?.student?.name);
         localStorage.setItem("email", result?.data?.data?.student?.email);
-        localStorage.setItem('role','student');
+        localStorage.setItem("role", "student");
         const token = result?.data?.data?.token;
         localStorage.setItem("token", token);
         setLoading(true);
@@ -160,8 +159,29 @@ const CandidateLogin = () => {
     setAlert(false);
   }, [credential]);
 
+  useEffect(() => {
+    document.oncontextmenu = document.body.oncontextmenu = function () {
+      return false;
+    };
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+    document.onkeydown = function (e) {
+      if (e.keyCode == 123) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+        return false;
+      }
+    };
+  }, [window]);
+
   const handleChange = (e) => {
-    const{name,value} =e.target;
+    const { name, value } = e.target;
     setCredential({ ...credential, [name]: value });
   };
   return (
@@ -213,7 +233,11 @@ const CandidateLogin = () => {
                     fontSize="small"
                   />
                 ))}
-              <LoginButton name="Log in" onClick={handleLogin}  isLoading={isLoading}/>
+              <LoginButton
+                name="Log in"
+                onClick={handleLogin}
+                isLoading={isLoading}
+              />
             </Stack>
           </Box>
         </Box>
