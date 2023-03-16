@@ -153,22 +153,6 @@ const buttonTest = {
   fontSize: "16px",
   lineHeight: "19px",
 };
-const executeButton = {
-  width: "40%",
-  height: "40px",
-  background: "#0057ff",
-  borderRadius: "8px",
-  color: "white",
-  fontweight: "bold",
-  margin: "10px",
-  marginBottom: "20px",
-  border: "1px solid #0057ff",
-  fontFamily: "Raleway",
-  fontStyle: "normal",
-  fontWeight: "700",
-  fontSize: "16px",
-  lineHeight: "19px",
-};
 
 const resetButtonTest = {
   width: "100px",
@@ -285,6 +269,24 @@ const Compiler = () => {
       }
     });
   }, [warning, winCount]);
+
+  // $(document).ready(function () {
+  //   var ctrlDown = false,
+  //     ctrlKey = 17,
+  //     cmdKey = 91,
+  //     vKey = 86,
+  //     cKey = 67;
+  //   $(document)
+  //     .trigger(function (e) {
+  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+  //     })
+  //     .on(function (e) {
+  //       if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+  //     });
+  //   $(".no-copy-paste").trigger(function (e) {
+  //     if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+  //   });
+  // });
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -413,8 +415,13 @@ const Compiler = () => {
         contestId: profile?.contestId,
         studentId: profile?.studentId,
         flag: flag,
-        questionId: profile?.QuestionList[count]?.questionId,
-        code: defCode[count],
+        timeOut: false,
+        questionsAndCode: [
+          {
+            questionId: profile?.QuestionList[count]?.questionId,
+            code: defCode[count],
+          },
+        ],
       });
       setError(resultData?.data?.complilationMessage);
       if (resultData) {
@@ -488,8 +495,14 @@ const Compiler = () => {
         language: profile?.languageCode?.language,
         contestId: profile?.contestId,
         studentId: profile?.studentId,
-        questionId: profile?.QuestionList[count]?.questionId,
-        code: defCode[count],
+        flag: flag,
+        timeOut: false,
+        questionsAndCode: [
+          {
+            questionId: profile?.QuestionList[count]?.questionId,
+            code: defCode[count],
+          },
+        ],
       });
 
       if (res?.data) {
@@ -878,16 +891,6 @@ const Compiler = () => {
                   }}
                 >
                   Run
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={executeButton}
-                  onClick={() => {
-                    runCodes("1");
-                    handleScroll();
-                  }}
-                >
-                  {"Execute all test Cases"}
                 </Button>
                 <Button
                   variant="contained"

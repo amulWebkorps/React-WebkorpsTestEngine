@@ -4,9 +4,7 @@ import candidateApi from "./candidateApi";
 const PARTICIPATOR_LOGIN_URL = `${BASE_URL}/public/doSignInForParticipator`;
 const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
 const START_CONTEST_PAGE = `${BASE_URL}/startContestPage`;
-const RUN_AND_CODE_COMPILER = `${BASE_URL}/runORExecuteAllTestCases`;
-const SUBMIT_CODE = `${BASE_URL}/save/code`;
-const FINISH_TEST = `${BASE_URL}/finish/test`;
+const RUN_AND_CODE_COMPILER = `${BASE_URL}/runAndCompilerCode`;
 
 const participatorLogin = (contestId, credential) => {
   const cred = {
@@ -34,12 +32,11 @@ const runAndCompilerCode = (candidateCode) => {
 };
 
 const submitCode = (candidateCode) => {
-  return candidateApi.post(`${SUBMIT_CODE}`, candidateCode);
+  return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
 };
-const finish = (candidateCode) => {
-  console.log("finnesheeee");
-  return candidateApi.post(`${FINISH_TEST}`, candidateCode);
-};
+const finish=(candidateCode)=>{
+  return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
+}
 
 export {
   participatorLogin,
@@ -47,5 +44,5 @@ export {
   startContestPage,
   runAndCompilerCode,
   submitCode,
-  finish,
+  finish
 };
