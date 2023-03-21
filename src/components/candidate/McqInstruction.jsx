@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "./base/Loader";
 import { startMcqPage } from "../services/candidate";
 const background1 = {
-  height: "100%",
+  minHeight: "100vh",
   background: ` linear-gradient(
         180deg,
         rgba(24, 135, 201, 0) 0%,
@@ -26,7 +26,7 @@ const selectTechnology = {
 };
 const whiteContainer = {
   marginTop: "50px",
-  height: "82.5vh",
+  minHeight: "72.5vh",
   background: "#F9FAFC",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
@@ -55,11 +55,12 @@ const containerUpper = {
 const divSelect = {
   height: "50px",
   marginLeft: "30px",
+  display: "flex",
 };
 const divText = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
-  fontWeight: "400",
+  fontWeight: "350",
   fontSize: "28px",
   lineHeight: "60px",
   color: "#000000",
@@ -70,7 +71,7 @@ const instructions = {
   fontWeight: "400",
   fontSize: "25px",
   marginLeft: "24px",
-  marginTop: "-46px",
+  marginTop: "11px",
   color: "#000000",
 };
 const instructionSubHead = {
@@ -146,7 +147,6 @@ function McqInstruction() {
     });
   }, [window, navigate]);
 
- 
   return (
     <>
       <div style={background1}>
@@ -155,7 +155,7 @@ function McqInstruction() {
           <Grid sx={containerUpper}>
             <Grid item sx={levelSubHeading}>
               <Typography sx={levelText} mt={2}>
-                Instruction
+                Instructions
               </Typography>
             </Grid>
           </Grid>
@@ -169,8 +169,8 @@ function McqInstruction() {
               {InstructionData.map((val, index) => {
                 return (
                   <>
-                    <Grid container sx={divSelect}>
-                      <Grid item>
+                    <Grid container>
+                      <Grid item sx={divSelect}>
                         <Typography sx={divText} variant="h1">
                           {`${index + 1}. `}
                         </Typography>
@@ -182,12 +182,6 @@ function McqInstruction() {
               })}
             </Grid>
             <Grid container>
-              <Typography mt={2} sx={selectTechnology}>
-                Select Technology:
-              </Typography>
-            </Grid>
-            <Grid container>
-              {/* {showLoader && <Loader mt={3} />} */}
               <Button
                 variant="contained"
                 sx={startContest}
