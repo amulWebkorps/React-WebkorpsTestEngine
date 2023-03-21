@@ -145,7 +145,7 @@ const CandidateLogin = () => {
         setTimeout(() => {
           const contestLevel = result?.data?.data?.student?.contestLevel;
           console.log(contestLevel, "level");
-          if (contestLevel == "Level 1") {
+          if (contestLevel === "level 1") {
             navigate("/mcqInstruction", { state: { data: result.data } });
           } else {
             navigate("/instruction", { state: { data: result.data } });

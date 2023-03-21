@@ -22,18 +22,19 @@ import { submitMcq } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 const background1 = {
-  height: "100vh",
+  minHeight: "100vh",
   background: `linear-gradient(
     180deg,
     rgba(24, 135, 201, 0) 0%,
     rgba(24, 135, 201, 0.224167) 40.42%,
     rgba(24, 135, 201, 0.4) 100%
   )`,
+  overflow: "hidden",
 };
 const MainContainer = {
   background: "#F9FAFC",
   width: "53vw",
-  height: "57vh",
+  minHeight: "57vh",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   borderRadius: "17px",
   overflow: "auto",
@@ -45,25 +46,27 @@ const innerHeading = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  marginLeft: "25px",
+  marginLeft: "15px",
   paddingTop: "10px",
-  overflow:"auto"
+  overflow: "auto",
 };
 const innerSearch = {
   display: "flex",
   height: "40px",
 };
 const searchIcon = {
-  marginRight: "100px",
+  marginRight: "30px",
   fontWeight: "Bold",
   height: "23px",
 };
 const Answerheading = {
   width: "50%",
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
-  fontWeight: 600,
-  fontSize: "34px",
+  fontWeight: "600",
+  fontSize: "30px",
+  lineHeight: "35px",
+  color: "#000000",
 };
 const maindata = {
   marginTop: "40px",
@@ -101,12 +104,15 @@ const sendMails = {
   fontWeight: "600",
   color: "white",
   borderRadius: "6px",
-  marginTop: "47px",
-  marginLeft: "27px",
+  marginTop: "37px",
+  // marginLeft: "77px",
 };
 const btn = {
   width: "55vw",
+  display: "flex",
+  gap: "20px",
   justifyContent: "end",
+  alignItems: "center",
 };
 const divSelect = {
   width: "100%",
@@ -118,6 +124,7 @@ const divSelect = {
 };
 const innerCon = {
   overflow: "auto",
+  marginBottom: "20px",
 };
 const selectedOptionsInitialState = {
   option1: false,
@@ -232,12 +239,11 @@ function McqQuestion() {
       [`option${n}`]: true,
     });
     handleQuestionAndAns(e, mcqList[count].mcqId, n);
- 
   };
 
   const nextQuestion = (e) => {
     setSelectedOptions(selectedOptionsInitialState);
-  
+
     setCount(function (prevCount) {
       if (prevCount <= mcqList?.length) {
         return (prevCount += 1);
@@ -263,7 +269,7 @@ function McqQuestion() {
     let options = mcqList[count];
     let isAvialiable = false;
     let sOption = "";
-   
+
     queAns?.map((data) => {
       if (data.mcqId === Qid) {
         isAvialiable = true;
@@ -276,7 +282,6 @@ function McqQuestion() {
         let op = "option" + (index + 1);
         if (options[op] === sOption) {
           setSelectedOptions((p) => {
-       
             return { ...p, [op]: true };
           });
         }
@@ -369,7 +374,7 @@ function McqQuestion() {
     } catch (error) {
       console.log(error);
     }
-  
+
     setTimeout(() => {
       navigate("/thanku");
       localStorage.clear();
@@ -428,9 +433,9 @@ function McqQuestion() {
         <Container>
           <Container sx={MainContainer}>
             <Box sx={innerHeading}>
-              <Typography sx={Answerheading}>Question{count + 1}</Typography>
+              <Typography sx={Answerheading}>Question: {count + 1}</Typography>
               <Box sx={innerSearch}>
-                <Typography sx={searchIcon}>Time:{timer}</Typography>
+                <Typography sx={searchIcon}>Time: {timer}</Typography>
               </Box>
             </Box>
 
