@@ -19,7 +19,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { finish, runAndCompilerCode, submitCode } from "../services/candidate";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "./base/Loader";
 import {
@@ -29,7 +28,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { NearMeDisabledRounded, Roofing } from "@mui/icons-material";
+
 import TabAlert from "../UI/TabAlert";
 
 const div1 = {
@@ -63,6 +62,7 @@ const testCase = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "17px",
 };
+
 const consoleArea = {
   marginTop: "25px",
   background: "black",
@@ -79,7 +79,7 @@ const testCaseText = {
 };
 
 const testCaseText1 = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "600",
   fontSize: "30px",
@@ -88,7 +88,7 @@ const testCaseText1 = {
 };
 
 const testCaseText2 = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "500",
   fontSize: "25px",
@@ -107,6 +107,7 @@ const inputLabel = {
   textAlign: "left",
   margin: "10px",
 };
+
 const testCaseResult = {
   height: "48px",
   background: "#F9FAFC",
@@ -122,10 +123,11 @@ const inputField = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   marginBottom: "10px",
 };
-const constraintsText={
-  maxHeight:'48px',
-  overflow:'auto'
-}
+
+const constraintsText = {
+  maxHeight: "48px",
+  overflow: "auto",
+};
 
 const CodeCompilerText1 = {
   fontSize: "25px",
@@ -143,6 +145,40 @@ const buttonTest = {
   color: "white",
   fontweight: "bold",
   margin: "10px",
+  marginBottom: "20px",
+  border: "1px solid #0057ff",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "700",
+  fontSize: "16px",
+  lineHeight: "19px",
+};
+const executeButton = {
+  width: "40%",
+  height: "40px",
+  background: "#0057ff",
+  borderRadius: "8px",
+  color: "white",
+  fontweight: "bold",
+  margin: "10px",
+  marginBottom: "20px",
+  border: "1px solid #0057ff",
+  fontFamily: "Raleway",
+  fontStyle: "normal",
+  fontWeight: "700",
+  fontSize: "16px",
+  lineHeight: "19px",
+};
+
+const resetButtonTest = {
+  width: "100px",
+  height: "40px",
+  background: "#0057ff",
+  borderRadius: "8px",
+  color: "white",
+  fontweight: "bold",
+  marginRight: "-20px",
+  marginBottom: "-25px",
   border: "1px solid #0057ff",
   fontFamily: "Raleway",
   fontStyle: "normal",
@@ -157,12 +193,14 @@ const testCaseData1 = {
   justifyContent: "end",
   overflowY: "auto",
 };
+
 const testCaseData = {
   display: "flex",
   flexDirection: "row",
   height: "200px",
   width: "100%",
 };
+
 const inputName = {
   fontWeight: "600",
   fontweight: "bold",
@@ -173,10 +211,11 @@ const timerText = {
   fontSize: "18px",
   fontweight: "bold",
 };
-const questionText={
-  maxHeight:'48px',
-  overflow:'auto'
-}
+
+const questionText = {
+  maxHeight: "48px",
+  overflow: "auto",
+};
 
 const textTestCases = {
   padding: "10px",
@@ -198,12 +237,18 @@ const Compiler = () => {
       code: "",
     },
   ]);
-  const [quesIds, setQuesIds] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(val=>val?.['questionId']));
-  const [profile, setProfile] = useState(location?.state?.participatorsContestDetails);
+  const [quesIds, setQuesIds] = useState(
+    location?.state?.participatorsContestDetails?.QuestionList?.map(
+      (val) => val?.["questionId"]
+    )
+  );
+  const [profile, setProfile] = useState(
+    location?.state?.participatorsContestDetails
+  );
   const [name, setName] = useState(localStorage?.getItem("name"));
   const [email, setEmails] = useState(localStorage?.getItem("email"));
   const [exit, setExit] = useState(true);
-  const [winCount, setWinCount]=useState(0);
+  const [winCount, setWinCount] = useState(0);
   const [testRecord, setTestRecord] = useState([]);
   const [count, setCount] = useState(0);
   const [runCode, setRunCode] = useState();
@@ -215,7 +260,9 @@ const Compiler = () => {
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
-  const [duration, setDuration] = useState(location?.state?.participatorsContestDetails?.contestTime?.contestTime);
+  const [duration, setDuration] = useState(
+    location?.state?.participatorsContestDetails?.contestTime?.contestTime
+  );
   const [open, setOpen] = useState(false);
   const timerGet = duration?.match(/\d/g)?.join("");
   const Ref = useRef(null);
@@ -224,38 +271,19 @@ const Compiler = () => {
   const changeseconds = timerGet * 60;
 
   useEffect(() => {
-    window.addEventListener('blur', function(){
-      setWinCount(winCount+1)
+    window.addEventListener("blur", function () {
+      setWinCount(winCount + 1);
       setOpen(true);
-   }); 
+    });
 
-   window.addEventListener('focus', function(){
-   });
+    window.addEventListener("focus", function () {});
     document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "hidden") {
         setWarning(warning + 1);
         setOpen(true);
       }
     });
-  }, [warning,winCount]);
-
-  $(document).ready(function () {
-    var ctrlDown = false,
-      ctrlKey = 17,
-      cmdKey = 91,
-      vKey = 86,
-      cKey = 67;
-    $(document)
-      .keydown(function (e) {
-        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
-      })
-      .keyup(function (e) {
-        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
-      });
-    $(".no-copy-paste").keydown(function (e) {
-      if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
-    });
-  });
+  }, [warning, winCount]);
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -293,9 +321,7 @@ const Compiler = () => {
 
   useEffect(() => {
     if (runCode?.complilationMessage !== null) {
-    } else if (
-      count === profile?.QuestionList?.length
-    ) {
+    } else if (count === profile?.QuestionList?.length) {
     } else {
     }
   }, [count]);
@@ -310,7 +336,7 @@ const Compiler = () => {
           setTimeout(() => {
             localStorage.clear();
             navigate("/thanku");
-          }, 1500); 
+          }, 1500);
         }
       } catch (error) {
         console.log(error);
@@ -318,16 +344,9 @@ const Compiler = () => {
     }
   }, [timer]);
 
-
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);
-
-  useEffect(() => {
-    document.oncontextmenu = document.body.oncontextmenu = function () {
-      return false;
-    };
-  }, [window]);
 
   const getDefaultCode = () => {
     const len = profile?.QuestionList?.length;
@@ -342,7 +361,6 @@ const Compiler = () => {
       const a = [];
       testArray.push(a);
     }
-    console.log(testArray)
     setTestRecord(testArray);
     setDefCode(newArray);
   };
@@ -350,12 +368,22 @@ const Compiler = () => {
   const handleQuestionAndCode = async (codeData) => {
     const len = profile?.QuestionList?.length;
     var newArray = [];
-    for (var i = 0; i < len; i++) {
-      var Object = {};
-      Object["questionId"] = quesIds?.[i];
-      Object["code"] = codeData?.[i];
-      newArray.push(Object);
+    if (codeData === undefined || null) {
+      for (var i = 0; i < len; i++) {
+        var Object = {};
+        Object["questionId"] = quesIds?.[i];
+        Object["code"] = profile?.languageCode?.codeBase;
+        newArray.push(Object);
+      }
+    } else {
+      for (var i = 0; i < len; i++) {
+        var Object = {};
+        Object["questionId"] = quesIds?.[i];
+        Object["code"] = codeData?.[i];
+        newArray.push(Object);
+      }
     }
+
     await setFinishCodes(newArray);
     localStorage.setItem("code", JSON.stringify(newArray));
   };
@@ -384,25 +412,14 @@ const Compiler = () => {
         contestId: profile?.contestId,
         studentId: profile?.studentId,
         flag: flag,
-        timeOut: false,
-        questionsAndCode: [
-          {
-            questionId:
-              profile?.QuestionList[count]
-                ?.questionId,
-            code: defCode[count],
-          },
-        ],
+        questionId: profile?.QuestionList[count]?.questionId,
+        code: defCode[count],
       });
       setError(resultData?.data?.complilationMessage);
       if (resultData) {
-        console.log(resultData,'insdie ');
         setError(resultData?.data?.complilationMessage);
         setLoading(false);
-        if (
-          profile?.QuestionList?.length <= 1 &&
-          flag === "1"
-        ) {
+        if (profile?.QuestionList?.length <= 1 && flag === "1") {
           navigate("/thanku");
         }
       }
@@ -415,7 +432,7 @@ const Compiler = () => {
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
-    }catch (error) {
+    } catch (error) {
       setshowCompilationError(true);
       setError(null);
       setTimeout(() => {
@@ -432,7 +449,7 @@ const Compiler = () => {
   };
 
   const handleChange = async (codeData) => {
-    const newState = defCode.map((val, index) => {
+    const newState = defCode?.map((val, index) => {
       if (index === count) {
         return codeData;
       }
@@ -445,13 +462,10 @@ const Compiler = () => {
 
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
-      if (
-        prevCount <= profile?.QuestionList?.length
-      ) {
+      if (prevCount <= profile?.QuestionList?.length) {
         return (prevCount += 1);
       } else {
-        return (prevCount =
-          profile?.QuestionList?.length);
+        return (prevCount = profile?.QuestionList?.length);
       }
     });
   };
@@ -473,15 +487,10 @@ const Compiler = () => {
         language: profile?.languageCode?.language,
         contestId: profile?.contestId,
         studentId: profile?.studentId,
-        flag: flag,
-        timeOut: false,
-        questionsAndCode: [
-          {questionId:profile?.QuestionList[count]?.questionId,
-            code: defCode[count],
-          },
-        ],
+        questionId: profile?.QuestionList[count]?.questionId,
+        code: defCode[count],
       });
-      
+
       if (res?.data) {
         setTestRecord(res.data?.testCasesSuccess);
         setShow(false);
@@ -496,9 +505,7 @@ const Compiler = () => {
   };
 
   const handleNext = () => {
-    if (
-      profile?.QuestionList?.length - 1 ===count
-    ) {
+    if (profile?.QuestionList?.length - 1 === count) {
     } else {
       setCount(count + 1);
     }
@@ -579,6 +586,18 @@ const Compiler = () => {
     }, [100]);
   };
 
+  const handleReset = async (question) => {
+    const newState = defCode?.map((val, index) => {
+      if (index === question) {
+        return profile?.languageCode?.codeBase;
+      }
+      return val;
+    });
+    await setDefCode(newState);
+    handleQuestionAndCode(newState);
+    return finishCodes, defCode;
+  };
+
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token === null) {
@@ -610,7 +629,6 @@ const Compiler = () => {
               <div>
                 <Dialog
                   open={true}
-                  // onClose={onCancel}
                   onClose={(_, reason) => {
                     if (reason !== "backdropClick") {
                       onCancel();
@@ -660,7 +678,7 @@ const Compiler = () => {
                     <Grid item sm={12}>
                       <Box sx={testCaseText}>
                         <Typography sx={testCaseText1} p={2}>
-                          Question {count + 1}
+                          Question: {count + 1}
                         </Typography>
                       </Box>
                     </Grid>
@@ -671,10 +689,7 @@ const Compiler = () => {
                         </Typography>
                         <Box style={inputField} p={2}>
                           <Typography sx={questionText}>
-                            {
-                              profile
-                                ?.QuestionList?.[count]?.question
-                            }
+                            {profile?.QuestionList?.[count]?.question}
                           </Typography>
                         </Box>
                       </Box>
@@ -685,8 +700,7 @@ const Compiler = () => {
                         <Box style={inputField} p={2}>
                           <Typography sx={constraintsText}>
                             {
-                              profile
-                                ?.QuestionList?.[count]?.sampleTestCase[0]
+                              profile?.QuestionList?.[count]?.sampleTestCase[0]
                                 ?.constraints
                             }
                           </Typography>
@@ -702,9 +716,8 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography sx={questionText}>
                               {
-                                profile
-                                  ?.QuestionList?.[count]?.sampleTestCase[0]
-                                  ?.input
+                                profile?.QuestionList?.[count]
+                                  ?.sampleTestCase[0]?.input
                               }
                             </Typography>
                           </Box>
@@ -718,9 +731,8 @@ const Compiler = () => {
                           <Box style={inputField} p={2}>
                             <Typography sx={questionText}>
                               {
-                                profile
-                                  ?.QuestionList?.[count]?.sampleTestCase[0]
-                                  ?.output
+                                profile?.QuestionList?.[count]
+                                  ?.sampleTestCase[0]?.output
                               }
                             </Typography>
                           </Box>
@@ -743,11 +755,7 @@ const Compiler = () => {
                   variant="contained"
                   sx={buttonTest}
                   onClick={() => nextQuestion()}
-                  disabled={
-                    profile?.QuestionList?.length -
-                      1 ===
-                    count
-                  }
+                  disabled={profile?.QuestionList?.length - 1 === count}
                 >
                   Next
                 </Button>
@@ -756,7 +764,7 @@ const Compiler = () => {
             <Grid>
               <Grid containner sx={testCase} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
-                  <Typography m={3} mt={2} sx={testCaseText1}>
+                  <Typography p={1.2} px={3} sx={testCaseText1}>
                     Test Cases
                   </Typography>
                 </Grid>
@@ -794,28 +802,38 @@ const Compiler = () => {
             <Box mx={3}>
               <Grid container>
                 <Grid item sm={6} sx={{ display: "flex", marginLeft: "-10px" }}>
-                  <Box>
+                  <Box sx={{ display: "flex", gap: 1 }}>
                     <Typography sx={inputName}>Name: </Typography>
-                  </Box>
-                  <>
                     <Typography sx={inputName}>{name}</Typography>
-                  </>
+                  </Box>
                 </Grid>
                 <Grid item sm={6} sx={{ display: "flex" }}>
-                  <Box>
+                  <Box sx={{ display: "flex", gap: 1 }}>
                     <Typography sx={inputName}>Email: </Typography>
-                  </Box>
-                  <Box>
                     <Typography sx={inputName}>{email}</Typography>
                   </Box>
+                  {/* <Box>
+                  </Box> */}
                 </Grid>
               </Grid>
               <Container sx={rightDiv}>
-                <Grid container>
-                  <Grid item sm={12}>
+                <Grid
+                  container
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Grid item>
                     <Typography mt={1.5}>
                       <div style={CodeCompilerText1}>Code Compiler</div>
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      sx={resetButtonTest}
+                      onClick={() => handleReset(count)}
+                    >
+                      Reset
+                    </Button>
                   </Grid>
                 </Grid>
               </Container>
@@ -862,6 +880,16 @@ const Compiler = () => {
                 </Button>
                 <Button
                   variant="contained"
+                  sx={executeButton}
+                  onClick={() => {
+                    runCodes("1");
+                    handleScroll();
+                  }}
+                >
+                  {"Execute all test Cases"}
+                </Button>
+                <Button
+                  variant="contained"
                   sx={buttonTest}
                   onClick={() => {
                     submitCodes("1");
@@ -870,9 +898,7 @@ const Compiler = () => {
                 >
                   {"submit"}
                 </Button>
-                {count ===
-                  profile?.QuestionList?.length -
-                    1 && (
+                {count === profile?.QuestionList?.length - 1 && (
                   <Button
                     variant="contained"
                     sx={buttonTest}
@@ -886,7 +912,7 @@ const Compiler = () => {
             <Grid mt={3}>
               <Grid containner sx={consoleArea} m={3} ref={ref}>
                 <Grid item sm={12} sx={testCaseResult}>
-                  <Typography m={3} mt={2} sx={testCaseText1}>
+                  <Typography p={1.2} px={2} sx={testCaseText1}>
                     {isLoading ? "Compiling......" : `Console`}
                   </Typography>
                 </Grid>
@@ -895,7 +921,6 @@ const Compiler = () => {
                     <Loader mt={8} />
                   ) : (
                     <AceEditor
-                      readOnly
                       style={{ borderRadius: "14px" }}
                       showGutter={false}
                       mode="java"

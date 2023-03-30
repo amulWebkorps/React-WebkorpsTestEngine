@@ -14,13 +14,14 @@ import { showAllLanguage } from "../services/candidate";
 import { startContestPage } from "../services/candidate";
 import Loader from "./base/Loader";
 const background1 = {
-  height: "100%",
+  // height: "100%",
   background: ` linear-gradient(
       180deg,
       rgba(24, 135, 201, 0) 0%,
       rgba(24, 135, 201, 0.224167) 40.42%,
       rgba(24, 135, 201, 0.4) 100%
     )`,
+  minHeight: "100vh",
 };
 
 const selectTechnology = {
@@ -33,6 +34,7 @@ const selectTechnology = {
 
 const whiteContainer = {
   marginTop: "50px",
+  // marginBottom: "50px",
   height: "100%",
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
@@ -68,10 +70,10 @@ const divSelect = {
 };
 
 const divText = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "400",
-  fontSize: "28px",
+  fontSize: "25px",
   lineHeight: "60px",
   color: "#000000",
 };
@@ -81,7 +83,7 @@ const instructions = {
   fontWeight: "400",
   fontSize: "25px",
   marginLeft: "24px",
-  marginTop: "-46px",
+
   color: "#000000",
 };
 
@@ -145,7 +147,6 @@ const Instruction = () => {
     setLanguage(event.target.value);
   };
   const { userInfo } = useSelector((state) => state?.user);
-
 
   useEffect(() => {
     showAllLanguage()
@@ -213,7 +214,7 @@ const Instruction = () => {
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
             <Typography sx={levelText} mt={2}>
-              Instruction
+              Instructions
             </Typography>
           </Grid>
         </Grid>
@@ -228,7 +229,7 @@ const Instruction = () => {
               return (
                 <>
                   <Grid container sx={divSelect}>
-                    <Grid item>
+                    <Grid item sx={{ display: "flex", alignItems: "center" }}>
                       <Typography sx={divText} variant="h1">
                         {`${index + 1}. `}
                       </Typography>

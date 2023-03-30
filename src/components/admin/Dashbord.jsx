@@ -64,9 +64,10 @@ const card = {
   maxHeight: "211px",
   borderRadius: "11px",
 };
-
+// -moz-image-cardImg: inherit;
 const cardImg = {
-  padding: "10px",
+  width: "62%",
+  marginLeft: "40px",
 };
 const cardBodyx = {
   height: "220px",
@@ -79,7 +80,7 @@ const cardBody = {
 };
 
 const contestText = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: 600,
   fontSize: "14px",
@@ -132,7 +133,7 @@ const backIcon = {
   color: "white",
 };
 const months = {
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "400",
   fontSize: "12px",
@@ -200,6 +201,7 @@ const Dashbord = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handlePop = () => {
     setConfirm(true);
   };
@@ -222,9 +224,13 @@ const Dashbord = () => {
       }
       setContestDetails(response.data);
     } catch (error) {
-      console.log(error);
       if (error?.response?.status === 403) {
+        localStorage.clear();
         navigate("/");
+      }
+      if (error.toJSON().message === "Network Error") {
+        setError(true);
+        localStorage.clear();
       }
       setloader(false);
     }
@@ -240,8 +246,8 @@ const Dashbord = () => {
   const token = localStorage?.getItem("token");
   useEffect(() => {
     // if access token is expire it redirected to login page
-    if (token !== null) {
-      const decodeToken = jwt_decode(token);
+    if (adminToken !== null) {
+      const decodeToken = jwt_decode(adminToken);
       if (decodeToken?.exp * 1000 < Date.now()) {
         navigate("/");
       }
@@ -249,6 +255,7 @@ const Dashbord = () => {
       navigate("/");
     }
   }, [window.location]);
+
   useEffect(() => {
     const tabsOpen = localStorage.getItem("tabsOpen");
     if (tabsOpen == null) {
@@ -263,12 +270,12 @@ const Dashbord = () => {
         localStorage.setItem("tabsOpen", newTabCount - 1);
       }
     };
+
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       window.localStorage.isMySessionActive = "false";
     } else {
       const newTabCount2 = localStorage.getItem("tabsOpen");
       let value = localStorage.getItem("isMySessionActive");
-      console.log(newTabCount2);
       if (value == "true") {
         if (newTabCount2 - 1 == 0) {
           localStorage.clear();
@@ -279,10 +286,10 @@ const Dashbord = () => {
       }
     }
   }, []);
+
   return (
     <div style={app}>
       <Header />
-
       {showAvailq ? (
         <>
           <Modal
@@ -345,6 +352,7 @@ const Dashbord = () => {
                           style={cardImg}
                           component="img"
                           height="140"
+                          width="62%"
                           image={contestImg}
                           alt="green iguana"
                         />

@@ -25,6 +25,7 @@ const headText = {
   fontWeight: " 600",
   fontSize: "34px",
   lineHeight: "40px",
+  marginTop: "25px",
 };
 const ques = {
   display: "flex",
@@ -84,6 +85,8 @@ const btn = {
   color: "white",
   borderRadius: "6px",
   width: "200px",
+  marginTop: "25px",
+  marginRight: 2,
 };
 const dataText = {
   display: "flex",
@@ -167,7 +170,6 @@ const AddedQues = ({
           color: "",
         });
       }, 1200);
-   
     } catch (error) {
       console.log("eroror", error);
     }
@@ -226,7 +228,8 @@ const AddedQues = ({
           )}
         </Grid>
       </CardContent>
-      {/* <div ref={ref}></div> */}
+      <div ref={ref}></div>
+
       {showq && (
         <All
           showAlert={showAlert}

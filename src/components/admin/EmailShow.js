@@ -93,7 +93,7 @@ const delBtn = {
 const divText = {
   width: "80%",
   height: "28px",
-  fontFamily: "Raleway",
+  fontFamily: "Roboto",
   fontStyle: "normal",
   fontWeight: "300",
   fontSize: "24px",
@@ -163,7 +163,7 @@ const EmailShow = () => {
       });
       setUploadEmail(arr);
       setFilteredResults(arr);
-      console.log(response?.data);
+      // console.log(response?.data);
     } catch (error) {
       setLoading(false);
     }
@@ -183,27 +183,21 @@ const EmailShow = () => {
   const handleDropChange = (e) => {
     const { value } = e.target;
     setDropValue(value);
+    setEmails([]);
   };
 
   const handleDelete = async (mail) => {
-    setMsg({
-      errMsg: "Participator deleted Successfully...!",
-      color: "red",
-    });
     try {
       const result = await deletestudent(mail);
-      setUpload({
-        alert: true,
-        loader: false,
-      });
       setMsg({
         errMsg: "Participator deleted Successfully...!",
         color: "red",
       });
-      getParticipatorData();
-      setUploadEmail((val) => {
-        return val.filter((id) => id !== mail);
+      setUpload({
+        alert: true,
+        loader: false,
       });
+      participatorFilter();
       setTimeout(() => {
         setUpload({
           alert: false,
@@ -229,9 +223,6 @@ const EmailShow = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getParticipatorData();
-  // }, [showAlert]);
   useEffect(() => {
     participatorFilter();
   }, [dropValue]);
@@ -273,6 +264,7 @@ const EmailShow = () => {
       });
       try {
         const result = await uploadParticipator(files[0]);
+        console.log(result, "qqqqqqqqqqqqqqqqqqq");
         if (result?.data) {
           setUpload({
             alert: true,
@@ -286,6 +278,7 @@ const EmailShow = () => {
         });
         getParticipatorData();
         const response = result?.data;
+        console.log(response, "Participator email");
         const arr = response.filter((val) => {
           return val.trim("") != "";
         });
@@ -318,6 +311,7 @@ const EmailShow = () => {
 
   const handleOnChange = (e) => {
     setSearchString(e.target.value);
+    setEmails([]);
     if (searchString !== "") {
       const filteredData = uploadEmail?.filter((item) => {
         return Object?.values(item)
@@ -527,7 +521,7 @@ const EmailShow = () => {
             display="flex"
             justifyContent="flex-end"
             mr={12}
-            mt={3}
+            mt={1.5}
             alignItems="flex-end"
           >
             <Button

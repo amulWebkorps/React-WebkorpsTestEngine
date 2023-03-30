@@ -4,9 +4,11 @@ import candidateApi from "./candidateApi";
 const PARTICIPATOR_LOGIN_URL = `${BASE_URL}/public/doSignInForParticipator`;
 const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
 const START_CONTEST_PAGE = `${BASE_URL}/startContestPage`;
-const RUN_AND_CODE_COMPILER = `${BASE_URL}/runAndCompilerCode`;
 const START_MCQ_PAGE = `${BASE_URL}/startMCQContest`;
 const SUBMIT_MCQ = `${BASE_URL}/submitMcqContest`;
+const RUN_AND_CODE_COMPILER = `${BASE_URL}/runORExecuteAllTestCases`;
+const SUBMIT_CODE = `${BASE_URL}/save/code`;
+const FINISH_TEST = `${BASE_URL}/finish/test`;
 
 const participatorLogin = (contestId, credential) => {
   const cred = {
@@ -34,10 +36,11 @@ const runAndCompilerCode = (candidateCode) => {
 };
 
 const submitCode = (candidateCode) => {
-  return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
+  return candidateApi.post(`${SUBMIT_CODE}`, candidateCode);
 };
 const finish = (candidateCode) => {
-  return candidateApi.post(`${RUN_AND_CODE_COMPILER}`, candidateCode);
+  console.log("finnesheeee");
+  return candidateApi.post(`${FINISH_TEST}`, candidateCode);
 };
 
 const startMcqPage = () => {
@@ -61,5 +64,5 @@ export {
   submitCode,
   finish,
   startMcqPage,
-  submitMcq
+  submitMcq,
 };
