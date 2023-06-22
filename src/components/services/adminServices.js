@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./base";
 import api from "./api";
+import { inputAdornmentClasses } from "@mui/material";
 //const BASE_URL = `http://localhost:8085`;
 const ADMIN_LOGIN_URL = `${BASE_URL}/public/admin/signIn`;
 const ADMIN_REGISTRATION_URL = `${BASE_URL}/public/adminRegistration`;
@@ -11,6 +12,7 @@ const CONTEST_URL = `${BASE_URL}/admin/getContestDetail`;
 const DELETE_CONTEST = `${BASE_URL}/admin/deleteContest`;
 const UPLOAD_PARTICIAPTOR = `${BASE_URL}/admin/studentUpload`;
 const SENT_MAIL = `${BASE_URL}/admin/sentMailForParticipator`;
+const SENT_MAIL_MCQ = `${BASE_URL}/admin/sentMailForParticipatorForMCQ`;
 const loginAdmin = (credential) => {
 
   return axios.post(ADMIN_LOGIN_URL,credential);
@@ -28,8 +30,8 @@ const registerAdmin = (credential) => {
   });
 };
 
-const getContestDetail = (id) => {
-  return api.get(`${CONTEST_URL}?contestId=${id}`);
+const getContestDetail = (id,type) => {
+  return api.get(`${CONTEST_URL}?contestId=${id}&contestType=${type}`);
 };
 
 const deleteContest = (id) => {
@@ -37,11 +39,13 @@ const deleteContest = (id) => {
 };
 
 const addContest = (contestDetails) => {
+  console.log(contestDetails,"contest");
   return api.post(CREATE_CONTEST, {
     contestName: contestDetails?.contestName,
     contestDescription: contestDetails?.contestDescription,
     contestLevel: contestDetails?.contestLevel,
     contestTime: contestDetails?.contestTime,
+    contestType: contestDetails?.contestType
   });
 };
 const sendMail = (Id, mail) => {
@@ -53,6 +57,10 @@ const sendMail = (Id, mail) => {
 
 const sentMail = () => {
   return api.get(SENT_MAIL);
+};
+
+const sentMailMcq = () => {
+  return api.get(SENT_MAIL_MCQ);
 };
 const uploadParticipator = (file) => {
   const formData = new FormData();
@@ -74,6 +82,7 @@ export {
   deleteContest,
   sentMail,
   uploadParticipator,
+  sentMailMcq
 };
 
 // export { loginAdmin, registerAdmin, sendMail, addContest, getContestDetail,getAllContestList,deleteContest,getparticipatordetail,viewParticipatorOfContest};

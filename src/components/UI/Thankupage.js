@@ -70,13 +70,11 @@ const Thankupage = () => {
   const year = date.getFullYear();
   useEffect(() => {
     window.onbeforeunload = function () {
-      console.log("akkk");
       return true;
     };
 
     return () => {
       window.onbeforeunload = null;
-      console.log("kkk");
     };
   }, []);
 

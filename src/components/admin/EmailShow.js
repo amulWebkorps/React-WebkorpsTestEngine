@@ -13,7 +13,6 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Modal2 from "../UI/Modal2";
 import Header from "../UI/Header";
-import { useLocation } from "react-router-dom";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMail, uploadParticipator } from "../services/adminServices";
 import {
@@ -23,6 +22,7 @@ import {
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
+
 
 const background1 = {
   height: "100vh",
@@ -324,6 +324,7 @@ const EmailShow = () => {
       setFilteredResults(uploadEmail);
     }
   };
+
   const buttonEmail = {
     fontSize: "8",
     fontWeight: "600",
@@ -389,6 +390,7 @@ const EmailShow = () => {
                     <IconButton type="submit" sx={searchIcon}>
                       <SearchIcon disabled />
                     </IconButton>
+
                     <InputBase
                       placeholder="Search emails"
                       sx={searchField}
@@ -450,7 +452,6 @@ const EmailShow = () => {
               >
                 {uploadEmail?.length <= 0 || filteredResults?.length <= 0 ? (
                   <>
-                    {" "}
                     <Typography sx={dataText}>No data</Typography>
                     <br />
                   </>

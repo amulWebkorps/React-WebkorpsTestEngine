@@ -4,6 +4,8 @@ import candidateApi from "./candidateApi";
 const PARTICIPATOR_LOGIN_URL = `${BASE_URL}/public/doSignInForParticipator`;
 const SHOW_ALL_LANGUAGE = `${BASE_URL}/showAllLanguage`;
 const START_CONTEST_PAGE = `${BASE_URL}/startContestPage`;
+const START_MCQ_PAGE = `${BASE_URL}/startMCQContest`;
+const SUBMIT_MCQ = `${BASE_URL}/submitMcqContest`;
 const RUN_AND_CODE_COMPILER = `${BASE_URL}/runORExecuteAllTestCases`;
 const SUBMIT_CODE = `${BASE_URL}/save/code`;
 const FINISH_TEST = `${BASE_URL}/finish/test`;
@@ -41,6 +43,19 @@ const finish = (candidateCode) => {
   return candidateApi.post(`${FINISH_TEST}`, candidateCode);
 };
 
+const startMcqPage = () => {
+  console.log("startMcq");
+  return candidateApi.post(
+    `${START_MCQ_PAGE}?contestId=${localStorage.getItem(
+      "contestId"
+    )}&studentId=${localStorage.getItem("studentId")}`
+  );
+};
+
+const submitMcq = (submitArray) => {
+  return candidateApi.post(SUBMIT_MCQ, submitArray);
+};
+
 export {
   participatorLogin,
   showAllLanguage,
@@ -48,4 +63,6 @@ export {
   runAndCompilerCode,
   submitCode,
   finish,
+  startMcqPage,
+  submitMcq,
 };

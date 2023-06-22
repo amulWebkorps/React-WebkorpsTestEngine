@@ -88,6 +88,11 @@ const btn = {
   marginTop: "25px",
   marginRight: 2,
 };
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 
 const AddedQues = ({
   showAlert,
@@ -121,6 +126,7 @@ const AddedQues = ({
     setShowQ(true);
     ref.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const scrollTop = () => {
     setEditRef(refs.current?.scrollIntoView({ behavior: "smooth" }));
   };
@@ -164,9 +170,6 @@ const AddedQues = ({
           color: "",
         });
       }, 1200);
-      // if (response) {
-      //   // setDeleteQ(true);
-      // }
     } catch (error) {
       console.log("eroror", error);
     }
@@ -190,30 +193,39 @@ const AddedQues = ({
       </Paper>
       <CardContent sx={card}>
         <Grid container direction="row" flexDirection={"column"}>
-          <Grid>{loader && <Loader />}</Grid>
-          {contestQuestion?.map?.((val, index) => {
-            return (
-              <Grid item mt={2} key={index}>
-                <Paper sx={ques}>
-                  <Typography sx={quesText}>{val?.question}</Typography>
-                  <Link
-                    underline="always"
-                    sx={edit}
-                    onClick={() => editQuestion(index, val?.questionId)}
-                  >
-                    {"Edit Question"}
-                  </Link>
-                  <IconButton
-                    aria-label="add"
-                    sx={delBtn}
-                    onClick={() => delQuestion(index, val?.questionId)}
-                  >
-                    <CloseIcon fontSize="x-small" />
-                  </IconButton>
-                </Paper>
-              </Grid>
-            );
-          })}
+          {/* <Grid>{loader && <Loader />}</Grid> */}
+
+          {loader ? (
+            <Loader />
+          ) : contestQuestion.length == 0 ? (
+            <Typography align="center" sx={dataText}>
+              No Data
+            </Typography>
+          ) : (
+            contestQuestion?.map?.((val, index) => {
+              return (
+                <Grid item mt={2} key={index}>
+                  <Paper sx={ques}>
+                    <Typography sx={quesText}>{val?.question}</Typography>
+                    <Link
+                      underline="always"
+                      sx={edit}
+                      onClick={() => editQuestion(index, val?.questionId)}
+                    >
+                      {"Edit Question"}
+                    </Link>
+                    <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      onClick={() => delQuestion(index, val?.questionId)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
+                  </Paper>
+                </Grid>
+              );
+            })
+          )}
         </Grid>
       </CardContent>
       <div ref={ref}></div>

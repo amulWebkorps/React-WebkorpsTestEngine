@@ -1,27 +1,33 @@
-import React, { useState, useEffect } from "react";
 import {
+  Box,
   Button,
-  Dialog,
   Container,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  FormControl,
   Grid,
-  Typography,
   InputLabel,
+  MenuItem,
+  Select,
+  Typography,
 } from "@mui/material";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+import React, { useEffect, useState } from "react";
 import { crossbtn } from "../assests/images";
-import { Box } from "@mui/system";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { getAllContestList, sendMail } from "../services/adminServices";
 import Loader from "../auth/base/Loader";
+import { getAllContestList, sendMail } from "../services/adminServices";
+
+const emailContainer = {
+  overflowY: "auto",
+  maxHeight: "340px",
+};
 
 const scrollDiv = {
-  // overflowY: "auto",
+  overflowY: "auto",
 };
 const divText = {
   margin: "9px",
+
   fontFamily: "Raleway",
   fontStyle: "normal",
   fontWeight: "300",
@@ -31,62 +37,46 @@ const divText = {
   marginLeft: "20px",
 };
 const divSelect = {
-  overflowX: "auto",
-  width: "100%",
-  // height: "76px",
+  width: "1000h",
   background: "#FFFFFF",
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "10px",
 };
-const emailContainer = {
-  // overflow: "hidden",
-  maxHeight: "340px",
+const modalBody = {
+  background: "#F9FAFC",
+  boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
+  borderRadius: "18px",
+  height: "50vh",
+  width: "70vh",
 };
-
 const btn = {
   marginTop: "50px",
   justifyContent: "end",
   display: "flex",
 };
-
-export default function Model2({
-  setIsAlert,
-  isAlert,
-  setAlert,
+function McqModel({
   open,
   setOpen,
-  emails,
-  sentEmails,
-  setEmails,
   sent,
   setSent,
+  setIsAlert,
   setMsg,
-  participatorFilter,
+  emails,
+  setAlert,
+  setEmails,
+  sentEmails,
+  loadContestDetails
 }) {
   const [disable, setDisable] = useState(false);
   const [contestId, setContestId] = useState();
   const [contestDetails, setContestDetails] = useState(null);
-
   useEffect(() => {
     const response = getAllContestList().then((res) => {
       setContestDetails(res?.data);
     });
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
-    setTimeout(() => {
-      setSent(false);
-    }, 500);
-  };
-  const modalBody = {
-    background: "#F9FAFC",
-    boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
-    borderRadius: "18px",
-    height: `${sent ? "320px" : ""}`,
-    width: "550px",
-  };
   const handleMail = async () => {
     if (contestId === undefined || contestId === null) {
       setIsAlert(true);
@@ -104,7 +94,7 @@ export default function Model2({
           errMsg: "Mail send successfully...!",
           color: "green",
         });
-        participatorFilter();
+        loadContestDetails();
         setTimeout(() => {
           setAlert(false);
         }, 1100);
@@ -124,16 +114,17 @@ export default function Model2({
       }
     }
   };
+  const handleClose = () => {
+    setOpen(false);
+    setTimeout(() => {
+      setSent(false);
+    }, 500);
+  };
   const handleChange = (e) => {
     setContestId(e.target.value);
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setIsAlert(false);
-    }, 2500);
-  }, [isAlert]);
   return (
-    <div>
+    <>
       <Dialog
         open={open}
         aria-labelledby="alert-dialog-title"
@@ -143,14 +134,14 @@ export default function Model2({
         }}
       >
         <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-          <Button onClick={handleClose}>
-            <img src={crossbtn} alt="logo" />
+          <Button>
+            <img src={crossbtn} onClick={handleClose} alt="logo" />
           </Button>
         </Box>
-        <DialogContent sx={{ marginBottom: "30px" }}>
+        <DialogContent>
           {sent ? (
             <Container sx={emailContainer}>
-              <Grid container sx={{ marginTop: "-27px" }}>
+              <Grid container>
                 {sentEmails?.length === 0 ? (
                   <h3 style={{ marginTop: "20px" }}>
                     Sent emails is empty now...
@@ -173,7 +164,7 @@ export default function Model2({
           ) : (
             <div>
               <DialogContentText>
-                <Box sx={{ minWidth: 100 }}>
+                <Box sx={{ minWidth: 50 }}>
                   <FormControl fullWidth>
                     <InputLabel
                       id="demo-multiple-name-label"
@@ -200,16 +191,8 @@ export default function Model2({
                       })}
                     </Select>
                   </FormControl>
-                </Box>
-              </DialogContentText>
-              <Box sx={{ display: "flex", justifyContent: "end" }}>
-                <Box>{disable && <Loader mt={6} ml={12} />}</Box>
-                <Box sx={btn}>
-                  {disable ? (
-                    <Button marginTop={2} variant="contained" disabled>
-                      Send
-                    </Button>
-                  ) : (
+                  <Box>{disable && <Loader mt={6} ml={12} />}</Box>
+                  <Box sx={btn}>
                     <Button
                       marginTop={2}
                       variant="contained"
@@ -217,13 +200,15 @@ export default function Model2({
                     >
                       Send
                     </Button>
-                  )}
+                  </Box>
                 </Box>
-              </Box>
+              </DialogContentText>
             </div>
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
+
+export default McqModel;

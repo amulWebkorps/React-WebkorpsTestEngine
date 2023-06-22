@@ -14,6 +14,7 @@ import MsgBar from "../auth/base/MsgBar";
 import { deleteQuestion } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
 import Loader from "../candidate/base/Loader";
+import { Navigate, useNavigate } from "react-router-dom";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -115,8 +116,41 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-
+const allQuestion = {
+  cursor: "pointer",
+  width: "250px",
+  height: "55px",
+  background: "#0057FF !important",
+  color: "white",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: `18px 0px 0px 18px`,
+  fontWeight: 700,
+  fontSize: "20px",
+};
+const mcqBtn = {
+  cursor: "pointer",
+  width: "250px",
+  height: "55px",
+  background: "white",
+  color: "Black",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: `0px 18px 18px 0px`,
+  fontWeight: 700,
+  fontSize: "20px",
+};
+const dataText={
+  display:"flex",
+  justifyContent:"center",
+  fontSize:"20px"
+}
 const Allavailable = () => {
+  const navigate = useNavigate();
   const [allAvailQues, setAllAvailQues] = useState([]);
   const [filterValue, setFilterValue] = useState("All");
   const [msg, setMsg] = useState({
@@ -132,10 +166,7 @@ const Allavailable = () => {
 
   const handleDelete = (id, quesId) => {
     const arr = [`questionForLevel`, quesId];
-    // setMsg({
-    //   state: true,
-    // });
-    console.log("----------", id, quesId);
+ 
     setAllAvailQues((val) => {
       return val.filter((e, index) => index !== id);
     });
@@ -157,9 +188,8 @@ const Allavailable = () => {
     } catch (error) {}
   };
   useEffect(() => {
-    setloader(true)
+    setloader(true);
     const result = filterQuestion(filterValue).then((res) => {
-     
       if (res.message == "success" && res.status == "200") {
         setloader(false);
       }
@@ -172,13 +202,24 @@ const Allavailable = () => {
       {msg.state && <MsgBar errMsg={msg.msg} color={msg.color} />}
       <Header />
       <BackButton />
-      <Grid container sx={{ justifyContent: "center" }}>
+      {/* <Grid container sx={{ justifyContent: "center" }}>
         <Grid item mt={5}>
           <Box variant="contained" sx={buttonLevel}>
             All questions
           </Box>
+         
         </Grid>
+      </Grid> */}
+      {/* //my change */}
+      <Grid container sx={{ justifyContent: "center" }} mt={5}>
+        <Box variant="contained" sx={allQuestion}>
+          All question
+        </Box>
+        <Box sx={mcqBtn} onClick={() => navigate("/allmcq")}>
+          MCQ
+        </Box>
       </Grid>
+
       <Container sx={whiteContainer} fixed>
         <Grid sx={containerUpper}>
           <Grid item sx={levelSubHeading}>
@@ -206,27 +247,33 @@ const Allavailable = () => {
             </Button> */}
           </Grid>
         </Grid>
-        <Grid>{loader && <Loader />}</Grid>
-        <Grid container sx={{ maxHeight: "500px", overflow: "auto" }}>
-          {allAvailQues?.map((val, index) => {
-            return (
-              <Grid container sx={divSelect} key={index}>
-                <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>{val?.question}</Typography>
+        {/* <Grid>{loader && <Loader />}</Grid> */}
+        <Grid container sx={{ maxHeight: "500px", overflow: "auto" ,justifyContent: "center"}}>
+          {loader ? (
+            <Loader />
+          ) : allAvailQues.length <= 0 ? (
+            <Typography align="center" sx={dataText}>No Data</Typography>
+          ) : (
+            allAvailQues?.map((val, index) => {
+              return (
+                <Grid container sx={divSelect} key={index}>
+                  <Grid item sm={10} sx={scrollDiv}>
+                    <Typography sx={divText}>{val?.question}</Typography>
+                  </Grid>
+                  <Grid item sm={1} mt={1}></Grid>
+                  <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
+                    <IconButton
+                      aria-label="add"
+                      sx={delBtn}
+                      onClick={() => handleDelete(index, val?.questionId)}
+                    >
+                      <CloseIcon fontSize="x-small" />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-                <Grid item sm={1} mt={1}></Grid>
-                <Grid item sm={1} mt={0} x={{ justifyContent: "end" }}>
-                  <IconButton
-                    aria-label="add"
-                    sx={delBtn}
-                    onClick={() => handleDelete(index, val?.questionId)}
-                  >
-                    <CloseIcon fontSize="x-small" />
-                  </IconButton>
-                </Grid>
-              </Grid>
-            );
-          })}
+              );
+            })
+          )}
         </Grid>
       </Container>
     </div>

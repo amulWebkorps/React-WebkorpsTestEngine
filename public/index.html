@@ -29,18 +29,17 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script>
-      window.addEventListener("beforeunload", (event) => {
-        window.localStorage.isMySessionActive = "true";
-      });
-      window.onunload = function (e) {
-        const newTabCount = localStorage.getItem("tabsOpen");
-        localStorage.setItem("tabsOpen", 1);
-        if (newTabCount !== null) {
-          localStorage.setItem("tabsOpen", newTabCount - 1);
-        }
-      };
-      // Disabling inspect element
-    </script>
+ <script>
+    window.addEventListener("beforeunload", (event) => {
+    window.localStorage.isMySessionActive = "true";
+  });
+  window.onunload = function (e) {
+    const newTabCount = localStorage.getItem("tabsOpen");
+    localStorage.setItem("tabsOpen", 1);
+    if (newTabCount !== null) {
+      localStorage.setItem("tabsOpen", newTabCount - 1);
+    }
+  };
+ </script>
   </body>
 </html>

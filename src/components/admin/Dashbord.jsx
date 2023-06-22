@@ -140,7 +140,6 @@ const months = {
   lineHeight: "14px",
   height: "29px",
   overflowX: "auto",
-  "overflow-wrap": "break-word",
 };
 
 const loaderStyle = {
@@ -163,7 +162,6 @@ const contestInitialValues = {
 };
 const Dashbord = () => {
   const [showAvailq, setAvailQ] = useState(true);
-  const location = useLocation();
   const [showAlert, setAlert] = useState(false);
   const [bar, setBar] = useState(false);
   const [delContest, setDelContest] = useState({
@@ -180,11 +178,12 @@ const Dashbord = () => {
   const navigate = useNavigate();
   const adminToken = localStorage.getItem("token");
 
-  const handleContest = async (id) => {
+  const handleContest = async (id, type) => {
     try {
-      const result = await getContestDetail(id);
+      const result = await getContestDetail(id, type);
       setContestData(result?.data);
-      navigate("/addQuestion", { state: { result } });
+      const navigationLink = type === "MCQ" ? "/mcqPage" : "/addQuestion";
+      navigate(navigationLink, { state: { result } });
     } catch (error) {
       console.log("error", error);
     }
@@ -244,7 +243,7 @@ const Dashbord = () => {
       fetchContestData();
     }
   }, []);
-
+  const token = localStorage?.getItem("token");
   useEffect(() => {
     // if access token is expire it redirected to login page
     if (adminToken !== null) {
@@ -258,7 +257,6 @@ const Dashbord = () => {
   }, [window.location]);
 
   useEffect(() => {
-    // define increment counter part
     const tabsOpen = localStorage.getItem("tabsOpen");
     if (tabsOpen == null) {
       localStorage.setItem("tabsOpen", 1);
@@ -278,7 +276,6 @@ const Dashbord = () => {
     } else {
       const newTabCount2 = localStorage.getItem("tabsOpen");
       let value = localStorage.getItem("isMySessionActive");
-      // console.log(newTabCount2);
       if (value == "true") {
         if (newTabCount2 - 1 == 0) {
           localStorage.clear();
@@ -347,7 +344,10 @@ const Dashbord = () => {
                       <CardActionArea>
                         <CardMedia
                           onClick={() =>
-                            handleContest(contestDetails?.[index]?.contestId)
+                            handleContest(
+                              contestDetails?.[index]?.contestId,
+                              contestDetails?.[index].contestType
+                            )
                           }
                           style={cardImg}
                           component="img"
@@ -485,7 +485,6 @@ const Dashbord = () => {
                 </Card>
               </Grid>
             </Grid>
-            <Grid></Grid>
           </Container>
         </>
       )}

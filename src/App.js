@@ -23,6 +23,12 @@ import CandidateRoutes from "./CandidateRoutes";
 import viewParticipatorDetail from "./components/admin/ViewParticipatorDetail";
 import Thankupage from "./components/UI/Thankupage";
 import CandidateLogin from "./components/candidate/CandidateLogin";
+import McqPage from "./components/admin/McqPage";
+import McqParticipator from "./components/admin/McqParticipator";
+import AllMcq from "./components/admin/AllMcq";
+import McqQuestion from "./components/candidate/McqQuestion";
+import McqInstruction from "./components/candidate/McqInstruction";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -38,7 +44,6 @@ function App() {
     hNumber: "",
     password: "",
   });
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -79,7 +84,18 @@ function App() {
             path="/dashboard"
             element={<AdminRoutes Component={Dashbord} />}
           ></Route>
-
+          <Route
+            path="/mcqPage"
+            element={<AdminRoutes Component={McqPage} />}
+          ></Route>
+          <Route
+            path="/mcqParticipator"
+            element={<AdminRoutes Component={McqParticipator} />}
+          ></Route>
+          <Route
+            path="/allmcq"
+            element={<AdminRoutes Component={AllMcq} />}
+          ></Route>
           <Route
             path="/addQuestion"
             element={<AdminRoutes Component={QuestionList} />}
@@ -118,6 +134,14 @@ function App() {
           <Route
             path="/thanku"
             element={<CandidateRoutes Component={Thankupage} />}
+          ></Route>
+          <Route
+            path="mcqInstruction"
+            element={<CandidateRoutes Component={McqInstruction} />}
+          ></Route>
+          <Route
+            path="/mcqQuestion"
+            element={<CandidateRoutes Component={McqQuestion} />}
           ></Route>
         </Routes>
       </div>

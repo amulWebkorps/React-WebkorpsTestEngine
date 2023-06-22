@@ -148,8 +148,6 @@ const Instruction = () => {
   };
   const { userInfo } = useSelector((state) => state?.user);
 
-  console.log(userInfo, " getjhbjb");
-
   useEffect(() => {
     showAllLanguage()
       .then(function (response) {
@@ -276,9 +274,9 @@ const Instruction = () => {
             >
               Start Contest
             </Button>
-            {/* <Button variant="outlined" sx={cancelBtn}>
+            <Button variant="outlined" sx={cancelBtn}>
               Cancel
-            </Button> */}
+            </Button>
           </Grid>
         </Grid>
       </Container>

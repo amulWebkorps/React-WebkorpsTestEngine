@@ -93,7 +93,7 @@ const divSelect = {
   boxShadow: "2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "14px",
   marginTop: "12px",
-  justifyContent:'space-between'
+  justifyContent: "space-between",
 };
 
 const containerUpper = {
@@ -101,7 +101,16 @@ const containerUpper = {
   flexDirection: "row",
   justifyContent: "center",
 };
-
+const loaderStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItem: "center",
+};
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 const All = ({
   showAlert,
   setshowselectquestion,
@@ -187,7 +196,7 @@ const All = ({
     }
   };
   useEffect(() => {
-    setloader(true)
+    setloader(true);
     const result = filterQuestion(dropValue).then((res) => {
       if (res.message == "success" && res.status == "200") {
         setloader(false);
@@ -235,27 +244,33 @@ const All = ({
             </Button>
           </Grid>
         </Grid>
-        <Grid>{loader && <Loader />}</Grid>
-        <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
-          {availableQuestions?.map((val, index) => {
+
+        {loader ? (
+          <Loader />
+        ) : availableQuestions.length == 0 ? (
+          <Typography sx={dataText}>No Data</Typography>
+        ) : (
+          availableQuestions?.map((val, index) => {
             return (
-              <Grid container sx={divSelect} key={index}>
-                <Grid item sm={10} sx={scrollDiv}>
-                  <Typography sx={divText}>{val?.question}</Typography>
-                </Grid>
-                <Grid item sm={1} mt={2} key={`${index}%%$`}>
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<CheckCircleIcon color="#0057ff" />}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
-                    value={val?.questionId}
-                    onChange={handleQuestion}
-                  />
+              <Grid container sx={{ maxHeight: "350px", overflowY: "auto" }}>
+                <Grid container sx={divSelect} key={index}>
+                  <Grid item sm={10} sx={scrollDiv}>
+                    <Typography sx={divText}>{val?.question}</Typography>
+                  </Grid>
+                  <Grid item sm={1} mt={2} key={`${index}%%$`}>
+                    <Checkbox
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<CheckCircleIcon color="#0057ff" />}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 30 } }}
+                      value={val?.questionId}
+                      onChange={handleQuestion}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             );
-          })}
-        </Grid>
+          })
+        )}
       </Container>
     </div>
   );

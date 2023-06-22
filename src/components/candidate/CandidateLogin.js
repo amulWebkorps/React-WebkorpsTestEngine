@@ -117,6 +117,11 @@ const CandidateLogin = () => {
       setTimeout(() => {
         setAlert(false);
       }, 2000);
+    } else if (role === "student") {
+      setErrorMsg(true);
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 1200);
     } else {
       try {
         const result = await participatorLogin(id, credential);
@@ -128,13 +133,23 @@ const CandidateLogin = () => {
         localStorage.setItem("name", result?.data?.data?.student?.name);
         localStorage.setItem("email", result?.data?.data?.student?.email);
         localStorage.setItem("role", "student");
+        localStorage.setItem(
+          "contestLevel",
+          result?.data?.data?.student?.contestLevel
+        );
         const token = result?.data?.data?.token;
         localStorage.setItem("token", token);
         setLoading(true);
         setMsg(true);
         localStorage.setItem("login", "true");
         setTimeout(() => {
-          navigate("/instruction", { state: { data: result.data } });
+          const contestLevel = result?.data?.data?.student?.contestLevel;
+          console.log(contestLevel, "level");
+          if (contestLevel === "level 1") {
+            navigate("/mcqInstruction", { state: { data: result.data } });
+          } else {
+            navigate("/instruction", { state: { data: result.data } });
+          }
         }, 1500);
         console.log(result.data, "result");
       } catch (error) {
