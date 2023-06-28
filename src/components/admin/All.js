@@ -41,6 +41,7 @@ const whiteContainer = {
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
+  overflow:"scroll"
 };
 
 const levelText = {

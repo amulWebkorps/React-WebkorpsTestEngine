@@ -143,9 +143,9 @@ const CandidateLogin = () => {
         setMsg(true);
         localStorage.setItem("login", "true");
         setTimeout(() => {
-          const contestLevel = result?.data?.data?.student?.contestLevel;
-          console.log(contestLevel, "level");
-          if (contestLevel === "level 1") {
+          const contestType = result?.data?.data?.student?.contestType;
+          // console.log(result?.data?.data?.student, "level");
+          if (contestType === "MCQ") {
             navigate("/mcqInstruction", { state: { data: result.data } });
           } else {
             navigate("/instruction", { state: { data: result.data } });

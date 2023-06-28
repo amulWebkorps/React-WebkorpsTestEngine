@@ -295,7 +295,7 @@ function McqPage() {
           <Grid container sx={{ display: "flex", justifyContent: "center" }}>
             {loader ? (
               <Loader />
-            ) : mcqQuestion.length == 0 ? (
+            ) : mcqQuestion?.length == 0 ? (
               <Typography sx={noData}>No Data</Typography>
             ) : (
               mcqQuestion?.map((val, index) => {
