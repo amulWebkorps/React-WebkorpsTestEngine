@@ -16,7 +16,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { getparticipatordetail } from "../services/contest/contestServices";
 // import { getparticipatordetail } from "../services/adminServices";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BackButton from "../UI/BackButton";
 
 const div1 = {
@@ -156,7 +156,7 @@ const ViewParticipatorDetail = () => {
   const location = useLocation();
   const [participatorDetails, setParticipatorDetails] = useState();
   const [studentId, setStudentId] = useState(location?.state);
-
+const navigate = useNavigate()
  
   const nextQuestion = (e) => {
     setCount(function (prevCount) {
@@ -186,6 +186,9 @@ const ViewParticipatorDetail = () => {
       setTestcase(res?.data?.studentDetail?.testCaseRecord);
     } catch (error) {
       console.log("--", error);
+      if(error.response.status===403){
+        navigate("/error")
+      }
     }
   };
 

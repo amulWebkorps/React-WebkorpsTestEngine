@@ -19,6 +19,7 @@ import { getContestDetail } from "../services/adminServices";
 import Popup from "../UI/Popup";
 import MsgBar from "../auth/base/MsgBar";
 import Loader from "../auth/base/Loader";
+import { greenColor, blueColor, redColor } from "../../alertColors";
 
 const containerStyle = {
   // overflowY: "auto",
@@ -249,7 +250,7 @@ const Dashbord = () => {
     if (adminToken !== null) {
       const decodeToken = jwt_decode(adminToken);
       if (decodeToken?.exp * 1000 < Date.now()) {
-        navigate("/");
+        navigate("/error");
       }
     } else {
       navigate("/");
@@ -315,16 +316,16 @@ const Dashbord = () => {
             <MsgBar
               errMsg={
                 bar
-                  ? "Contest Delete Successfully...!"
+                  ? "Contest Deleted Successfully...!"
                   : "Contest Created Successfully...!"
               }
-              color={bar ? "blue" : "green"}
+              color={bar ? blueColor : greenColor}
             />
           ) : (
             <></>
           )}
           {error && (
-            <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+            <MsgBar errMsg={"something went wrong"} color={redColor}></MsgBar>
           )}
           <Container sx={createContext}>
             <Typography sx={text}>Contest Created</Typography>
