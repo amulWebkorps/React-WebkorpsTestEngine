@@ -28,7 +28,6 @@ import McqParticipator from "./components/admin/McqParticipator";
 import AllMcq from "./components/admin/AllMcq";
 import McqQuestion from "./components/candidate/McqQuestion";
 import McqInstruction from "./components/candidate/McqInstruction";
-import Errorpage from "./components/auth/Errorpage";
 
 const theme = createTheme({
   palette: {
@@ -143,10 +142,6 @@ function App() {
           <Route
             path="/mcqQuestion"
             element={<CandidateRoutes Component={McqQuestion} />}
-          ></Route>
-          <Route
-            path="/error"
-            element={<CandidateRoutes Component={Errorpage} />}
           ></Route>
         </Routes>
       </div>

@@ -15,8 +15,6 @@ import { useEffect } from "react";
 import { getContestDetail } from "../services/adminServices";
 import Loader from "../candidate/base/Loader";
 import MsgBar from "../auth/base/MsgBar";
-import { greenColor, redColor } from "../../alertColors";
-
 const background1 = {
   height: "100vh",
   background: `linear-gradient(
@@ -165,8 +163,8 @@ function McqPage() {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please Select Excel File...!",
-        color: redColor,
+        errMsg: "Please select excel file...!",
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -181,8 +179,8 @@ function McqPage() {
         loadContestDetails();
         setShowValidation(true);
         setMsg({
-          errMsg: "Question Uploaded...!",
-          color: greenColor,
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
         });
         setTimeout(() => {
           setShowValidation(false);
@@ -210,8 +208,8 @@ function McqPage() {
         setAlert(true);
         setMsg({
           state: true,
-          errMsg: "Question Delete....!",
-          color: redColor,
+          errMsg: "Question delete succesfully",
+          color: "red",
         });
         setTimeout(() => {
           setAlert(false);

@@ -176,7 +176,7 @@ const Instruction = () => {
       })
     );
   }, [language]);
-  // console.log(language);
+  console.log(language);
   useEffect(() => {
     window.addEventListener("popstate", (event) => {
       navigate("/instruction");

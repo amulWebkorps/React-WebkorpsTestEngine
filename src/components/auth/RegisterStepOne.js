@@ -13,8 +13,6 @@ import { logo } from "../assests/images";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import MsgBar from "./base/MsgBar";
 import Header from "../UI/Header";
-import { redColor } from "../../alertColors";
-
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -211,12 +209,12 @@ const RegisterStepOne = ({ SetRegisterCredential , registerCredential}) => {
       <Grid container>
         <Header setColor={true} setShow={true}/>
       </Grid>
-      {showAlert && <MsgBar errMsg={"Please Fill All Details"} color={redColor} />}
+      {showAlert && <MsgBar errMsg={"Please fill all details"} color={"red"} />}
       {showNumber && (
-        <MsgBar errMsg={"Please Enter Valid Phone Number"} color={redColor} />
+        <MsgBar errMsg={"Please enter valid phone number"} color={"red"} />
       )}
       {showEmail && (
-        <MsgBar errMsg={"Please Fill Valid Email Address"} color={redColor} />
+        <MsgBar errMsg={"Please fill valid email address"} color={"red"} />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

@@ -8,7 +8,6 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { addSelectiveMcq } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
-import { blueColor, greenColor } from "../../alertColors";
 
 function AvailableMcq({
   avaiableMcqs,
@@ -87,6 +86,7 @@ function AvailableMcq({
       setMcqArr([...mcqArr, value]);
     } else {
       setMcqArr((val) => {
+        console.log(val, "va;ll");
         return val.filter((index) => index !== value);
       });
     }
@@ -102,8 +102,8 @@ function AvailableMcq({
     if (mcqArr.length <= 0) {
       setshowselectMcq(true);
       setMsg({
-        errMsg: "Please Select A Question...!",
-        color: blueColor,
+        errMsg: "Please select a question...!",
+        color: "blue",
       });
       setTimeout(() => {
         setshowselectMcq(false);
@@ -112,11 +112,12 @@ function AvailableMcq({
       try {
         const result = await addSelectiveMcq(arr).then((res) => {
           loadContestDetails();
+
           setAlert(true);
           setMsg({
             state: true,
-            errMsg: "Mcq Added....!",
-            color: greenColor,
+            errMsg: "Mcq Add succesfully",
+            color: "Green",
           });
           setTimeout(() => {
             setAlert(false);

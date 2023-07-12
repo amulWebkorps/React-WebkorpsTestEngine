@@ -39,6 +39,7 @@ const submitCode = (candidateCode) => {
   return candidateApi.post(`${SUBMIT_CODE}`, candidateCode);
 };
 const finish = (candidateCode) => {
+  console.log("finnesheeee");
   return candidateApi.post(`${FINISH_TEST}`, candidateCode);
 };
 

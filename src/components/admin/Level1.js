@@ -28,7 +28,6 @@ import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
 import { uploadQuestions } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
-import { greenColor, redColor } from "../../alertColors";
 
 const useStyles = makeStyles({
   container: {
@@ -164,6 +163,21 @@ const Level1 = () => {
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
   const [editRef, setEditRef] = useState(null);
+  const defaulValues = {
+    questionId: quesId === null ? "" : quesId,
+    questionStatus: "true",
+    contestLevel: `Level 1`,
+  };
+
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
+  };
+
   const [question, setQuestion] = useState(quesIntialField);
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
@@ -191,20 +205,6 @@ const Level1 = () => {
       ...sampleTestCase,
       [name]: value,
     });
-  };
-  const defaulValues = {
-    questionId: quesId === null ? "" : quesId,
-    questionStatus: "true",
-    contestLevel: `Level 1`,
-  };
-
-  const quesIntialField = {
-    questionId: defaulValues?.questionId,
-    question: "",
-    contestLevel: defaulValues?.contestLevel,
-    questionStatus: defaulValues?.questionStatus,
-    sampleTestCase: [],
-    testcases: [],
   };
 
   const handleTestChange = (e) => {
@@ -241,7 +241,7 @@ const Level1 = () => {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
-        color: redColor,
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -267,8 +267,8 @@ const Level1 = () => {
       // setAlert(true);
       setShowValidation(true);
       setMsg({
-        errMsg: "Please Fill Details...!",
-        color: redColor,
+        errMsg: "Please fill details...!",
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -292,9 +292,10 @@ const Level1 = () => {
         }, 1200);
         if (editQuestion) {
           setMsg({
-            errMsg: "Question Edited....!",
-            color: greenColor,
+            errMsg: "Question edit successfully...!",
+            color: "green",
           });
+          console.log("editquestion");
           setEditQuestion(false);
           setQuestion(quesIntialField);
           setProblemStatement(problemStatementIntialVal);
@@ -304,8 +305,8 @@ const Level1 = () => {
           return (contestQuestion[index] = question);
         } else {
           setMsg({
-            errMsg: "Question Added...!",
-            color: greenColor,
+            errMsg: "Question added successfully...!",
+            color: "green",
           });
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
@@ -320,9 +321,7 @@ const Level1 = () => {
         setTimeout(() => {
           setError(false);
         }, 2000);
-       if(error.response.status===403){
-        navigate("/error")
-       }
+        console.log("error");
       }
     }
   };
@@ -353,8 +352,8 @@ const Level1 = () => {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please Select Excel File...!",
-        color: redColor,
+        errMsg: "Please select excel file...!",
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -369,8 +368,8 @@ const Level1 = () => {
         setAlert(true);
         // setContestQuestion([...contestQuestion, ...result]);
         setMsg({
-          errMsg: "Question Uploaded...!",
-          color: greenColor,
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
         });
         setTimeout(() => {
           setMsg({
@@ -430,7 +429,7 @@ const Level1 = () => {
           <></>
         )}
         {error && (
-          <MsgBar errMsg={"something went wrong"} color={redColor}></MsgBar>
+          <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
         )}
         <Grid container sx={{ justifyContent: "center" }}>
           <Grid item>

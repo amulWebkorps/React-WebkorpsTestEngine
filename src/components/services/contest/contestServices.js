@@ -6,7 +6,6 @@ const DELETE_QUESTION = `${BASE_URL}/admin/deleteQuestion`;
 const UPLOAD_QUESTION = `${BASE_URL}/admin/questionUpload`;
 const ADD_SELECTIVE_QUE = `${BASE_URL}/admin/addSelectedAvailableQuestiontoContest`;
 const GET_CONTEST_PARTICIPATOR=`${BASE_URL}/admin/participatorOfContest?contestId=`
-const GET_CONTEST_PARTICIPATOR_RESULT =`${BASE_URL}/admin/contest/result?contestId=`
 const DELETE_STUDENT=`${BASE_URL}/admin/deleteStudent?emailId=`
 const GET_PARTICIPATOR_DETAILS=`${BASE_URL}/admin/getParticipatorDetail?studentId=`
 
@@ -39,7 +38,7 @@ const deleteStudent=(emailId)=>{
   return api.delete(`${DELETE_STUDENT}${emailId}`)
 }
 const uploadQuestions=(file,id,level)=>{
-  console.log('form datqa',level);
+  console.log('form datqa',id,level);
   const formData = new FormData();
    formData.append("contestId",id)
    formData.append("contestLevel",level)
@@ -50,8 +49,5 @@ const uploadQuestions=(file,id,level)=>{
 const getparticipatordetail=(id)=>{
   return api.get(`${GET_PARTICIPATOR_DETAILS}${id}`)
 }
-const getparticipatorresult=(id)=>{
-  return api.get(`${GET_CONTEST_PARTICIPATOR_RESULT}${id}`)
-}
-export { saveQuestion, filterQuestion, deleteQuestion, addSelectiveQuestion, uploadQuestions,getParticipatorOfContest,deleteStudent,getparticipatordetail,getparticipatorresult };
+export { saveQuestion, filterQuestion, deleteQuestion, addSelectiveQuestion, uploadQuestions,getParticipatorOfContest,deleteStudent,getparticipatordetail };
 

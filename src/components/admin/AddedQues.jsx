@@ -9,12 +9,9 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import All from "./All";
-import React, { useRef, useState, useEffect,  } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { deleteQuestion } from "../services/contest/contestServices";
 import Loader from "../candidate/base/Loader";
-import { redColor } from "../../alertColors";
-import { useNavigate } from "react-router-dom";
-
 const heading = {
   height: "89px",
   background: "#F9FAFC",
@@ -124,8 +121,6 @@ const AddedQues = ({
   const [showq, setShowQ] = useState(false);
   const ref = useRef(null);
   const refs = useRef(null);
-  const navigate = useNavigate()
-
   setEditRef(refs);
   const scrollBottom = () => {
     setShowQ(true);
@@ -165,8 +160,8 @@ const AddedQues = ({
       //   });
       // });
       setMsg({
-        errMsg: "Question Deleted...!",
-        color: redColor,
+        errMsg: "Question deleted successfully...!",
+        color: "red",
       });
       setTimeout(() => {
         setAlert(false);
@@ -177,7 +172,6 @@ const AddedQues = ({
       }, 1200);
     } catch (error) {
       console.log("eroror", error);
-      if(error.response.status === 403) navigate("/error")
     }
   };
 

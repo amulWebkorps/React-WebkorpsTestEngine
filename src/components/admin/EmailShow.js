@@ -22,8 +22,7 @@ import {
 import Loader from "../auth/base/Loader";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import BackButton from "../UI/BackButton";
-import { useNavigate } from "react-router-dom";
-import { greenColor, redColor, orangeColor } from "../../alertColors";
+
 
 const background1 = {
   height: "100vh",
@@ -115,24 +114,6 @@ const emailContainer = {
   height: "235px",
 };
 
-const buttonEmail = {
-  fontSize: "8",
-  fontWeight: "600",
-  color: "white",
-  borderRadius: "6px",
-  marginLeft: "10px",
-  height: "39px",
-  marginTop: "17px",
-};
-const sentMails = {
-  fontSize: "8",
-  fontWeight: "600",
-  color: "white",
-  borderRadius: "6px",
-  marginTop: "47px",
-  marginLeft: "27px",
-};
-
 const EmailShow = () => {
   const [open, setOpen] = React.useState(false);
   const [msg, setMsg] = useState({
@@ -153,9 +134,8 @@ const EmailShow = () => {
     alert: false,
     loader: false,
   });
-  const [showAlert, setAlert] = useState(false);
-  const navigate = useNavigate()
 
+  const [showAlert, setAlert] = useState(false);
   const handleClickOpen = () => {
     if (emails.length <= 0) {
       setIsAlert(true);
@@ -172,10 +152,6 @@ const EmailShow = () => {
     }
   };
 
-  useEffect(()=>{
-    console.log(filteredResults,"filterred datat----------");
-  },[])
-
   const participatorFilter = async () => {
     setLoading(true);
     try {
@@ -190,13 +166,6 @@ const EmailShow = () => {
       // console.log(response?.data);
     } catch (error) {
       setLoading(false);
-      setMsg({
-        errMsg: error.response.data.data,
-        color: redColor,
-      });
-      if(error.response.status === 403){
-        navigate("/error")
-      }
     }
   };
 
@@ -221,8 +190,8 @@ const EmailShow = () => {
     try {
       const result = await deletestudent(mail);
       setMsg({
-        errMsg: "Participator Deleted...!",
-        color: redColor,
+        errMsg: "Participator deleted Successfully...!",
+        color: "red",
       });
       setUpload({
         alert: true,
@@ -240,9 +209,6 @@ const EmailShow = () => {
         alert: false,
         loader: false,
       });
-      if(error.response.status === 403){
-        navigate("/error")
-      }
     }
   };
 
@@ -274,9 +240,6 @@ const EmailShow = () => {
       setFilteredResults(arr);
     } catch (error) {
       setLoading(false);
-      if(error.response.status === 403){
-        navigate("/error")
-      }
     }
   };
 
@@ -288,8 +251,8 @@ const EmailShow = () => {
     ) {
       setIsAlert(true);
       setMsg({
-        errMsg: "Please Select Excel File...!",
-        color: redColor,
+        errMsg: "Please select excel file...!",
+        color: "red",
       });
       setTimeout(() => {
         setIsAlert(false);
@@ -301,6 +264,7 @@ const EmailShow = () => {
       });
       try {
         const result = await uploadParticipator(files[0]);
+        console.log(result, "qqqqqqqqqqqqqqqqqqq");
         if (result?.data) {
           setUpload({
             alert: true,
@@ -309,19 +273,20 @@ const EmailShow = () => {
           setDropValue("All");
         }
         setMsg({
-          errMsg: "Participator Uploaded...!",
-          color: greenColor,
+          errMsg: "Participator uploaded succesfully...!",
+          color: "green",
         });
         getParticipatorData();
         const response = result?.data;
+        console.log(response, "Participator email");
         const arr = response.filter((val) => {
           return val.trim("") != "";
         });
         setUploadEmail(arr);
         if (response.length === 0) {
           setMsg({
-            errMsg: "Participator is already Uploaded...!",
-            color: orangeColor,
+            errMsg: "Participator is already uploaded...!",
+            color: "#EE9A4D",
           });
         }
         setTimeout(() => {
@@ -339,9 +304,7 @@ const EmailShow = () => {
           alert: false,
           loader: false,
         });
-        if(error.response.status === 403){
-          navigate("/error")
-        }
+        console.log("---------", error);
       }
     }
   };
@@ -362,6 +325,23 @@ const EmailShow = () => {
     }
   };
 
+  const buttonEmail = {
+    fontSize: "8",
+    fontWeight: "600",
+    color: "white",
+    borderRadius: "6px",
+    marginLeft: "10px",
+    height: "39px",
+    marginTop: "17px",
+  };
+  const sentMails = {
+    fontSize: "8",
+    fontWeight: "600",
+    color: "white",
+    borderRadius: "6px",
+    marginTop: "47px",
+    marginLeft: "27px",
+  };
   return (
     <>
       <Modal2

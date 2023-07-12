@@ -18,8 +18,6 @@ import Select from "@mui/material/Select";
 import { addContest } from "../services/adminServices";
 import { getAllContestList } from "../services/adminServices";
 import MsgBar from "../auth/base/MsgBar";
-import { redColor } from "../../alertColors";
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -152,7 +150,7 @@ const Modal = ({
     contestTime: "",
     contestType: "",
   });
-  const [msg, setMsg] = useState(false)
+  const[msg, setMsg]=useState(false)
   const handleClose = () => {
     setshowMessage(false);
     setOpen(false);
@@ -160,7 +158,7 @@ const Modal = ({
     inputData.contestDescription = "";
     inputData.contestLevel = "";
     inputData.contestTime = "";
-    inputData.contestType = ""
+    inputData.contestType=""
   };
   const theme = useTheme();
 
@@ -172,7 +170,7 @@ const Modal = ({
       ...inputData,
       [name]: value,
     });
-
+    
   };
 
   const createContest = async () => {
@@ -180,13 +178,13 @@ const Modal = ({
       inputData.contestName === "" ||
       inputData.contestDescription === "" ||
       inputData.contestLevel === "" ||
-      inputData.contestTime === "" ||
+      inputData.contestTime === "" || 
       inputData.contestType === ""
     ) {
       setshowMessage(true);
     } else {
       try {
-        console.log(inputData, "inputdata");
+        console.log(inputData,"inputdata");
         const response = await addContest(inputData);
         // setContestDetails([...contestDetails, inputData]);
         fetchContestData();
@@ -198,12 +196,12 @@ const Modal = ({
           }, 2000);
         }
       } catch (error) {
-        const status = error.response.data.status
-        if (status === 409) {
+        const status=error.response.data.status
+        if(status===409){
           setMsg(true);
-          setTimeout(() => {
+          setTimeout(()=>{
             setMsg(false);
-          }, 3000)
+          },3000)
         }
       }
     }
@@ -211,10 +209,10 @@ const Modal = ({
   return (
     <div>
       {showMessage && (
-        <MsgBar errMsg={"Please Fill All Details"} color={redColor} />
+        <MsgBar errMsg={"Please fill all details"} color={"red"} />
       )}
       {msg && (
-        <MsgBar errMsg={"Contest With Same Name already Exists"} color={redColor} />
+        <MsgBar errMsg={"Contest with same name already exsists"} color={"red"} />
       )}
       <Dialog
         open={open}
@@ -267,9 +265,9 @@ const Modal = ({
                   InputProps={{
                     style: description,
                   }}
-                //   sx={{description}}
+                  //   sx={{description}}
                 />
-                <FormControl sx={{ width: 150, mt: 2 }}>
+                <FormControl sx={{ width: 200, mt: 2 }}>
                   <label style={label}>Level</label>
                   <Select
                     displayEmpty
@@ -293,7 +291,6 @@ const Modal = ({
                         key={name}
                         value={name}
                         style={getStyles(name, theme)}
-                        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
                       >
                         {name}
                       </MenuItem>
@@ -301,7 +298,7 @@ const Modal = ({
                   </Select>
                 </FormControl>
 
-                <FormControl sx={{ width: 110, mt: 2, ml: 3 }}>
+                <FormControl sx={{ width: 100, mt: 2, ml: 3 }}>
                   <label style={label}>Time</label>
                   <Select
                     displayEmpty
@@ -324,7 +321,6 @@ const Modal = ({
                       <MenuItem
                         key={name}
                         value={name}
-                        sx={{ justifyContent: "center" }}
                         style={getStyles(name, theme)}
                       >
                         {name}
@@ -352,7 +348,7 @@ const Modal = ({
                   >
                     <MenuItem disabled value=""></MenuItem>
                     {inputData?.contestLevel === "Level 1" ||
-                      inputData?.contestLevel === "" ? (
+                    inputData?.contestLevel === "" ? (
                       types.map((name) => (
                         <MenuItem
                           key={name}

@@ -21,8 +21,6 @@ import MsgBar from "./base/MsgBar";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Header from "../UI/Header";
-import { redColor, greenColor } from "../../alertColors";
-
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -210,13 +208,13 @@ const Login = ({ SetRegisterCredential }) => {
       <Grid container>
         <Header setColor={true} setShow={true} />
         {showAlert && (
-          <MsgBar empty={"Please Fill All Details"} color={redColor} />
+          <MsgBar empty={"Please fill all Details"} color={"Red"} />
         )}
         {showWarning && (
-          <MsgBar color={redColor} errMsg={"Email and Password Does Not Match"} />
+          <MsgBar color={"Red"} errMsg={"email and password does not match"} />
         )}
       </Grid>
-      {showMsg && <MsgBar errMsg={"Login Succesfully, WELCOME TO TEST ENGINE...!"} color={greenColor} />}
+      {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
 
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

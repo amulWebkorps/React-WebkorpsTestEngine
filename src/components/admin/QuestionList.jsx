@@ -27,7 +27,6 @@ import {
 import MsgBar from "../auth/base/MsgBar";
 import { getContestDetail } from "../services/adminServices";
 import BackButton from "../UI/BackButton";
-import { greenColor, redColor } from "../../alertColors";
 
 const useStyles = makeStyles({
   container: {
@@ -270,7 +269,7 @@ const QuestionList = () => {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
-        color: redColor,
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -295,8 +294,8 @@ const QuestionList = () => {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please Fill Details...!",
-        color: redColor,
+        errMsg: "Please fill details...!",
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -324,8 +323,8 @@ const QuestionList = () => {
         }, 1200);
         if (editQuestion) {
           setMsg({
-            errMsg: "Question Edited...!",
-            color: greenColor,
+            errMsg: "Question edit successfully...!",
+            color: "green",
           });
           setEditQuestion(false);
           setQuestion(quesIntialField);
@@ -336,8 +335,8 @@ const QuestionList = () => {
           return (contestQuestion[index] = question);
         } else {
           setMsg({
-            errMsg: "Question Added...!",
-            color: greenColor,
+            errMsg: "Question added successfully...!",
+            color: "green",
           });
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
@@ -378,8 +377,8 @@ const QuestionList = () => {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please Select Excel File...!",
-        color: redColor,
+        errMsg: "Please select excel file...!",
+        color: "red",
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -397,23 +396,21 @@ const QuestionList = () => {
           ""
         );
         setMsg({
-          errMsg: "Question Uploaded...!",
-          color: greenColor,
+          errMsg: "Question uploaded successfully...!",
+          color: "green",
         });
         setTimeout(() => {
           setAlert(false);
         }, 1200);
       } catch (error) {
         setMsg({
-          errMsg: "Questions already Uploaded...!",
-          color: redColor,
+          errMsg: "Questions already uploaded...!",
+          color: "red",
         });
         setTimeout(() => {
           setAlert(false);
         }, 1500);
-        if(error.response.status===403){
-          navigate("/error")
-        }
+        console.log("File already Uploaded", error);
       }
     }
   };
@@ -426,11 +423,7 @@ const QuestionList = () => {
         }
         setContestQuestion(res?.data?.contestQuestionDetail);
       })
-      .catch((error)=>{
-        if(error.response.status===403){
-          navigate("/error")
-        }
-      });
+      .catch("dmndv");
   }, [showAlert]);
 
   return (

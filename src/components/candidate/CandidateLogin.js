@@ -19,8 +19,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { TryRounded } from "@mui/icons-material";
 import Header from "../UI/Header";
-import { greenColor, redColor } from "../../alertColors";
-
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -176,26 +174,26 @@ const CandidateLogin = () => {
     setAlert(false);
   }, [credential]);
 
-  // useEffect(() => {
-  //   document.oncontextmenu = document.body.oncontextmenu = function () {
-  //     return false;
-  //   };
-  //   document.addEventListener("contextmenu", (event) => event.preventDefault());
-  //   document.onkeydown = function (e) {
-  //     if (e.keyCode == 123) {
-  //       return false;
-  //     }
-  //     if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
-  //       return false;
-  //     }
-  //     if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
-  //       return false;
-  //     }
-  //     if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
-  //       return false;
-  //     }
-  //   };
-  // }, [window]);
+  useEffect(() => {
+    document.oncontextmenu = document.body.oncontextmenu = function () {
+      return false;
+    };
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+    document.onkeydown = function (e) {
+      if (e.keyCode == 123) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+        return false;
+      }
+    };
+  }, [window]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -207,15 +205,15 @@ const CandidateLogin = () => {
         <Header setColor={true} />
         {showAlert && (
           <MsgBar
-            empty={"Please Fill All Details"}
-            color={redColor}
+            empty={"Please fill all Details"}
+            color={"Red"}
             errMsg={response}
           />
         )}
       </Grid>
-      {showMsg && <MsgBar errMsg={"Login Succesfully, Welocme to TEST...!"} color={greenColor} />}
+      {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
       {errMsg && (
-        <MsgBar errMsg={"Email and Password Does Not Match"} color={redColor} />
+        <MsgBar errMsg={"email and password does not match"} color={"red"} />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

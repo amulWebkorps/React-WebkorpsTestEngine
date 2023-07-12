@@ -14,9 +14,7 @@ import MsgBar from "../auth/base/MsgBar";
 import { deleteQuestion } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
 import Loader from "../candidate/base/Loader";
-import { useNavigate } from "react-router-dom";
-import { redColor } from "../../alertColors";
-
+import { Navigate, useNavigate } from "react-router-dom";
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -96,8 +94,8 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   overflowY: "auto",
-  maxHeight: "55px",
-  display: "inline-block"
+  maxHeight:"55px",
+  display:"inline-block"
 };
 
 const scrollDiv = {
@@ -146,10 +144,10 @@ const mcqBtn = {
   fontWeight: 700,
   fontSize: "20px",
 };
-const dataText = {
-  display: "flex",
-  justifyContent: "center",
-  fontSize: "20px"
+const dataText={
+  display:"flex",
+  justifyContent:"center",
+  fontSize:"20px"
 }
 const Allavailable = () => {
   const navigate = useNavigate();
@@ -168,7 +166,7 @@ const Allavailable = () => {
 
   const handleDelete = (id, quesId) => {
     const arr = [`questionForLevel`, quesId];
-
+ 
     setAllAvailQues((val) => {
       return val.filter((e, index) => index !== id);
     });
@@ -176,8 +174,8 @@ const Allavailable = () => {
       const result = deleteQuestion(arr).then((res) => {
         setMsg({
           state: true,
-          msg: "Question Deleted....!",
-          color: redColor,
+          msg: "Question delete succesfully",
+          color: "red",
         });
         setTimeout(() => {
           setMsg({
@@ -187,7 +185,7 @@ const Allavailable = () => {
           });
         }, 1200);
       });
-    } catch (error) {if(error.response.status === 403) navigate("/error") }
+    } catch (error) {}
   };
   useEffect(() => {
     setloader(true);
@@ -250,7 +248,7 @@ const Allavailable = () => {
           </Grid>
         </Grid>
         {/* <Grid>{loader && <Loader />}</Grid> */}
-        <Grid container sx={{ maxHeight: "500px", overflow: "auto", justifyContent: "center" }}>
+        <Grid container sx={{ maxHeight: "500px", overflow: "auto" ,justifyContent: "center"}}>
           {loader ? (
             <Loader />
           ) : allAvailQues.length <= 0 ? (
