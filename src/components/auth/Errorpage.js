@@ -70,6 +70,7 @@ const Errorpage = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    window.localStorage.clear();
     navigate("/");
   };
   return (

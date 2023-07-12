@@ -16,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import { crossbtn } from "../assests/images";
 import Loader from "../auth/base/Loader";
 import { getAllContestList, sendMail } from "../services/adminServices";
+import { greenColor, redColor } from "../../alertColors";
 
 const emailContainer = {
   overflowY: "auto",
@@ -81,8 +82,8 @@ function McqModel({
     if (contestId === undefined || contestId === null) {
       setIsAlert(true);
       setMsg({
-        errMsg: "Please select contest",
-        color: "red",
+        errMsg: "Please Select Contest",
+        color: redColor,
       });
     } else {
       setDisable(true);
@@ -91,8 +92,8 @@ function McqModel({
         setAlert(true);
         setEmails([]);
         setMsg({
-          errMsg: "Mail send successfully...!",
-          color: "green",
+          errMsg: "Mail Sent...!",
+          color: greenColor,
         });
         loadContestDetails();
         setTimeout(() => {
@@ -103,8 +104,8 @@ function McqModel({
       } catch (error) {
         setAlert(true);
         setMsg({
-          errMsg: "Mail not send...!",
-          color: "red",
+          errMsg: "Mail Not Sent...!",
+          color: redColor,
         });
         setTimeout(() => {
           setAlert(false);

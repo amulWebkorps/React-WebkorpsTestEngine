@@ -28,8 +28,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-
 import TabAlert from "../UI/TabAlert";
+import { greenColor } from "../../alertColors";
 
 const div1 = {
   height: "445px",
@@ -260,6 +260,9 @@ const Compiler = () => {
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
+  const[defaultCode, setDefaultCode] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(
+    (val) => val?.["sampleCode"]
+  ))
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
@@ -270,20 +273,20 @@ const Compiler = () => {
   const navigate = useNavigate();
   const changeseconds = timerGet * 60;
 
-  useEffect(() => {
-    window.addEventListener("blur", function () {
-      setWinCount(winCount + 1);
-      setOpen(true);
-    });
+  // useEffect(() => {
+  //   window.addEventListener("blur", function () {
+  //     setWinCount(winCount + 1);
+  //     setOpen(true);
+  //   });
 
-    window.addEventListener("focus", function () {});
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState === "hidden") {
-        setWarning(warning + 1);
-        setOpen(true);
-      }
-    });
-  }, [warning, winCount]);
+  //   window.addEventListener("focus", function () {});
+  //   document.addEventListener("visibilitychange", function () {
+  //     if (document.visibilityState === "hidden") {
+  //       setWarning(warning + 1);
+  //       setOpen(true);
+  //     }
+  //   });
+  // }, [warning, winCount]);
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -349,12 +352,12 @@ const Compiler = () => {
   }, []);
 
   const getDefaultCode = () => {
-    const len = profile?.QuestionList?.length;
-    const newArray = [];
-    for (var i = 0; i < len; i++) {
-      const a = profile?.languageCode?.codeBase;
-      newArray.push(a);
-    }
+    // const len = profile?.QuestionList?.length;
+    // const newArray = [];
+    // for (var i = 0; i < len; i++) {
+    //   const a = profile?.languageCode?.codeBase;
+    //   newArray.push(a);
+    // }
     const length = profile?.QuestionList?.length;
     const testArray = [];
     for (var i = 0; i < length; i++) {
@@ -362,7 +365,7 @@ const Compiler = () => {
       testArray.push(a);
     }
     setTestRecord(testArray);
-    setDefCode(newArray);
+    setDefCode(defaultCode);
   };
 
   const handleQuestionAndCode = async (codeData) => {
@@ -372,7 +375,7 @@ const Compiler = () => {
       for (var i = 0; i < len; i++) {
         var Object = {};
         Object["questionId"] = quesIds?.[i];
-        Object["code"] = profile?.languageCode?.codeBase;
+        Object["code"] = defaultCode[i];
         newArray.push(Object);
       }
     } else {
@@ -429,6 +432,7 @@ const Compiler = () => {
         }
         return val;
       });
+      console.log(newState,"resultOfTest cases----");
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
@@ -589,7 +593,7 @@ const Compiler = () => {
   const handleReset = async (question) => {
     const newState = defCode?.map((val, index) => {
       if (index === question) {
-        return profile?.languageCode?.codeBase;
+        return defaultCode[index];
       }
       return val;
     });
@@ -621,7 +625,7 @@ const Compiler = () => {
       />
       <Box className="background1">
         {showError && (
-          <MsgBar errMsg={"successfully submitted code"} color={"green"} />
+          <MsgBar errMsg={"Successfully Submitted Code"} color={greenColor} />
         )}
         <ReactRouterPrompt when={exit}>
           {({ isActive, onConfirm, onCancel }) =>
@@ -838,33 +842,37 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Box>
-                <AceEditor
-                  className="no-copy-paste"
-                  mode={
-                    location?.state?.language == "Java"
-                      ? "java"
-                      : location?.state?.language === "Python"
-                      ? "python"
-                      : "c_cpp"
-                  }
-                  theme="monokai"
-                  name="code"
-                  onPaste={(e) => {
-                    e.preventDefault();
-                    return false;
-                  }}
-                  onCopy={(e) => {
-                    e.preventDefault();
-                    return false;
-                  }}
-                  editorProps={{ $blockScrolling: true }}
-                  height="405px"
-                  width="45.7vw"
-                  value={defCode?.[count]}
-                  onChange={handleChange}
-                  defaultValue={defCode?.[count]}
-                  fontSize="20px"
-                />
+                  <AceEditor
+                    className="no-copy-paste"
+                    mode={
+                      location?.state?.language == "Java"
+                        ? "java"
+                        : location?.state?.language === "Python"
+                        ? "python"
+                        : "c_cpp"
+                    }
+                    theme="monokai"
+                    name="code"
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      return false;
+                    }}
+                    onCopy={(e) => {
+                      e.preventDefault();
+                      return false;
+                    }}
+                    editorProps={{ $blockScrolling: true }}
+                    height="405px"
+                    width="45.7vw"
+                  //  readOnly={{
+                  //     start: mainClassStartIndex,
+                  //     end: mainClassEndIndex
+                  //   }}
+                    value={defCode?.[count]}
+                    onChange={handleChange}
+                    defaultValue={defCode?.[count]}
+                    fontSize="20px"
+                  />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
                 {show && <Loader mt={1.8} />}

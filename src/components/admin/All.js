@@ -16,6 +16,9 @@ import {
   filterQuestion,
 } from "../services/contest/contestServices";
 import Loader from "../auth/base/Loader";
+import { greenColor, blueColor } from "../../alertColors";
+import { useNavigate } from "react-router-dom";
+
 const background1 = {
   height: "100%",
   background: ` linear-gradient(
@@ -41,7 +44,7 @@ const whiteContainer = {
   background: "#f9fafc",
   boxShadow: " 2px 9px 19px rgba(230, 230, 230, 0.37)",
   borderRadius: "18px",
-  overflow:"scroll"
+  overflow: "scroll"
 };
 
 const levelText = {
@@ -79,8 +82,8 @@ const divText = {
   lineHeight: "28px",
   color: "#000000",
   overflowY: "auto",
-  maxHeight:"55px",
-  display:"inline-block"
+  maxHeight: "55px",
+  display: "inline-block"
 };
 
 const scrollDiv = {
@@ -132,6 +135,8 @@ const All = ({
     questionsIds: "",
     contestId: [],
   });
+
+  const navigate = useNavigate()
   const handleQuestion = (e) => {
     const { checked, value } = e.target;
     if (checked) {
@@ -162,8 +167,8 @@ const All = ({
     if (data.length === 0 && questionArr.length == 0) {
       setshowselectquestion(true);
       setMsg({
-        errMsg: "Please select a question...!",
-        color: "blue",
+        errMsg: "Please Select A Question...!",
+        color: blueColor,
       });
       setTimeout(() => {
         setshowselectquestion(false);
@@ -171,8 +176,8 @@ const All = ({
     } else if (data.length === 0 && questionArr.length != 0) {
       setShowAlreadyQuestion(true);
       setMsg({
-        errMsg: "selected Question is already present in contest...!",
-        color: "blue",
+        errMsg: "Selected Question is already Present in Contest...!",
+        color: blueColor,
       });
       setTimeout(() => {
         setShowAlreadyQuestion(false);
@@ -181,8 +186,8 @@ const All = ({
       try {
         const result = await addSelectiveQuestion(selectiveQuestion);
         setMsg({
-          errMsg: "selected Question added successfully...!",
-          color: "green",
+          errMsg: "Selected Question Added...!",
+          color: greenColor,
         });
         setAlert(true);
         setTimeout(() => {
@@ -193,6 +198,7 @@ const All = ({
         setContestQuestion([...contestQuestion, ...result.data]);
       } catch (error) {
         console.log("question err", error);
+        if(error.response.status === 403) navigate("/error")
       }
     }
   };

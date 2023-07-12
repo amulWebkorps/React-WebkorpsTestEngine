@@ -16,6 +16,7 @@ import { getParticipatorOfContest } from "../services/contest/mcqService";
 import Loader from "../candidate/base/Loader";
 import MsgBar from "../auth/base/MsgBar";
 import { sentMailMcq } from "../services/adminServices";
+import { redColor } from "../../alertColors";
 
 const background1 = {
   height: "100vh",
@@ -214,8 +215,8 @@ function McqParticipator() {
     if (emails.length <= 0) {
       setIsAlert(true);
       setMsg({
-        errMsg: "Please select Participant...!",
-        color: "red",
+        errMsg: "Please Select Participant...!",
+        color: redColor,
       });
       setTimeout(() => {
         setIsAlert(false);
@@ -243,6 +244,9 @@ function McqParticipator() {
       setFilteredResults(participators?.data);
     } catch (error) {
       console.log(error);
+      if(error.response.status===403){
+        navigate("/error")
+      }
     }
     setloader(false);
   };
