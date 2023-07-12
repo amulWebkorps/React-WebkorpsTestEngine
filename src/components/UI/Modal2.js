@@ -16,6 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { getAllContestList, sendMail } from "../services/adminServices";
 import Loader from "../auth/base/Loader";
+import { greenColor, redColor } from "../../alertColors";
 
 const scrollDiv = {
   // overflowY: "auto",
@@ -91,8 +92,8 @@ export default function Model2({
     if (contestId === undefined || contestId === null) {
       setIsAlert(true);
       setMsg({
-        errMsg: "Please select contest",
-        color: "red",
+        errMsg: "Please Select Contest",
+        color: redColor,
       });
     } else {
       setDisable(true);
@@ -101,8 +102,8 @@ export default function Model2({
         setAlert(true);
         setEmails([]);
         setMsg({
-          errMsg: "Mail send successfully...!",
-          color: "green",
+          errMsg: "Mail Sent...!",
+          color: greenColor,
         });
         participatorFilter();
         setTimeout(() => {
@@ -113,8 +114,8 @@ export default function Model2({
       } catch (error) {
         setAlert(true);
         setMsg({
-          errMsg: "Mail not send...!",
-          color: "red",
+          errMsg: "Mail Not Sent...!",
+          color: redColor,
         });
         setTimeout(() => {
           setAlert(false);

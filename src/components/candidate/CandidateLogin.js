@@ -19,6 +19,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { TryRounded } from "@mui/icons-material";
 import Header from "../UI/Header";
+import { greenColor, redColor } from "../../alertColors";
+
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -205,15 +207,15 @@ const CandidateLogin = () => {
         <Header setColor={true} />
         {showAlert && (
           <MsgBar
-            empty={"Please fill all Details"}
-            color={"Red"}
+            empty={"Please Fill All Details"}
+            color={redColor}
             errMsg={response}
           />
         )}
       </Grid>
-      {showMsg && <MsgBar errMsg={"Login Succesfully...!"} color={"green"} />}
+      {showMsg && <MsgBar errMsg={"Login Succesfully, Welocme to TEST...!"} color={greenColor} />}
       {errMsg && (
-        <MsgBar errMsg={"email and password does not match"} color={"red"} />
+        <MsgBar errMsg={"Email and Password Does Not Match"} color={redColor} />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>
         <Box sx={MainBox}>

@@ -27,6 +27,7 @@ import {
 import MsgBar from "../auth/base/MsgBar";
 import { uploadQuestions } from "../services/contest/contestServices";
 import BackButton from "../UI/BackButton";
+import { greenColor, redColor } from "../../alertColors";
 
 const useStyles = makeStyles({
   container: {
@@ -162,21 +163,6 @@ const Level2 = () => {
   const [quesId, setQuesId] = useState(null);
   const [editRef, setEditRef] = useState(null);
   const [index, setIndex] = useState(null);
-  const defaulValues = {
-    questionId: quesId === null ? "" : quesId,
-    questionStatus: "true",
-    contestLevel: `Level 2`,
-  };
-
-  const quesIntialField = {
-    questionId: defaulValues?.questionId,
-    question: "",
-    contestLevel: defaulValues?.contestLevel,
-    questionStatus: defaulValues?.questionStatus,
-    sampleTestCase: [],
-    testcases: [],
-  };
-
   const [question, setQuestion] = useState(quesIntialField);
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
@@ -204,6 +190,20 @@ const Level2 = () => {
       ...sampleTestCase,
       [name]: value,
     });
+  };
+  const defaulValues = {
+    questionId: quesId === null ? "" : quesId,
+    questionStatus: "true",
+    contestLevel: `Level 2`,
+  };
+
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
   };
 
   const handleTestChange = (e) => {
@@ -240,7 +240,7 @@ const Level2 = () => {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
-        color: "red",
+        color: redColor,
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -265,8 +265,8 @@ const Level2 = () => {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please fill details...!",
-        color: "red",
+        errMsg: "Please Fill Details...!",
+        color: redColor,
       });
       setTimeout(() => {
         setMsg({
@@ -294,8 +294,8 @@ const Level2 = () => {
         }, 1200);
         if (editQuestion) {
           setMsg({
-            errMsg: "Question edit successfully...!",
-            color: "green",
+            errMsg: "Question Edited...!",
+            color: greenColor,
           });
           console.log("editquestion");
           setEditQuestion(false);
@@ -307,8 +307,8 @@ const Level2 = () => {
           return (contestQuestion[index] = question);
         } else {
           setMsg({
-            errMsg: "Question added successfully...!",
-            color: "green",
+            errMsg: "Question Added...!",
+            color: greenColor,
           });
           setContestQuestion([...contestQuestion, question]);
           setQuestion(quesIntialField);
@@ -323,6 +323,9 @@ const Level2 = () => {
           setError(false);
         }, 1200);
         console.log("error");
+        if (error.response.status === 403) {
+          navigate("/error")
+        }
       }
     }
   };
@@ -335,8 +338,8 @@ const Level2 = () => {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please select excel file...!",
-        color: "red",
+        errMsg: "Please Select Excel File...!",
+        color: redColor,
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -351,8 +354,8 @@ const Level2 = () => {
         setAlert(true);
         // setContestQuestion([...contestQuestion, ...result]);
         setMsg({
-          errMsg: "Question uploaded successfully...!",
-          color: "green",
+          errMsg: "Question Uploaded...!",
+          color: greenColor,
         });
         setTimeout(() => {
           setMsg({
@@ -423,7 +426,7 @@ const Level2 = () => {
           ""
         )}
         {error && (
-          <MsgBar errMsg={"something went wrong"} color={"red"}></MsgBar>
+          <MsgBar errMsg={"something went wrong"} color={redColor}></MsgBar>
         )}
         <Grid container sx={{ justifyContent: "center" }}>
           <Grid item>

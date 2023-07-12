@@ -28,8 +28,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-
 import TabAlert from "../UI/TabAlert";
+import { greenColor } from "../../alertColors";
 
 const div1 = {
   height: "445px",
@@ -260,6 +260,9 @@ const Compiler = () => {
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
+  // const[defaultCode, setDefaultCode] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(
+  //   (val) => val?.["sampleCode"]
+  // ))
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
@@ -621,7 +624,7 @@ const Compiler = () => {
       />
       <Box className="background1">
         {showError && (
-          <MsgBar errMsg={"successfully submitted code"} color={"green"} />
+          <MsgBar errMsg={"Successfully Submitted Code"} color={greenColor} />
         )}
         <ReactRouterPrompt when={exit}>
           {({ isActive, onConfirm, onCancel }) =>
@@ -838,33 +841,37 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Box>
-                <AceEditor
-                  className="no-copy-paste"
-                  mode={
-                    location?.state?.language == "Java"
-                      ? "java"
-                      : location?.state?.language === "Python"
-                      ? "python"
-                      : "c_cpp"
-                  }
-                  theme="monokai"
-                  name="code"
-                  onPaste={(e) => {
-                    e.preventDefault();
-                    return false;
-                  }}
-                  onCopy={(e) => {
-                    e.preventDefault();
-                    return false;
-                  }}
-                  editorProps={{ $blockScrolling: true }}
-                  height="405px"
-                  width="45.7vw"
-                  value={defCode?.[count]}
-                  onChange={handleChange}
-                  defaultValue={defCode?.[count]}
-                  fontSize="20px"
-                />
+                  <AceEditor
+                    className="no-copy-paste"
+                    mode={
+                      location?.state?.language == "Java"
+                        ? "java"
+                        : location?.state?.language === "Python"
+                        ? "python"
+                        : "c_cpp"
+                    }
+                    theme="monokai"
+                    name="code"
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      return false;
+                    }}
+                    onCopy={(e) => {
+                      e.preventDefault();
+                      return false;
+                    }}
+                    editorProps={{ $blockScrolling: true }}
+                    height="405px"
+                    width="45.7vw"
+                  //  readOnly={{
+                  //     start: mainClassStartIndex,
+                  //     end: mainClassEndIndex
+                  //   }}
+                    value={defCode?.[count]}
+                    onChange={handleChange}
+                    defaultValue={defCode?.[count]}
+                    fontSize="20px"
+                  />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
                 {show && <Loader mt={1.8} />}

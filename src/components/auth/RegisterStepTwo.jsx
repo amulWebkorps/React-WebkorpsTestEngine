@@ -21,6 +21,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Header from "../UI/Header";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { redColor, greenColor } from "../../alertColors";
+
 const ContainerStyle = {
   backgroundImage: `url(${background})`,
   backgroundRepeat: "noRepeat",
@@ -254,23 +256,23 @@ const RegisterStepTwo = ({ registerCredential, SetRegisterCredential }) => {
       </Grid>
 
       {showAlert && (
-        <MsgBar errMsg={"Admin Register Succesfully......!"} color={"green"} />
+        <MsgBar errMsg={"Admin Register Succesfully......!"} color={greenColor} />
       )}
       {showalertpassword && (
-        <MsgBar errMsg={"Please fill all details."} color={"red"} />
+        <MsgBar errMsg={"Please Fill All Details."} color={redColor} />
       )}
       {fillalert && (
-        <MsgBar errMsg={"Please fill correct password."} color={"red"} />
+        <MsgBar errMsg={"Password Mismatch."} color={redColor} />
       )}
       {showemail && (
-        <MsgBar errMsg={"Email already registered."} color={"red"} />
+        <MsgBar errMsg={"Email Already Registered."} color={redColor} />
       )}
       {conditionpassword && (
         <MsgBar
           errMsg={
-            "Minimum eight characters, at least one letter, one number and one special character."
+            "Minimum Eight Characters, at least One Letter, One Number and One Special Character."
           }
-          color={"red"}
+          color={redColor}
         />
       )}
       <Container maxWidth={false} sx={ContainerStyle}>

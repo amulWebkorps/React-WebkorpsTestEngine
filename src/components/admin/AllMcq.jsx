@@ -16,6 +16,7 @@ import Loader from "../candidate/base/Loader";
 import { getAllMcq } from "../services/contest/mcqService";
 import { deleteAllMcq } from "../services/contest/mcqService";
 import MsgBar from "../auth/base/MsgBar";
+import { redColor, greenColor } from "../../alertColors";
 
 const background1 = {
   height: "100%",
@@ -150,8 +151,8 @@ function AllMcq() {
     ) {
       setShowValidation(true);
       setMsg({
-        errMsg: "Please select excel file...!",
-        color: "red",
+        errMsg: "Please Select Excel File...!",
+        color: redColor,
       });
       setTimeout(() => {
         setShowValidation(false);
@@ -167,8 +168,8 @@ function AllMcq() {
         setShowValidation(true);
         setMsg({
           state: true,
-          errMsg: "Question uploaded successfully...!",
-          color: "green",
+          errMsg: "Question Uploaded...!",
+          color: greenColor,
         });
         loadAllMcqs();
         setTimeout(() => {
@@ -187,6 +188,7 @@ function AllMcq() {
           color: "",
         });
         console.log("ee", error);
+        if(error.response.status === 403) navigate("/error")
       }
     }
   };
@@ -213,8 +215,8 @@ function AllMcq() {
         setAlert(true);
         setMsg({
           state: true,
-          errMsg: "Question delete succesfully",
-          color: "red",
+          errMsg: "Question Deleted....!",
+          color: redColor,
         });
         loadAllMcqs();
 
@@ -227,7 +229,7 @@ function AllMcq() {
           });
         }, 1200);
       });
-    } catch (error) {}
+    } catch (error) { if(error.response.status===403) navigate("/error")}
   };
   return (
     <>

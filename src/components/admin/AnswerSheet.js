@@ -9,10 +9,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../UI/Header";
 import { getParticipatorOfContest } from "../services/contest/contestServices";
+import { getparticipatorresult } from "../services/contest/contestServices";
 import { deletestudent } from "../services/mail/particiaptiorMail";
 import MsgBar from "../auth/base/MsgBar";
 import BackButton from "../UI/BackButton";
 import Loader from "../candidate/base/Loader";
+import { redColor } from "../../alertColors";
 
 const BigContainer = {
   // background: `linear-gradient(180deg, rgba(24, 135, 201, 0) 0%, rgba(24, 135, 201, 0.224167) 40.42%, rgba(24, 135, 201, 0.4) 100%)`,
@@ -36,6 +38,7 @@ const MainContainer = {
   height: "65vh",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   // borderRadius: "17px",
+  position:"relative",
   overflow: "auto",
 };
 const MainContainers = {
@@ -184,10 +187,13 @@ const UserName = {
 
 const ViewDetail = {
   cursor: "pointer",
-  marginRight: "30px",
-  fontSize: "20px",
-  color: "#0057FF",
-  textDecoration: "underline",
+  position:"absolute",
+  left:"46%",
+  bottom: "2%",
+  fontSize: "18px",
+  textTransform:"Capitalize",
+  color: "#fff",
+  fontWeight:"bold",
 };
 const dataText={
   display:"flex",
@@ -234,11 +240,24 @@ const AnswerSheet = () => {
         setFilteredResults(participators?.data);
       } catch (error) {
         setIsLoading(false);
-        console.log("--", error);
+        if(error.response.status===403){
+          navigate("/error")
+        }
       }
     })();
     return () => {};
   }, [delMsg?.state]);
+
+  const handleParticipatorResult = async()=>{
+    try {
+      const res = await getparticipatorresult(contestId);
+
+    } catch (error) {
+      if(error.response.status===403){
+        navigate("/error")
+      }
+    }
+  }
 
   const handleSearch = (e) => {
     setSearchString(e.target.value);
@@ -259,20 +278,23 @@ const AnswerSheet = () => {
     try {
       const res = await deletestudent(emailId);
       setDelMsg({
-        msg: "Student deleted successfully...!",
-        color: "red",
+        msg: "Student Deleted...!",
+        color: redColor,
         state: true,
       });
       setTimeout(() => {
         setDelMsg({
-          msg: "Student deleted successfully...!",
-          color: "red",
+          msg: "Student Deleted...!",
+          color: redColor,
           state: false,
         });
       }, 1200);
       console.log("resss", res);
     } catch (error) {
       console.log(error);
+      if(error.response.status===403){
+        navigate("/error")
+      }
     }
   };
 
@@ -330,7 +352,7 @@ const AnswerSheet = () => {
                           View Details
                         </Typography>
                       </Button>
-
+                        
                       <IconButton
                         aria-label="add"
                         sx={delBtn}
@@ -350,18 +372,7 @@ const AnswerSheet = () => {
                       <Typography sx={UniqueId}>{index + 1}</Typography>
                       <Typography sx={UserName}>{val?.email}</Typography>
                     </Box>
-                    <Box sx={innerdata}>
-                      <Button
-                        sx={ViewDetail}
-                        onClick={() =>
-                          navigate("/viewparticipator", {
-                            state: val?.id,
-                          })
-                        }
-                      >
-                        {" "}
-                        <Typography>View Details</Typography>
-                      </Button>
+                    <Box sx={innerdata}>        
 
                       <IconButton
                         aria-label="add"
@@ -375,7 +386,15 @@ const AnswerSheet = () => {
                 );
               })
             )
-          } 
+          }
+          <Button
+            variant="contained"
+            sx={ViewDetail}
+            // onMouseOver={handleFocus}
+            onClick={handleParticipatorResult}
+          >
+            {"Evaluate Result"}
+          </Button>
           </Container>
         </Container>
       </Container>
