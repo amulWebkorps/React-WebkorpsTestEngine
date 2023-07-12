@@ -172,10 +172,6 @@ const EmailShow = () => {
     }
   };
 
-  useEffect(()=>{
-    console.log(filteredResults,"filterred datat----------");
-  },[])
-
   const participatorFilter = async () => {
     setLoading(true);
     try {

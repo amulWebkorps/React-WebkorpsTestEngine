@@ -260,9 +260,9 @@ const Compiler = () => {
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
-  const[defaultCode, setDefaultCode] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(
-    (val) => val?.["sampleCode"]
-  ))
+  // const[defaultCode, setDefaultCode] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(
+  //   (val) => val?.["sampleCode"]
+  // ))
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
@@ -273,20 +273,20 @@ const Compiler = () => {
   const navigate = useNavigate();
   const changeseconds = timerGet * 60;
 
-  // useEffect(() => {
-  //   window.addEventListener("blur", function () {
-  //     setWinCount(winCount + 1);
-  //     setOpen(true);
-  //   });
+  useEffect(() => {
+    window.addEventListener("blur", function () {
+      setWinCount(winCount + 1);
+      setOpen(true);
+    });
 
-  //   window.addEventListener("focus", function () {});
-  //   document.addEventListener("visibilitychange", function () {
-  //     if (document.visibilityState === "hidden") {
-  //       setWarning(warning + 1);
-  //       setOpen(true);
-  //     }
-  //   });
-  // }, [warning, winCount]);
+    window.addEventListener("focus", function () {});
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        setWarning(warning + 1);
+        setOpen(true);
+      }
+    });
+  }, [warning, winCount]);
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -352,12 +352,12 @@ const Compiler = () => {
   }, []);
 
   const getDefaultCode = () => {
-    // const len = profile?.QuestionList?.length;
-    // const newArray = [];
-    // for (var i = 0; i < len; i++) {
-    //   const a = profile?.languageCode?.codeBase;
-    //   newArray.push(a);
-    // }
+    const len = profile?.QuestionList?.length;
+    const newArray = [];
+    for (var i = 0; i < len; i++) {
+      const a = profile?.languageCode?.codeBase;
+      newArray.push(a);
+    }
     const length = profile?.QuestionList?.length;
     const testArray = [];
     for (var i = 0; i < length; i++) {
@@ -365,7 +365,7 @@ const Compiler = () => {
       testArray.push(a);
     }
     setTestRecord(testArray);
-    setDefCode(defaultCode);
+    setDefCode(newArray);
   };
 
   const handleQuestionAndCode = async (codeData) => {
@@ -375,7 +375,7 @@ const Compiler = () => {
       for (var i = 0; i < len; i++) {
         var Object = {};
         Object["questionId"] = quesIds?.[i];
-        Object["code"] = defaultCode[i];
+        Object["code"] = profile?.languageCode?.codeBase;
         newArray.push(Object);
       }
     } else {
@@ -432,7 +432,6 @@ const Compiler = () => {
         }
         return val;
       });
-      console.log(newState,"resultOfTest cases----");
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
@@ -593,7 +592,7 @@ const Compiler = () => {
   const handleReset = async (question) => {
     const newState = defCode?.map((val, index) => {
       if (index === question) {
-        return defaultCode[index];
+        return profile?.languageCode?.codeBase;
       }
       return val;
     });

@@ -210,7 +210,7 @@ function McqPage() {
         setAlert(true);
         setMsg({
           state: true,
-          errMsg: "Question Delete....!",
+          errMsg: "Question Deleted....!",
           color: redColor,
         });
         setTimeout(() => {

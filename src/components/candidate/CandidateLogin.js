@@ -176,26 +176,26 @@ const CandidateLogin = () => {
     setAlert(false);
   }, [credential]);
 
-  // useEffect(() => {
-  //   document.oncontextmenu = document.body.oncontextmenu = function () {
-  //     return false;
-  //   };
-  //   document.addEventListener("contextmenu", (event) => event.preventDefault());
-  //   document.onkeydown = function (e) {
-  //     if (e.keyCode == 123) {
-  //       return false;
-  //     }
-  //     if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
-  //       return false;
-  //     }
-  //     if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
-  //       return false;
-  //     }
-  //     if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
-  //       return false;
-  //     }
-  //   };
-  // }, [window]);
+  useEffect(() => {
+    document.oncontextmenu = document.body.oncontextmenu = function () {
+      return false;
+    };
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+    document.onkeydown = function (e) {
+      if (e.keyCode == 123) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
+        return false;
+      }
+    };
+  }, [window]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
