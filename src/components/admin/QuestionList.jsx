@@ -411,24 +411,27 @@ const QuestionList = () => {
         setTimeout(() => {
           setAlert(false);
         }, 1500);
-        if(error.response.status===403){
-          navigate("/error")
+        if (error.response.status === 403) {
+          navigate("/error");
         }
       }
     }
   };
 
   useEffect(() => {
-    const result = getContestDetail(contestData?.contestId , contestData?.contestType)
+    const result = getContestDetail(
+      contestData?.contestId,
+      contestData?.contestType
+    )
       .then((res) => {
         if (res.message == "success" && res.status == "200") {
           setloader(false);
         }
         setContestQuestion(res?.data?.contestQuestionDetail);
       })
-      .catch((error)=>{
-        if(error.response.status===403){
-          navigate("/error")
+      .catch((error) => {
+        if (error.response.status === 403) {
+          navigate("/error");
         }
       });
   }, [showAlert]);

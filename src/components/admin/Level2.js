@@ -163,6 +163,21 @@ const Level2 = () => {
   const [quesId, setQuesId] = useState(null);
   const [editRef, setEditRef] = useState(null);
   const [index, setIndex] = useState(null);
+  const defaulValues = {
+    questionId: quesId === null ? "" : quesId,
+    questionStatus: "true",
+    contestLevel: `Level 2`,
+  };
+
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
+  };
+
   const [question, setQuestion] = useState(quesIntialField);
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
@@ -190,20 +205,6 @@ const Level2 = () => {
       ...sampleTestCase,
       [name]: value,
     });
-  };
-  const defaulValues = {
-    questionId: quesId === null ? "" : quesId,
-    questionStatus: "true",
-    contestLevel: `Level 2`,
-  };
-
-  const quesIntialField = {
-    questionId: defaulValues?.questionId,
-    question: "",
-    contestLevel: defaulValues?.contestLevel,
-    questionStatus: defaulValues?.questionStatus,
-    sampleTestCase: [],
-    testcases: [],
   };
 
   const handleTestChange = (e) => {
@@ -324,7 +325,7 @@ const Level2 = () => {
         }, 1200);
         console.log("error");
         if (error.response.status === 403) {
-          navigate("/error")
+          navigate("/error");
         }
       }
     }

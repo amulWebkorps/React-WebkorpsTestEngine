@@ -164,6 +164,20 @@ const Level1 = () => {
   const [quesId, setQuesId] = useState(null);
   const [index, setIndex] = useState(null);
   const [editRef, setEditRef] = useState(null);
+  const defaulValues = {
+    questionId: quesId === null ? "" : quesId,
+    questionStatus: "true",
+    contestLevel: `Level 1`,
+  };
+
+  const quesIntialField = {
+    questionId: defaulValues?.questionId,
+    question: "",
+    contestLevel: defaulValues?.contestLevel,
+    questionStatus: defaulValues?.questionStatus,
+    sampleTestCase: [],
+    testcases: [],
+  };
   const [question, setQuestion] = useState(quesIntialField);
   const [problemStatement, setProblemStatement] = useState(
     problemStatementIntialVal
@@ -191,20 +205,6 @@ const Level1 = () => {
       ...sampleTestCase,
       [name]: value,
     });
-  };
-  const defaulValues = {
-    questionId: quesId === null ? "" : quesId,
-    questionStatus: "true",
-    contestLevel: `Level 1`,
-  };
-
-  const quesIntialField = {
-    questionId: defaulValues?.questionId,
-    question: "",
-    contestLevel: defaulValues?.contestLevel,
-    questionStatus: defaulValues?.questionStatus,
-    sampleTestCase: [],
-    testcases: [],
   };
 
   const handleTestChange = (e) => {
@@ -237,7 +237,7 @@ const Level1 = () => {
   };
 
   const addTest = () => {
-    if(testCases?.input===""||testCases?.output===""){
+    if (testCases?.input === "" || testCases?.output === "") {
       setShowValidation(true);
       setMsg({
         errMsg: "Input and Output can not be null..!",
@@ -250,7 +250,7 @@ const Level1 = () => {
           color: "",
         });
       }, 2000);
-    }else{
+    } else {
       setTestCaseList([...testCaseList, testCases]);
       setTestCases(testInitialFields);
     }
@@ -320,9 +320,9 @@ const Level1 = () => {
         setTimeout(() => {
           setError(false);
         }, 2000);
-       if(error.response.status===403){
-        navigate("/error")
-       }
+        if (error.response.status === 403) {
+          navigate("/error");
+        }
       }
     }
   };
@@ -719,7 +719,6 @@ const Level1 = () => {
                           >
                             Add
                           </Button>
-                         
                         </Stack>
                       </Container>
                     </div>
