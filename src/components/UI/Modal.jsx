@@ -26,7 +26,7 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: 150,
     },
   },
 };
@@ -152,7 +152,7 @@ const Modal = ({
     contestTime: "",
     contestType: "",
   });
-  const [msg, setMsg] = useState(false)
+  const [msg, setMsg] = useState(false);
   const handleClose = () => {
     setshowMessage(false);
     setOpen(false);
@@ -160,7 +160,7 @@ const Modal = ({
     inputData.contestDescription = "";
     inputData.contestLevel = "";
     inputData.contestTime = "";
-    inputData.contestType = ""
+    inputData.contestType = "";
   };
   const theme = useTheme();
 
@@ -172,7 +172,6 @@ const Modal = ({
       ...inputData,
       [name]: value,
     });
-
   };
 
   const createContest = async () => {
@@ -198,12 +197,12 @@ const Modal = ({
           }, 2000);
         }
       } catch (error) {
-        const status = error.response.data.status
+        const status = error.response.data.status;
         if (status === 409) {
           setMsg(true);
           setTimeout(() => {
             setMsg(false);
-          }, 3000)
+          }, 3000);
         }
       }
     }
@@ -214,7 +213,10 @@ const Modal = ({
         <MsgBar errMsg={"Please Fill All Details"} color={redColor} />
       )}
       {msg && (
-        <MsgBar errMsg={"Contest With Same Name already Exists"} color={redColor} />
+        <MsgBar
+          errMsg={"Contest With Same Name already Exists"}
+          color={redColor}
+        />
       )}
       <Dialog
         open={open}
@@ -267,7 +269,7 @@ const Modal = ({
                   InputProps={{
                     style: description,
                   }}
-                //   sx={{description}}
+                  //   sx={{description}}
                 />
                 <FormControl sx={{ width: 150, mt: 2 }}>
                   <label style={label}>Level</label>
@@ -293,7 +295,11 @@ const Modal = ({
                         key={name}
                         value={name}
                         style={getStyles(name, theme)}
-                        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
                       >
                         {name}
                       </MenuItem>
@@ -352,7 +358,7 @@ const Modal = ({
                   >
                     <MenuItem disabled value=""></MenuItem>
                     {inputData?.contestLevel === "Level 1" ||
-                      inputData?.contestLevel === "" ? (
+                    inputData?.contestLevel === "" ? (
                       types.map((name) => (
                         <MenuItem
                           key={name}
@@ -379,11 +385,7 @@ const Modal = ({
           <DialogActions>
             <Container>
               <Grid container sx={{ justifyContent: "start" }}>
-                <Button
-                  variant="contained"
-                  sx={crebtn}
-                  onClick={createContest}
-                >
+                <Button variant="contained" sx={crebtn} onClick={createContest}>
                   Create
                 </Button>
                 <Button

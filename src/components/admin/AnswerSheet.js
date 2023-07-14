@@ -192,10 +192,13 @@ const UserResult = {
 };
 
 const ViewDetail = {
-  cursor: "pointer",
   position: "absolute",
-  left: "46%",
-  bottom: "2%",
+  left: "50%",
+  bottom: "0%",
+  transform: "translate(-50%, -50%)",
+};
+const evaluteResult = {
+  cursor: "pointer",
   fontSize: "18px",
   textTransform: "Capitalize",
   color: "#fff",
@@ -203,6 +206,7 @@ const ViewDetail = {
 };
 
 const dataText = {
+  marginTop: "100px",
   display: "flex",
   justifyContent: "center",
   fontSize: "20px",
@@ -372,7 +376,7 @@ const AnswerSheet = () => {
                       <IconButton
                         aria-label="add"
                         sx={delBtn}
-                        onClick={(e) => removeStudent(val?.email)}
+                        onClick={(e) => removeStudent(val?.studentEmail)}
                       >
                         <CloseIcon fontSize="x-small" />
                       </IconButton>
@@ -395,7 +399,7 @@ const AnswerSheet = () => {
                       <IconButton
                         aria-label="add"
                         sx={delBtn}
-                        onClick={(e) => removeStudent(val?.email)}
+                        onClick={(e) => removeStudent(val?.studentEmail)}
                       >
                         <CloseIcon fontSize="x-small" />
                       </IconButton>
@@ -410,7 +414,7 @@ const AnswerSheet = () => {
               // onMouseOver={handleFocus}
               onClick={handleParticipatorResult}
             >
-              {"Evaluate Result"}
+              <Typography sx={evaluteResult}>{"Evaluate Result"}</Typography>
             </Button>
           </Container>
         </Container>
