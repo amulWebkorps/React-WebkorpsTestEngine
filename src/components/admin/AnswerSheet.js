@@ -38,7 +38,7 @@ const MainContainer = {
   height: "65vh",
   boxShadow: `2px 9px 19px rgba(230, 230, 230, 0.37)`,
   // borderRadius: "17px",
-  position:"relative",
+  position: "relative",
   overflow: "auto",
 };
 const MainContainers = {
@@ -185,21 +185,28 @@ const UserName = {
   marginLeft: "2vh",
 };
 
+const UserResult = {
+  marginRight: "80px",
+  fontSize: "20px",
+  marginLeft: "2vh",
+};
+
 const ViewDetail = {
   cursor: "pointer",
-  position:"absolute",
-  left:"46%",
+  position: "absolute",
+  left: "46%",
   bottom: "2%",
   fontSize: "18px",
-  textTransform:"Capitalize",
+  textTransform: "Capitalize",
   color: "#fff",
-  fontWeight:"bold",
+  fontWeight: "bold",
 };
-const dataText={
-  display:"flex",
-  justifyContent:"center",
-  fontSize:"20px"
-}
+
+const dataText = {
+  display: "flex",
+  justifyContent: "center",
+  fontSize: "20px",
+};
 
 const delBtn = {
   marginTop: "0px !important",
@@ -211,13 +218,12 @@ const delBtn = {
   borderRadius: "50%",
 };
 
-
 const AnswerSheet = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchString, setSearchString] = useState("");
   const [participator, setParticipator] = useState([]);
-  const [isLoading, setIsLoading]=useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [contestId, setContestId] = useState(
     location?.state?.result?.data?.contest?.contestId
   );
@@ -233,31 +239,37 @@ const AnswerSheet = () => {
       try {
         setIsLoading(true);
         const participators = await getParticipatorOfContest(contestId);
-        if(participator){
+        if (participator) {
           setIsLoading(false);
         }
         setParticipator(participators?.data);
         setFilteredResults(participators?.data);
       } catch (error) {
         setIsLoading(false);
-        if(error.response.status===403){
-          navigate("/error")
+        if (error.response.status === 403) {
+          navigate("/error");
         }
       }
     })();
     return () => {};
   }, [delMsg?.state]);
 
-  const handleParticipatorResult = async()=>{
+  const handleParticipatorResult = async () => {
     try {
+      setIsLoading(true);
       const res = await getparticipatorresult(contestId);
-
+      if (res) {
+        setIsLoading(false);
+      }
+      setParticipator(res?.data);
+      setFilteredResults(res?.data);
     } catch (error) {
-      if(error.response.status===403){
-        navigate("/error")
+      setIsLoading(false);
+      if (error.response.status === 403) {
+        navigate("/error");
       }
     }
-  }
+  };
 
   const handleSearch = (e) => {
     setSearchString(e.target.value);
@@ -292,8 +304,8 @@ const AnswerSheet = () => {
       console.log("resss", res);
     } catch (error) {
       console.log(error);
-      if(error.response.status===403){
-        navigate("/error")
+      if (error.response.status === 403) {
+        navigate("/error");
       }
     }
   };
@@ -327,19 +339,23 @@ const AnswerSheet = () => {
         </Container>
         <Container sx={MainContainer}>
           <Container>
-          {isLoading?<Loader mt={5}/>:
-          participator?.length <= 0 || filteredResults?.length <= 0 ? (
-             <Typography sx={dataText}>No data</Typography>
+            {isLoading ? (
+              <Loader mt={5} />
+            ) : participator?.length <= 0 || filteredResults?.length <= 0 ? (
+              <Typography sx={dataText}>No data</Typography>
             ) : searchString?.length > 1 ? (
               filteredResults?.map((val, index) => {
                 return (
                   <Grid sx={maindata}>
                     <Box sx={innerdata}>
                       <Typography sx={UniqueId}> {index + 1}</Typography>
-                      <Typography sx={UserName}>{val?.email}</Typography>
+                      <Typography sx={UserName}>{val?.studentEmail}</Typography>
                     </Box>
                     <Box sx={innerdata}>
-                      <Button>
+                      <Typography sx={UserResult}>
+                        {val?.studentPercentage + "%"}
+                      </Typography>
+                      {/* <Button>
                         {" "}
                         <Typography
                           sx={ViewDetail}
@@ -351,8 +367,8 @@ const AnswerSheet = () => {
                         >
                           View Details
                         </Typography>
-                      </Button>
-                        
+                      </Button> */}
+
                       <IconButton
                         aria-label="add"
                         sx={delBtn}
@@ -370,10 +386,12 @@ const AnswerSheet = () => {
                   <Grid sx={maindata}>
                     <Box sx={innerdata}>
                       <Typography sx={UniqueId}>{index + 1}</Typography>
-                      <Typography sx={UserName}>{val?.email}</Typography>
+                      <Typography sx={UserName}>{val?.studentEmail}</Typography>
                     </Box>
-                    <Box sx={innerdata}>        
-
+                    <Box sx={innerdata}>
+                      <Typography sx={UserResult}>
+                        {val?.studentPercentage + "%"}
+                      </Typography>
                       <IconButton
                         aria-label="add"
                         sx={delBtn}
@@ -385,16 +403,15 @@ const AnswerSheet = () => {
                   </Grid>
                 );
               })
-            )
-          }
-          <Button
-            variant="contained"
-            sx={ViewDetail}
-            // onMouseOver={handleFocus}
-            onClick={handleParticipatorResult}
-          >
-            {"Evaluate Result"}
-          </Button>
+            )}
+            <Button
+              variant="contained"
+              sx={ViewDetail}
+              // onMouseOver={handleFocus}
+              onClick={handleParticipatorResult}
+            >
+              {"Evaluate Result"}
+            </Button>
           </Container>
         </Container>
       </Container>

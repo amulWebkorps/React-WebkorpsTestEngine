@@ -260,9 +260,11 @@ const Compiler = () => {
   const [warning, setWarning] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [defCode, setDefCode] = useState(null);
-  const[defaultCode, setDefaultCode] = useState(location?.state?.participatorsContestDetails?.QuestionList?.map(
-    (val) => val?.["sampleCode"]
-  ))
+  const [defaultCode, setDefaultCode] = useState(
+    location?.state?.participatorsContestDetails?.QuestionList?.map(
+      (val) => val?.["sampleCode"]
+    )
+  );
   const [duration, setDuration] = useState(
     location?.state?.participatorsContestDetails?.contestTime?.contestTime
   );
@@ -273,20 +275,20 @@ const Compiler = () => {
   const navigate = useNavigate();
   const changeseconds = timerGet * 60;
 
-  // useEffect(() => {
-  //   window.addEventListener("blur", function () {
-  //     setWinCount(winCount + 1);
-  //     setOpen(true);
-  //   });
+  useEffect(() => {
+    window.addEventListener("blur", function () {
+      setWinCount(winCount + 1);
+      setOpen(true);
+    });
 
-  //   window.addEventListener("focus", function () {});
-  //   document.addEventListener("visibilitychange", function () {
-  //     if (document.visibilityState === "hidden") {
-  //       setWarning(warning + 1);
-  //       setOpen(true);
-  //     }
-  //   });
-  // }, [warning, winCount]);
+    window.addEventListener("focus", function () {});
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") {
+        setWarning(warning + 1);
+        setOpen(true);
+      }
+    });
+  }, [warning, winCount]);
 
   useEffect(() => {
     if (runCode?.successMessage === "Code Submitted Successfully") {
@@ -432,7 +434,6 @@ const Compiler = () => {
         }
         return val;
       });
-      console.log(newState,"resultOfTest cases----");
       setTestRecord(newState);
       setRunCode(resultData?.data);
       setShowTestCase(true);
@@ -496,7 +497,7 @@ const Compiler = () => {
       });
 
       if (res?.data) {
-        setTestRecord(res.data?.testCasesSuccess);
+        // setTestRecord(res.data?.testCasesSuccess);
         setShow(false);
         setShowError(true);
         handleNext();
@@ -842,37 +843,33 @@ const Compiler = () => {
                 </Grid>
               </Container>
               <Box>
-                  <AceEditor
-                    className="no-copy-paste"
-                    mode={
-                      location?.state?.language == "Java"
-                        ? "java"
-                        : location?.state?.language === "Python"
-                        ? "python"
-                        : "c_cpp"
-                    }
-                    theme="monokai"
-                    name="code"
-                    onPaste={(e) => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    onCopy={(e) => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    editorProps={{ $blockScrolling: true }}
-                    height="405px"
-                    width="45.7vw"
-                  //  readOnly={{
-                  //     start: mainClassStartIndex,
-                  //     end: mainClassEndIndex
-                  //   }}
-                    value={defCode?.[count]}
-                    onChange={handleChange}
-                    defaultValue={defCode?.[count]}
-                    fontSize="20px"
-                  />
+                <AceEditor
+                  className="no-copy-paste"
+                  mode={
+                    location?.state?.language == "Java"
+                      ? "java"
+                      : location?.state?.language === "Python"
+                      ? "python"
+                      : "c_cpp"
+                  }
+                  theme="monokai"
+                  name="code"
+                  onPaste={(e) => {
+                    e.preventDefault();
+                    return false;
+                  }}
+                  onCopy={(e) => {
+                    e.preventDefault();
+                    return false;
+                  }}
+                  editorProps={{ $blockScrolling: true }}
+                  height="405px"
+                  width="45.7vw"
+                  value={defCode?.[count]}
+                  onChange={handleChange}
+                  defaultValue={defCode?.[count]}
+                  fontSize="20px"
+                />
               </Box>
               <Grid container sx={{ justifyContent: "end" }}>
                 {show && <Loader mt={1.8} />}

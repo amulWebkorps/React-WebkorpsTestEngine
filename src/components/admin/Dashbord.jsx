@@ -187,6 +187,9 @@ const Dashbord = () => {
       navigate(navigationLink, { state: { result } });
     } catch (error) {
       console.log("error", error);
+      if (error.response.status === 403) {
+        navigate("/error");
+      }
     }
   };
 
